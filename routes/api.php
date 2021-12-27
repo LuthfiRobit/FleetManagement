@@ -12,9 +12,13 @@ use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\Main\CheckingController;
 use App\Http\Controllers\MerkKendaraanController;
-use App\Http\Controllers\PetugasController;
+// use App\Http\Controllers\PetugasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PetugasController;
+use App\Http\Controllers\Api\TerimaOrderController;
 
 /*
 |--------------------------------------------------------------------------
