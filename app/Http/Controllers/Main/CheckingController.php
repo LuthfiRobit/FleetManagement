@@ -136,50 +136,50 @@ class CheckingController extends Controller
         return redirect()->route('checking.serviceorder')->with('success', 'Service Order is Rejected');
     }
 
-    public function createSo(Request $request)
-    {
-        DB::beginTransaction();
-        try {
-            $so = [
-                'id_service_order'  => $request->id_service_order,
-                'id_petugas'        => $request->id_petugas,
-                'tgl_penjemputan'   => $request->tgl_penjemputan,
-                'jam_penjemputan'   => $request->jam_penjemputan,
-                'jml_penumpang'     => $request->jml_penumpang,
-                'tempat_penjemputan' => $request->tempat_penjemputan,
-                'tujuan'            => $request->tujuan,
-                'keterangan'        => $request->keterangan
-            ];
-            // $saveSo = DB::table('tb_order_kendaraan')->insert($so);
-            $saveSo = ServiceOrder::create($so);
-            $namaPenumpang = $request->nama_penumpang;
-            foreach ($namaPenumpang as $key => $value) {
-                $serviceDetail = [
-                    'id_service_order'  => $request->id_service_order,
-                    'nama_penumpang'    => $request->nama_penumpang[$key],
-                    'no_tlp'            => $request->no_tlp[$key]
-                ];
-                $saveDetailSo = DB::table('tb_detail_so')->insert($serviceDetail);
-            }
+    // public function createSo(Request $request)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $so = [
+    //             'id_service_order'  => $request->id_service_order,
+    //             'id_petugas'        => $request->id_petugas,
+    //             'tgl_penjemputan'   => $request->tgl_penjemputan,
+    //             'jam_penjemputan'   => $request->jam_penjemputan,
+    //             'jml_penumpang'     => $request->jml_penumpang,
+    //             'tempat_penjemputan' => $request->tempat_penjemputan,
+    //             'tujuan'            => $request->tujuan,
+    //             'keterangan'        => $request->keterangan
+    //         ];
+    //         // $saveSo = DB::table('tb_order_kendaraan')->insert($so);
+    //         $saveSo = ServiceOrder::create($so);
+    //         $namaPenumpang = $request->nama_penumpang;
+    //         foreach ($namaPenumpang as $key => $value) {
+    //             $serviceDetail = [
+    //                 'id_service_order'  => $request->id_service_order,
+    //                 'nama_penumpang'    => $request->nama_penumpang[$key],
+    //                 'no_tlp'            => $request->no_tlp[$key]
+    //             ];
+    //             $saveDetailSo = DB::table('tb_detail_so')->insert($serviceDetail);
+    //         }
 
-            DB::commit();
-            return response()->json(
-                [
-                    'pesan'             => 'sukses',
-                    'id_service_order'  => $request->id_service_order
-                ],
-                200
-            );
-        } catch (\Exception $exception) {
-            //throw $th;
-            DB::rollBack();
-            return response()->json(
-                [
-                    'pesan' => 'gagal',
-                    'errors' => $exception
-                ],
-                400
-            );
-        }
-    }
+    //         DB::commit();
+    //         return response()->json(
+    //             [
+    //                 'pesan'             => 'sukses',
+    //                 'id_service_order'  => $request->id_service_order
+    //             ],
+    //             200
+    //         );
+    //     } catch (\Exception $exception) {
+    //         //throw $th;
+    //         DB::rollBack();
+    //         return response()->json(
+    //             [
+    //                 'pesan' => 'gagal',
+    //                 'errors' => $exception
+    //             ],
+    //             400
+    //         );
+    //     }
+    // }
 }
