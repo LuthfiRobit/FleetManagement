@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Driver;
 use App\Models\Petugas;
-use Validator;
+// use Validator;
 use DB;
 use Config;
 
@@ -15,7 +17,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 
-class AuthController extends Controller 
+class AuthController extends Controller
 {
 
 
@@ -24,8 +26,9 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login','login2', 'register','logout','userProfile','registerpetugas']]);
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'login2', 'register', 'logout', 'userProfile', 'registerpetugas']]);
         // $this->middleware('auth:petugas', ['except' => ['login', 'register','registerpetugas']]);
 
     }
@@ -37,147 +40,146 @@ class AuthController extends Controller
      */
 
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
-    	$validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'user' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
-        
+
         // $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-        
         }
 
         // if (! $token = auth()->attempt($validator->validated())) {
         //     return response()->json(['error' => 'Unauthorized'], 401);
 
-        
+
         // }
-        if(auth()->guard('api2')->attempt($validator->validated())){
+        if (auth()->guard('api2')->attempt($validator->validated())) {
 
             // config(['auth.guards.api.provider' => 'api2']);
-            
+
             $petugas = Petugas::select('tb_petugas.*')->find(auth()->guard('api2')->user()->id_petugas);
             $success =  $petugas;
-            // $success['token'] =  $petugas->createToken('MyApp',['admin'])->accessToken; 
-            
+            // $success['token'] =  $petugas->createToken('MyApp',['admin'])->accessToken;
+
             return response()->json($success, 200);
-        }else if(auth()->guard('api')->attempt($validator->validated())){ 
+        } else if (auth()->guard('api')->attempt($validator->validated())) {
             config(['auth.guards.api.provider' => 'api2']);
-            
+
             $driver = Driver::select('tb_driver.*')->find(auth()->guard('api')->user()->id_driver);
             $success =  $driver;
-            // $success['token'] =  $petugas->createToken('MyApp',['admin'])->accessToken; 
-            
+            // $success['token'] =  $petugas->createToken('MyApp',['admin'])->accessToken;
+
             return response()->json($success, 200);
-            
-        }else{
+        } else {
             return response()->json(['error' => ['Email and Password are Wrong.']], 200);
         }
 
         return $this->createNewToken($token);
+    }
 
+    public function login2(Request $request)
+    {
+
+        $credentials = $request->only('user', 'password');
+
+        //valid credential
+        $validator = Validator::make($credentials, [
+            'user' => 'required',
+            'password' => 'required|string|min:8|max:50'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
 
-    public function login2(Request $request) {
-       
-            $credentials = $request->only('user', 'password');
-    
-            //valid credential
-            $validator = Validator::make($credentials, [
-                'user' => 'required|email',
-                'password' => 'required|string|min:6|max:50'
+
+        if (auth()->guard('api2')->attempt($credentials)) {
+            try {
+                if (!$token = auth()->guard('api2')->attempt($credentials)) {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Login ssssss are invalid.',
+                    ], 400);
+                }
+            } catch (JWTException $e) {
+                return $credentials;
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Could not create token.',
+                ], 500);
+            }
+            return response()->json([
+                'success' => true,
+                'token' => $token,
+                'user' => auth('api2')->user(),
+                'level' => 'petugas',
             ]);
+        } elseif (auth()->guard('api')->attempt($credentials)) {
+            $driver = Driver::select('tb_driver.*')->find(auth()->guard('api')->user()->id_driver);
+            $success =  $driver;
+            try {
+                if (!$token = auth()->guard('api')->attempt($credentials)) {
 
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 422);
-            }
-            
-
-            if(auth()->guard('api2')->attempt($credentials)){
-                try {
-                    if (! $token = auth()->guard('api2')->attempt($credentials)) {
-                       
-                        return response()->json([
-                            'success' => false,
-                            'message' => 'Login ssssss are invalid.',
-                        ], 400);
-                    }
-                } catch (JWTException $e) {
-                return $credentials;
                     return response()->json([
-                            'success' => false,
-                            'message' => 'Could not create token.',
-                        ], 500);
+                        'success' => false,
+                        'message' => 'Login ssssss are invalid.',
+                    ], 400);
                 }
-                return response()->json([
-                    'success' => true,
-                    'token' => $token,
-                    'user' => auth('api2')->user(),
-                    'level' => 'petugas',
-                ]);
-
-            }elseif(auth()->guard('api')->attempt($credentials)){
-                $driver = Driver::select('tb_driver.*')->find(auth()->guard('api')->user()->id_driver);
-                $success =  $driver;
-                try {
-                    if (! $token = auth()->guard('api')->attempt($credentials)) {
-                       
-                        return response()->json([
-                            'success' => false,
-                            'message' => 'Login ssssss are invalid.',
-                        ], 400);
-                    }
-                } catch (JWTException $e) {
+            } catch (JWTException $e) {
                 return $credentials;
-                    return response()->json([
-                            'success' => false,
-                            'message' => 'Could not create token.',
-                        ], 500);
-                }
                 return response()->json([
-                    'success' => true,
-                    'token' => $token,
-                    'user' => auth('api')->user(),
-                    'level' => 'driver',
-                ]);
-            }else{
-                return response()->json(['error' => ['Email and Password are Wrong.']], 200);
+                    'success' => false,
+                    'message' => 'Could not create token.',
+                ], 500);
             }
-            //Send failed response if request is not valid
-            // if ($validator->fails()) {
-            //     return response()->json(['error' => $validator->messages()], 200);
-            // }
-    
-            // //Request is validated
-            // //Crean token
-            // try {
-            //     if (! $token = JWTAuth::attempt($credentials)) {
-                   
-            //         return response()->json([
-            //             'success' => false,
-            //             'message' => 'Login credentials are invalid.',
-            //         ], 400);
-            //     }
-            // } catch (JWTException $e) {
-            // return $credentials;
-            //     return response()->json([
-            //             'success' => false,
-            //             'message' => 'Could not create token.',
-            //         ], 500);
-            // }
-           
+            return response()->json([
+                'success' => true,
+                'token' => $token,
+                'user' => auth('api')->user(),
+                'level' => 'driver',
+            ]);
+        } else {
+            return response()->json(['error' => ['Email and Password are Wrong.']], 200);
         }
+        //Send failed response if request is not valid
+        // if ($validator->fails()) {
+        //     return response()->json(['error' => $validator->messages()], 200);
+        // }
+
+        // //Request is validated
+        // //Crean token
+        // try {
+        //     if (! $token = JWTAuth::attempt($credentials)) {
+
+        //         return response()->json([
+        //             'success' => false,
+        //             'message' => 'Login credentials are invalid.',
+        //         ], 400);
+        //     }
+        // } catch (JWTException $e) {
+        // return $credentials;
+        //     return response()->json([
+        //             'success' => false,
+        //             'message' => 'Could not create token.',
+        //         ], 500);
+        // }
+
+    }
 
     /**
      * Register a User.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             // 'id_driver' => 'required|string|between:1,100',
             'nama_driver' => 'required|string|between:2,100',
@@ -187,21 +189,22 @@ class AuthController extends Controller
 
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
         $user = Driver::create(array_merge(
-                    $validator->validated(),
-                    ['password' => bcrypt($request->password)]
-                ));
+            $validator->validated(),
+            ['password' => bcrypt($request->password)]
+        ));
 
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
         ], 201);
     }
-    public function registerpetugas(Request $request) {
+    public function registerpetugas(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             // 'id_driver' => 'required|string|between:1,100',
             'nama_lengkap' => 'required|string|between:2,100',
@@ -211,14 +214,14 @@ class AuthController extends Controller
 
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
         $userpetugas = Petugas::create(array_merge(
-                    $validator->validated(),
-                    ['password' => bcrypt($request->password)]
-                ));
+            $validator->validated(),
+            ['password' => bcrypt($request->password)]
+        ));
 
         return response()->json([
             'message' => 'User successfully registered',
@@ -232,17 +235,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
-        $token= request()->bearerToken();
+    public function logout()
+    {
+        $token = request()->bearerToken();
         if ($token == true) {
             auth('api2')->logout();
             return response()->json(['message' => 'User successfully signed out']);
-        }else {
+        } else {
             return response()->json(['message' => 'cuaks']);
         }
-        
-
-        
     }
 
     /**
@@ -250,7 +251,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh() {
+    public function refresh()
+    {
         return $this->createNewToken(auth()->refresh());
     }
 
@@ -259,7 +261,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile() {
+    public function userProfile()
+    {
         return response()->json(auth('api2')->user());
     }
 
@@ -270,15 +273,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token){
+    protected function createNewToken($token)
+    {
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user(),
-          
+
         ]);
     }
-
 }
