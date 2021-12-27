@@ -17,7 +17,7 @@ class KriteriaPengecekan extends Model
         'nama_kriteria', 'status'
     ];
 
-    public function jenis()
+    public function jenis_pengecekan()
     {
         return $this->hasMany(JenisPengecekan::class, 'id_kriteria', 'id_kriteria');
     }
