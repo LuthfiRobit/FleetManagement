@@ -23,7 +23,7 @@ class ApiServiceOrderController extends Controller
                 'jml_penumpang'     => $request->jml_penumpang,
                 'tempat_penjemputan' => $request->tempat_penjemputan,
                 'tujuan'            => $request->tujuan,
-                'keterangan'        => $request->keterangan
+                'keterangan'        => $request->keterangan,
             ];
             // $saveSo = DB::table('tb_order_kendaraan')->insert($so);
             $saveSo = ServiceOrder::create($so);
@@ -60,43 +60,50 @@ class ApiServiceOrderController extends Controller
 
     public function getDo(Request $request)
     {
-        $id = 1;
-        $penugasan = DB::table('tb_penugasan_driver')
+        $id = $request->query('id');
+        $tab = $request->query('tab');
+        $serviceOrder = DB::table('tb_order_kendaraan')
             ->select(
-                'tb_penugasan_driver.id_do',
-                'tb_penugasan_driver.id_driver',
-                'tb_penugasan_driver.tgl_penugasan',
-                'tb_penugasan_driver.jam_berangkat',
-                'tb_penugasan_driver.kembali',
-                'tb_penugasan_driver.tgl_acc',
-                'tb_penugasan_driver.status_penugasan',
-                'tb_driver.id_driver',
-                'tb_driver.nama_driver',
+                'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.tgl_penjemputan',
+                'tb_order_kendaraan.jam_penjemputan',
+                'tb_order_kendaraan.jml_penumpang',
+                'tb_order_kendaraan.tempat_penjemputan',
+                'tb_order_kendaraan.tujuan',
+                'tb_order_kendaraan.keterangan',
+                'tb_order_kendaraan.status_so',
+                'tb_order_kendaraan.keterangan_penolakan',
                 'tb_petugas.id_petugas',
                 'tb_petugas.nama_lengkap',
-                'tb_kendaraan.id_kendaraan',
-                'tb_kendaraan.nama_kendaraan',
             )
-            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
-            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
-            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
-            ->orderByDesc('id_do')
-            ->where('tb_penugasan_driver.id_driver', $id)
+            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+            ->where('tb_order_kendaraan.id_petugas', $id)
+            ->when($tab == '', function ($status) use ($tab) {
+                $status->where('status_so', null);
+            })
+            ->when($tab == 't', function ($status) use ($tab) {
+                $status->where('status_so', 't');
+            })
+            ->when($tab == 'tl', function ($status) use ($tab) {
+                $status->where('status_so', 'tl');
+            })
             ->get();
 
         return response()->json(
             [
-                $penugasan
+                'status'        => 'sukses',
+                'service_order' => $serviceOrder
             ]
         );
     }
 
     public function listTransport(Request $request)
     {
-        $id = 1;
+        $id = $request->query('id');
         $kendaraan = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_petugas',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.status_penugasan',
                 'tb_driver.id_driver',
@@ -111,7 +118,7 @@ class ApiServiceOrderController extends Controller
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->orderByDesc('id_do')
-            ->where('tb_penugasan_driver.id_driver', $id)
+            ->where('tb_penugasan_driver.id_petugas', $id)
             ->get();
 
         return response()->json(
@@ -124,10 +131,11 @@ class ApiServiceOrderController extends Controller
 
     public function checkTransport(Request $request)
     {
-        $id = 1;
+        $id = $request->query('id');
         $kendaraan = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_petugas',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.status_penugasan',
                 'tb_driver.id_driver',
@@ -142,7 +150,7 @@ class ApiServiceOrderController extends Controller
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->orderByDesc('id_do')
-            ->where('tb_penugasan_driver.id_driver', $id)
+            ->where('tb_penugasan_driver.id_petugas', $id)
             ->first();
 
         $pengecekan = KriteriaPengecekan::select('id_kriteria', 'nama_kriteria')
