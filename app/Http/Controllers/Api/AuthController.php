@@ -104,19 +104,19 @@ class AuthController extends Controller
                 if (!$token = auth()->guard('api2')->attempt($credentials)) {
 
                     return response()->json([
-                        'success' => false,
+                        'success' => 'gagal',
                         'message' => 'Login ssssss are invalid.',
                     ], 400);
                 }
             } catch (JWTException $e) {
                 return $credentials;
                 return response()->json([
-                    'success' => false,
+                    'success' => 'gagal',
                     'message' => 'Could not create token.',
                 ], 500);
             }
             return response()->json([
-                'success' => true,
+                'success' => 'sukses',
                 'token' => $token,
                 'user' => auth('api2')->user(),
                 'level' => 'petugas',
@@ -128,19 +128,19 @@ class AuthController extends Controller
                 if (!$token = auth()->guard('api')->attempt($credentials)) {
 
                     return response()->json([
-                        'success' => false,
+                        'success' => 'gagal',
                         'message' => 'Login ssssss are invalid.',
                     ], 400);
                 }
             } catch (JWTException $e) {
                 return $credentials;
                 return response()->json([
-                    'success' => false,
+                    'success' => 'gagal',
                     'message' => 'Could not create token.',
                 ], 500);
             }
             return response()->json([
-                'success' => true,
+                'success' => 'sukses',
                 'token' => $token,
                 'user' => auth('api')->user(),
                 'level' => 'driver',

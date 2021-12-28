@@ -23,13 +23,6 @@ use App\Http\Controllers\Api\TerimaOrderController;
 //     return $request->user();
 // });
 
-Route::get('penugasan', [ApiServiceOrderController::class, 'getDo']);
-Route::get('penugasan/kendaraan', [ApiServiceOrderController::class, 'listTransport']);
-Route::get('penugasan/kendaraan/pengecekan', [ApiServiceOrderController::class, 'checkTransport']);
-Route::post('serivceorder/create', [ApiServiceOrderController::class, 'createSo']);
-// Route::get('penugasan/create',[ApiServiceOrderController::class,'createSo']);
-
-
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -42,6 +35,15 @@ Route::group([
     Route::post('/registerpetugas', [PetugasController::class, 'registerpetugas']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);  
-
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'service'],
+    function () {
+        Route::post('create', [ApiServiceOrderController::class, 'createSo']);
+        Route::get('list', [ApiServiceOrderController::class, 'getDo']);
+        Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
+        Route::get('check/transport', [ApiServiceOrderController::class, 'checkTransport']);
+    }
+);
