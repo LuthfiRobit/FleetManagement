@@ -117,6 +117,38 @@ class ApiServiceOrderController extends Controller
         );
     }
 
+    public function getDoDetail(Request $request)
+    {
+        $id_so = $id = $request->query('id_so');
+        $detailAccepted = DB::table('tb_order_kendaraan')
+            ->select(
+                'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.tgl_penjemputan',
+                'tb_order_kendaraan.jam_penjemputan',
+                'tb_order_kendaraan.jml_penumpang',
+                'tb_order_kendaraan.tempat_penjemputan',
+                'tb_order_kendaraan.tujuan',
+                'tb_order_kendaraan.keterangan',
+                'tb_petugas.nama_lengkap as nama_petugas',
+                'tb_driver.nama_driver',
+                'tb_driver.no_tlp',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+            )
+            ->join('tb_penugasan_driver', 'tb_order_kendaraan.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
+            ->join('tb_driver', 'tb_penugasan_driver.id_driver', '=', 'tb_driver.id_driver')
+            ->join('tb_kendaraan', 'tb_penugasan_driver.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
+            ->join('tb_petugas', 'tb_order_kendaraan.id_petugas', '=', 'tb_petugas.id_petugas')
+            ->where('tb_order_kendaraan.id_service_order', $id_so)
+            ->first();
+        return response()->json(
+            [
+                'status'    => 'sukses',
+                'detail'    => $detailAccepted
+            ]
+        );
+    }
+
     public function listTransport(Request $request)
     {
         $id = $request->query('id');
@@ -148,6 +180,31 @@ class ApiServiceOrderController extends Controller
                 'cek_kendaraan' => $kendaraan
             ]
         );
+    }
+
+    public function accidentReport(Request $request)
+    {
+        $id = $request->query('id');
+        $kendaraan = DB::table('tb_penugasan_driver')
+            ->select(
+                'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_petugas',
+                'tb_penugasan_driver.tgl_penugasan',
+                'tb_penugasan_driver.status_penugasan',
+                'tb_driver.id_driver',
+                'tb_driver.nama_driver',
+                'tb_kendaraan.id_kendaraan',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.tujuan',
+            )
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->orderByDesc('id_do')
+            ->where('tb_penugasan_driver.id_petugas', $id)
+            ->first();
     }
 
     //driver
