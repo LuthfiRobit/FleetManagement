@@ -108,8 +108,7 @@ class CheckingController extends Controller
                 'tgl_penugasan'     => $find->tgl_penjemputan,
                 'jam_berangkat'     => Carbon::parse($find->jam_penjemputan)->format('H:i:s'),
                 'kembali'           => $request->kembali,
-                'tgl_acc'           => date('Y-m-d'),
-                'status_penugasan'  => 't'
+                'tgl_acc'           => date('Y-m-d')
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($data);
             if ($penugasancreate) {
