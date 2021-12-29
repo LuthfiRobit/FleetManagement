@@ -58,6 +58,26 @@ class ApiServiceOrderController extends Controller
         }
     }
 
+    public function getLastIdDo(Request $request)
+    {
+        $latestId = DB::table('tb_order_kendaraan')
+            ->select('id_service_order')
+            ->orderByDesc('id_service_order')
+            ->first();
+
+        if ($latestId != '') {
+            return response()->json(
+                $latestId
+            );
+        } else {
+            return response()->json(
+                [
+                    'id_service_order' => 'kosong'
+                ]
+            );
+        }
+    }
+
     public function getDo(Request $request)
     {
         $id = $request->query('id');
@@ -119,6 +139,7 @@ class ApiServiceOrderController extends Controller
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->orderByDesc('id_do')
             ->where('tb_penugasan_driver.id_petugas', $id)
+            ->where('tb_penugasan_driver.status_penugasan', '!=', 's')
             ->get();
 
         return response()->json(
@@ -129,6 +150,7 @@ class ApiServiceOrderController extends Controller
         );
     }
 
+    //driver
     public function checkTransport(Request $request)
     {
         $id = $request->query('id');
