@@ -42,6 +42,7 @@ Route::group(
     ['middleware' => 'api', 'prefix' => 'service'],
     function () {
         Route::post('create', [ApiServiceOrderController::class, 'createSo']);
+        Route::get('latest', [ApiServiceOrderController::class, 'getLastIdDo']);
         Route::get('list', [ApiServiceOrderController::class, 'getDo']);
         Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
         Route::get('check/transport', [ApiServiceOrderController::class, 'checkTransport']);
