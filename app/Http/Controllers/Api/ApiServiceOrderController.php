@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\KriteriaPengecekan;
+use App\Models\PengecekanKendaraan;
 use App\Models\PenugasanDriver;
 use App\Models\ServiceOrder;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +22,7 @@ class ApiServiceOrderController extends Controller
                 'id_service_order'  => $request->id_service_order,
                 'id_petugas'        => $request->id_petugas,
                 'tgl_penjemputan'   => $request->tgl_penjemputan,
-                'jam_penjemputan'   => $request->jam_penjemputan,
+                'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i:s'),
                 'jml_penumpang'     => $request->jml_penumpang,
                 'tempat_penjemputan' => $request->tempat_penjemputan,
                 'tujuan'            => $request->tujuan,
@@ -315,6 +317,8 @@ class ApiServiceOrderController extends Controller
                 'tb_kendaraan.no_polisi',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.jam_berangkat',
+                'tb_order_kendaraan.tempat_penjemputan',
+                'tb_order_kendaraan.tujuan',
                 'tb_penugasan_driver.kembali',
                 'tb_penugasan_driver.tgl_acc',
                 'tb_penugasan_driver.status_penugasan',
@@ -322,6 +326,7 @@ class ApiServiceOrderController extends Controller
             ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->orderByDesc('id_do')
             ->when($tab == 't', function ($status) use ($tab) {
                 $status->where('status_penugasan', 't');
@@ -462,14 +467,75 @@ class ApiServiceOrderController extends Controller
 
         return response()->json(
             [
-                'status'        => 'sukses',
-                'data_kendaraan' => $kendaraan,
-                'pengecekan'    => $hasil
+                'status'            => 'sukses',
+                'data_kendaraan'    => $kendaraan,
+                'pengecekan'        => $hasil
             ]
         );
     }
 
+    public function latestIdCo(Request $request)
+    {
+
+        $lastCo = DB::table('tb_pengecekan_kendaraan')
+            ->select('id_pengecekan')
+            ->orderByDesc('id_pengecekan')
+            ->first();
+        if ($lastCo != '') {
+            return response()->json(
+                $lastCo
+            );
+        } else {
+            return response()->json(
+                [
+                    'id_pengecekan' => 'kosong'
+                ]
+            );
+        }
+    }
+
     public function storeCheckingDo(Request $request)
     {
+        DB::beginTransaction();
+        try {
+            $data = [
+                'id_pengecekan'     => $request->id_pengecekan,
+                'id_do'             => $request->id_do,
+                'tgl_pengecekan'    => $request->tgl_pengecekan,
+                'jam_pengecekan'    => Carbon::parse($request->jam_pengecekan)->format('H:i:s'),
+                'km_kendaraan'      => $request->km_kendaraan,
+                'status_kendaraan'  => $request->status_kendaraan,
+                'status_pengecekan' => 'c'
+            ];
+            $saveCo = PengecekanKendaraan::create($data);
+            $kondisi = $request->kondisi;
+            foreach ($kondisi as $key => $value) {
+                $detailCo = [
+                    'id_pengecekan'         => $request->id_pengecekan,
+                    'id_jenis_pengecekan'   => $request->id_jenis_pengecekan[$key],
+                    'kondisi'               => $request->kondisi[$key],
+                    'waktu_pengecekan'      => $request->waktu_pengecekan,
+                    'keterangan'            => $request->keterangan[$key]
+                ];
+                $saveDetailCo = DB::table('tb_detail_pengecekan')->insert($detailCo);
+            }
+
+            DB::commit();
+            return response()->json(
+                [
+                    'pesan'         => 'sukses',
+                    'id_pengecekan' => $request->id_pengecekan
+                ]
+            );
+        } catch (\Exception $exception) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json(
+                [
+                    'pesan' => 'gagal',
+                    'errors' => $exception
+                ]
+            );
+        }
     }
 }
