@@ -60,6 +60,7 @@ Route::group(
         Route::post('done', [ApiServiceOrderController::class, 'doneDo']);
         Route::get('check/list', [ApiServiceOrderController::class, 'listCheckTransport']);
         Route::get('check', [ApiServiceOrderController::class, 'checkTransportDo']);
+        Route::get('check/latest', [ApiServiceOrderController::class, 'latestIdCo']);
         Route::post('check/create', [ApiServiceOrderController::class, 'storeCheckingDo']);
     }
 );
