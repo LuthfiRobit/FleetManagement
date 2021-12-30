@@ -280,8 +280,8 @@ class ApiServiceOrderController extends Controller
 
     public function acceptDo(Request $request)
     {
-        $id_dr = $request->query('id_dr');
-        $id_do = $request->query('id_do');
+        $id_dr = $request->id_dr;
+        $id_do = $request->id_do;
         $acceptDo = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($acceptDo == true) {
             $acceptDo->update(['status_penugasan' => 't']);
@@ -345,8 +345,8 @@ class ApiServiceOrderController extends Controller
 
     public function processDo(Request $request)
     {
-        $id_dr = $request->query('id_dr');
-        $id_do = $request->query('id_do');
+        $id_dr = $request->id_dr;
+        $id_do = $request->id_do;
         $acceptDo = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($acceptDo == true) {
             $acceptDo->update(['status_penugasan' => 'p']);
@@ -367,8 +367,8 @@ class ApiServiceOrderController extends Controller
 
     public function doneDo(Request $request)
     {
-        $id_dr = $request->query('id_dr');
-        $id_do = $request->query('id_do');
+        $id_dr = $request->id_dr;
+        $id_do = $request->id_do;
         $acceptDo = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($acceptDo == true) {
             $acceptDo->update(['status_penugasan' => 's']);
