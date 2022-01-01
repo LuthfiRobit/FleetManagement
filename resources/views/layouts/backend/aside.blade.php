@@ -65,7 +65,7 @@
                 </div>
                 <div class="menu-item">
                     <div class="menu-content pt-8 pb-2">
-                        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Checking</span>
+                        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Main</span>
                     </div>
                 </div>
                 <div class="menu-item">
@@ -78,6 +78,30 @@
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Service Order</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link" href="{{ route('assign.main') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Driver Assignment</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link" href="{{ route('check.main') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Transportation Check</span>
                     </a>
                 </div>
                 <div class="menu-item">
