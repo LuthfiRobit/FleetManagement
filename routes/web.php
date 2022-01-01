@@ -10,6 +10,8 @@ use App\Http\Controllers\JenisPengecekanController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\Main\CheckingController;
+use App\Http\Controllers\Main\PengecekanKendaraanController;
+use App\Http\Controllers\Main\PenugasanDriverController;
 use App\Http\Controllers\MerkKendaraanController;
 use App\Http\Controllers\PetugasController;
 use App\Models\Driver;
@@ -40,6 +42,16 @@ Route::name('checking')->prefix('checking')
         Route::get('/serviceorder/detail/{id}', [CheckingController::class, 'detailSo'])->name('.serviceorder.detail');
         Route::put('/serviceorder/accept/{id}', [CheckingController::class, 'acceptSo'])->name('.serviceorder.accept');
         Route::put('/serviceorder/reject/{id}', [CheckingController::class, 'rejectSo'])->name('.serviceorder.reject');
+    });
+Route::name('assign')->prefix('assign')
+    ->group(function () {
+        Route::get('/', [PenugasanDriverController::class, 'index'])->name('.main');
+        Route::get('/detail/{id}', [PenugasanDriverController::class, 'detail'])->name('.detail');
+    });
+Route::name('check')->prefix('check')
+    ->group(function () {
+        Route::get('/', [PengecekanKendaraanController::class, 'index'])->name('.main');
+        Route::get('/detail/{id}', [PengecekanKendaraanController::class, 'detail'])->name('.detail');
     });
 Route::name('dashboard.')->prefix('dashboard')
     ->group(function () {
