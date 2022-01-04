@@ -21,6 +21,7 @@ class PenugasanDriver extends Model
         'jam_berangkat',
         'kembali',
         'tgl_acc',
-        'status_penugasan'
+        'status_penugasan',
+        'status_pengecekan'
     ];
 }

@@ -15,6 +15,7 @@ class PengecekanKendaraan extends Model
     protected $fillable = [
         'id_pengecekan',
         'id_do',
+        'id_kendaraan',
         'tgl_pengecekan',
         'jam_pengecekan',
         'km_kendaraan',
