@@ -514,7 +514,7 @@ class ApiServiceOrderController extends Controller
                 'status_kendaraan'  => $request->status_kendaraan,
                 'status_pengecekan' => 'c'
             ];
-            if ($request->status_kendaraan = 'r') {
+            if ($request->status_kendaraan == 'r') {
                 $updateDo = PenugasanDriver::where('id_do', $request->id_do)->update(['status_penugasan' => 'p']);
             }
             $saveCo = PengecekanKendaraan::create($data);
