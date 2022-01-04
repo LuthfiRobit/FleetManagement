@@ -73,11 +73,12 @@
                                             <!--end::Svg Icon-->
                                         </a>
                                         <a href="{{ route('dashboard.pengecekan.jenis.index','id='.$kP->id_kriteria)}}"
-                                            class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                            class="btn btn-light bnt-active-light-primary btn-sm">
                                             <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                                             <span class=" svg-icon svg-icon-3">
                                                 <i class="bi bi-stack fs-6"></i>
                                             </span>
+                                            Checking Type
                                             <!--end::Svg Icon-->
                                         </a>
                                     </div>
