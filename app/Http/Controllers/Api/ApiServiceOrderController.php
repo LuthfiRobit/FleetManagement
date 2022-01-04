@@ -400,12 +400,15 @@ class ApiServiceOrderController extends Controller
                 'tb_penugasan_driver.id_do',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.status_penugasan',
+                'tb_penugasan_driver.status_pengecekan',
+                'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_kendaraan.id_kendaraan',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
                 'tb_order_kendaraan.id_service_order',
                 'tb_order_kendaraan.tujuan',
             )
+            ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->orderByDesc('id_do')
@@ -428,12 +431,15 @@ class ApiServiceOrderController extends Controller
                 'tb_penugasan_driver.id_do',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.status_penugasan',
+                'tb_penugasan_driver.status_pengecekan',
+                'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_kendaraan.id_kendaraan',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
                 'tb_order_kendaraan.id_service_order',
                 'tb_order_kendaraan.tujuan',
             )
+            ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->orderByDesc('id_do')
