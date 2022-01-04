@@ -21,7 +21,7 @@
                 <div class="card-body py-3">
                     <!--begin:Form-->
                     <form id="kt_modal_new_target_form" class="form"
-                        action="{{ route('dashboard.merk.update',$merkKendaraan->id_merk)}}" method="POST"
+                        action="{{ route('dashboard.kendaraan.merk.update',$merkKendaraan->id_merk)}}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -178,7 +178,7 @@ var KTModalNewTarget = function () {
                     }).then((function (t) {
 
                         t.value ?
-                        (a.reset(), window.location.href = "{{ route('dashboard.merk.index')}}") : "cancel" === t.dismiss && Swal.fire({
+                        (a.reset(), window.location.href = "{{ route('dashboard.kendaraan.merk.index')}}") : "cancel" === t.dismiss && Swal.fire({
                             text: "Formulir Anda belum dibatalkan!.",
                             icon: "error",
                             buttonsStyling: !1,
