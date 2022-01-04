@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard.main');
 });
 
 // Route::get('/kendaraan/jenis', [JenisKendaraanController::class, 'index']);
@@ -51,6 +51,7 @@ Route::name('assign')->prefix('assign')
 Route::name('check')->prefix('check')
     ->group(function () {
         Route::get('/', [PengecekanKendaraanController::class, 'index'])->name('.main');
+        Route::put('change/{id}', [PengecekanKendaraanController::class, 'updateVehicle'])->name('.updateVehicle');
         Route::get('/detail/{id}', [PengecekanKendaraanController::class, 'detail'])->name('.detail');
     });
 Route::name('dashboard.')->prefix('dashboard')
