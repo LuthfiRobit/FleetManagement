@@ -501,12 +501,16 @@ class ApiServiceOrderController extends Controller
             $data = [
                 'id_pengecekan'     => $request->id_pengecekan,
                 'id_do'             => $request->id_do,
+                'id_kendaraan'      => $request->id_kendaraan,
                 'tgl_pengecekan'    => $request->tgl_pengecekan,
                 'jam_pengecekan'    => Carbon::parse($request->jam_pengecekan)->format('H:i:s'),
                 'km_kendaraan'      => $request->km_kendaraan,
                 'status_kendaraan'  => $request->status_kendaraan,
                 'status_pengecekan' => 'c'
             ];
+            if ($request->status_kendaraan = 'r') {
+                $updateDo = PenugasanDriver::where('id_do', $request->id_do)->update(['status_penugasan' => 'p']);
+            }
             $saveCo = PengecekanKendaraan::create($data);
             $kondisi = $request->kondisi;
             foreach ($kondisi as $key => $value) {
