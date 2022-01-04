@@ -149,7 +149,7 @@
                         </div>
                         <!--end::Heading-->
                         <!--begin::Input group-->
-                        <input type="text" class="form-control form-control-solid"
+                        <input type="hidden" class="form-control form-control-solid"
                             placeholder="Masukkan Jenis Pengecekan" name="id_kriteria"
                             value="{{$kriteriaPengecekan->id_kriteria}}" />
                         <div class="d-flex flex-column mb-8 fv-row">
