@@ -144,10 +144,19 @@ class ApiServiceOrderController extends Controller
             ->join('tb_petugas', 'tb_order_kendaraan.id_petugas', '=', 'tb_petugas.id_petugas')
             ->where('tb_order_kendaraan.id_service_order', $id_so)
             ->first();
+        $penumpang = DB::table('tb_detail_so')
+        ->select(
+            'nama_penumpang',
+            'no_tlp'
+        )
+        ->join('tb_order_kendaraan','tb_order_kendaraan.id_service_order','=','tb_detail_so.id_service_order')
+        ->where('tb_detail_so.id_service_order',$detailAccepted->id_service_order)
+        ->get();
         return response()->json(
             [
                 'status'    => 'sukses',
-                'detail'    => $detailAccepted
+                'detail'    => $detailAccepted,
+                'penumpang' => $penumpang
             ]
         );
     }
@@ -395,7 +404,7 @@ class ApiServiceOrderController extends Controller
     public function listCheckTransport(Request $request)
     {
         $id_dr = $request->query('id_dr');
-        $list_kendaraan = DB::table('tb_penugasan_driver')
+        $list_check = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.id_do',
                 'tb_penugasan_driver.tgl_penugasan',
@@ -414,6 +423,41 @@ class ApiServiceOrderController extends Controller
             ->orderByDesc('id_do')
             ->where([['tb_penugasan_driver.id_driver', $id_dr], ['tb_penugasan_driver.status_penugasan', 't']])
             ->get();
+        $list_kendaraan = array();
+        foreach ($list_check as $list) {
+            $list_all = array();
+            $list_all['id_do'] = $list->id_do;
+            $list_all['tgl_penugasan'] = $list->tgl_penugasan;
+            $list_all['status_penugasan'] = $list->status_penugasan;
+            $list_all['status_pengecekan'] = $list->status_pengecekan;
+            $list_all['nama_petugas'] = $list->nama_petugas;
+            $list_all['tujuan'] = $list->tujuan;
+            $list_all['id_service_order'] = $list->id_service_order;
+            $list_all['id_kendaraan'] = $list->id_kendaraan;
+            $list_all['nama_kendaraan'] = $list->nama_kendaraan;
+            $list_all['no_polisi'] = $list->no_polisi;
+            $kendaraan_lama = DB::table('tb_pengecekan_kendaraan')
+                ->select(
+                    'tb_pengecekan_kendaraan.id_do',
+                    'tb_pengecekan_kendaraan.id_kendaraan',
+                    'tb_kendaraan.nama_kendaraan',
+                    'tb_kendaraan.no_polisi',
+                    'tb_penugasan_driver.id_do'
+                )
+                ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+                ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_pengecekan_kendaraan.id_do')
+                ->where('tb_pengecekan_kendaraan.id_do', $list->id_do)
+                ->orderByDesc('tb_pengecekan_kendaraan.id_pengecekan')
+                ->get();
+            $list_all['kendaraan_lama'] = array();
+            foreach ($kendaraan_lama as $old) {
+                $list_old = array();
+                $list_old['nama_kendaraan'] = $old->nama_kendaraan;
+                $list_old['no_polisi'] = $old->no_polisi;
+                array_push($list_all['kendaraan_lama'], $list_old);
+            }
+            array_push($list_kendaraan, $list_all);
+        }
 
         return response()->json(
             [
