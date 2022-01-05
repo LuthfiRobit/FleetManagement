@@ -144,10 +144,19 @@ class ApiServiceOrderController extends Controller
             ->join('tb_petugas', 'tb_order_kendaraan.id_petugas', '=', 'tb_petugas.id_petugas')
             ->where('tb_order_kendaraan.id_service_order', $id_so)
             ->first();
+        $penumpang = DB::table('tb_detail_so')
+        ->select(
+            'nama_penumpang',
+            'no_tlp'
+        )
+        ->join('tb_order_kendaraan','tb_order_kendaraan.id_service_order','=','tb_detail_so.id_service_order')
+        ->where('tb_detail_so.id_service_order',$detailAccepted->id_service_order)
+        ->get();
         return response()->json(
             [
                 'status'    => 'sukses',
-                'detail'    => $detailAccepted
+                'detail'    => $detailAccepted,
+                'penumpang' => $penumpang
             ]
         );
     }
