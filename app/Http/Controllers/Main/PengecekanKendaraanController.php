@@ -116,6 +116,8 @@ class PengecekanKendaraanController extends Controller
             ->join('tb_kriteria_pengecekan', 'tb_kriteria_pengecekan.id_kriteria', '=', 'tb_jenis_pengecekan.id_kriteria')
             ->where('id_pengecekan', $id)
             ->get();
+        $data['dealer'] = DB::table('tb_dealer')
+            ->select('id_dealer', 'nama_dealer', 'status_dealer')->where('status', 'y')->orderByDesc('id_dealer')->get();
         // return $data;
         return view('dashboard.main.checking.detail', $data);
     }
