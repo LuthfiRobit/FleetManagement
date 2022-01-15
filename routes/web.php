@@ -12,6 +12,7 @@ use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\Main\CheckingController;
 use App\Http\Controllers\Main\PengecekanKendaraanController;
 use App\Http\Controllers\Main\PenugasanDriverController;
+use App\Http\Controllers\Main\PerbaikanController;
 use App\Http\Controllers\MerkKendaraanController;
 use App\Http\Controllers\PetugasController;
 use App\Models\Driver;
@@ -53,6 +54,11 @@ Route::name('check')->prefix('check')
         Route::get('/', [PengecekanKendaraanController::class, 'index'])->name('.main');
         Route::put('change/{id}', [PengecekanKendaraanController::class, 'updateVehicle'])->name('.updateVehicle');
         Route::get('/detail/{id}', [PengecekanKendaraanController::class, 'detail'])->name('.detail');
+    });
+Route::name('repair')->prefix('repair')
+    ->group(function () {
+        Route::get('/', [PerbaikanController::class, 'index'])->name('.main');
+        Route::post('/store', [PerbaikanController::class, 'store'])->name('.store');
     });
 Route::name('dashboard.')->prefix('dashboard')
     ->group(function () {
