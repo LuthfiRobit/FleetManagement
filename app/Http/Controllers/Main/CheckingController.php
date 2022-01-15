@@ -80,7 +80,7 @@ class CheckingController extends Controller
         );
 
         $kendaraan =  DB::select(
-            'SELECT tb_kendaraan.nama_kendaraan,tb_kendaraan.id_kendaraan FROM tb_kendaraan
+            'SELECT tb_kendaraan.nama_kendaraan,tb_kendaraan.no_polisi,tb_kendaraan.id_kendaraan FROM tb_kendaraan
             WHERE NOT EXISTS (SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $service->tgl_penjemputan . '")'
         );
         $data = [
