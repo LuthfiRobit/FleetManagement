@@ -120,8 +120,7 @@
                                         </td>
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
-                                                class="btn btn-light bnt-active-light-primary btn-sm"
-                                                onclick="return false;">Detail</a>
+                                                class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach
