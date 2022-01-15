@@ -278,7 +278,8 @@
                                     name="id_kendaraan">
                                     <option value="">Choose Transportation</option>
                                     @foreach ($kendaraan as $kd)
-                                    <option value="{{$kd->id_kendaraan}}">{{$kd->nama_kendaraan}}</option>
+                                    <option value="{{$kd->id_kendaraan}}">{{$kd->nama_kendaraan}} | {{$kd->no_polisi}}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
