@@ -292,7 +292,8 @@
                                         name="status" onclick="statusCheck()" />
                                     <input type="hidden" class="form-control form-control-solid" name="req_status"
                                         id="req_status" value="t" />
-                                    <label class="form-check-label" id="status_name">
+                                    <label class="form-check-label" id="status_name" for="status_name">
+                                        Rejected
                                     </label>
                                 </div>
                             </div>
@@ -386,6 +387,7 @@
     var checkBox = document.getElementById("status");
     var status = document.getElementById("req_status");
     var text = document.getElementById("status_name");
+    var wo = document.getElementById('no_wo');
     var reparation = document.getElementById("id_reparation");
     var component = document.getElementById("id_components");
         if (checkBox.checked == true){
@@ -394,6 +396,7 @@
             reparation.removeAttribute('hidden');
             component.removeAttribute('hidden');
             status.setAttribute('value', 's');
+            wo.setAttribute('value', '{{$latest_wo}}')
             // reparation.setAttribute('hidden', false);
             // component.setAttribute('hidden', false);
             var KTModalCheck = function () {
@@ -507,6 +510,7 @@
             reparation.setAttribute('hidden', true);
             component.setAttribute('hidden', true);
             status.setAttribute('value', 't');
+            wo.removeAttribute('value');
         }
     }
 
@@ -527,13 +531,13 @@
                                     }
                                 }
                             },
-                            no_wo: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Work Order is Required"
-                                    }
-                                }
-                            }
+                            // no_wo: {
+                            //     validators: {
+                            //         notEmpty: {
+                            //             message: "Work Order is Required"
+                            //         }
+                            //     }
+                            // }
                         },
                         plugins: {
                             trigger: new FormValidation.plugins.Trigger,
