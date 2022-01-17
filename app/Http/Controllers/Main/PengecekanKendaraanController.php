@@ -118,6 +118,14 @@ class PengecekanKendaraanController extends Controller
             ->get();
         $data['dealer'] = DB::table('tb_dealer')
             ->select('id_dealer', 'nama_dealer', 'status_dealer')->where('status', 'y')->orderByDesc('id_dealer')->get();
+        $latest_wo = DB::table('tb_persetujuan_perbaikan')
+            ->select('no_wo')->orderByDesc('no_wo')
+            ->first();
+        if ($latest_wo == null) {
+            $data['latest_wo'] = '12346';
+        } else {
+            $data['latest_wo'] = $latest_wo->no_wo + 1;
+        }
         // return $data;
         return view('dashboard.main.checking.detail', $data);
     }
