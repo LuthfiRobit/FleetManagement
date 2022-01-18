@@ -280,11 +280,11 @@ class ApiServiceOrderController extends Controller
                 'kronologi' => $request->kronologi
             ];
             $saveAcd = Kecelakaan::create($data);
-            $foto = [$request->file('foto_kecelakaan')];
-            foreach ($foto as $key => $value) {
-                foreach ($request->foto_kecelakaan as $key => $foto) {
-                    $name = 'accident_' . uniqid() . '.' . $foto->getClientOriginalExtension();
-                    $foto->move('assets/img_accident', $name);
+            $file = [$request->file('file')];
+            foreach ($file as $key => $value) {
+                foreach ($request->file as $key => $file) {
+                    $name = 'accident_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->move('assets/img_accident', $name);
                     $detailFoto = [
                         'id_kecelakaan' => $saveAcd->id_kecelakaan,
                         'foto_pendukung' => $name,
