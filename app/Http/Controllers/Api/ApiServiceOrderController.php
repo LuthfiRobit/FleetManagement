@@ -123,6 +123,31 @@ class ApiServiceOrderController extends Controller
         );
     }
 
+    public function cancelDo(Request $request)
+    {
+        $id_petugas = $request->id_petugas;
+        $id_so = $request->id_so;
+        $cancelSo = ServiceOrder::where([['id_service_order', $id_so], ['id_petugas', $id_petugas]])->first();
+        if ($cancelSo == true) {
+            $cancelSo->update(['status_so' => 'c']);
+            $findDo = PenugasanDriver::where('id_service_order', $id_so)->first();
+            $cancelDo = $findDo->update(['status_penugasan' => 'c']);
+            return response()->json(
+                [
+                    'status'        => 'sukses',
+                    'status_so' => $cancelSo->status_so,
+                    'status_penugasan' => $findDo->status_penugasan
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal'
+                ]
+            );
+        }
+    }
+
     public function getDoDetail(Request $request)
     {
         $id_so = $id = $request->query('id_so');
