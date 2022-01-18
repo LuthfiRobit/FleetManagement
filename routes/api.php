@@ -44,8 +44,13 @@ Route::group(
         Route::post('create', [ApiServiceOrderController::class, 'createSo']);
         Route::get('latest', [ApiServiceOrderController::class, 'getLastIdDo']);
         Route::get('list', [ApiServiceOrderController::class, 'getDo']);
+        Route::post('cancel', [ApiServiceOrderController::class, 'cancelDo']);
         Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']);
         Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
+        Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
+        Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStore']);
+        Route::get('checking', [ApiServiceOrderController::class, 'checkinReport']);
+        Route::post('checking/store', [ApiServiceOrderController::class, 'checkingReportStore']);
     }
 );
 
