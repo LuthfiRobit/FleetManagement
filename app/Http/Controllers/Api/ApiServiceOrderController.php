@@ -282,12 +282,13 @@ class ApiServiceOrderController extends Controller
             $saveAcd = Kecelakaan::create($data);
             $foto = [$request->file('foto_kecelakaan')];
             foreach ($foto as $key => $value) {
-                foreach ($request->foto_kecelakaan as $foto) {
+                foreach ($request->foto_kecelakaan as $key => $foto) {
                     $name = 'accident_' . uniqid() . '.' . $foto->getClientOriginalExtension();
                     $foto->move('assets/img_accident', $name);
                     $detailFoto = [
                         'id_kecelakaan' => $saveAcd->id_kecelakaan,
-                        'foto_pendukung' => $name
+                        'foto_pendukung' => $name,
+                        'keterangan' => $request->keterangan[$key]
                     ];
                     $saveDetailfoto = DB::table('tb_detail_foto_kecelakaan')->insert($detailFoto);
                 }
