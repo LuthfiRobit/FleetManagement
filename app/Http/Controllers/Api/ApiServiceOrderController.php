@@ -274,8 +274,8 @@ class ApiServiceOrderController extends Controller
             //code...
             $data = [
                 'id_do' => $request->id_do,
-                'tgl_kecelakaan' => $request->tgl_kecelakaan,
-                'jam_kecelakaan' => $request->jam_kecelakaan,
+                'tgl_kecelakaan' => Carbon::parse($request->tgl_kecelakaan)->format('Y-m-d'),
+                'jam_kecelakaan' => Carbon::parse($request->jam_kecelakaan)->format('H:i:s'),
                 'lokasi_kejadian' => $request->lokasi_kejadian,
                 'kronologi' => $request->kronologi
             ];
