@@ -374,6 +374,9 @@ class ApiServiceOrderController extends Controller
             ->when($tab == 's', function ($status) use ($tab) {
                 $status->where('status_penugasan', 's');
             })
+            ->when($tab == 'c', function ($status) use ($tab) {
+                $status->where('status_penugasan', 'c');
+            })
             ->where([['tb_penugasan_driver.id_driver', $id_dr], ['status_penugasan', '!=', null]])
             ->get();
 
