@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kecelakaan;
+use App\Models\KecelakaanFoto;
 use App\Models\KriteriaPengecekan;
 use App\Models\PengecekanKendaraan;
 use App\Models\PenugasanDriver;
