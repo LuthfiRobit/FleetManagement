@@ -224,11 +224,13 @@ class ApiServiceOrderController extends Controller
 
     public function accidentReport(Request $request)
     {
-        $id = $request->query('id');
-        $kendaraan = DB::table('tb_penugasan_driver')
+        $id_petugas = $request->query('id_petugas');
+        $id_do = $request->query('id_do');
+        $detail_report = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.id_do',
                 'tb_penugasan_driver.id_petugas',
+                'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.status_penugasan',
                 'tb_driver.id_driver',
@@ -240,11 +242,28 @@ class ApiServiceOrderController extends Controller
                 'tb_order_kendaraan.tujuan',
             )
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->orderByDesc('id_do')
-            ->where('tb_penugasan_driver.id_petugas', $id)
+            ->where([['tb_penugasan_driver.id_petugas', $id_petugas], ['tb_penugasan_driver.id_do', $id_do]])
             ->first();
+        if ($detail_report != null) {
+            return response()->json(
+                [
+                    'status'        => 'sukses',
+                    'cek_kendaraan' => $detail_report
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal',
+                    'cek_kendaraan' => 'kosong'
+                ]
+            );
+        }
+    }
     }
 
     //driver
