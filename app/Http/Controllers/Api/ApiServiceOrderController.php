@@ -110,6 +110,9 @@ class ApiServiceOrderController extends Controller
             ->when($tab == 'tl', function ($status) use ($tab) {
                 $status->where('status_so', 'tl');
             })
+            ->when($tab == 'c', function ($status) use ($tab) {
+                $status->where('status_so', 'c');
+            })
             ->get();
 
         return response()->json(
