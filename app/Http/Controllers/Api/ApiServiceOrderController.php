@@ -379,7 +379,52 @@ class ApiServiceOrderController extends Controller
         }
     }
 
-    public function accidentReportStore(Request $request)
+    public function accidentReportOld(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            //code...
+            $data = [
+                'id_do' => $request->id_do,
+                'tgl_kecelakaan' => Carbon::parse($request->tgl_kecelakaan)->format('Y-m-d'),
+                'jam_kecelakaan' => Carbon::parse($request->jam_kecelakaan)->format('H:i:s'),
+                'lokasi_kejadian' => $request->lokasi_kejadian,
+                'kronologi' => $request->kronologi
+            ];
+            $saveAcd = Kecelakaan::create($data);
+            $file = [$request->file('file')];
+            foreach ($file as $key => $value) {
+                foreach ($request->file as $key => $file) {
+                    $name = 'accident_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->move('assets/img_accident', $name);
+                    $detailFoto = [
+                        'id_kecelakaan' => $saveAcd->id_kecelakaan,
+                        'foto_pendukung' => $name,
+                        'keterangan' => $request->keterangan[$key]
+                    ];
+                    $saveDetailfoto = DB::table('tb_detail_foto_kecelakaan')->insert($detailFoto);
+                }
+            }
+            DB::commit();
+            return response()->json(
+                [
+                    'pesan'         => 'sukses',
+                    'id_kecelakaan' => $saveAcd->id_kecelakaan
+                ]
+            );
+        } catch (\Exception $exception) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json(
+                [
+                    'pesan' => 'gagal',
+                    'errors' => $exception
+                ]
+            );
+        }
+    }
+
+    public function accidentReportStoreNew(Request $request)
     {
         DB::beginTransaction();
         try {
