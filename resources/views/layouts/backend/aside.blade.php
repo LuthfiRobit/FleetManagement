@@ -101,7 +101,19 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Transportation Check</span>
+                        <span class="menu-title">Vehicle Check</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link" href="{{ route('accident.main') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Accident Report</span>
                     </a>
                 </div>
                 <div class="menu-item">
