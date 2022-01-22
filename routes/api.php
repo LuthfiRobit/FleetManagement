@@ -52,7 +52,8 @@ Route::group(
         Route::post('report/foto/update', [ApiServiceOrderController::class, 'accidentPictureUpdate']);
         Route::post('report/foto/delete', [ApiServiceOrderController::class, 'accidentPictureDelete']);
         Route::post('report/foto/cancel', [ApiServiceOrderController::class, 'accidentCancel']);
-        Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStore']);
+        Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStoreOld']);
+        Route::post('report/store/new', [ApiServiceOrderController::class, 'accidentReportStoreNew']);
         Route::get('checking', [ApiServiceOrderController::class, 'checkinReport']);
         Route::post('checking/store', [ApiServiceOrderController::class, 'checkingReportStore']);
     }
