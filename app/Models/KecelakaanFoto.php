@@ -15,7 +15,8 @@ class KecelakaanFoto extends Model
     protected $fillable = [
         'id_detail_foto',
         'id_kecelakaan',
-        'foto_pendukung'
+        'foto_pendukung',
+        'keterangan'
     ];
 
     public function kecelakaan()

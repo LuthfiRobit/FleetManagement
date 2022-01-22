@@ -48,6 +48,10 @@ Route::group(
         Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']);
         Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
         Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
+        Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
+        Route::post('report/foto/update', [ApiServiceOrderController::class, 'accidentPictureUpdate']);
+        Route::post('report/foto/delete', [ApiServiceOrderController::class, 'accidentPictureDelete']);
+        Route::post('report/foto/cancel', [ApiServiceOrderController::class, 'accidentCancel']);
         Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStore']);
         Route::get('checking', [ApiServiceOrderController::class, 'checkinReport']);
         Route::post('checking/store', [ApiServiceOrderController::class, 'checkingReportStore']);

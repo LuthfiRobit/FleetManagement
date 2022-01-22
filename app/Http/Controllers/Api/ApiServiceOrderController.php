@@ -12,6 +12,7 @@ use App\Models\ServiceOrder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ApiServiceOrderController extends Controller
 {
@@ -267,6 +268,117 @@ class ApiServiceOrderController extends Controller
         }
     }
 
+    public function accidentPictureStore(Request $request)
+    {
+        $foto_pendukung = $request->file('foto');
+        if ($foto_pendukung != null) {
+            $name = 'accident_' . uniqid() . '.' . $foto_pendukung->getClientOriginalExtension();
+            $data = [
+                'foto_pendukung' => $name,
+                'keterangan' => $request->keterangan
+            ];
+            $simpan = KecelakaanFoto::create($data);
+            if ($simpan) {
+                $folder_accident = 'assets/img_accident';
+                $foto_pendukung->move($folder_accident, $name);
+                return response()->json(
+                    [
+                        'status'         => 'sukses',
+                        'id_foto'       => $simpan->id_detail_foto
+                    ]
+                );
+            }
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal'
+                ]
+            );
+        }
+    }
+
+    public function accidentPictureUpdate(Request $request)
+    {
+        $id_foto = $request->id_foto;
+        $find = KecelakaanFoto::where('id_detail_foto', $id_foto)->first();
+        if (!is_null($find->foto_pendukung)) {
+            File::delete('assets/img_accident/' . $find->foto_pendukung);
+        }
+        $foto_pendukung = $request->file('foto');
+        $name = 'accident_' . uniqid() . '.' . $foto_pendukung->getClientOriginalExtension();
+
+        $data = [
+            'foto_pendukung' => $name
+        ];
+        $update = $find->update($data);
+        if ($update) {
+            $folder_accident = 'assets/img_accident';
+            $foto_pendukung->move($folder_accident, $name);
+            return response()->json(
+                [
+                    'status'         => 'sukses',
+                    'id_foto'       => $find->id_detail_foto
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal'
+                ]
+            );
+        }
+    }
+
+    public function accidentPictureDelete(Request $request)
+    {
+        $id_foto = $request->id_foto;
+        $find = KecelakaanFoto::where('id_detail_foto', $id_foto)->first();
+        if ($find) {
+            if (!is_null($find->foto_pendukung)) {
+                File::delete('assets/img_accident/' . $find->foto_pendukung);
+            }
+            $find->delete();
+            return response()->json(
+                [
+                    'status'         => 'sukses',
+                    'pesan'       => 'data terhapus'
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal',
+                    'pesan'          => 'data tidak ada'
+                ]
+            );
+        }
+    }
+
+    public function accidentCancel(Request $request)
+    {
+        $find = KecelakaanFoto::where('id_kecelakaan', null)->get();
+
+        if ($find->count() > 0) {
+            $find->each(function ($file, $key) {
+                File::delete('assets/img_accident/' . $file->foto_pendukung);
+                $file->delete();
+            });
+            return response()->json(
+                [
+                    'status'         => 'sukses',
+                    'pesan'       => 'data terhapus'
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal',
+                    'pesan'       => 'data tidak ada'
+                ]
+            );
+        }
+    }
+
     public function accidentReportStore(Request $request)
     {
         DB::beginTransaction();
@@ -280,23 +392,38 @@ class ApiServiceOrderController extends Controller
                 'kronologi' => $request->kronologi
             ];
             $saveAcd = Kecelakaan::create($data);
-            $file = [$request->file('file')];
-            foreach ($file as $key => $value) {
-                foreach ($request->file as $key => $file) {
-                    $name = 'accident_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                    $file->move('assets/img_accident', $name);
-                    $detailFoto = [
-                        'id_kecelakaan' => $saveAcd->id_kecelakaan,
-                        'foto_pendukung' => $name,
-                        'keterangan' => $request->keterangan[$key]
-                    ];
-                    $saveDetailfoto = DB::table('tb_detail_foto_kecelakaan')->insert($detailFoto);
+            if ($saveAcd) {
+                $findfoto = KecelakaanFoto::where('id_kecelakaan', null)->get();
+                if ($findfoto->count() > 0) {
+                    $findfoto->each(function ($file, $key) use ($saveAcd) {
+                        $file->update(array('id_kecelakaan' => $saveAcd->id_kecelakaan));
+                    });
+                } else {
+                    return response()->json(
+                        [
+                            'status'         => 'gagal',
+                            'pesan' => 'input minimal 1 foto'
+                        ]
+                    );
                 }
             }
+            //     $file = [$request->file('file')];
+            //     foreach ($file as $key => $value) {
+            //         foreach ($request->file as $key => $file) {
+            //             $name = 'accident_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            //             $file->move('assets/img_accident', $name);
+            //             $detailFoto = [
+            //                 'id_kecelakaan' => $saveAcd->id_kecelakaan,
+            //                 'foto_pendukung' => $name,
+            //                 'keterangan' => $request->keterangan[$key]
+            //             ];
+            //             $saveDetailfoto = DB::table('tb_detail_foto_kecelakaan')->insert($detailFoto);
+            //         }
+            //     }
             DB::commit();
             return response()->json(
                 [
-                    'pesan'         => 'sukses',
+                    'status'         => 'sukses',
                     'id_kecelakaan' => $saveAcd->id_kecelakaan
                 ]
             );
@@ -305,7 +432,7 @@ class ApiServiceOrderController extends Controller
             DB::rollBack();
             return response()->json(
                 [
-                    'pesan' => 'gagal',
+                    'status' => 'gagal',
                     'errors' => $exception
                 ]
             );
