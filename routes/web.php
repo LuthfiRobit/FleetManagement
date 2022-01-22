@@ -10,6 +10,7 @@ use App\Http\Controllers\JenisPengecekanController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\Main\CheckingController;
+use App\Http\Controllers\Main\KecelakaanController;
 use App\Http\Controllers\Main\PengecekanKendaraanController;
 use App\Http\Controllers\Main\PenugasanDriverController;
 use App\Http\Controllers\Main\PerbaikanController;
@@ -59,6 +60,11 @@ Route::name('repair')->prefix('repair')
     ->group(function () {
         Route::get('/', [PerbaikanController::class, 'index'])->name('.main');
         Route::post('/store', [PerbaikanController::class, 'store'])->name('.store');
+    });
+Route::name('accident')->prefix('accident')
+    ->group(function () {
+        Route::get('/', [KecelakaanController::class, 'index'])->name('.main');
+        Route::get('detail/{id}', [KecelakaanController::class, 'detail'])->name('.detail');
     });
 Route::name('dashboard.')->prefix('dashboard')
     ->group(function () {
