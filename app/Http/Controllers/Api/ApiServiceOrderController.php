@@ -379,7 +379,7 @@ class ApiServiceOrderController extends Controller
         }
     }
 
-    public function accidentReportOld(Request $request)
+    public function accidentReportStoreOld(Request $request)
     {
         DB::beginTransaction();
         try {
