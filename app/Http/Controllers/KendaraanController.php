@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Kendaraan;
 use App\Http\Requests\StoreKendaraanRequest;
 use App\Http\Requests\UpdateKendaraanRequest;
+use App\Models\AlokasiKendaraan;
 use App\Models\BahanBakar;
+use App\Models\JenisAlokasi;
 use App\Models\JenisKendaraan;
+use App\Models\JenisSim;
 use App\Models\MerkKendaraan;
 use Illuminate\Support\Facades\DB;
 
@@ -46,6 +49,8 @@ class KendaraanController extends Controller
     public function create()
     {
         $data['jenisKendaraan'] = JenisKendaraan::where('status', 'y')->get();
+        $data['jenisAlokasi'] = JenisAlokasi::where('status', 'y')->get();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
         $data['merkKendaraan'] = MerkKendaraan::where('status', 'y')->get();
         $data['bahanBakar'] = BahanBakar::where('status', 'y')->get();
         // return $data;
@@ -60,12 +65,23 @@ class KendaraanController extends Controller
      */
     public function store(StoreKendaraanRequest $request)
     {
-        $data = $request->except(['_token']);
+        $data = $request->except(['_token', 'id_jenis_alokasi']);
         $simpan = Kendaraan::create($data);
         if ($simpan) {
-            return redirect()->route('dashboard.kendaraan.main.index');
+            $dataAlokasi = [
+                'id_jenis_alokasi' => $request->id_jenis_alokasi,
+                'id_kendaraan' => $simpan->id_kendaraan
+            ];
+            $simpanAlokasi = AlokasiKendaraan::create($dataAlokasi);
+            if ($simpanAlokasi) {
+                return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Berhasi Disimpan');
+            } else {
+                return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Gagal Disimpan');
+            }
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Berhasi Disimpan');
         } else {
-            return $data;
+            // return $data;
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Gagal Disimpan');
         }
     }
 
@@ -89,13 +105,43 @@ class KendaraanController extends Controller
     public function edit($id)
     {
         $data['jenisKendaraan'] = JenisKendaraan::where('status', 'y')->get();
+        $data['jenisAlokasi'] = JenisAlokasi::where('status', 'y')->get();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
         $data['merkKendaraan'] = MerkKendaraan::where('status', 'y')->get();
         $data['bahanBakar'] = BahanBakar::where('status', 'y')->get();
-        $data['kendaraan'] = Kendaraan::where('id_kendaraan', $id)->first();
+        // $data['kendaraan'] = Kendaraan::where('id_kendaraan', $id)
+        //     ->with('alokasiKendaraan')->first();
+        $data['kendaraan'] = DB::table('tb_kendaraan')
+            ->select(
+                'tb_kendaraan.id_kendaraan',
+                'tb_kendaraan.id_jenis_kendaraan',
+                'tb_kendaraan.id_merk',
+                'tb_alokasi_kendaraan.id_jenis_alokasi',
+                'tb_kendaraan.no_polisi',
+                'tb_kendaraan.id_bahan_bakar',
+                'tb_kendaraan.id_jenis_sim',
+                'tb_kendaraan.kode_asset',
+                'tb_kendaraan.no_polisi',
+                'tb_kendaraan.nomor_rangka',
+                'tb_kendaraan.nomor_mesin',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.warna',
+                'tb_kendaraan.tanggal_pembelian',
+                'tb_kendaraan.harga',
+                'tb_kendaraan.jenis_penggerak',
+                'tb_kendaraan.tahun_kendaraan',
+                'tb_kendaraan.pemilik',
+                'tb_kendaraan.status'
+            )
+            ->leftJoin('tb_alokasi_kendaraan', 'tb_alokasi_kendaraan.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
+            ->where('tb_kendaraan.id_kendaraan', '=', $id)
+            ->first();
         if ($data['kendaraan']) {
+            // return $data['kendaraan'];
             return view('dashboard.pages.kendaraan.edit', $data);
         } else {
-            return $id;
+            // return $id;
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Tidak Ditemukan');
         }
     }
 
@@ -108,12 +154,26 @@ class KendaraanController extends Controller
      */
     public function update(UpdateKendaraanRequest $request, Kendaraan $kendaraan, $id)
     {
-        $data = $request->except(['_token', '_method']);
-        $update = Kendaraan::where('id_kendaraan', $id)->update($data);
-        if ($update) {
-            return redirect()->route('dashboard.kendaraan.main.index');
-        } else {
-            return $data;
+        try {
+            $data = $request->except(['_token', '_method', 'id_jenis_alokasi']);
+            $update = Kendaraan::where('id_kendaraan', $id)->update($data);
+            $findAlokasi = AlokasiKendaraan::where('id_kendaraan', $id)->first();
+            if ($findAlokasi) {
+                $findAlokasi->update(['id_jenis_alokasi' => $request->id_jenis_alokasi]);
+            } else {
+                $dataAlokasi = [
+                    'id_jenis_alokasi' => $request->id_jenis_alokasi,
+                    'id_kendaraan' => $id
+                ];
+                AlokasiKendaraan::create($dataAlokasi);
+            }
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Berhasil Diganti');
+        } catch (\Illuminate\Database\QueryException $exception) {
+            // You can check get the details of the error using `errorInfo`:
+            $errorInfo = $exception->errorInfo;
+            // return $errorInfo;
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Gagal Diganti. Error(' . $errorInfo . ')');
+            // Return the response to the client..
         }
     }
 

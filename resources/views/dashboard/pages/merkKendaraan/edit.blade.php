@@ -43,7 +43,7 @@
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                 <span class="required">Nama Merk Kendaraan</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Specify a target name for future usage and reference"></i>
+                                    title="Sesuaikan dengan data dinas perhubungan"></i>
                             </label>
                             <!--end::Label-->
                             <input type="text" class="form-control form-control-solid" placeholder="Enter Target Title"
@@ -52,14 +52,14 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             {{-- <div class="col-md-6 fv-row"> --}}
-                                <label class="required fs-6 fw-bold mb-2">Status (Terlihat/Tersembunyi)</label>
+                                <label class="required fs-6 fw-bold mb-2">Status (Aktif/Non Aktif)</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="true" data-placeholder="Pilih Status" name="status">
                                     <option value="">Pilih Status</option>
                                     <option value="y" {{$merkKendaraan->status == 'y' ? 'selected' : ''}}>
-                                        Terlihat</option>
+                                        Aktif</option>
                                     <option value="t" {{$merkKendaraan->status == 't' ? 'selected' : ''}}>
-                                        Tersembunyi</option>
+                                        Non Aktif</option>
                                 </select>
                                 {{--
                             </div> --}}

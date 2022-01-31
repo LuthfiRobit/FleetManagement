@@ -61,7 +61,7 @@
                         <!--begin::Input group-->
 
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Kode Asset</span>
                                 </label>
@@ -70,7 +70,7 @@
                                     placeholder="Masukkan Kode Asset" name="kode_asset"
                                     value="{{$kendaraan->kode_asset}}" />
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Nama Kendaraan</span>
                                 </label>
@@ -78,6 +78,17 @@
                                 <input type="text" class="form-control form-control-solid"
                                     placeholder="Masukkan Nama Kendaraan" name="nama_kendaraan"
                                     value="{{$kendaraan->nama_kendaraan}}" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Pemilik</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Pemilik" id="pemilik"
+                                    name="pemilik">
+                                    <option value="">Pilih Pemilik</option>
+                                    <option value="p" {{$kendaraan->pemilik == 'p' ? 'selected' : ''}}>Perusahaan
+                                    </option>
+                                    <option value="u" {{$kendaraan->pemilik == 'u' ? 'selected' : ''}}>User</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
@@ -125,6 +136,34 @@
                                 </select>
                             </div>
                             <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Alokasi</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Alokasi" id="id_jenis_alokasi"
+                                    name="id_jenis_alokasi">
+                                    <option value="">Pilih Alokasi</option>
+                                    @foreach ($jenisAlokasi as $ja)
+                                    <option value="{{$ja->id_jenis_alokasi}}" {{$kendaraan->id_jenis_alokasi ==
+                                        $ja->id_jenis_alokasi ? 'selected' : ''}}>{{$ja->nama_alokasi}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Jenis SIM</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Jenis SIM" id="id_jenis_sim"
+                                    name="id_jenis_sim">
+                                    <option value="">Pilih Jenis SIM</option>
+                                    @foreach ($jenisSim as $js)
+                                    <option value="{{$js->id_jenis_sim}}" {{$kendaraan->id_jenis_sim ==
+                                        $js->id_jenis_sim ? 'selected' : ''}}>{{$js->nama_sim}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex mb-8 row">
+                            <div class="col-lg-6">
                                 <label class="required fs-6 fw-bold mb-2">Merk</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Merk" id="id_merk" name="id_merk">
@@ -135,7 +174,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="required fs-6 fw-bold mb-2">Bahan Bakar</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Bahan Bakar" id="id_bahan_bakar"
@@ -149,7 +188,7 @@
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Warna</span>
                                 </label>
@@ -157,7 +196,7 @@
                                 <input type="text" class="form-control form-control-solid" placeholder="Masukkan Warna"
                                     name="warna" value="{{$kendaraan->warna}}" />
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Jenis Penggerak</span>
                                 </label>
@@ -166,9 +205,7 @@
                                     placeholder="Masukkan Jenis Penggerak" name="jenis_penggerak"
                                     value="{{$kendaraan->jenis_penggerak}}" />
                             </div>
-                        </div>
-                        <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Tanggal Beli</span>
                                 </label>
@@ -177,13 +214,34 @@
                                     placeholder="Masukkan Tanggal Pembelian" name="tanggal_pembelian"
                                     value="{{$kendaraan->tanggal_pembelian}}" />
                             </div>
-                            <div class="col-lg-6">
+                        </div>
+                        <div class="form-group d-flex mb-8 row">
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Kahun Kendaraan</span>
+                                </label>
+                                <!--end::Label-->
+                                <input type="text" class="form-control form-control-solid"
+                                    placeholder="Masukkan Tahun Kendaraan" name="tahun_kendaraan"
+                                    value="{{$kendaraan->tahun_kendaraan}}" />
+                            </div>
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Harga</span>
                                 </label>
                                 <!--end::Label-->
                                 <input type="number" class="form-control form-control-solid"
                                     placeholder="Masukkan Harga Beli" name="harga" value="{{$kendaraan->harga}}" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Status</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Status" id="status" name="status">
+                                    <option value="">Pilih Status</option>
+                                    <option value="y" {{$kendaraan->status == 'y' ? 'selected' : ''}}>Tesedia</option>
+                                    <option value="t" {{$kendaraan->status == 't' ? 'selected' : ''}}>Tidak Tersedia
+                                    </option>
+                                </select>
                             </div>
                         </div>
 
@@ -218,239 +276,274 @@
 </script> --}}
 <script text="text/javascript">
     "use strict";
-var KTModalNewTarget = function () {
-    var t, e, n, a, i;
-    return {
-        init: function () {
-            (
-                a = document.querySelector("#kt_modal_new_target_form"),
-                t = document.getElementById("kt_modal_new_target_submit"),
-                e = document.getElementById("kt_modal_new_target_cancel")
-                // $(a.querySelector('[name="kode_asset"]')).on("change", (function () {
-                //     n.revalidateField("kode_asset")
-                // })),
-                // $(a.querySelector('[name="nama_kendaraan"]')).on("change", (function () {
-                //     n.revalidateField("nama_kendaraan")
-                // })),
-                // $(a.querySelector('[name="no_badge"]')).on("change", (function () {
-                //     n.revalidateField("no_badge")
-                // })),
-                // $(a.querySelector('[name="no_polisi"]')).on("change", (function () {
-                //     n.revalidateField("no_polisi")
-                // })),
-                // $(a.querySelector('[name="nomor_rangka"]')).on("change", (function () {
-                //     n.revalidateField("nomor_rangka")
-                // })),
-                // $(a.querySelector('[name="nomor_mesin"]')).on("change", (function () {
-                //     n.revalidateField("nomor_mesin")
-                // })),
-                // $(a.querySelector('[name="warna"]')).on("change", (function () {
-                //     n.revalidateField("warna")
-                // })),
-                // $(a.querySelector('[name="jenis_penggerak"]')).on("change", (function () {
-                //     n.revalidateField("jenis_penggerak")
-                // })),
-                // $(a.querySelector('[name="tanggal_pembelian"]')).on("change", (function () {
-                //     n.revalidateField("tanggal_pembelian")
-                // })),
-                // $(a.querySelector('[name="harga"]')).on("change", (function () {
-                //     n.revalidateField("harga")
-                // }))
-                , n = FormValidation.formValidation(a, {
-                    fields: {
-                        kode_asset: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Kode Asset Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 20,
-                                    message: "Kode Asset Maksimal 20 Karakter"
+    var KTModalNewTarget = function() {
+        var t, e, n, a, i;
+        return {
+            init: function() {
+                (
+                    a = document.querySelector("#kt_modal_new_target_form"),
+                    t = document.getElementById("kt_modal_new_target_submit"),
+                    e = document.getElementById("kt_modal_new_target_cancel")
+                    // $(a.querySelector('[name="kode_asset"]')).on("change", (function () {
+                    //     n.revalidateField("kode_asset")
+                    // })),
+                    // $(a.querySelector('[name="nama_kendaraan"]')).on("change", (function () {
+                    //     n.revalidateField("nama_kendaraan")
+                    // })),
+                    // $(a.querySelector('[name="no_badge"]')).on("change", (function () {
+                    //     n.revalidateField("no_badge")
+                    // })),
+                    // $(a.querySelector('[name="no_polisi"]')).on("change", (function () {
+                    //     n.revalidateField("no_polisi")
+                    // })),
+                    // $(a.querySelector('[name="nomor_rangka"]')).on("change", (function () {
+                    //     n.revalidateField("nomor_rangka")
+                    // })),
+                    // $(a.querySelector('[name="nomor_mesin"]')).on("change", (function () {
+                    //     n.revalidateField("nomor_mesin")
+                    // })),
+                    // $(a.querySelector('[name="warna"]')).on("change", (function () {
+                    //     n.revalidateField("warna")
+                    // })),
+                    // $(a.querySelector('[name="jenis_penggerak"]')).on("change", (function () {
+                    //     n.revalidateField("jenis_penggerak")
+                    // })),
+                    // $(a.querySelector('[name="tanggal_pembelian"]')).on("change", (function () {
+                    //     n.revalidateField("tanggal_pembelian")
+                    // })),
+                    // $(a.querySelector('[name="harga"]')).on("change", (function () {
+                    //     n.revalidateField("harga")
+                    // }))
+                    , n = FormValidation.formValidation(a, {
+                        fields: {
+                            kode_asset: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Kode Asset Harus Diisi"
+                                    },
+                                    stringLength: {
+                                        // options: {
+                                        max: 20,
+                                        message: "Kode Asset Maksimal 20 Karakter"
+                                        // }
+                                    }
+                                }
+                            },
+                            nama_kendaraan: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Nama Kendaraan Harus Diisi"
+                                    },
+                                    stringLength: {
+                                        // options: {
+                                        max: 20,
+                                        message: "Nama Kendaraan Maksimal 20 Karakter"
+                                        // }
+                                    }
+                                }
+                            },
+                            pemilik: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Pemilik Harus Diisi"
+                                    }
+                                }
+                            },
+                            no_polisi: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "No. Polisi Harus Diisi"
+                                    },
+                                    stringLength: {
+                                        // options: {
+                                        max: 11,
+                                        message: "No. Polisi Maksimal 11 Karakter"
+                                        // }
+                                    }
+                                }
+                            },
+                            nomor_rangka: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "No. Rangka Harus Diisi"
+                                    },
+                                    stringLength: {
+                                        // options: {
+                                        max: 45,
+                                        message: "No. Rangka Maksimal 45 Karakter"
+                                        // }
+                                    }
+                                }
+                            },
+                            nomor_mesin: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "No. Mesin Harus Diisi"
+                                    },
+                                    stringLength: {
+                                        // options: {
+                                        max: 45,
+                                        message: "No. Mesin Maksimal 45 Karakter"
+                                        // }
+                                    }
+                                }
+                            },
+                            warna: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Warna Harus Diisi"
+                                    },
+                                    stringLength: {
+                                        // options: {
+                                        max: 20,
+                                        message: "Warna Maksimal 20 Karakter"
+                                        // }
+                                    }
+                                }
+                            },
+                            jenis_penggerak: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Jenis Penggerak Harus Diisi"
+                                    },
+                                    // stringLength: {
+                                    //     // options: {
+                                    //     min: 8,
+                                    //     message: "Jenis Penggerak Minimal 8 Karakter"
+                                    //     // }
                                     // }
                                 }
-                            }
-                        },
-                        nama_kendaraan: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Nama Kendaraan Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 20,
-                                    message: "Nama Kendaraan Maksimal 20 Karakter"
-                                    // }
+                            },
+                            tanggal_pembelian: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Tanggal Pembelian Harus Diisi"
+                                    }
+                                }
+                            },
+                            tahun_kendaraan: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Tahun Kendaraan Harus Diisi"
+                                    }
+                                }
+                            },
+                            harga: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Harga Harus Diisi"
+                                    }
+                                }
+                            },
+                            status: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Status Harus Diisi"
+                                    }
+                                }
+                            },
+                            id_jenis_kendaraan: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Jenis Kendaraan Harus Diisi"
+                                    }
+                                }
+                            },
+                            id_jenis_alokasi: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Alokasi Kendaraan Harus Diisi"
+                                    }
+                                }
+                            },
+                            id_jenis_sim: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Jenis SIM Kendaraan Harus Diisi"
+                                    }
+                                }
+                            },
+                            id_merk: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Merk Kendaraan Harus Diisi"
+                                    }
+                                }
+                            },
+                            id_bahan_bakar: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Bahan Bakar Harus Diisi"
+                                    }
                                 }
                             }
                         },
-                        no_polisi: {
-                            validators: {
-                                notEmpty: {
-                                    message: "No. Polisi Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 11,
-                                    message: "No. Polisi Maksimal 11 Karakter"
-                                    // }
-                                }
-                            }
-                        },
-                        nomor_rangka: {
-                            validators: {
-                                notEmpty: {
-                                    message: "No. Rangka Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 45,
-                                    message: "No. Rangka Maksimal 45 Karakter"
-                                    // }
-                                }
-                            }
-                        },
-                        nomor_mesin: {
-                            validators: {
-                                notEmpty: {
-                                    message: "No. Mesin Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 45,
-                                    message: "No. Mesin Maksimal 45 Karakter"
-                                    // }
-                                }
-                            }
-                        },
-                        warna: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Warna Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 20,
-                                    message: "Warna Maksimal 20 Karakter"
-                                    // }
-                                }
-                            }
-                        },
-                        jenis_penggerak: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Jenis Penggerak Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    min: 8,
-                                    message: "Jenis Penggerak Minimal 8 Karakter"
-                                    // }
-                                }
-                            }
-                        },
-                        tanggal_pembelian: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Tanggal Pembelian Harus Diisi"
-                                }
-                            }
-                        },
-                        harga: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Harga Harus Diisi"
-                                }
-                            }
-                        },
-                        id_jenis_kendaraan: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Jenis Kendaraan Harus Diisi"
-                                }
-                            }
-                        },
-                        id_merk: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Merk Kendaraan Harus Diisi"
-                                }
-                            }
-                        },
-                        id_bahan_bakar: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Bahan Bakar Harus Diisi"
-                                }
-                            }
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger,
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: ".row",
+                                // eleInvalidClass: "",
+                                // eleValidClass: ""
+                            })
                         }
-                    },
-                    plugins: {
-                        trigger: new FormValidation.plugins.Trigger,
-                        bootstrap: new FormValidation.plugins.Bootstrap5({
-                            rowSelector: ".row",
-                            // eleInvalidClass: "",
-                            // eleValidClass: ""
-                        })
-                    }
-                }),
-                t.addEventListener("click", (function (e) {
-                    e.preventDefault(), n && n.validate().then((function (e) {
-                        console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
-                            t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
-                                text: "Formulir telah berhasil dikirim!",
-                                icon: "success",
+                    }),
+                    t.addEventListener("click", (function(e) {
+                        e.preventDefault(), n && n.validate().then((function(e) {
+                            console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function() {
+                                t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
+                                    text: "Formulir telah berhasil dikirim!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then((function(t) {
+                                    a.submit()
+                                    t.isConfirmed && o.hide()
+                                }))
+                            }), 2e3)) : Swal.fire({
+                                text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
+                                icon: "error",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
-                            }).then((function (t) {
-                                a.submit()
-                                t.isConfirmed && o.hide()
-                            }))
-                        }), 2e3)) : Swal.fire({
-                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
-                            icon: "error",
+                            })
+                        }))
+                    })),
+                    e.addEventListener("click", (function(t) {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah Anda yakin ingin membatalkan?",
+                            icon: "warning",
+                            showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Yes, cancel it!",
+                            cancelButtonText: "No, return",
                             customClass: {
-                                confirmButton: "btn btn-primary"
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
                             }
-                        })
-                    }))
-                })),
-                e.addEventListener("click", (function (t) {
-                    t.preventDefault(), Swal.fire({
-                        text: "Apakah Anda yakin ingin membatalkan?",
-                        icon: "warning",
-                        showCancelButton: !0,
-                        buttonsStyling: !1,
-                        confirmButtonText: "Yes, cancel it!",
-                        cancelButtonText: "No, return",
-                        customClass: {
-                            confirmButton: "btn btn-primary",
-                            cancelButton: "btn btn-active-light"
-                        }
-                    }).then((function (t) {
+                        }).then((function(t) {
 
-                        t.value ?
-                        (a.reset(), window.location.href = "{{ route('dashboard.kendaraan.main.index')}}") : "cancel" === t.dismiss && Swal.fire({
-                            text: "Formulir Anda belum dibatalkan!.",
-                            icon: "error",
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        })
-                    }))
-                })))
+                            t.value ?
+                                (a.reset(), window.location.href = "{{ route('dashboard.kendaraan.main.index')}}") : "cancel" === t.dismiss && Swal.fire({
+                                    text: "Formulir Anda belum dibatalkan!.",
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                })
+                        }))
+                    })))
+            }
         }
-    }
-}();
-KTUtil.onDOMContentLoaded((function () {
-    KTModalNewTarget.init()
-}));
+    }();
+    KTUtil.onDOMContentLoaded((function() {
+        KTModalNewTarget.init()
+    }));
 </script>
 @endpush

@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class UpdateDriverRequest extends FormRequest
+class StoreJenisSimRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +24,8 @@ class UpdateDriverRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_departemen' => 'required',
-            'no_badge'      => 'required',
-            'nama_driver'   => 'required|max:45',
-            'alamat'        => 'required|max:60',
-            'umur'          => 'required|max:3',
-            'no_tlp'        => 'required|max:15'
+            'nama_sim' => 'required',
+            'status' => 'required'
         ];
     }
 }

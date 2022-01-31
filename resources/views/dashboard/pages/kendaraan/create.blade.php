@@ -60,7 +60,7 @@
                         <!--begin::Input group-->
 
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Kode Asset</span>
                                 </label>
@@ -68,13 +68,23 @@
                                 <input type="text" class="form-control form-control-solid"
                                     placeholder="Masukkan Kode Asset" name="kode_asset" />
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Nama Kendaraan</span>
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
                                     placeholder="Masukkan Nama Kendaraan" name="nama_kendaraan" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Pemilik</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Pemilik" id="pemilik"
+                                    name="pemilik">
+                                    <option value="">Pilih Pemilik</option>
+                                    <option value="p">Perusahaan</option>
+                                    <option value="u">User</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
@@ -116,6 +126,30 @@
                                 </select>
                             </div>
                             <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Alokasi</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Alokasi" id="id_jenis_alokasi"
+                                    name="id_jenis_alokasi">
+                                    <option value="">Pilih Alokasi</option>
+                                    @foreach ($jenisAlokasi as $ja)
+                                    <option value="{{$ja->id_jenis_alokasi}}">{{$ja->nama_alokasi}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Jenis SIM</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Jenis SIM" id="id_jenis_sim"
+                                    name="id_jenis_sim">
+                                    <option value="">Pilih Jenis SIM</option>
+                                    @foreach ($jenisSim as $js)
+                                    <option value="{{$js->id_jenis_sim}}">{{$js->nama_sim}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex mb-8 row">
+                            <div class="col-lg-6">
                                 <label class="required fs-6 fw-bold mb-2">Merk</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Merk" id="id_merk" name="id_merk">
@@ -125,7 +159,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="required fs-6 fw-bold mb-2">Bahan Bakar</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Bahan Bakar" id="id_bahan_bakar"
@@ -138,7 +172,7 @@
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Warna</span>
                                 </label>
@@ -146,7 +180,7 @@
                                 <input type="text" class="form-control form-control-solid" placeholder="Masukkan Warna"
                                     name="warna" />
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Jenis Penggerak</span>
                                 </label>
@@ -154,9 +188,7 @@
                                 <input type="text" class="form-control form-control-solid"
                                     placeholder="Masukkan Jenis Penggerak" name="jenis_penggerak" />
                             </div>
-                        </div>
-                        <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Tanggal Beli</span>
                                 </label>
@@ -164,7 +196,17 @@
                                 <input type="date" class="form-control form-control-solid"
                                     placeholder="Masukkan Tanggal Pembelian" name="tanggal_pembelian" />
                             </div>
-                            <div class="col-lg-6">
+                        </div>
+                        <div class="form-group d-flex mb-8 row">
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Tahun Kendaraan</span>
+                                </label>
+                                <!--end::Label-->
+                                <input type="text" class="form-control form-control-solid"
+                                    placeholder="Masukkan Tahun Kendaraan" name="tahun_kendaraan" />
+                            </div>
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Harga</span>
                                 </label>
@@ -172,8 +214,16 @@
                                 <input type="number" class="form-control form-control-solid"
                                     placeholder="Masukkan Harga Beli" name="harga" />
                             </div>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Status</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Status" id="status" name="status">
+                                    <option value="">Pilih Status</option>
+                                    <option value="y">Tesedia</option>
+                                    <option value="t">Tidak Tersedia</option>
+                                </select>
+                            </div>
                         </div>
-
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center mt-3">
@@ -271,6 +321,13 @@ var KTModalNewTarget = function () {
                                 }
                             }
                         },
+                        pemilik: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Pemilik Harus Diisi"
+                                }
+                            }
+                        },
                         no_polisi: {
                             validators: {
                                 notEmpty: {
@@ -328,18 +385,25 @@ var KTModalNewTarget = function () {
                                 notEmpty: {
                                     message: "Jenis Penggerak Harus Diisi"
                                 },
-                                stringLength: {
-                                    // options: {
-                                    max: 8,
-                                    message: "Jenis Penggerak Maksimal 8 Karakter"
-                                    // }
-                                }
+                                // stringLength: {
+                                //     // options: {
+                                //     max: 8,
+                                //     message: "Jenis Penggerak Maksimal 8 Karakter"
+                                //     // }
+                                // }
                             }
                         },
                         tanggal_pembelian: {
                             validators: {
                                 notEmpty: {
                                     message: "Tanggal Pembelian Harus Diisi"
+                                }
+                            }
+                        },
+                        tahun_kendaraan: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Tahun Kendaraan Harus Diisi"
                                 }
                             }
                         },
@@ -350,10 +414,31 @@ var KTModalNewTarget = function () {
                                 }
                             }
                         },
+                        status: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Status Harus Diisi"
+                                }
+                            }
+                        },
                         id_jenis_kendaraan: {
                             validators: {
                                 notEmpty: {
                                     message: "Jenis Kendaraan Harus Diisi"
+                                }
+                            }
+                        },
+                        id_jenis_alokasi: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Alokasi Kendaraan Harus Diisi"
+                                }
+                            }
+                        },
+                        id_jenis_sim: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Jenis SIM Kendaraan Harus Diisi"
                                 }
                             }
                         },

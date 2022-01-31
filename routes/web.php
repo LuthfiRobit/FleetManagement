@@ -1,14 +1,18 @@
 <?php
 
+use App\Http\Controllers\AlokasiKendaraanController;
 use App\Http\Controllers\BahanBakarController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\JenisAlokasiController;
 use App\Http\Controllers\JenisKendaraanController;
 use App\Http\Controllers\JenisPengecekanController;
+use App\Http\Controllers\JenisSimController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
+use App\Http\Controllers\KriteriaRatingController;
 use App\Http\Controllers\Main\CheckingController;
 use App\Http\Controllers\Main\KecelakaanController;
 use App\Http\Controllers\Main\PengecekanKendaraanController;
@@ -16,7 +20,9 @@ use App\Http\Controllers\Main\PenugasanDriverController;
 use App\Http\Controllers\Main\PerbaikanController;
 use App\Http\Controllers\MerkKendaraanController;
 use App\Http\Controllers\PetugasController;
+use App\Models\AlokasiKendaraan;
 use App\Models\Driver;
+use App\Models\JenisAlokasi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,6 +72,7 @@ Route::name('accident')->prefix('accident')
         Route::get('/', [KecelakaanController::class, 'index'])->name('.main');
         Route::get('detail/{id}', [KecelakaanController::class, 'detail'])->name('.detail');
     });
+
 Route::name('dashboard.')->prefix('dashboard')
     ->group(function () {
         //route group
@@ -75,6 +82,8 @@ Route::name('dashboard.')->prefix('dashboard')
             Route::resource('jenis', JenisKendaraanController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
             Route::resource('merk', MerkKendaraanController::class)->shallow()
+                ->only(['index', 'store', 'edit', 'update']);
+            Route::resource('jenis_alokasi', JenisAlokasiController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
         });
         Route::group(['as' => 'pengecekan.', 'prefix' => 'pengecekan'], function () {
@@ -96,6 +105,10 @@ Route::name('dashboard.')->prefix('dashboard')
         //independen route
         Route::resource('bahanbakar', BahanBakarController::class)->shallow()
             ->only(['index', 'store', 'edit', 'update']);
+        Route::resource('sim', JenisSimController::class)->shallow()
+            ->only(['index', 'store', 'edit', 'update']);
+        Route::resource('kriteria_rating', KriteriaRatingController::class)->shallow()
+            ->only(['index', 'store', 'edit', 'update']);
         Route::resource('dealer', DealerController::class)->shallow()
             ->only(['index', 'store', 'edit', 'update']);
         Route::resource('driver', DriverController::class)->shallow()
@@ -104,4 +117,6 @@ Route::name('dashboard.')->prefix('dashboard')
         Route::put('driver/password/update/{id}', [DriverController::class, 'password'])->name('driver.password.update');
         Route::put('driver/ktp/update/{id}', [DriverController::class, 'changeKtp'])->name('driver.changeKtp.update');
         Route::put('driver/sim/update/{id}', [DriverController::class, 'changeSim'])->name('driver.changeSim.update');
+        Route::get('driver/status/aktif/{id}', [DriverController::class, 'statusDriverAktif'])->name('driver.status.aktif');
+        Route::get('driver/status/nonaktif/{id}', [DriverController::class, 'statusDriverNonAktif'])->name('driver.status.nonaktif');
     });

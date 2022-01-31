@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Master | Bahan Bakar')
+@section('title','Master | Jenis SIM')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,9 +16,9 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Data Bahan Bakar</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 2
-                            Bahan Bakar</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Data Jenis SIM</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$jenis_sim->count()}}
+                            Jenis SIM</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                         title="" data-bs-original-title="Tekan untuk menambah bahan bakar">
@@ -33,7 +33,7 @@
                                     <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black"></rect>
                                 </svg>
                             </span>
-                            <!--end::Svg Icon-->Tambah Bahan Bakar
+                            <!--end::Svg Icon-->Tambah Jenis SIM
                         </a>
                     </div>
                 </div>
@@ -46,18 +46,18 @@
                         <thead>
                             <tr class="fw-bolder fs-6 text-gray-800 px-7">
                                 <th>No</th>
-                                <th>Bahan Bakar</th>
+                                <th>Jenis SIM</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($bahanBakar as $bB)
+                            @foreach ($jenis_sim as $js)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$bB->nama_bahan_bakar}}</td>
+                                <td>{{$js->nama_sim}}</td>
                                 <td>
-                                    @if ($bB->status == 'y')
+                                    @if ($js->status == 'y')
                                     <span class="badge badge-light-primary">Aktif</span>
                                     @else
                                     <span class="badge badge-light-danger">Non Aktif</span>
@@ -65,7 +65,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-end flex-shrink-0">
-                                        <a href="{{ route('dashboard.bahanbakar.edit',$bB->id_bahan_bakar)}}"
+                                        <a href="{{ route('dashboard.sim.edit',$js->id_jenis_sim)}}"
                                             class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
                                             <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                                             <span class="svg-icon svg-icon-2">
@@ -116,32 +116,27 @@
                 <!--begin::Modal body-->
                 <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
                     <!--begin:Form-->
-                    <form id="kt_modal_new_feul_form" class="form" action="{{route('dashboard.bahanbakar.store')}}"
+                    <form id="kt_modal_new_feul_form" class="form" action="{{route('dashboard.sim.store')}}"
                         method="POST" enctype="multipart/form-data">
                         @csrf
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
                             <!--begin::Title-->
-                            <h1 class="mb-3">Input Bahan Bakar</h1>
+                            <h1 class="mb-3">Input Jenis SIM</h1>
                             <!--end::Title-->
-                            <!--begin::Description-->
-                            <div class="text-muted fw-bold fs-5">Jika memerlukan info lebih lanjut, silahkan klik
-                                <a href="#" class="fw-bolder link-primary">Manual Book</a>.
-                            </div>
-                            <!--end::Description-->
                         </div>
                         <!--end::Heading-->
                         <!--begin::Input group-->
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                <span class="required">Nama Bahan Bakar</span>
+                                <span class="required">Nama Jenis SIM</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Sesuaikan dengan data dinas perhubungan"></i>
+                                    title="Sesusikan Dengan Data Dinas Perhubungan"></i>
                             </label>
                             <!--end::Label-->
                             <input type="text" class="form-control form-control-solid"
-                                placeholder="Masukkan Nama Bahan Bakar" name="nama_bahan_bakar" />
+                                placeholder="Masukkan Nama Jenis SIM Bakar" name="nama_sim" />
                         </div>
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
@@ -220,19 +215,19 @@
                     a = document.querySelector("#kt_modal_new_feul_form"),
                     t = document.getElementById("kt_modal_new_feul_submit"),
                     e = document.getElementById("kt_modal_new_feul_cancel"),
-                    $(a.querySelector('[name="nama_bahan_bakar"]')).on("change", (function () {
-                        n.revalidateField("nama_bahan_bakar")
+                    $(a.querySelector('[name="nama_sim"]')).on("change", (function () {
+                        n.revalidateField("nama_sim")
                     })), n = FormValidation.formValidation(a, {
                         fields: {
-                            nama_bahan_bakar: {
+                            nama_sim: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Nama Bahan Bakar Harus Diisi"
+                                        message: "Nama Jenis SIM Harus Diisi"
                                     },
                                     stringLength: {
                                         // options: {
                                         max: 45,
-                                        message: "Nama Bahan Bakar Maksimal 45 Karakter"
+                                        message: "Nama Jenis SIM Maksimal 45 Karakter"
                                         // }
                                     }
                                 }
@@ -240,7 +235,7 @@
                             status: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Status Bahan Bakar Harus Diisi"
+                                        message: "Status Jenis Harus Diisi"
                                     }
                                 }
                             }

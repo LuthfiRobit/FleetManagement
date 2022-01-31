@@ -74,9 +74,9 @@
                                 <td>{{$jP->jenis_pengecekan}}</td>
                                 <td>
                                     @if ($jP->status == 'y')
-                                    <span class="badge badge-light-primary">Terlihat</span>
+                                    <span class="badge badge-light-primary">Aktif</span>
                                     @else
-                                    <span class="badge badge-light-danger">Tersembunyi</span>
+                                    <span class="badge badge-light-danger">Non Aktif</span>
                                     @endif
                                 </td>
                                 <td>
@@ -157,7 +157,7 @@
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                 <span class="required">Jenis Pengecekan</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Specify a target name for future usage and reference"></i>
+                                    title="Sesuaikan dengan kebijakan perusahaan"></i>
                             </label>
                             <!--end::Label-->
                             <input type="text" class="form-control form-control-solid"
@@ -166,12 +166,12 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             {{-- <div class="col-md-6 fv-row"> --}}
-                                <label class="required fs-6 fw-bold mb-2">Status (Terlihat/Tersembunyi)</label>
+                                <label class="required fs-6 fw-bold mb-2">Status (Aktif/Non Aktif)</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="true" data-placeholder="Pilih Status" id="status" name="status">
                                     <option value="">Pilih Status</option>
-                                    <option value="y">Terlihat</option>
-                                    <option value="t">Tersembunyi</option>
+                                    <option value="y">Aktif</option>
+                                    <option value="t">Non Aktif</option>
                                 </select>
                                 {{--
                             </div> --}}

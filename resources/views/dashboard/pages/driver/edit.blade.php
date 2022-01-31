@@ -14,14 +14,82 @@
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Edit Data Driver</span>
                         <span class="text-muted mt-1 fw-bold fs-7">{{$driver->no_badge}} |
-                            {{$driver->nama_driver}}</span>
-                    </h3>
+                            {{$driver->nama_driver}}
+                            @if ($driver->status_driver == 'y')
+                            <span class="badge badge-light-primary">Aktif</span>
+                            @elseif($driver->status_driver == 't')
+                            <span class="badge badge-light-danger">Non Aktif</span>
+                            @else
+                            <span>----</span>
+                            @endif
+                        </span>
 
+                    </h3>
+                    <div class="card-toolbar">
+                        <!--begin::Add-->
+                        <button type="button" class="btn btn-light-primary btn-sm" data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end">
+                            <!--begin::Svg Icon | path: icons/duotune/technology/teh004.svg-->
+                            <span class="svg-icon svg-icon-3">
+                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                            <!--end::Svg Icon-->Actions
+                        </button>
+                        <!--begin::Menu-->
+                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-6 w-200px py-4"
+                            data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="{{route('dashboard.driver.status.aktif', $driver->id_driver)}}"
+                                    class="menu-link px-3">Aktifkan</a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class=" menu-item px-3">
+                                <a href="{{route('dashboard.driver.status.nonaktif', $driver->id_driver)}}"
+                                    class="menu-link px-3">Non Aktifkan</a>
+                            </div>
+                            <!--end::Menu item-->
+                        </div>
+                        <!--end::Menu-->
+                        <!--end::Add-->
+
+                    </div>
                 </div>
                 <!--end::Header-->
                 <!--begin::Body-->
 
                 <div class="card-body py-3">
+                    @if(session()->has('success'))
+                    <!--begin::Alert-->
+                    <div
+                        class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                        <!--begin::Icon-->
+                        <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                        <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <!--end::Icon-->
+                        <!--begin::Content-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <h5 class="mb-1">Success</h5>
+                            <span> {{ session()->get('success') }}</span>
+                        </div>
+                        <!--end::Content-->
+                        <!--begin::Close-->
+                        <button type="button"
+                            class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                            data-bs-dismiss="alert">
+                            <i class="bi bi-x fs-1 text-danger"></i>
+                        </button>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Alert-->
+                    @endif
                     <!--begin:::Tabs-->
                     <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
                         <!--begin:::Tab item-->
@@ -221,7 +289,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>KTP</td>
-                                                    <td>{{$driver->no_ktp}}</td>
+                                                    <td>---</td>
                                                     <td class="text-end">
                                                         <button type="button"
                                                             class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
@@ -237,7 +305,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>SIM</td>
-                                                    <td>{{$driver->no_sim}}</td>
+                                                    <td>---</td>
                                                     <td class="text-end">
                                                         <button type="button"
                                                             class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
@@ -348,7 +416,7 @@
                             <!--end::Label-->
                             <!--begin::Input-->
                             <input class="form-control form-control-solid" placeholder="" name="user"
-                                value="{{$driver->User}}" />
+                                value="{{$driver->user}}" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -522,7 +590,7 @@
                             <!--end::Label-->
                             <!--begin::Input-->
                             <input type="number" class="form-control form-control-solid"
-                                placeholder="Masukkan Nomer KTP Driver" name="no_ktp" value="{{$driver->no_ktp}}" />
+                                placeholder="Masukkan Nomer KTP Driver" name="no_ktp" value="" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -637,64 +705,75 @@
                     <div class="modal-body py-10 px-lg-17">
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
-                            <!--begin::Label-->
-                            <label class="fs-6 fw-bold mb-2">No. SIM</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <input type="number" class="form-control form-control-solid"
-                                placeholder="Masukkan Nomer SIM Driver" name="no_sim" value="{{$driver->no_sim}}" />
-                            <!--end::Input-->
+                            <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                <span class="required">Jenis SIM</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
+                                    title="Anda Bisa Isi di Lain Hari"></i></label>
+                            <select class="form-select form-select-solid" data-control="select2"
+                                data-hide-search="false" data-placeholder="Pilih Jenis SIM" id="id_jenis_sim"
+                                name="id_jenis_sim">
+                                <option value="">Pilih Jenis SIM</option>
+                                @foreach ($jenisSim as $js)
+                                <option value="{{$js->id_jenis_sim}}"" {{$driver->id_jenis_sim ==
+                                    $js->id_jenis_sim ? 'selected' :
+                                    ''}}>{{$js->nama_sim}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <!--end::Input group-->
                         <!--begin::Input group-->
-                        <div class="fv-row mb-7">
-                            <!--begin::Label-->
-                            <label class="d-block fw-bold fs-6 mb-5">Foto SIM</label>
-                            <!--end::Label-->
+                        <div class=" fv-row mb-7">
+                                    <!--begin::Label-->
+                                    <label class="d-block fw-bold fs-6 mb-5">Foto SIM</label>
+                                    <!--end::Label-->
 
-                            <!--begin::Image input-->
-                            <div class="image-input image-input-outline" data-kt-image-input="true"
-                                style="background-image: url({{url('assets/backend/assets/media/avatars/blank.png')}})">
-                                <!--begin::Preview existing avatar-->
-                                <div class="image-input-wrapper w-200px h-125px" @if ($driver->foto_sim != null )
-                                    style="background-image:url({{url('/assets/img_sim/'.$driver->foto_sim)}})"
-                                    @else
-                                    style="background-image:
-                                    url({{url('assets/backend/assets/media/avatars/blank.png')}})"
-                                    @endif>
-                                </div>
-                                <!--end::Preview existing avatar-->
+                                    <!--begin::Image input-->
+                                    <div class="image-input image-input-outline" data-kt-image-input="true"
+                                        style="background-image: url({{url('assets/backend/assets/media/avatars/blank.png')}})">
+                                        <!--begin::Preview existing avatar-->
+                                        <div class="image-input-wrapper w-200px h-125px" @if ($driver->foto_sim != null
+                                            )
+                                            style="background-image:url({{url('/assets/img_sim/'.$driver->foto_sim)}})"
+                                            @else
+                                            style="background-image:
+                                            url({{url('assets/backend/assets/media/avatars/blank.png')}})"
+                                            @endif>
+                                        </div>
+                                        <!--end::Preview existing avatar-->
 
-                                <!--begin::Label-->
-                                <label
-                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change SIM">
-                                    <i class="bi bi-pencil-fill fs-7"></i>
+                                        <!--begin::Label-->
+                                        <label
+                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                            title="Change SIM">
+                                            <i class="bi bi-pencil-fill fs-7"></i>
 
-                                    <!--begin::Inputs-->
-                                    <input type="file" name="foto_sim" accept=".png, .jpg, .jpeg" />
-                                    <input type="hidden" name="avatar_remove" />
-                                    <!--end::Inputs-->
-                                </label>
-                                <!--end::Label-->
+                                            <!--begin::Inputs-->
+                                            <input type="file" name="foto_sim" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="avatar_remove" />
+                                            <!--end::Inputs-->
+                                        </label>
+                                        <!--end::Label-->
 
-                                <!--begin::Cancel-->
-                                <span
-                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel SIM">
-                                    <i class="bi bi-x fs-2"></i>
-                                </span>
-                                <!--end::Cancel-->
+                                        <!--begin::Cancel-->
+                                        <span
+                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                            title="Cancel SIM">
+                                            <i class="bi bi-x fs-2"></i>
+                                        </span>
+                                        <!--end::Cancel-->
 
-                                <!--begin::Remove-->
-                                <span
-                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove SIM">
-                                    <i class="bi bi-x fs-2"></i>
-                                </span>
-                                <!--end::Remove-->
-                            </div>
-                            <!--end::Image input-->
+                                        <!--begin::Remove-->
+                                        <span
+                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                            title="Remove SIM">
+                                            <i class="bi bi-x fs-2"></i>
+                                        </span>
+                                        <!--end::Remove-->
+                                    </div>
+                                    <!--end::Image input-->
                         </div>
                     </div>
                     <!--end::Modal body-->
@@ -1241,16 +1320,10 @@
                     (() => {
                         var o = FormValidation.formValidation(e, {
                             fields: {
-                                no_sim: {
+                                id_jenis_sim: {
                                     validators: {
                                         notEmpty: {
-                                            message: "No. SIM Harus Diisi"
-                                        },
-                                        stringLength: {
-                                            // options: {
-                                            max: 13,
-                                            message: "No. SIM Maksimal 13 Karakter"
-                                            // }
+                                            message: "Jenis SIM Harus Diisi"
                                         }
                                     }
                                 },

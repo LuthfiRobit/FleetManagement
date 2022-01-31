@@ -39,6 +39,36 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body py-3">
+                    @if(session()->has('success'))
+                    <!--begin::Alert-->
+                    <div
+                        class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                        <!--begin::Icon-->
+                        <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                        <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <!--end::Icon-->
+                        <!--begin::Content-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <h5 class="mb-1">Success</h5>
+                            <span> {{ session()->get('success') }}</span>
+                        </div>
+                        <!--end::Content-->
+                        <!--begin::Close-->
+                        <button type="button"
+                            class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                            data-bs-dismiss="alert">
+                            <i class="bi bi-x fs-1 text-danger"></i>
+                        </button>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Alert-->
+                    @endif
                     <!--begin::Table container-->
                     <table id="kt_datatable_example_5"
                         class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">

@@ -6,6 +6,8 @@ use App\Models\Driver;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
 use App\Models\Departemen;
+use App\Models\DetailSim;
+use App\Models\JenisSim;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -34,11 +36,8 @@ class DriverController extends Controller
                 'tb_driver.alamat',
                 'tb_driver.umur',
                 'tb_driver.no_tlp',
-                'tb_driver.no_ktp',
-                'tb_driver.no_sim',
                 'tb_driver.id_driver',
                 'tb_driver.foto_ktp',
-                'tb_driver.foto_sim',
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->get();
@@ -54,6 +53,7 @@ class DriverController extends Controller
     public function create()
     {
         $data['departemen'] = Departemen::where('status', 'y')->get();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
         // return $data;
         return view('dashboard.pages.driver.create', $data);
     }
@@ -74,31 +74,41 @@ class DriverController extends Controller
         $foto_sim = $request->file('foto_sim');
 
         if ($foto_ktp == null || $foto_sim == null) {
-            $data = $request->except(['_token', 'foto_ktp', 'foto_sim']);
+            $data = $request->except(['_token', 'foto_ktp', 'foto_sim', 'id_jenis_sim']);
             $data['password'] = Hash::make($defaultPasswordDriver);
             $data['user'] = $defaultUsernameDriver;
+            $data['status_driver'] = 'y';
             $simpan = Driver::create($data);
             return redirect()->route('dashboard.driver.index');
         } else {
-            $data = $request->except(['_token']);
-            $take_ktp = $request->no_ktp;
-            $take_sim = $request->no_sim;
+            $data = $request->except(['_token', 'foto_sim', 'id_jenis_sim']);
+            $take_ktp = $request->no_badge;
+            $take_sim = $request->no_badge;
             $name_ktp   = 'ktp_' . $take_ktp . '.' . $foto_ktp->getClientOriginalExtension();
             $name_sim = 'sim_' . $take_sim . '.' . $foto_sim->getClientOriginalExtension();
             $data['foto_ktp'] = $name_ktp;
-            $data['foto_sim'] = $name_sim;
+            // $data['foto_sim'] = $name_sim;
             $data['password'] = Hash::make($defaultPasswordDriver);
             $data['user'] = $defaultUsernameDriver;
+            $data['status_driver'] = 'y';
             $simpan = Driver::create($data);
             if ($simpan) {
+                $dataSim = [
+                    'id_driver' => $simpan->id_driver,
+                    'id_jenis_sim' => $request->id_jenis_sim,
+                    'foto_sim' => $name_sim
+                ];
+                $simpanSim = DB::table('tb_detail_sim')->insert($dataSim);
+                if ($simpanSim) {
+                    $folder_sim   = 'assets/img_sim';
+                    $foto_sim->move($folder_sim, $name_sim);
+                }
                 $folder_ktp     = 'assets/img_ktp';
-                $folder_sim   = 'assets/img_sim';
                 $foto_ktp->move($folder_ktp, $name_ktp);
-                $foto_sim->move($folder_sim, $name_sim);
                 // return $data;
-                return redirect()->route('dashboard.driver.index');
+                return redirect()->route('dashboard.driver.index')->with('success', 'Data Driver Berhasi Disimpan');
             } else {
-                return 'gagal';
+                return redirect()->route('dashboard.driver.index')->with('success', 'Data Driver Gagal Disimpan');
             }
         }
     }
@@ -123,7 +133,27 @@ class DriverController extends Controller
     public function edit($id)
     {
         $data['departemen'] = Departemen::where('status', 'y')->get();
-        $data['driver'] = Driver::where('id_driver', $id)->first();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
+        // $data['driver'] = Driver::where('id_driver', $id)->first();
+        $data['driver'] = DB::table('tb_driver')
+            ->select(
+                'tb_driver.id_driver',
+                'tb_driver.id_departemen',
+                'tb_driver.no_badge',
+                'tb_driver.nama_driver',
+                'tb_driver.alamat',
+                'tb_driver.umur',
+                'tb_driver.no_tlp',
+                'tb_driver.foto_ktp',
+                'tb_driver.user',
+                'tb_driver.password',
+                'tb_driver.status_driver',
+                'tb_detail_sim.id_jenis_sim',
+                'tb_detail_sim.foto_sim'
+            )
+            ->leftJoin('tb_detail_sim', 'tb_detail_sim.id_driver', '=', 'tb_driver.id_driver')
+            ->where('tb_driver.id_driver', '=', $id)
+            ->first();
         // return $data;
         return view('dashboard.pages.driver.edit', $data);
     }
@@ -140,9 +170,9 @@ class DriverController extends Controller
         $data = $request->except(['_token', '_method']);
         $update = Driver::where('id_driver', $id)->update($data);
         if ($update) {
-            return redirect()->route('dashboard.driver.index');
+            return redirect()->route('dashboard.driver.index')->with('success', 'Data Umum Driver Berhasil Diganti');
         } else {
-            return "gagal";
+            return redirect()->route('dashboard.driver.index')->with('success', 'Data Umum Driver Gagal Diganti');
         }
         // $data = $request->except(['_token', '_method']);
         // $foto_ktp = $request->file('foto_ktp');
@@ -228,13 +258,35 @@ class DriverController extends Controller
         // }
     }
 
+    public function statusDriverAktif(Request $request, $id)
+    {
+        $find = Driver::where('id_driver', $id)->first();
+        if ($find) {
+            $find->update(['status_driver' => 'y']);
+            return redirect()->back()->with('success', 'Driver Diaktifkan');
+        } else {
+            return redirect()->back()->with('success', 'Data Tidak Ditemukan');
+        }
+    }
+
+    public function statusDriverNonAktif(Request $request, $id)
+    {
+        $find = Driver::where('id_driver', $id)->first();
+        if ($find) {
+            $find->update(['status_driver' => 't']);
+            return redirect()->back()->with('success', 'Driver Dinonaktifkan');
+        } else {
+            return redirect()->back()->with('success', 'Data Tidak Ditemukan');
+        }
+    }
+
     public function username(Request $request, $id)
     {
         $newUsername = $request->user;
         $find = Driver::where('id_driver', $id)->first();
         if ($find) {
             $find->update(['user' => $newUsername]);
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Username Berhasil Diganti');
         }
     }
 
@@ -264,7 +316,7 @@ class DriverController extends Controller
             $data = ['password' => Hash::make($request->new_password)];
             $updatePwd = Driver::where('id_driver', $id)->update($data);
             if ($updatePwd) {
-                return redirect()->back();
+                return redirect()->back()->with('success', 'Password Berhasil Diganti');
             }
         }
     }
@@ -295,39 +347,67 @@ class DriverController extends Controller
             $folder_ktp     = 'assets/img_ktp';
             $foto_ktp->move($folder_ktp, $name_ktp);
             // return $data;
-            return redirect()->route('dashboard.driver.index');
+            return redirect()->route('dashboard.driver.index')->with('success', 'KTP Driver Berhasil Diganti');
             // return $data;
         }
     }
 
     public function changeSim(Request $request, $id)
     {
-        $find = Driver::where('id_driver', $id)->first();
-        $rules = [
-            'no_sim' => 'required|max:16',
-            'foto_sim' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all);
-        } else {
-            $foto_sim = $request->file('foto_sim');
-            $take_sim = $request->no_sim;
-            $name_sim   = 'sim_' . $take_sim . '.' . $foto_sim->getClientOriginalExtension();
-            $data = [
-                'no_sim' => $request->no_sim,
-                'foto_sim' => $name_sim
+        $findDriver = Driver::where('id_driver', $id)->first();
+        $find = DetailSim::where('id_driver', $id)->first();
+        if ($find) {
+            $rules = [
+                'id_jenis_sim' => 'required',
+                'foto_sim' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
             ];
-            // return $data;
-            if (!is_null($find->foto_sim)) {
-                File::delete('assets/img_sim' . $find->foto_sim);
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput($request->all);
+            } else {
+                $foto_sim = $request->file('foto_sim');
+                // $take_sim = $request->no_sim;
+                $name_sim   = 'sim_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $data = [
+                    'id_jenis_sim' => $request->id_jenis_sim,
+                    'foto_sim' => $name_sim
+                ];
+                // return $data;
+                if (!is_null($find->foto_sim)) {
+                    File::delete('assets/img_sim' . $find->foto_sim);
+                }
+                // $update = Driver::where('id_driver', $id)->update($data);
+                $updateSim = DetailSim::where('id_driver', $id)->update($data);
+                $folder_sim     = 'assets/img_sim';
+                $foto_sim->move($folder_sim, $name_sim);
+                // return $data;
+                return redirect()->route('dashboard.driver.index')->with('success', 'Data SIM Driver Berhasil Diganti');
+                // return $data;
             }
-            $update = Driver::where('id_driver', $id)->update($data);
-            $folder_sim     = 'assets/img_sim';
-            $foto_sim->move($folder_sim, $name_sim);
-            // return $data;
-            return redirect()->route('dashboard.driver.index');
-            // return $data;
+        } else {
+            $rules = [
+                'id_jenis_sim' => 'required',
+                'foto_sim' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput($request->all);
+            } else {
+                $foto_sim = $request->file('foto_sim');
+                $name_sim   = 'sim_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $data = [
+                    'id_jenis_sim' => $request->id_jenis_sim,
+                    'id_driver' => $id,
+                    'foto_sim' => $name_sim
+                ];
+                // $update = Driver::where('id_driver', $id)->update($data);
+                $updateSim = DetailSim::create($data);
+                $folder_sim     = 'assets/img_sim';
+                $foto_sim->move($folder_sim, $name_sim);
+                // return $data;
+                return redirect()->route('dashboard.driver.index')->with('success', 'Berhasil Menambahkan SIM Driver');
+                // return $data;
+            }
         }
     }
 

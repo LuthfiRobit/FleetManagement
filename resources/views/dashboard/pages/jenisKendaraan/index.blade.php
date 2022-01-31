@@ -1,7 +1,10 @@
 @extends('layouts.backend.main')
 
-@section('title','Jenis Kendaraan')
-
+@section('title','Master | Jenis Kendaraan')
+@section('style-on-this-page-only')
+<link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
+    type="text/css" />
+@endsection
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Post-->
@@ -13,7 +16,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Data Jenis Kendaraan</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$jenisKendaraan->total()}}
+                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$jenisKendaraan->count()}}
                             Jenis Kendaraan</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
@@ -39,7 +42,8 @@
                     <!--begin::Table container-->
                     <div class="table-responsive">
                         <!--begin::Table-->
-                        <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                        <table id="kt_datatable_example_5"
+                            class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowrap">
                             <!--begin::Table head-->
                             <thead>
                                 <tr class="fw-bolder text-muted">
@@ -66,7 +70,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        {{ $index+ $jenisKendaraan->firstItem() }}
+                                        {{-- {{ $index+ $jenisKendaraan->firstItem() }} --}}
+                                        {{ $loop->iteration }}
                                     </td>
                                     <td>
                                         <a href="#"
@@ -74,9 +79,9 @@
                                     </td>
                                     <td class="text-start">
                                         @if ($jKendaraan->status == 'y')
-                                        <span class="badge badge-light-primary">Terlihat</span>
+                                        <span class="badge badge-light-primary">Aktif</span>
                                         @else
-                                        <span class="badge badge-light-danger">Tersembunyi</span>
+                                        <span class="badge badge-light-danger">Non Aktif</span>
                                         @endif
                                     </td>
                                     <td>
@@ -110,7 +115,7 @@
                         </table>
                         <!--end::Table-->
                         <!--begin::Block-->
-                        <div class="py-0">
+                        {{-- <div class="py-0">
                             <div class="rounded border p-0">
                                 @if ($jenisKendaraan->lastPage() > 1)
                                 <ul class="pagination pagination-outline">
@@ -138,7 +143,7 @@
                                 </ul>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         <!--end::Block-->
                     </div>
                     <!--end::Table container-->
@@ -199,7 +204,7 @@
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                 <span class="required">Nama Jenis Kendaraan</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Specify a target name for future usage and reference"></i>
+                                    title="Sesuaikan dengan data dinas perhubungan"></i>
                             </label>
                             <!--end::Label-->
                             <input type="text" class="form-control form-control-solid" placeholder="Enter Target Title"
@@ -208,12 +213,12 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             {{-- <div class="col-md-6 fv-row"> --}}
-                                <label class="required fs-6 fw-bold mb-2">Status (Terlihat/Tersembunyi)</label>
+                                <label class="required fs-6 fw-bold mb-2">Status (Aktif/Non Aktif)</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="true" data-placeholder="Pilih Status" name="status">
                                     <option value="">Pilih Status</option>
-                                    <option value="y">Terlihat</option>
-                                    <option value="t">Tersembunyi</option>
+                                    <option value="y">Aktif</option>
+                                    <option value="t">Non Aktif</option>
                                 </select>
                                 {{--
                             </div> --}}
@@ -245,6 +250,36 @@
 @endsection
 
 @push('scripts')
+<!--begin::Page Vendors Javascript(used by this page)-->
+<script src="{{ url('assets/backend/assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
+<script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+<!--end::Page Vendors Javascript-->
+<!--begin::Page Custom Javascript(used by this page)-->
+<script src="{{ url('assets/backend/assets/js/custom/documentation/documentation.js') }}"></script>
+<script src="{{ url('assets/backend/assets/js/custom/documentation/search.js') }}"></script>
+{{-- <script src="{{ url('assets/backend/assets/js/custom/documentation/general/datatables/advanced.js') }}"></script>
+--}}
+<!--end::Page Custom Javascript-->
+<script text="text/javascipt">
+    $("#kt_datatable_example_5").DataTable({
+        "language": {
+            "lengthMenu": "Show _MENU_",
+        },
+        "dom":
+            "<'row'" +
+            "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+            "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+            ">" +
+
+            "<'table-responsive'tr>" +
+
+            "<'row'" +
+            "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+            "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+            ">"
+    });
+</script>
+
 <script src="{{url('assets/backend/assets/js/custom/modals/new-target.js')}}">
 </script>
 @endpush
