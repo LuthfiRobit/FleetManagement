@@ -256,13 +256,35 @@ class DriverController extends Controller
         // }
     }
 
+    public function statusDriverAktif(Request $request, $id)
+    {
+        $find = Driver::where('id_driver', $id)->first();
+        if ($find) {
+            $find->update(['status_driver' => 'y']);
+            return redirect()->back()->with('success', 'Driver Diaktifkan');
+        } else {
+            return redirect()->back()->with('success', 'Data Tidak Ditemukan');
+        }
+    }
+
+    public function statusDriverNonAktif(Request $request, $id)
+    {
+        $find = Driver::where('id_driver', $id)->first();
+        if ($find) {
+            $find->update(['status_driver' => 't']);
+            return redirect()->back()->with('success', 'Driver Dinonaktifkan');
+        } else {
+            return redirect()->back()->with('success', 'Data Tidak Ditemukan');
+        }
+    }
+
     public function username(Request $request, $id)
     {
         $newUsername = $request->user;
         $find = Driver::where('id_driver', $id)->first();
         if ($find) {
             $find->update(['user' => $newUsername]);
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Username Berhasil Diganti');
         }
     }
 
