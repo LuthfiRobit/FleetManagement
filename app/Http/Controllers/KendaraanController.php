@@ -62,12 +62,23 @@ class KendaraanController extends Controller
      */
     public function store(StoreKendaraanRequest $request)
     {
-        $data = $request->except(['_token']);
+        $data = $request->except(['_token', 'id_jenis_alokasi']);
         $simpan = Kendaraan::create($data);
         if ($simpan) {
-            return redirect()->route('dashboard.kendaraan.main.index');
+            $dataAlokasi = [
+                'id_jenis_alokasi' => $request->id_jenis_alokasi,
+                'id_kendaraan' => $simpan->id_kendaraan
+            ];
+            $simpanAlokasi = AlokasiKendaraan::create($dataAlokasi);
+            if ($simpanAlokasi) {
+                return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Berhasi Disimpan');
+            } else {
+                return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Gagal Disimpan');
+            }
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Berhasi Disimpan');
         } else {
-            return $data;
+            // return $data;
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Kendaraan dan Alokasi Gagal Disimpan');
         }
     }
 
