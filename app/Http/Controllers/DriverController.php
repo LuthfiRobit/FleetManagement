@@ -34,11 +34,8 @@ class DriverController extends Controller
                 'tb_driver.alamat',
                 'tb_driver.umur',
                 'tb_driver.no_tlp',
-                'tb_driver.no_ktp',
-                'tb_driver.no_sim',
                 'tb_driver.id_driver',
                 'tb_driver.foto_ktp',
-                'tb_driver.foto_sim',
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->get();
