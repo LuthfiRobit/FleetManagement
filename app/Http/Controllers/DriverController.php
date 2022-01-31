@@ -314,7 +314,7 @@ class DriverController extends Controller
             $data = ['password' => Hash::make($request->new_password)];
             $updatePwd = Driver::where('id_driver', $id)->update($data);
             if ($updatePwd) {
-                return redirect()->back();
+                return redirect()->back()->with('success', 'Password Berhasil Diganti');
             }
         }
     }
