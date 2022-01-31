@@ -20,7 +20,8 @@ class JenisKendaraanController extends Controller
         $data['jenisKendaraan'] = DB::table('tb_jenis_kendaraan')
             ->select('id_jenis_kendaraan', 'nama_jenis', 'status')
             ->orderByRaw('id_jenis_kendaraan DESC')
-            ->paginate(5);
+            // ->paginate(5);
+            ->get();
 
         // return $data;
         return view('dashboard.pages.jenisKendaraan.index', $data);
