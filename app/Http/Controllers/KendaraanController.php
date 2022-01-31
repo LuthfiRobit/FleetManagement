@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Kendaraan;
 use App\Http\Requests\StoreKendaraanRequest;
 use App\Http\Requests\UpdateKendaraanRequest;
+use App\Models\AlokasiKendaraan;
 use App\Models\BahanBakar;
+use App\Models\JenisAlokasi;
 use App\Models\JenisKendaraan;
+use App\Models\JenisSim;
 use App\Models\MerkKendaraan;
 use Illuminate\Support\Facades\DB;
 
