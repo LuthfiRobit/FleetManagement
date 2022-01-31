@@ -345,39 +345,67 @@ class DriverController extends Controller
             $folder_ktp     = 'assets/img_ktp';
             $foto_ktp->move($folder_ktp, $name_ktp);
             // return $data;
-            return redirect()->route('dashboard.driver.index');
+            return redirect()->route('dashboard.driver.index')->with('success', 'KTP Driver Berhasil Diganti');
             // return $data;
         }
     }
 
     public function changeSim(Request $request, $id)
     {
-        $find = Driver::where('id_driver', $id)->first();
-        $rules = [
-            'no_sim' => 'required|max:16',
-            'foto_sim' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all);
-        } else {
-            $foto_sim = $request->file('foto_sim');
-            $take_sim = $request->no_sim;
-            $name_sim   = 'sim_' . $take_sim . '.' . $foto_sim->getClientOriginalExtension();
-            $data = [
-                'no_sim' => $request->no_sim,
-                'foto_sim' => $name_sim
+        $findDriver = Driver::where('id_driver', $id)->first();
+        $find = DetailSim::where('id_driver', $id)->first();
+        if ($find) {
+            $rules = [
+                'id_jenis_sim' => 'required',
+                'foto_sim' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
             ];
-            // return $data;
-            if (!is_null($find->foto_sim)) {
-                File::delete('assets/img_sim' . $find->foto_sim);
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput($request->all);
+            } else {
+                $foto_sim = $request->file('foto_sim');
+                // $take_sim = $request->no_sim;
+                $name_sim   = 'sim_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $data = [
+                    'id_jenis_sim' => $request->id_jenis_sim,
+                    'foto_sim' => $name_sim
+                ];
+                // return $data;
+                if (!is_null($find->foto_sim)) {
+                    File::delete('assets/img_sim' . $find->foto_sim);
+                }
+                // $update = Driver::where('id_driver', $id)->update($data);
+                $updateSim = DetailSim::where('id_driver', $id)->update($data);
+                $folder_sim     = 'assets/img_sim';
+                $foto_sim->move($folder_sim, $name_sim);
+                // return $data;
+                return redirect()->route('dashboard.driver.index')->with('success', 'Data SIM Driver Berhasil Diganti');
+                // return $data;
             }
-            $update = Driver::where('id_driver', $id)->update($data);
-            $folder_sim     = 'assets/img_sim';
-            $foto_sim->move($folder_sim, $name_sim);
-            // return $data;
-            return redirect()->route('dashboard.driver.index');
-            // return $data;
+        } else {
+            $rules = [
+                'id_jenis_sim' => 'required',
+                'foto_sim' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput($request->all);
+            } else {
+                $foto_sim = $request->file('foto_sim');
+                $name_sim   = 'sim_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $data = [
+                    'id_jenis_sim' => $request->id_jenis_sim,
+                    'id_driver' => $id,
+                    'foto_sim' => $name_sim
+                ];
+                // $update = Driver::where('id_driver', $id)->update($data);
+                $updateSim = DetailSim::create($data);
+                $folder_sim     = 'assets/img_sim';
+                $foto_sim->move($folder_sim, $name_sim);
+                // return $data;
+                return redirect()->route('dashboard.driver.index')->with('success', 'Berhasil Menambahkan SIM Driver');
+                // return $data;
+            }
         }
     }
 
