@@ -151,12 +151,26 @@ class KendaraanController extends Controller
      */
     public function update(UpdateKendaraanRequest $request, Kendaraan $kendaraan, $id)
     {
-        $data = $request->except(['_token', '_method']);
-        $update = Kendaraan::where('id_kendaraan', $id)->update($data);
-        if ($update) {
-            return redirect()->route('dashboard.kendaraan.main.index');
-        } else {
-            return $data;
+        try {
+            $data = $request->except(['_token', '_method', 'id_jenis_alokasi']);
+            $update = Kendaraan::where('id_kendaraan', $id)->update($data);
+            $findAlokasi = AlokasiKendaraan::where('id_kendaraan', $id)->first();
+            if ($findAlokasi) {
+                $findAlokasi->update(['id_jenis_alokasi' => $request->id_jenis_alokasi]);
+            } else {
+                $dataAlokasi = [
+                    'id_jenis_alokasi' => $request->id_jenis_alokasi,
+                    'id_kendaraan' => $id
+                ];
+                AlokasiKendaraan::create($dataAlokasi);
+            }
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Berhasil Diganti');
+        } catch (\Illuminate\Database\QueryException $exception) {
+            // You can check get the details of the error using `errorInfo`:
+            $errorInfo = $exception->errorInfo;
+            // return $errorInfo;
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Gagal Diganti. Error(' . $errorInfo . ')');
+            // Return the response to the client..
         }
     }
 
