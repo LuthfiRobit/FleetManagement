@@ -43,7 +43,7 @@
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                 <span class="required">Nama Dealer</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Specify a target name for future usage and reference"></i>
+                                    title="Sesuaikan dengan nama dealer"></i>
                             </label>
                             <!--end::Label-->
                             <input type="text" class="form-control form-control-solid"
@@ -55,7 +55,7 @@
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                 <span class="required">Alamat Dealer</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Specify a target name for future usage and reference"></i>
+                                    title="Sesuaikan dengan alamat dealer"></i>
                             </label>
                             <!--end::Label-->
                             <textarea name="alamat" class="form-control form-control-solid"
@@ -66,7 +66,7 @@
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                 <span class="required">No. Tlfn</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Specify a target name for future usage and reference"></i>
+                                    title="Sesuaikan dengan no. telpon dealer"></i>
                             </label>
                             <!--end::Label-->
                             <input type="number" class="form-control form-control-solid"
@@ -75,14 +75,14 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             {{-- <div class="col-md-6 fv-row"> --}}
-                                <label class="required fs-6 fw-bold mb-2">Status (Terlihat/Tersembunyi)</label>
+                                <label class="required fs-6 fw-bold mb-2">Status (Aktif / Non Aktif)</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="true" data-placeholder="Pilih Status" name="status">
                                     <option value="">Pilih Status</option>
                                     <option value="y" {{$dealer->status == 'y' ? 'selected' : ''}}>
-                                        Terlihat</option>
+                                        Aktif</option>
                                     <option value="t" {{$dealer->status == 't' ? 'selected' : ''}}>
-                                        Tersembunyi</option>
+                                        Non Aktif</option>
                                 </select>
                                 {{--
                             </div> --}}
@@ -90,12 +90,15 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             {{-- <div class="col-md-6 fv-row"> --}}
-                                <label class="required fs-6 fw-bold mb-2">Status Dealer (Terlihat/Tersembunyi)</label>
+                                <label class="required fs-6 fw-bold mb-2">Status Dealer (Milik
+                                    Perusahaan/Rekanan)</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="true" data-placeholder="Pilih Status" name="status_dealer">
                                     <option value="">Pilih Status</option>
-                                    <option value="p" {{$dealer->status_dealer == 'p' ? 'selected' : ''}}>P</option>
-                                    <option value="r" {{$dealer->status_dealer == 'r' ? 'selected' : ''}}>R</option>
+                                    <option value="p" {{$dealer->status_dealer == 'p' ? 'selected' : ''}}>Perusahaan
+                                    </option>
+                                    <option value="r" {{$dealer->status_dealer == 'r' ? 'selected' : ''}}>Rekanan
+                                    </option>
                                 </select>
                                 {{--
                             </div> --}}
