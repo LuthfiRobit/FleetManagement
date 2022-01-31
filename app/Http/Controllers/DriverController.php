@@ -168,9 +168,9 @@ class DriverController extends Controller
         $data = $request->except(['_token', '_method']);
         $update = Driver::where('id_driver', $id)->update($data);
         if ($update) {
-            return redirect()->route('dashboard.driver.index');
+            return redirect()->route('dashboard.driver.index')->with('success', 'Data Umum Driver Berhasil Diganti');
         } else {
-            return "gagal";
+            return redirect()->route('dashboard.driver.index')->with('success', 'Data Umum Driver Gagal Diganti');
         }
         // $data = $request->except(['_token', '_method']);
         // $foto_ktp = $request->file('foto_ktp');
