@@ -59,7 +59,7 @@
                         <!--begin::Input group-->
 
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">NO BADGE</span>
                                 </label>
@@ -67,7 +67,7 @@
                                 <input type="text" class="form-control form-control-solid"
                                     placeholder="Masukkan NO BADGE" name="no_badge" />
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Nama Driver</span>
                                 </label>
@@ -75,9 +75,7 @@
                                 <input type="text" class="form-control form-control-solid"
                                     placeholder="Masukkan Nama Driver" name="nama_driver" />
                             </div>
-                        </div>
-                        <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="required fs-6 fw-bold mb-2">Departemen</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Departemen" id="id_departemen"
@@ -88,7 +86,25 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-6">
+                        </div>
+                        <div class="form-group d-flex mb-8 row">
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Usia</span>
+                                </label>
+                                <!--end::Label-->
+                                <input type="number" class="form-control form-control-solid" placeholder="Masukkan Usia"
+                                    name="umur" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">No. Tlpn</span>
+                                </label>
+                                <!--end::Label-->
+                                <input type="number" class="form-control form-control-solid"
+                                    placeholder="Masukkan No. Tlpn" name="no_tlp" />
+                            </div>
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Alamat</span>
                                 </label>
@@ -97,62 +113,63 @@
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
-                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                    <span class="required">Usia</span>
-                                </label>
-                                <!--end::Label-->
-                                <input type="number" class="form-control form-control-solid" placeholder="Masukkan Usia"
-                                    name="umur" />
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                    <span class="required">No. Tlpn</span>
-                                </label>
-                                <!--end::Label-->
-                                <input type="number" class="form-control form-control-solid"
-                                    placeholder="Masukkan No. Tlpn" name="no_tlp" />
-                            </div>
-                        </div>
-                        <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
-                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                    <span class="required">No. KTP</span>
-                                </label>
-                                <!--end::Label-->
-                                <input type="text" class="form-control form-control-solid"
-                                    placeholder="Masukkan No. KTP" name="no_ktp" />
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                    <span class="required">No. SIM</span>
-                                </label>
-                                <!--end::Label-->
-                                <input type="text" class="form-control form-control-solid"
-                                    placeholder="Masukkan No. SIM" name="no_sim" />
-                            </div>
-                        </div>
-                        <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Foto Ktp</span>
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                        title="You can upload it in another day"></i>
+                                        title="Anda Bisa Upload di Lain Hari"></i>
                                 </label>
                                 <!--end::Label-->
                                 <input type="file" class="form-control form-control-solid"
                                     placeholder="Masukkan Foto KTP" name="foto_ktp" />
                             </div>
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Jenis SIM</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
+                                        title="Anda Bisa Isi di Lain Hari"></i></label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Jenis SIM" id="id_jenis_sim"
+                                    name="id_jenis_sim">
+                                    <option value="">Pilih Jenis SIM</option>
+                                    @foreach ($jenisSim as $js)
+                                    <option value="{{$js->id_jenis_sim}}">{{$js->nama_sim}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Foto SIM</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
+                                        title="Anda Bisa Upload di Lain Hari"></i>
+                                </label>
+                                <!--end::Label-->
+                                <input type="file" class="form-control form-control-solid"
+                                    placeholder="Masukkan Foto SIM" name="foto_sim" />
+                            </div>
+                        </div>
+                        <div class="form-group d-flex mb-8 row">
+                            {{-- <div class="col-lg-6">
+                                <label class="required fs-6 fw-bold mb-2">Jenis SIM</label>
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Jenis SIM" id="id_jenis_sim"
+                                    name="id_jenis_sim">
+                                    <option value="">Pilih Jenis SIM</option>
+                                    @foreach ($jenisSim as $js)
+                                    <option value="{{$js->id_jenis_sim}}">{{$js->nama_sim}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-lg-6">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Foto SIM</span>
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                        title="You can upload it in another day"></i>
+                                        title="Anda Bisa Upload di Lain Hari"></i>
                                 </label>
                                 <!--end::Label-->
                                 <input type="file" class="form-control form-control-solid"
-                                    placeholder="Masukkan Foto SIM" name="foto_SIM" />
-                            </div>
+                                    placeholder="Masukkan Foto SIM" name="foto_sim" />
+                            </div> --}}
                         </div>
 
                         <!--end::Input group-->
@@ -268,32 +285,6 @@ var KTModalNewTarget = function () {
                                 }
                             }
                         },
-                        no_ktp: {
-                            validators: {
-                                notEmpty: {
-                                    message: "No. KTP Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 16,
-                                    message: "No. KTP Maksimal 16 Karakter"
-                                    // }
-                                }
-                            }
-                        },
-                        no_sim: {
-                            validators: {
-                                notEmpty: {
-                                    message: "No. SIM Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 13,
-                                    message: "No. SIM Maksimal 13 Karakter"
-                                    // }
-                                }
-                            }
-                        }
                     },
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger,
