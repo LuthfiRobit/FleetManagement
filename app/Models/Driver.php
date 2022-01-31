@@ -20,16 +20,14 @@ class Driver extends  Authenticatable implements JWTSubject
         'id_driver',
         'id_departemen',
         'no_badge',
-        'no_ktp',
         'nama_driver',
         'alamat',
         'umur',
         'no_tlp',
-        'no_sim',
         'foto_ktp',
-        'foto_sim',
         'user',
-        'password'
+        'password',
+        'status_driver'
     ];
 
     protected $hidden = [
@@ -41,11 +39,13 @@ class Driver extends  Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function getJWTIdentifier() {
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims() {
+    public function getJWTCustomClaims()
+    {
         return [];
-    }   
+    }
 }

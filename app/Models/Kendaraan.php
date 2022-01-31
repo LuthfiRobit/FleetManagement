@@ -13,9 +13,25 @@ class Kendaraan extends Model
     protected $primaryKey = 'id_kendaraan';
 
     protected $fillable = [
-        'id_jenis_kendaraan', 'id_merk', 'id_bahan_bakar',
-        'kode_asset', 'no_polisi', 'nomor_rangka', 'nomor_mesin',
-        'nama_kendaraan', 'warna', 'tanggal_pembelian', 'harga',
-        'jenis_penggerak'
+        'id_jenis_kendaraan',
+        'id_merk',
+        'id_bahan_bakar',
+        'kode_asset',
+        'no_polisi',
+        'nomor_rangka',
+        'nomor_mesin',
+        'nama_kendaraan',
+        'warna',
+        'tanggal_pembelian',
+        'harga',
+        'jenis_penggerak',
+        'tahun_kendaraan',
+        'pemilik',
+        'status'
     ];
+
+    public function alokasiKendaraan()
+    {
+        return $this->hasOne(AlokasiKendaraan::class, 'id_kendaraan', 'id_kendaraan');
+    }
 }
