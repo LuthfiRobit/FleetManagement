@@ -72,31 +72,41 @@ class DriverController extends Controller
         $foto_sim = $request->file('foto_sim');
 
         if ($foto_ktp == null || $foto_sim == null) {
-            $data = $request->except(['_token', 'foto_ktp', 'foto_sim']);
+            $data = $request->except(['_token', 'foto_ktp', 'foto_sim', 'id_jenis_sim']);
             $data['password'] = Hash::make($defaultPasswordDriver);
             $data['user'] = $defaultUsernameDriver;
+            $data['status_driver'] = 'y';
             $simpan = Driver::create($data);
             return redirect()->route('dashboard.driver.index');
         } else {
-            $data = $request->except(['_token']);
-            $take_ktp = $request->no_ktp;
-            $take_sim = $request->no_sim;
+            $data = $request->except(['_token', 'foto_sim', 'id_jenis_sim']);
+            $take_ktp = $request->no_badge;
+            $take_sim = $request->no_badge;
             $name_ktp   = 'ktp_' . $take_ktp . '.' . $foto_ktp->getClientOriginalExtension();
             $name_sim = 'sim_' . $take_sim . '.' . $foto_sim->getClientOriginalExtension();
             $data['foto_ktp'] = $name_ktp;
-            $data['foto_sim'] = $name_sim;
+            // $data['foto_sim'] = $name_sim;
             $data['password'] = Hash::make($defaultPasswordDriver);
             $data['user'] = $defaultUsernameDriver;
+            $data['status_driver'] = 'y';
             $simpan = Driver::create($data);
             if ($simpan) {
+                $dataSim = [
+                    'id_driver' => $simpan->id_driver,
+                    'id_jenis_sim' => $request->id_jenis_sim,
+                    'foto_sim' => $name_sim
+                ];
+                $simpanSim = DB::table('tb_detail_sim')->insert($dataSim);
+                if ($simpanSim) {
+                    $folder_sim   = 'assets/img_sim';
+                    $foto_sim->move($folder_sim, $name_sim);
+                }
                 $folder_ktp     = 'assets/img_ktp';
-                $folder_sim   = 'assets/img_sim';
                 $foto_ktp->move($folder_ktp, $name_ktp);
-                $foto_sim->move($folder_sim, $name_sim);
                 // return $data;
-                return redirect()->route('dashboard.driver.index');
+                return redirect()->route('dashboard.driver.index')->with('success', 'Data Driver Berhasi Disimpan');
             } else {
-                return 'gagal';
+                return redirect()->route('dashboard.driver.index')->with('success', 'Data Driver Gagal Disimpan');
             }
         }
     }
