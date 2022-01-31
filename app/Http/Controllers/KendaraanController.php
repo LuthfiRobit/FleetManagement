@@ -102,13 +102,43 @@ class KendaraanController extends Controller
     public function edit($id)
     {
         $data['jenisKendaraan'] = JenisKendaraan::where('status', 'y')->get();
+        $data['jenisAlokasi'] = JenisAlokasi::where('status', 'y')->get();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
         $data['merkKendaraan'] = MerkKendaraan::where('status', 'y')->get();
         $data['bahanBakar'] = BahanBakar::where('status', 'y')->get();
-        $data['kendaraan'] = Kendaraan::where('id_kendaraan', $id)->first();
+        // $data['kendaraan'] = Kendaraan::where('id_kendaraan', $id)
+        //     ->with('alokasiKendaraan')->first();
+        $data['kendaraan'] = DB::table('tb_kendaraan')
+            ->select(
+                'tb_kendaraan.id_kendaraan',
+                'tb_kendaraan.id_jenis_kendaraan',
+                'tb_kendaraan.id_merk',
+                'tb_alokasi_kendaraan.id_jenis_alokasi',
+                'tb_kendaraan.no_polisi',
+                'tb_kendaraan.id_bahan_bakar',
+                'tb_kendaraan.id_jenis_sim',
+                'tb_kendaraan.kode_asset',
+                'tb_kendaraan.no_polisi',
+                'tb_kendaraan.nomor_rangka',
+                'tb_kendaraan.nomor_mesin',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.warna',
+                'tb_kendaraan.tanggal_pembelian',
+                'tb_kendaraan.harga',
+                'tb_kendaraan.jenis_penggerak',
+                'tb_kendaraan.tahun_kendaraan',
+                'tb_kendaraan.pemilik',
+                'tb_kendaraan.status'
+            )
+            ->leftJoin('tb_alokasi_kendaraan', 'tb_alokasi_kendaraan.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
+            ->where('tb_kendaraan.id_kendaraan', '=', $id)
+            ->first();
         if ($data['kendaraan']) {
+            // return $data['kendaraan'];
             return view('dashboard.pages.kendaraan.edit', $data);
         } else {
-            return $id;
+            // return $id;
+            return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Tidak Ditemukan');
         }
     }
 
