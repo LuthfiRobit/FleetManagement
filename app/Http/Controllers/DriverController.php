@@ -51,6 +51,7 @@ class DriverController extends Controller
     public function create()
     {
         $data['departemen'] = Departemen::where('status', 'y')->get();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
         // return $data;
         return view('dashboard.pages.driver.create', $data);
     }
