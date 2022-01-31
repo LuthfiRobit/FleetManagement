@@ -131,7 +131,27 @@ class DriverController extends Controller
     public function edit($id)
     {
         $data['departemen'] = Departemen::where('status', 'y')->get();
-        $data['driver'] = Driver::where('id_driver', $id)->first();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
+        // $data['driver'] = Driver::where('id_driver', $id)->first();
+        $data['driver'] = DB::table('tb_driver')
+            ->select(
+                'tb_driver.id_driver',
+                'tb_driver.id_departemen',
+                'tb_driver.no_badge',
+                'tb_driver.nama_driver',
+                'tb_driver.alamat',
+                'tb_driver.umur',
+                'tb_driver.no_tlp',
+                'tb_driver.foto_ktp',
+                'tb_driver.user',
+                'tb_driver.password',
+                'tb_driver.status_driver',
+                'tb_detail_sim.id_jenis_sim',
+                'tb_detail_sim.foto_sim'
+            )
+            ->leftJoin('tb_detail_sim', 'tb_detail_sim.id_driver', '=', 'tb_driver.id_driver')
+            ->where('tb_driver.id_driver', '=', $id)
+            ->first();
         // return $data;
         return view('dashboard.pages.driver.edit', $data);
     }
