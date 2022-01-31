@@ -46,6 +46,8 @@ class KendaraanController extends Controller
     public function create()
     {
         $data['jenisKendaraan'] = JenisKendaraan::where('status', 'y')->get();
+        $data['jenisAlokasi'] = JenisAlokasi::where('status', 'y')->get();
+        $data['jenisSim'] = JenisSim::where('status', 'y')->get();
         $data['merkKendaraan'] = MerkKendaraan::where('status', 'y')->get();
         $data['bahanBakar'] = BahanBakar::where('status', 'y')->get();
         // return $data;
