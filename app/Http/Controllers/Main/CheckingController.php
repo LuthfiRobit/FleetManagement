@@ -101,8 +101,8 @@ class CheckingController extends Controller
                 'tb_order_kendaraan.id_service_order as id_so',
                 'tb_order_kendaraan.tgl_penjemputan as tgl_jpt',
                 'tb_order_kendaraan.jam_penjemputan as jam_jmp',
-                'tb_order_kendaraan.tempat_penjemputan as tmp_jpt',
-                'tb_order_kendaraan.tujuan as tujuan',
+                'tb_order_kendaraan.tempat_penjemputan as tmp_jemput',
+                'tb_order_kendaraan.tujuan as tmp_tujuan',
                 'tb_petugas.id_petugas',
                 'tb_petugas.nama_lengkap as petugas',
                 'tb_departemen.nama_departemen as departemen',
@@ -113,11 +113,6 @@ class CheckingController extends Controller
             ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
             ->where('id_service_order', $id)
             ->first();
-
-        $driver = DB::select(
-            'SELECT tb_driver.nama_driver,tb_driver.id_driver FROM tb_driver
-            WHERE NOT EXISTS (SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $service->tgl_jpt . '")'
-        );
 
         $kendaraan =  DB::select(
             'SELECT tb_kendaraan.nama_kendaraan,
@@ -135,7 +130,6 @@ class CheckingController extends Controller
         $data = [
             'so' => $service,
             'kendaraan' => $kendaraan,
-            // 'driver' => $driver
         ];
 
         // return $data;
@@ -189,19 +183,25 @@ class CheckingController extends Controller
                 'id_driver'         => $request->id_driver,
                 'id_kendaraan'      => $request->id_kendaraan,
                 'id_petugas'        => $find->id_petugas,
-                'tgl_penugasan'     => $find->tgl_penjemputan,
+                'tgl_penugasan'     => Carbon::parse($find->tgl_penjemputan)->format('Y-m-d'),
                 'jam_berangkat'     => Carbon::parse($find->jam_penjemputan)->format('H:i:s'),
                 'kembali'           => $request->kembali,
-                'tgl_acc'           => date('Y-m-d')
+                'tgl_acc'           => date('Y-m-d'),
+                'tmp_penjemputan'   => $request->tmp_jemput,
+                'lat_jemput'        => '-7.712123326867145',
+                'long_jemput'       => '113.57749476810118',
+                'tmp_tujuan'        => $request->tmp_tujuan,
+                'lat_tujuan'        => '-7.851952179623661',
+                'long_tujuan'       => '112.51991928366783'
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($data);
             if ($penugasancreate) {
-                return redirect()->route('checking.serviceorder')->with('success', 'Service Order is Accepted');
+                return redirect()->route('checking.serviceorder')->with('success', 'Penugasan Driver Berhasil Dibuat');
             } else {
-                return 'gagal simpan';
+                return redirect()->route('checking.serviceorder')->with('success', 'Penugasan Driver Gagal Dibuat');
             }
         } else {
-            return 'gagal';
+            return redirect()->route('checking.serviceorder')->with('success', 'Dispath Order Driver Tidak Ditemukan');
         }
 
         // return redirect()->route('checking.serviceorder')->with('success', 'Service Order is Accepted');

@@ -4,10 +4,10 @@
     data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start"
     data-kt-drawer-toggle="#kt_aside_mobile_toggle">
     <!--begin::Brand-->
-    <div class="aside-logo flex-column-auto" id="kt_aside_logo">
+    <div class="aside-logo flex-column-auto" id="kt_aside_logo" style="background: white">
         <!--begin::Logo-->
-        <a href="../../demo1/dist/index.html">
-            <img alt="Logo" src="{{url('assets/backend/assets/media/logos/logo-1-dark.svg')}}" class="h-25px logo" />
+        <a href="https://www.pomi.co.id/">
+            <img alt="Logo" src="{{url('assets/img_logo/logo_pomi1.png')}}" class="h-50px logo" />
         </a>
         <!--end::Logo-->
         <!--begin::Aside toggler-->
@@ -285,10 +285,9 @@
     <!--end::Aside menu-->
     <!--begin::Footer-->
     <div class="aside-footer flex-column-auto pt-5 pb-7 px-5" id="kt_aside_footer">
-        <a href="../../demo1/dist/documentation/getting-started.html" class="btn btn-custom btn-primary w-100"
-            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
-            title="200+ in-house components and 3rd-party plugins">
-            <span class="btn-label">Docs &amp; Components</span>
+        <a href="#" class="btn btn-custom btn-primary w-100" data-bs-toggle="tooltip" data-bs-trigger="hover"
+            data-bs-dismiss-="click" title="200+ in-house components and 3rd-party plugins">
+            <span class="btn-label">Manual &amp; Description</span>
             <!--begin::Svg Icon | path: icons/duotune/general/gen005.svg-->
             <span class="svg-icon btn-icon svg-icon-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

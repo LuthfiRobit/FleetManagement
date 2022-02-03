@@ -88,8 +88,8 @@
             <div class="card mb-5 mb-xl-8">
                 <div class="card-body py-3">
                     <!--begin::Form-->
-                    <form id="kt_modal_new_target_form" class="form"
-                        action="{{ route('dashboard.kendaraan.main.store')}}" method="POST"
+                    <form id="kt_form_accept" class="form"
+                        action="{{route('checking.serviceorder.accept', $so->id_so)}}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <!--begin::Heading-->
@@ -130,7 +130,8 @@
                                     name="id_kendaraan">
                                     <option value="">Pilih Kendaraan</option>
                                     @foreach ($kendaraan as $kd)
-                                    <option value="{{$kd->id_jenis_sim}}">{{$kd->nama_kendaraan}} | {{$kd->no_polisi}} |
+                                    <option value="{{$kd->id_kendaraan}}" data-sim="{{$kd->id_jenis_sim}}">
+                                        {{$kd->nama_kendaraan}} | {{$kd->no_polisi}} |
                                         {{$kd->sim}} | {{$kd->alokasi}}
                                     </option>
                                     @endforeach
@@ -154,7 +155,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
-                                    placeholder="Otomatis Sesuai dengan Map " name="penjemputan" />
+                                    placeholder="Otomatis Sesuai dengan Map " name="tmp_jemput" />
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -164,7 +165,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
-                                    placeholder="Otomatis Sesuai dengan Map" name="tujuan" />
+                                    placeholder="Otomatis Sesuai dengan Map" name="tmp_tujuan" />
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -178,9 +179,8 @@
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center mt-3">
-                            <button type="reset" id="kt_modal_new_target_cancel"
-                                class="btn btn-light me-3">Cancel</button>
-                            <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
+                            <button type="reset" id="kt_button_cancel" class="btn btn-light me-3">Cancel</button>
+                            <button type="submit" id="kt_button_submit" class="btn btn-primary">
                                 <span class="indicator-label">Submit</span>
                                 <span class="indicator-progress">Please wait...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -196,8 +196,8 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Informasi Service Order</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Penjemputan : {{$so->tmp_jpt}} | Tujuan :
-                            {{$so->tujuan}}</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Penjemputan : {{$so->tmp_jemput}} | Tujuan :
+                            {{$so->tmp_tujuan}}</span>
                     </h3>
                 </div>
 
@@ -205,9 +205,11 @@
                 <!--begin::Body-->
                 <div class="card-body py-3">
                     <div style="display: none">
-                        <input id="origin-input" class="controls" type="text" placeholder="Tempat Penjemputan" />
+                        <input id="origin-input" value="{{$so->tmp_jemput}}" class="controls" type="text"
+                            placeholder="Tempat Penjemputan" />
 
-                        <input id="destination-input" class="controls" type="text" placeholder="Tempat Tujuan" />
+                        <input id="destination-input" value="{{$so->tmp_tujuan}}" class="controls" type="text"
+                            placeholder="Tempat Tujuan" />
 
                         <div id="mode-selector" class="controls">
                             <input type="radio" name="type" id="changemode-walking" checked="checked" />
@@ -367,14 +369,19 @@ class AutocompleteDirectionsHandler {
 
 $(function () {
     $('#id_kendaraan').on('change', function () {
-        id_sim =  $(this).val();
-        // alert(id_sim);
+       var id_sim =  $(this).val();
+        // alert($(this).find(':selected').data('sim'));
         $.ajax({
-            url: 'http://127.0.0.1:8000/driver/select?id_sim='+id_sim+'&id_so='+{{$so->id_so}},
+            // url: 'http://127.0.0.1:8000/driver/select?id_sim='+id_sim+'&id_so='+{{$so->id_so}},
+            url : '{{route("driver.select")}}',
             method: 'GET',
             // error: (result) => $.Notification.error(result),
+            data: {
+                // 'id_sim': $(this).val(),
+                'id_sim': $(this).find(':selected').data('sim'),
+                'id_so': {{$so->id_so}}
+                },
             dataType: 'json',
-            // data: {id_sim: $(this).val()},
             success: function (result) {
                 console.log(result);
                 console.log(result.Success);
@@ -397,10 +404,124 @@ $(function () {
             }
         })
     });
-    $('#id_driver').on('change', function () {
-        id_sim =  $(this).val();
-        alert(id_sim);
-    });
+    // $('#id_driver').on('change', function () {
+    //     id_sim =  $(this).val();
+    //     alert(id_sim);
+    // });
 });
+
+var KTFormAccept = function () {
+    var t, e, n, a, i;
+    return {
+        init: function () {
+            (
+                a = document.querySelector("#kt_form_accept"),
+                t = document.getElementById("kt_button_submit"),
+                e = document.getElementById("kt_button_cancel")
+                , n = FormValidation.formValidation(a, {
+                    fields: {
+                        id_kendaraan: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Kendaraan Harus Dipilih"
+                                }
+                            }
+                        },
+                        id_driver: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Driver Harus Dipilih"
+                                }
+                            }
+                        },
+                        tmp_jemput: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Penjemputan Harus Diisi, Silahkan Eksekusi Field Di G. Maps"
+                                }
+                            }
+                        },
+                        tmp_tujuan: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Tujuan Harus Diisi, Silahkan Eksekusi Field Di G. Maps"
+                                }
+                            }
+                        },
+                        kembali: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Kembali Harus Diisi"
+                                }
+                            }
+                        },
+                    },
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger,
+                        bootstrap: new FormValidation.plugins.Bootstrap5({
+                            rowSelector: ".row",
+                            // eleInvalidClass: "",
+                            // eleValidClass: ""
+                        })
+                    }
+                }),
+                t.addEventListener("click", (function (e) {
+                    e.preventDefault(), n && n.validate().then((function (e) {
+                        console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
+                            t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
+                                text: "Formulir telah berhasil dikirim!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then((function (t) {
+                                a.submit()
+                                t.isConfirmed && o.hide()
+                            }))
+                        }), 2e3)) : Swal.fire({
+                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        })
+                    }))
+                })),
+                e.addEventListener("click", (function (t) {
+                    t.preventDefault(), Swal.fire({
+                        text: "Apakah Anda yakin ingin membatalkan?",
+                        icon: "warning",
+                        showCancelButton: !0,
+                        buttonsStyling: !1,
+                        confirmButtonText: "Yes, cancel it!",
+                        cancelButtonText: "No, return",
+                        customClass: {
+                            confirmButton: "btn btn-primary",
+                            cancelButton: "btn btn-active-light"
+                        }
+                    }).then((function (t) {
+
+                        t.value ?
+                        (a.reset(), window.location.href = "{{route('checking.serviceorder.detail',$so->id_so)}}") : "cancel" === t.dismiss && Swal.fire({
+                            text: "Formulir Anda belum dibatalkan!.",
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        })
+                    }))
+                })))
+        }
+    }
+}();
+KTUtil.onDOMContentLoaded((function () {
+    KTFormAccept.init()
+}));
 </script>
 @endpush
