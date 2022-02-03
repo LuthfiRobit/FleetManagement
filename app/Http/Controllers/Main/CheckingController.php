@@ -114,11 +114,6 @@ class CheckingController extends Controller
             ->where('id_service_order', $id)
             ->first();
 
-        $driver = DB::select(
-            'SELECT tb_driver.nama_driver,tb_driver.id_driver FROM tb_driver
-            WHERE NOT EXISTS (SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $service->tgl_jpt . '")'
-        );
-
         $kendaraan =  DB::select(
             'SELECT tb_kendaraan.nama_kendaraan,
             tb_kendaraan.no_polisi,
