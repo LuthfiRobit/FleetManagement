@@ -16,8 +16,8 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Driver Assignment</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">More Than 3 in progress</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Penugasan Driver</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 3 Penugasan Sedang Dalam Perjalanan</span>
                     </h3>
                 </div>
 
@@ -59,13 +59,13 @@
                         class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
                         <thead>
                             <tr class="fw-bolder fs-6 text-gray-800 px-7">
-                                <th>No</th>
-                                <th>No DO</th>
+                                <th>No.</th>
+                                <th>No. DO</th>
                                 <th>Driver</th>
-                                <th>Orderer</th>
-                                <th>Transportation</th>
+                                <th>Pemesan</th>
+                                <th>Kendaraan</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,13 +78,13 @@
                                 <td>{{$as->nama_kendaraan}}</td>
                                 <td>
                                     @if ($as->status_do == 't')
-                                    <span class="badge badge-light-primary">Accepted</span>
+                                    <span class="badge badge-light-primary">Diterima</span>
                                     @elseif($as->status_do == 'p')
                                     <span class="badge badge-light-danger">Process</span>
                                     @elseif($as->status_do)
-                                    <span class="badge badge-light-success">Done</span>
+                                    <span class="badge badge-light-success">Selesai</span>
                                     @else
-                                    <span class="badge badge-light-warning">New</span>
+                                    <span class="badge badge-light-warning">Baru</span>
                                     @endif
                                 </td>
                                 <td>
