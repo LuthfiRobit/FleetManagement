@@ -17,8 +17,8 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Service Order</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">More Than {{$serviceOrder->where('status_so',
-                            '')->count()}} Unread Service Order</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$serviceOrder->where('status_so',
+                            '')->count()}} Service Order Perlu Dilihat</span>
                     </h3>
                 </div>
 
@@ -62,11 +62,11 @@
                             <tr class="fw-bolder fs-6 text-gray-800 px-7">
                                 <th>No</th>
                                 <th>No. SO</th>
-                                <th>Order</th>
-                                <th>Date | Time</th>
-                                <th>Destination</th>
+                                <th>Petugas</th>
+                                <th>Tanggal | Jam</th>
+                                <th>Tujuan</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,7 +89,7 @@
                                 </td>
                                 <td>
                                     <a href="{{route('checking.serviceorder.detail',$so->id_service_order)}}"
-                                        class="btn btn-light bnt-active-light-primary btn-sm">View</a>
+                                        class="btn btn-light bnt-active-light-primary btn-sm">Lihat</a>
                                 </td>
                             </tr>
                             @endforeach
