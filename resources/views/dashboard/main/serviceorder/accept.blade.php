@@ -237,10 +237,7 @@
 <!--begin::Page Vendors Javascript(used by this page)-->
 <script src="{{ url('assets/backend/assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
 <script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-<script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEpgynSlIIGY5ER9T1klLXUknITQmoP7Y&callback=initMap&libraries=places&v=weekly"
-    async>
-</script>
+
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
     // This example requires the Places library. Include the libraries=places
