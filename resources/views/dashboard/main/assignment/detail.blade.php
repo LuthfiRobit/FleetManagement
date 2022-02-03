@@ -12,8 +12,8 @@
                 <!--begin::Header-->
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Detail Driver Assignment</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Driven By : {{$detail->nama_driver}}</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Detail Penugasan Driver</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Driver : {{$detail->nama_driver}}</span>
                     </h3>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                                     <!--begin::Badge-->
                                     @if ($detail->status_do == 't')
                                     <div class="badge badge-lg badge-light-primary d-inline">
-                                        Accepted
+                                        Diterima
                                     </div>
                                     @elseif($detail->status_do == 'p')
                                     <div class="badge badge-lg badge-light-danger d-inline">
@@ -44,11 +44,11 @@
                                     </div>
                                     @elseif($detail->status_do)
                                     <div class="badge badge-lg badge-light-success d-inline">
-                                        Done
+                                        Selesai
                                     </div>
                                     @else
                                     <div class="badge badge-lg badge-light-warning d-inline">
-                                        New
+                                        Baru
                                     </div>
                                     @endif
                                     <!--begin::Badge-->
@@ -59,7 +59,7 @@
                             <!--end::Summary-->
                             <!--begin::Details toggle-->
                             <div class="d-flex flex-stack fs-4 py-3">
-                                <div class="fw-bolder rotate collapsible collapsed">Passengers
+                                <div class="fw-bolder rotate collapsible collapsed">Penumpang
                                 </div>
                                 <span data-bs-toggle="tooltip" title="" data-bs-original-title="Pessengers Amount">
                                     <a class="btn btn-sm btn-light-primary active">{{$penumpang->count()}}</a>
@@ -75,8 +75,8 @@
                                     <table class="table align-middle table-row-dashed gy-5">
                                         <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
                                             <tr class="text-start text-muted text-uppercase gs-0">
-                                                <th class="min-w-100px">Name</th>
-                                                <th>Phone</th>
+                                                <th class="min-w-100px">Nama</th>
+                                                <th>No. Telepon</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fs-6 fw-bold text-gray-600">
@@ -133,8 +133,8 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Pick Up Date and
-                                        Hour</a>
+                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tanggal dan Jam
+                                        Penjemputan</a>
                                     <!--begin::Info-->
                                     <div class="fs-7 text-muted">
                                         {{Carbon\Carbon::parse($detail->tgl_penugasan)->format('d F Y')}} |
@@ -152,7 +152,7 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Dispath Point</a>
+                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tempat Penjemputan</a>
                                     <!--begin::Info-->
                                     <div class="fs-7 text-muted">
                                         {{$detail->tempat_penjemputan}}
@@ -169,8 +169,7 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Dispath
-                                        Destination</a>
+                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tempat Tujuan</a>
                                     <!--begin::Info-->
                                     <div class="fs-7 text-muted">
                                         {{$detail->tujuan}}
@@ -187,8 +186,7 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Return
-                                        Destination</a>
+                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tempat Kembali</a>
                                     <!--begin::Info-->
                                     <div class="fs-7 text-muted">
                                         {{$detail->kembali}}
