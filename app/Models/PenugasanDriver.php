@@ -22,6 +22,18 @@ class PenugasanDriver extends Model
         'kembali',
         'tgl_acc',
         'status_penugasan',
-        'status_pengecekan'
+        'km_awal',
+        'km_akhir',
+        'status_bbm_awal',
+        'status_bbm_akhir',
+        'keterangan_bbm',
+        'waktu_strat',
+        'waktu_finish',
+        'tmp_penjemputan',
+        'lat_jemput',
+        'long_jemput',
+        'tmp_tujuan',
+        'lat_tujuan',
+        'long_tujuan'
     ];
 }
