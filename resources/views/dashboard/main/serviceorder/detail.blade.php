@@ -13,7 +13,7 @@
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Detail Service Order</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Order By : {{$serviceorder->nama_lengkap}}</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Dipesan Oleh : {{$serviceorder->nama_lengkap}}</span>
                     </h3>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                             <!--end::Summary-->
                             <!--begin::Details toggle-->
                             <div class="d-flex flex-stack fs-4 py-3">
-                                <div class="fw-bolder rotate collapsible collapsed">Passengers
+                                <div class="fw-bolder rotate collapsible collapsed">Penumpang
                                 </div>
                                 <span data-bs-toggle="tooltip" data-bs-trigger="hover" title=""
                                     data-bs-original-title="Edit customer details">
@@ -63,8 +63,8 @@
                                         id="kt_table_users_login_session">
                                         <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
                                             <tr class="text-start text-muted text-uppercase gs-0">
-                                                <th class="min-w-100px">Name</th>
-                                                <th>Phone</th>
+                                                <th class="min-w-100px">Nama</th>
+                                                <th>No. Telepon</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fs-6 fw-bold text-gray-600">
@@ -94,7 +94,7 @@
                             <!--begin::Card title-->
                             <div class="card-title flex-column">
                                 <h2 class="mb-1">ID Service Order</h2>
-                                <div class="fs-6 fw-bold text-muted">SO {{$serviceorder->id_service_order}}</div>
+                                <div class="fs-6 fw-bold text-muted">SO_{{$serviceorder->id_service_order}}</div>
                             </div>
                             <!--end::Card title-->
                             <!--begin::Card toolbar-->
@@ -111,7 +111,7 @@
                                     <span class="svg-icon svg-icon-3">
                                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                                     </span>
-                                    <!--end::Svg Icon-->Actions
+                                    <!--end::Svg Icon-->Aksi
                                 </button>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-6 w-200px py-4"
@@ -119,14 +119,14 @@
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
                                         <a href="{{route('checking.serviceorder.accept.form', $serviceorder->id_service_order)}}"
-                                            class="menu-link px-3">Accept</a>
+                                            class="menu-link px-3">Terima</a>
                                         {{-- <a href="#" class="menu-link px-3" id="modal_accept"">Accept</a> --}}
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class=" menu-item px-3">
                                             <a href="#" class="menu-link px-3" data-bs-toggle="modal"
-                                                data-bs-target="#kt_modal_reject">Reject</a>
+                                                data-bs-target="#kt_modal_reject">Tolak</a>
                                     </div>
                                     <!--end::Menu item-->
                                 </div>
@@ -146,7 +146,8 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Pick Up Date and Hour</a>
+                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tanggal dan Jam
+                                        Penjemputan</a>
                                     <!--begin::Info-->
                                     <div class="fs-5 text-muted">
                                         {{Carbon\Carbon::parse($serviceorder->tgl_penjemputan)->format('d F Y')}} |
@@ -164,7 +165,7 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Pick Up Point</a>
+                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tempat Penjemputan</a>
                                     <!--begin::Info-->
                                     <div class="fs-5 text-muted">{{$serviceorder->tempat_penjemputan}}
                                     </div>
@@ -180,7 +181,7 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Pick Up Destination</a>
+                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tempat Tujuan</a>
                                     <!--begin::Info-->
                                     <div class="fs-5 text-muted">{{$serviceorder->tujuan}}
                                     </div>
@@ -196,7 +197,7 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Pick Up Information</a>
+                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tujuan Keberangkatan</a>
                                     <!--begin::Info-->
                                     <div class="fs-5 text-muted">{{$serviceorder->keterangan}}
                                     </div>
@@ -353,7 +354,7 @@
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
                             <!--begin::Title-->
-                            <h1 class="mb-3">Reject Service Order</h1>
+                            <h1 class="mb-3">Tolak Service Order</h1>
                             <!--end::Title-->
                         </div>
                         <!--end::Heading-->
@@ -361,20 +362,20 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                <span class="required">Rejections Description</span>
+                                <span class="required">Deskripsi Penolakan</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Specify Rejections Description"></i>
+                                    title="Jelaskan Penolakan Service Order"></i>
                             </label>
                             <!--end::Label-->
                             <textarea name="keterangan_penolakan" class="form-control form-control-solid"
-                                placeholder="Type the rejection reason"></textarea>
+                                placeholder="Tuliskan Deskripsi Penolakan"></textarea>
                         </div>
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center">
-                            <button type="reset" id="kt_modal_reject_cancel" class="btn btn-light me-3">Cancel</button>
+                            <button type="reset" id="kt_modal_reject_cancel" class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_reject_submit" class="btn btn-primary">
-                                <span class="indicator-label">Submit</span>
+                                <span class="indicator-label">Kirim</span>
                                 <span class="indicator-progress">Please wait...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
