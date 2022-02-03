@@ -81,13 +81,12 @@
                                 <thead>
                                     <tr class="fw-bolder fs-6 text-gray-800 px-7">
                                         <th>No</th>
-                                        <th>No VC</th>
-                                        <th>No DO</th>
+                                        <th>No Checking</th>
                                         <th>Checked By | Driver</th>
                                         <th>Vehicle</th>
                                         <th>Vehicle Kilometers</th>
                                         <th>Vehicle Status</th>
-                                        <th>Status VC</th>
+                                        <th>Status Checking</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -96,7 +95,6 @@
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
                                         <td>VC_{{$pc->id_pengecekan}}</td>
-                                        <td>DO_{{$pc->id_do}}</td>
                                         <td>{{$pc->nama_driver}}</td>
                                         <td>
                                             {{$pc->nama_kendaraan}}
@@ -136,13 +134,12 @@
                                 <thead>
                                     <tr class="fw-bolder fs-6 text-gray-800 px-7">
                                         <th>No</th>
-                                        <th>No VC</th>
-                                        <th>No DO</th>
+                                        <th>No Checking</th>
                                         <th>Checked By | Driver</th>
                                         <th>Vehicle</th>
                                         <th>Vehicle Kilometers</th>
                                         <th>Vehicle Status</th>
-                                        <th>Status VC</th>
+                                        <th>Status Checking</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -151,7 +148,6 @@
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
                                         <td>VC_{{$pc->id_pengecekan}}</td>
-                                        <td>DO_{{$pc->id_do}}</td>
                                         <td>{{$pc->nama_driver}}</td>
                                         <td>
                                             {{$pc->nama_kendaraan}}

@@ -118,8 +118,8 @@
                                     data-kt-menu="true">
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_accept">Accept</a>
+                                        <a href="{{route('checking.serviceorder.accept.form', $serviceorder->id_service_order)}}"
+                                            class="menu-link px-3">Accept</a>
                                         {{-- <a href="#" class="menu-link px-3" id="modal_accept"">Accept</a> --}}
                                     </div>
                                     <!--end::Menu item-->

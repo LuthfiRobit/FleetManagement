@@ -94,6 +94,90 @@ class CheckingController extends Controller
         return view('dashboard.main.serviceorder.detail', $data);
     }
 
+    public function serviceAccept(Request $request, $id)
+    {
+        $service = DB::table('tb_order_kendaraan')
+            ->select(
+                'tb_order_kendaraan.id_service_order as id_so',
+                'tb_order_kendaraan.tgl_penjemputan as tgl_jpt',
+                'tb_order_kendaraan.jam_penjemputan as jam_jmp',
+                'tb_order_kendaraan.tempat_penjemputan as tmp_jpt',
+                'tb_order_kendaraan.tujuan as tujuan',
+                'tb_petugas.id_petugas',
+                'tb_petugas.nama_lengkap as petugas',
+                'tb_departemen.nama_departemen as departemen',
+                'tb_jabatan.nama_jabatan as jabatan'
+            )
+            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
+            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
+            ->where('id_service_order', $id)
+            ->first();
+
+        $driver = DB::select(
+            'SELECT tb_driver.nama_driver,tb_driver.id_driver FROM tb_driver
+            WHERE NOT EXISTS (SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $service->tgl_jpt . '")'
+        );
+
+        $kendaraan =  DB::select(
+            'SELECT tb_kendaraan.nama_kendaraan,
+            tb_kendaraan.no_polisi,
+            tb_kendaraan.id_kendaraan,
+            tb_kendaraan.id_jenis_sim,
+            tb_jenis_sim.nama_sim as sim,
+            tb_jenis_alokasi.nama_alokasi as alokasi FROM tb_kendaraan
+            JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
+            JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+            JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
+            WHERE NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_pengecekan_kendaraan.status_kendaraan = "r"
+            UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $service->tgl_jpt . '")'
+        );
+        $data = [
+            'so' => $service,
+            'kendaraan' => $kendaraan,
+            // 'driver' => $driver
+        ];
+
+        // return $data;
+        return view('dashboard.main.serviceorder.accept', $data);
+    }
+
+    public function selectDriver(Request $request)
+    {
+
+        $id =  $request->get('id_so');
+        $id_sim = $request->get('id_sim');
+        $service = DB::table('tb_order_kendaraan')
+            ->select(
+                'tb_order_kendaraan.id_service_order as id_so',
+                'tb_order_kendaraan.tgl_penjemputan as tgl_jpt',
+                'tb_order_kendaraan.jam_penjemputan as jam_jmp',
+            )
+            ->where('id_service_order', $id)
+            ->first();
+
+        $driver = DB::select(
+            "SELECT tb_driver.id_driver, tb_driver.nama_driver FROM tb_driver
+            LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
+            WHERE tb_driver.status_driver = 'y' AND tb_detail_sim.id_jenis_sim = '$id_sim'
+            AND NOT EXISTS (SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' )"
+        );
+        // return response()->json($driver);
+
+        if ($driver == null) {
+            return $data = [
+                'Success' => false,
+                'Message' => 'Tidak ada Driver'
+            ];
+        } else {
+            return $data = [
+                'Success' => true,
+                'Message' => '',
+                'Driver' => $driver
+            ];
+        }
+    }
+
     public function acceptSo(Request $request, $id)
     {
         // $find = DB::table('tb_order_kendaraan')->where('id_service_order', $id);

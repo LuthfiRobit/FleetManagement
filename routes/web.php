@@ -48,6 +48,7 @@ Route::name('checking')->prefix('checking')
     ->group(function () {
         Route::get('/serviceorder', [CheckingController::class, 'serviceorder'])->name('.serviceorder');
         Route::get('/serviceorder/detail/{id}', [CheckingController::class, 'detailSo'])->name('.serviceorder.detail');
+        Route::get('/serviceorder/accept/form/{id}', [CheckingController::class, 'serviceAccept'])->name('.serviceorder.accept.form');
         Route::put('/serviceorder/accept/{id}', [CheckingController::class, 'acceptSo'])->name('.serviceorder.accept');
         Route::put('/serviceorder/reject/{id}', [CheckingController::class, 'rejectSo'])->name('.serviceorder.reject');
     });
@@ -120,3 +121,6 @@ Route::name('dashboard.')->prefix('dashboard')
         Route::get('driver/status/aktif/{id}', [DriverController::class, 'statusDriverAktif'])->name('driver.status.aktif');
         Route::get('driver/status/nonaktif/{id}', [DriverController::class, 'statusDriverNonAktif'])->name('driver.status.nonaktif');
     });
+
+//as api
+Route::get('driver/select', [CheckingController::class, 'selectDriver'])->name('driver.select');
