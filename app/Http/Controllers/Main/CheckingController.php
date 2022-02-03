@@ -183,19 +183,25 @@ class CheckingController extends Controller
                 'id_driver'         => $request->id_driver,
                 'id_kendaraan'      => $request->id_kendaraan,
                 'id_petugas'        => $find->id_petugas,
-                'tgl_penugasan'     => $find->tgl_penjemputan,
+                'tgl_penugasan'     => Carbon::parse($find->tgl_penjemputan)->format('Y-m-d'),
                 'jam_berangkat'     => Carbon::parse($find->jam_penjemputan)->format('H:i:s'),
                 'kembali'           => $request->kembali,
-                'tgl_acc'           => date('Y-m-d')
+                'tgl_acc'           => date('Y-m-d'),
+                'tmp_penjemputan'   => $request->tmp_jemput,
+                'lat_jemput'        => '-7.712123326867145',
+                'long_jemput'       => '113.57749476810118',
+                'tmp_tujuan'        => $request->tmp_tujuan,
+                'lat_tujuan'        => '-7.851952179623661',
+                'long_tujuan'       => '112.51991928366783'
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($data);
             if ($penugasancreate) {
-                return redirect()->route('checking.serviceorder')->with('success', 'Service Order is Accepted');
+                return redirect()->route('checking.serviceorder')->with('success', 'Penugasan Driver Berhasil Dibuat');
             } else {
-                return 'gagal simpan';
+                return redirect()->route('checking.serviceorder')->with('success', 'Penugasan Driver Gagal Dibuat');
             }
         } else {
-            return 'gagal';
+            return redirect()->route('checking.serviceorder')->with('success', 'Dispath Order Driver Tidak Ditemukan');
         }
 
         // return redirect()->route('checking.serviceorder')->with('success', 'Service Order is Accepted');
