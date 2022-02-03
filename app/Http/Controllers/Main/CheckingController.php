@@ -130,7 +130,6 @@ class CheckingController extends Controller
         $data = [
             'so' => $service,
             'kendaraan' => $kendaraan,
-            // 'driver' => $driver
         ];
 
         // return $data;
