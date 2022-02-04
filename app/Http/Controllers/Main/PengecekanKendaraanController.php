@@ -27,8 +27,8 @@ class PengecekanKendaraanController extends Controller
                 'tb_driver.nama_driver'
             )
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
-            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_driver.id_driver')
-            ->orderByDesc('id_pengecekan')
+            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_pengecekan_kendaraan.id_driver')
+            ->orderByDesc('tb_pengecekan_kendaraan.id_pengecekan')
             ->get();
 
         $data['kendaraan'] = DB::table('tb_kendaraan')
