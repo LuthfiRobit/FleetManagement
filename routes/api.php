@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ApiCheckingController;
+use App\Http\Controllers\Api\ApiPenugasanController;
 use App\Http\Controllers\Api\ApiServiceOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -72,5 +74,26 @@ Route::group(
         Route::get('check', [ApiServiceOrderController::class, 'checkTransportDo']);
         Route::get('check/latest', [ApiServiceOrderController::class, 'latestIdCo']);
         Route::post('check/create', [ApiServiceOrderController::class, 'storeCheckingDo']);
+    }
+);
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'checking'],
+    function () {
+        Route::get('list/kendaraan', [ApiCheckingController::class, 'listKendaraan']); //list kendaraan
+        Route::get('form', [ApiCheckingController::class, 'checkForm']); //form pengecekan
+        Route::post('simpan', [ApiCheckingController::class, 'simpanPengecekan']); //simpan pengecekan
+        Route::post('foto/simpan', [ApiCheckingController::class, 'simpanFotoPengecekan']); //simpan foto pengecekan
+        Route::post('foto/update', [ApiCheckingController::class, 'updateFotoPengecekan']); //update foto pengecekan
+        Route::post('foto/delete', [ApiCheckingController::class, 'deleteFotoPengecekan']); //delete foto pengecekan
+    }
+);
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'penugasan'],
+    function () {
+        Route::post('batal', [ApiPenugasanController::class, 'batalPenugasan']); //batal penugasan
+        Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
+        Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
     }
 );
