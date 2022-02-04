@@ -14,7 +14,7 @@ class PengecekanKendaraan extends Model
 
     protected $fillable = [
         'id_pengecekan',
-        'id_do',
+        'id_driver',
         'id_kendaraan',
         'tgl_pengecekan',
         'jam_pengecekan',
@@ -26,5 +26,10 @@ class PengecekanKendaraan extends Model
     public function detailPengecekan()
     {
         return $this->hasMany(PengecekanKendaraanDetail::class, 'id_pengecekan', 'id_pengecekan');
+    }
+
+    public function fotoPengecekan()
+    {
+        return $this->hasMany(PengecekanKendaraanFoto::class, 'id_pengecekan', 'id_pengecekan');
     }
 }
