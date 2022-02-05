@@ -81,6 +81,7 @@ Route::group(
     ['middleware' => 'api', 'prefix' => 'checking'],
     function () {
         Route::get('list/kendaraan', [ApiCheckingController::class, 'listKendaraan']); //list kendaraan
+        Route::get('id', [ApiCheckingController::class, 'idPengecekan']); //get id pengecekan terbaru
         Route::get('form', [ApiCheckingController::class, 'checkForm']); //form pengecekan
         Route::post('simpan', [ApiCheckingController::class, 'simpanPengecekan']); //simpan pengecekan
         Route::post('foto/simpan', [ApiCheckingController::class, 'simpanFotoPengecekan']); //simpan foto pengecekan
