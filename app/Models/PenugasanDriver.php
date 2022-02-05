@@ -27,7 +27,7 @@ class PenugasanDriver extends Model
         'status_bbm_awal',
         'status_bbm_akhir',
         'keterangan_bbm',
-        'waktu_strat',
+        'waktu_start',
         'waktu_finish',
         'tmp_penjemputan',
         'lat_jemput',
