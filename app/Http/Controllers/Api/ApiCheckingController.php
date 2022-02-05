@@ -47,6 +47,25 @@ class ApiCheckingController extends Controller
         }
     }
 
+    public function idPengecekan(Request $request)
+    {
+        $lastId = DB::table('tb_pengecekan_kendaraan')
+            ->select('id_pengecekan')
+            ->orderByDesc('id_pengecekan')
+            ->first();
+        if ($lastId != '') {
+            return response()->json(
+                $lastId
+            );
+        } else {
+            return response()->json(
+                [
+                    'id_pengecekan' => 'kosong'
+                ]
+            );
+        }
+    }
+
     public function checkForm(Request $request)
     {
         $id_kendaraan = $request->query('id_kendaraan');
