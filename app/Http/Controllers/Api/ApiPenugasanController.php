@@ -19,7 +19,7 @@ class ApiPenugasanController extends Controller
         $id_do = $request->id_do;
         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($proses == true) {
-            $proses->update(['status_penugasan' => 'c']);
+            // $proses->update(['status_penugasan' => 'c']);
             $bukti = $request->file('bukti');
             $name = 'batal_' . uniqid() . '.' . $bukti->getClientOriginalExtension();
             $dataPembatalan = [
