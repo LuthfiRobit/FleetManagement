@@ -93,6 +93,10 @@ Route::group(
 Route::group(
     ['middleware' => 'api', 'prefix' => 'penugasan'],
     function () {
+        Route::get('terbaru', [ApiPenugasanController::class, 'penugasanTerbaru']); //list penugasan terbaru (penugasan/terbaru?id_driver=1)
+        Route::get('detail', [ApiPenugasanController::class, 'detailPenugasan']); //detail penugasan bisa digunakan untuk detail semua penugasan (penugasan/detail?id_do=1)
+        Route::post('terima', [ApiPenugasanController::class, 'terimaPenugasan']); //terima penugasan
+        Route::get('tab', [ApiPenugasanController::class, 'listPenugasan']); //list penugasan berdasarkan status/tab (penugasan/tab?id_driver=1&tab=t)
         Route::post('batal', [ApiPenugasanController::class, 'batalPenugasan']); //batal penugasan
         Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
