@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
+use App\Models\PengecekanKendaraan;
 use App\Models\PengecekanKendaraanDetail;
 use App\Models\Perbaikan;
 use App\Models\PerbaikanPersetujuan;
@@ -27,7 +28,6 @@ class PerbaikanController extends Controller
             'id_pengecekan' => $id_pengecekan,
             'id_petugas' => $id_petugas,
             'tgl_persetujuan' => $request->tgl_persetujuan,
-            'status' => 's'
         ];
 
         // if ($status == 't') {
@@ -39,7 +39,7 @@ class PerbaikanController extends Controller
         // } else if ($status == 's') {
         DB::beginTransaction();
         try {
-            $data_approval['status'] = 's';
+            $updatePengecekan = PengecekanKendaraan::where('id_pengecekan', $id_pengecekan)->update(['status_perbaikan' => 't']);
             $store_approval = PerbaikanPersetujuan::create($data_approval);
             $data_repair = [
                 'id_persetujuan' => $store_approval->id_persetujuan,
@@ -91,20 +91,36 @@ class PerbaikanController extends Controller
         // }
     }
 
-    public function reject(Request $request)
+    public function reject(Request $request, $id)
     {
         $id_petugas = 4;
-        $data_approval = [
-            'id_pengecekan' => $request->get('id_pengecekan'),
-            'id_petugas' => $id_petugas,
-            'tgl_persetujuan' => Carbon::now()->format('Y-m-d'),
-            'status' => 't'
-        ];
-        $reject = PerbaikanPersetujuan::create($data_approval);
-        if ($reject) {
-            return redirect()->back()->with('success', 'Berhasil tolak perbaikan.');
+        // $id_pengecekan = $request->id_pengecekan;
+        $findPengecekan = PengecekanKendaraan::where('id_pengecekan', $id)->first();
+        if ($findPengecekan) {
+            $data = [
+                'status_perbaikan' => 'tl',
+                'keterangan_penolakan' => $request->keterangan_penolakan
+            ];
+            $reject = $findPengecekan->update($data);
+            if ($reject) {
+                return redirect()->back()->with('success', 'Berhasil tolak perbaikan.');
+            } else {
+                return redirect()->back()->with('success', 'Gagal tolak perbaikan!');
+            }
         } else {
-            return redirect()->back()->with('success', 'Gagal tolak perbaikan!');
+            return redirect()->back()->with('success', 'Gagal tolak perbaikan, data tidak ditemukan!');
         }
+        // $data_approval = [
+        //     'id_pengecekan' => $request->get('id_pengecekan'),
+        //     'id_petugas' => $id_petugas,
+        //     'tgl_persetujuan' => Carbon::now()->format('Y-m-d'),
+        //     'status' => 't'
+        // ];
+        // $reject = PerbaikanPersetujuan::create($data_approval);
+        // if ($reject) {
+        //     return redirect()->back()->with('success', 'Berhasil tolak perbaikan.');
+        // } else {
+        //     return redirect()->back()->with('success', 'Gagal tolak perbaikan!');
+        // }
     }
 }
