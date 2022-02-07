@@ -81,7 +81,6 @@ class PengecekanKendaraanController extends Controller
                 'tb_pengecekan_kendaraan.km_kendaraan',
                 'tb_pengecekan_kendaraan.status_kendaraan',
                 'tb_pengecekan_kendaraan.status_pengecekan',
-                'tb_penugasan_driver.id_do',
                 'tb_kendaraan.kode_asset',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
@@ -92,21 +91,21 @@ class PengecekanKendaraanController extends Controller
                 'tb_bahan_bakar.nama_bahan_bakar as bahan_bakar',
                 'tb_driver.nama_driver'
             )
-            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_pengecekan_kendaraan.id_do')
-            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_pengecekan_kendaraan.id_driver')
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
             ->leftJoin('tb_bahan_bakar', 'tb_bahan_bakar.id_bahan_bakar', '=', 'tb_kendaraan.id_bahan_bakar')
             ->leftJoin('tb_merk_kendaraan', 'tb_merk_kendaraan.id_merk', '=', 'tb_kendaraan.id_merk')
             ->leftJoin('tb_jenis_kendaraan', 'tb_jenis_kendaraan.id_jenis_kendaraan', '=', 'tb_kendaraan.id_jenis_kendaraan')
-            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->where('id_pengecekan', $id)
-            ->orderByDesc('id_pengecekan')
             ->first();
         // return $data;
+
         $data['detail'] = DB::table('tb_detail_pengecekan')
             ->select(
                 'tb_detail_pengecekan.id_detail_pengecekan',
                 'tb_detail_pengecekan.kondisi',
                 'tb_detail_pengecekan.keterangan',
+                'tb_detail_pengecekan.waktu_pengecekan as waktu',
                 'tb_kriteria_pengecekan.nama_kriteria as kriteria',
                 'tb_jenis_pengecekan.jenis_pengecekan as jenis',
             )
@@ -114,6 +113,16 @@ class PengecekanKendaraanController extends Controller
             ->join('tb_kriteria_pengecekan', 'tb_kriteria_pengecekan.id_kriteria', '=', 'tb_jenis_pengecekan.id_kriteria')
             ->where('id_pengecekan', $id)
             ->get();
+
+        $data['foto'] = DB::table('tb_detail_foto_pengecekan')
+            ->select(
+                'tb_detail_foto_pengecekan.id_detail_foto_cek',
+                'tb_detail_foto_pengecekan.foto_pengecekan',
+                'tb_detail_foto_pengecekan.keterangan'
+            )
+            ->where('tb_detail_foto_pengecekan.id_pengecekan', $id)
+            ->get();
+
         $data['dealer'] = DB::table('tb_dealer')
             ->select('id_dealer', 'nama_dealer', 'status_dealer')->where('status', 'y')->orderByDesc('id_dealer')->get();
         $latest_wo = DB::table('tb_persetujuan_perbaikan')
