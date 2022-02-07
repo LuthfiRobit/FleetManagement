@@ -4,10 +4,10 @@
     data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start"
     data-kt-drawer-toggle="#kt_aside_mobile_toggle">
     <!--begin::Brand-->
-    <div class="aside-logo flex-column-auto" id="kt_aside_logo" style="background: white">
+    <div class="aside-logo flex-column-auto" id="kt_aside_logo">
         <!--begin::Logo-->
         <a href="https://www.pomi.co.id/">
-            <img alt="Logo" src="{{url('assets/img_logo/logo_pomi1.png')}}" class="h-50px logo" />
+            <img alt="Logo" src="{{url('assets/img_logo/logo_pomi3.png')}}" class="h-50px logo" />
         </a>
         <!--end::Logo-->
         <!--begin::Aside toggler-->
@@ -89,7 +89,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Driver Assignment</span>
+                        <span class="menu-title">Penugasan Driver</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -101,7 +101,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Vehicle Check</span>
+                        <span class="menu-title">Pengecekan Kendaraan</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -113,7 +113,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Accident Report</span>
+                        <span class="menu-title">Laporan Kecelakaan</span>
                     </a>
                 </div>
                 <div class="menu-item">

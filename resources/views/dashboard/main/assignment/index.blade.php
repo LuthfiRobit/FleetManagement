@@ -81,8 +81,10 @@
                                     <span class="badge badge-light-primary">Diterima</span>
                                     @elseif($as->status_do == 'p')
                                     <span class="badge badge-light-danger">Process</span>
-                                    @elseif($as->status_do)
+                                    @elseif($as->status_do == 's')
                                     <span class="badge badge-light-success">Selesai</span>
+                                    @elseif($as->status_do == 'c')
+                                    <span class="badge badge-light-success">Batal</span>
                                     @else
                                     <span class="badge badge-light-warning">Baru</span>
                                     @endif

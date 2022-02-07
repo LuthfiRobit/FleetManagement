@@ -12,8 +12,8 @@
                 <!--begin::Header-->
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Detail Vechile Check</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Checked By : {{$pengecekan->nama_driver}}</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Detail Pengecekan</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Oleh : {{$pengecekan->nama_driver}}</span>
                     </h3>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                             <!--end::Summary-->
                             <!--begin::Details toggle-->
                             <div class="d-flex flex-stack fs-4 py-3">
-                                <div class="fw-bolder rotate collapsible collapsed">Detail Vehicle
+                                <div class="fw-bolder rotate collapsible collapsed">Detail Kendaraan
                                 </div>
                             </div>
                             <!--end::Details toggle-->
@@ -87,17 +87,17 @@
                             <!--begin::Details content-->
                             <div id="kt_user_view_details">
                                 <div class="pb-5 fs-6">
-                                    <div class="fw-bolder mt-5">Latest Kilometers</div>
+                                    <div class="fw-bolder mt-5">Kilometer</div>
                                     <div class="text-gray-600">{{$pengecekan->km_kendaraan}} Km</div>
-                                    <div class="fw-bolder mt-5">Merk</div>
+                                    <div class="fw-bolder mt-5">Merek</div>
                                     <div class="text-gray-600">{{$pengecekan->merk}} </div>
-                                    <div class="fw-bolder mt-5">Type</div>
+                                    <div class="fw-bolder mt-5">Tipe</div>
                                     <div class="text-gray-600">{{$pengecekan->jenis}}</div>
-                                    <div class="fw-bolder mt-5">Fuel</div>
+                                    <div class="fw-bolder mt-5">Bahan Bakar</div>
                                     <div class="text-gray-600">{{$pengecekan->bahan_bakar}}</div>
-                                    <div class="fw-bolder mt-5">Color</div>
+                                    <div class="fw-bolder mt-5">Warna</div>
                                     <div class="text-gray-600">{{$pengecekan->warna}}</div>
-                                    <div class="fw-bolder mt-5">Drive Type</div>
+                                    <div class="fw-bolder mt-5">Jenis Penggerak</div>
                                     <div class="text-gray-600">{{$pengecekan->jenis_penggerak}}</div>
                                 </div>
                             </div>
@@ -109,17 +109,17 @@
                 <!--end:: sidebar-->
                 <!--begin:: content-->
                 <div class="flex-lg-row-fluid ms-lg-15" id="kt_table_users">
-                    <div class="card card-flush mb-6 mb-xl-9">
+                    <div class="card card-flush mb-0 mb-xl-3">
                         <!--begin::Card header-->
-                        <div class="card-header mt-6">
+                        <div class="card-header mt-3">
                             <!--begin::Card title-->
                             <div class="card-title flex-column">
-                                <h2 class="mb-1">ID Vehicle Check</h2>
+                                <h2 class="mb-1">No. Pengecekan</h2>
                                 <div class="fs-6 fw-bold text-muted">VC_{{$pengecekan->id_pengecekan}} |
                                     @if($pengecekan->status_pengecekan == 'c')
-                                    <span class="badge badge-light-success">Normal Check</span>
+                                    <span class="badge badge-light-success">Pengecekan Normal</span>
                                     @else
-                                    <span class="badge badge-light-warning">Accident check</span>
+                                    <span class="badge badge-light-warning">Pengecekan Kecelakaan</span>
                                     @endif
                                 </div>
                             </div>
@@ -132,8 +132,8 @@
                                     <!--begin::Svg Icon | path: icons/duotune/technology/teh004.svg-->
                                     <span class="svg-icon svg-icon-3">
                                         <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </span>
-                                    <!--end::Svg Icon-->Actions
+                                    </span>Perbaikan
+                                    <!--end::Svg Icon-->
                                 </button>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-6 w-200px py-4"
@@ -141,14 +141,15 @@
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
                                         <a href="#" class="menu-link px-3" data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_repair">Repair</a>
+                                            data-bs-target="#kt_modal_repair_accept">Terima Perbaikan</a>
                                         {{-- <a href="#" class="menu-link px-3" id="modal_accept"">Accept</a> --}}
                                  </div>
                                  <!--end::Menu item-->
                                  <!--begin::Menu item-->
                                  <div class=" menu-item px-3">
-                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal"
-                                                data-bs-target="#kt_modal_reject">Update Repairation</a>
+                                            <a type="button" data-pengecekan="{{$pengecekan->id_pengecekan}}"
+                                                class="menu-link px-3" id="kt_modal_repair_reject">Tolak
+                                                Perbaikan</a>
                                     </div>
                                     <!--end::Menu item-->
                                 </div>
@@ -159,16 +160,16 @@
                         </div>
                         <!--end::Card header-->
                         <!--begin::Card body-->
-                        <div class="card-body d-flex flex-column">
+                        <div class="card-body d-flex flex-column ">
                             <!--begin::Item-->
-                            <div class="d-flex align-items-center position-relative mb-7">
+                            <div class="d-flex flex-stack position-relative mt-0">
                                 <!--begin::Label-->
-                                <div class="position-absolute top-0 start-0 rounded h-100 bg-secondary w-4px"></div>
+                                <div class="position-absolute h-100 w-4px bg-secondary rounded top-0 start-0"></div>
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Checking Date and
-                                        Time</a>
+                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tanggal dan Waktu
+                                        Pengecekan</a>
                                     <!--begin::Info-->
                                     <div class="fs-7 text-muted">
                                         {{Carbon\Carbon::parse($pengecekan->tgl_pengecekan)->format('d F Y')}} |
@@ -177,8 +178,35 @@
                                     <!--end::Info-->
                                 </div>
                                 <!--end::Details-->
+                                <!--begin::Action-->
+                                <div
+                                    class="notice d-flex bg-light-primary rounded border-primary border border-dashed mb-9 p-2">
+                                    @if ($detail[0]->waktu == 'm')
+                                    Pagi
+                                    @elseif ($detail[0]->waktu == 'a')
+                                    Siang
+                                    @else
+                                    Malam
+                                    @endif
+                                </div>
+                                <!--end::Action-->
                             </div>
                             <!--end::Item-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <div class="card card-flush mb-3 mb-xl-3">
+                        <!--begin::Card header-->
+                        <div class="card-header mt-3">
+                            <!--begin::Card title-->
+                            <div class="card-title flex-column">
+                                <h5 class="mb-1">Detail Komponen</h5>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body d-flex flex-column">
                             <div class="table-responsive">
                                 <!--begin::Table-->
                                 <table class="table align-middle table-row-dashed gy-5"
@@ -187,10 +215,10 @@
                                     <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
                                         <!--begin::Table row-->
                                         <tr class="text-start text-muted text-uppercase gs-0">
-                                            <th class="min-w-100px">Criteria</th>
-                                            <th>Type</th>
-                                            <th>Condition</th>
-                                            <th class="min-w-125px">Description</th>
+                                            <th class="min-w-100px">Kriteria</th>
+                                            <th>Tipe</th>
+                                            <th>Kondisi</th>
+                                            <th class="min-w-125px">Keterangan</th>
                                         </tr>
                                         <!--end::Table row-->
                                     </thead>
@@ -203,18 +231,51 @@
                                             <td>{{$dp->jenis}}</td>
                                             <td>
                                                 @if($dp->kondisi == 'b')
-                                                <span class="badge badge-light-success">Normal</span>
+                                                <span class="badge badge-light-success">Baik/Normal</span>
                                                 @else
-                                                <span class="badge badge-light-danger">Damaged</span>
+                                                <span class="badge badge-light-danger">Rusak/Tidak Normal</span>
                                                 @endif
                                             </td>
-                                            <td>{{$dp->keterangan}}</td>
+                                            <td>
+                                                @if ($dp->keterangan != null)
+                                                {{$dp->keterangan}}
+                                                @else
+                                                ----
+                                                @endif
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                     <!--end::Table body-->
                                 </table>
                                 <!--end::Table-->
+                            </div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <div class="card card-flush mb-3 mb-xl-3">
+                        <!--begin::Card header-->
+                        <div class="card-header mt-3">
+                            <!--begin::Card title-->
+                            <div class="card-title flex-column">
+                                <h5 class="mb-1">Detail Foto Pengecekan</h5>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body d-flex flex-column">
+                            <div class="row text-center">
+                                @foreach ($foto as $ft)
+                                <div class="col-lg-3 col-md-2 mb-0 mb-lg-3">
+                                    <div class="bg-image hover-overlay  bg-light-primary rounded border-primary border border-dashed"
+                                        data-ripple-color="light">
+                                        <img src="{{url('/assets/img_checking/'.$ft->foto_pengecekan)}}"
+                                            class="w-100" />
+                                    </div>
+                                    {{$ft->keterangan}}
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                         <!--end::Card body-->
@@ -229,7 +290,7 @@
     <!--end::Post-->
 
     <!--begin::Modal Repair-->
-    <div class="modal fade" id="kt_modal_repair" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_repair_accept" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-1000px">
             <!--begin::Modal content-->
@@ -263,53 +324,42 @@
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
                             <!--begin::Title-->
-                            <h1 class="mb-3">Repairation Approval</h1>
+                            <h1 class="mb-3">Persetujuan Perbaikan</h1>
                             <!--end::Title-->
                         </div>
                         <!--end::Heading-->
                         <!--begin::Input group-->
                         <div class="form-group d-flex mb-8 row" id="id_approval">
-                            <div class="col-lg-3">
-                                <label class="required fs-6 fw-bold mb-2">Checking ID</label>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">NO. Pengecekan</label>
                                 <input type="text" class="form-control form-control-solid"
                                     value="VC_{{$pengecekan->id_pengecekan}}" disabled />
                                 <input type="hidden" class="form-control form-control-solid"
                                     value="{{$pengecekan->id_pengecekan}}" name="id_pengecekan" />
                             </div>
-                            <div class="col-lg-3">
-                                <label class="required fs-6 fw-bold mb-2">Approval Date</label>
+                            <div class="col-lg-4">
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Persetujuan</label>
                                 <input type="date" class="form-control form-control-solid" name="tgl_persetujuan"
                                     id="tgl_persetujuan" value="{{date('Y-m-d')}}" />
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <label class="required fs-6 fw-bold mb-2">No. Work Order</label>
-                                <input type="number" class="form-control form-control-solid" name="no_wo" id="no_wo" />
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="required fs-6 fw-bold mb-2">Acception</label>
-                                <div class="form-check form-switch form-check-custom form-check-solid me-10">
-                                    <input class="form-check-input h-40px w-60px" type="checkbox" value="t" id="status"
-                                        name="status" onclick="statusCheck()" />
-                                    <input type="hidden" class="form-control form-control-solid" name="req_status"
-                                        id="req_status" value="t" />
-                                    <label class="form-check-label" id="status_name" for="status_name">
-                                        Rejected
-                                    </label>
-                                </div>
+                                <input type="number" class="form-control form-control-solid" name="no_wo" id="no_wo"
+                                    value="{{$latest_wo}}" />
                             </div>
                         </div>
-                        <div class="form-group  mb-8 row" id="id_reparation" hidden>
+                        <div class="form-group  mb-8 row" id="id_reparation">
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Choose Dealer</label>
+                                <label class="required fs-6 fw-bold mb-2">Pilih Dealer</label>
                                 <select class="form-select form-select-solid" data-control="select2"
-                                    data-hide-search="false" data-placeholder="Choose Dealer" id="id_dealer"
+                                    data-hide-search="false" data-placeholder="Pilih Dealer" id="id_dealer"
                                     name="id_dealer">
-                                    <option value="">Choose Dealer</option>
+                                    <option value="">Pilih Dealer</option>
                                     @foreach ($dealer as $dl)
                                     <option value="{{$dl->id_dealer}}">
                                         {{$dl->nama_dealer}} |
                                         @if ($dl->status_dealer == 'p')
-                                        <span class="badge badge-light-primary">Private</span>
+                                        <span class="badge badge-light-primary">Perusahaan</span>
                                         @else
                                         <span class="badge badge-light-danger">Partner</span>
                                         @endif
@@ -318,23 +368,23 @@
                                 </select>
                             </div>
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Start at Date</label>
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Perbaikan</label>
                                 <input type="date" class="form-control form-control-solid" name="tgl_perbaikan"
                                     id="tgl_perbaikan" value="{{date('Y-m-d')}}" />
                             </div>
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Due Date</label>
-                                <input type="date" class="form-control form-control-solid" name="tgl_perbaikan"
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Selesai</label>
+                                <input type="date" class="form-control form-control-solid" name="tgl_selesai"
                                     id="tgl_selesai" />
                             </div>
                         </div>
-                        <div class="form-group  mb-8 row" id="id_components" hidden>
+                        <div class="form-group  mb-8 row" id="id_components">
                             <div class="table-responsive">
                                 <table class="table align-middle table-row-dashed gy-5">
                                     <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
                                         <tr class="text-start text-muted text-uppercase gs-0">
-                                            <th>Components</th>
-                                            <th>Condition</th>
+                                            <th>Komponen</th>
+                                            <th>Kondisi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="fs-6 fw-bold text-gray-600">
@@ -345,7 +395,7 @@
                                                 @if($dp->kondisi == 'b')
                                                 <span class="badge badge-light-success">Normal</span>
                                                 @else
-                                                <span class="badge badge-light-danger">Damaged</span>
+                                                <span class="badge badge-light-danger">Rusak</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -357,10 +407,10 @@
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center">
-                            <button type="reset" id="kt_modal_repair_cancel" class="btn btn-light me-3">Cancel</button>
+                            <button type="reset" id="kt_modal_repair_cancel" class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_repair_submit" class="btn btn-primary">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-label">Kirim</span>
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -383,162 +433,53 @@
 
 <script text="text/javascript">
     "use strict";
-    function statusCheck() {
-    var checkBox = document.getElementById("status");
-    var status = document.getElementById("req_status");
-    var text = document.getElementById("status_name");
-    var wo = document.getElementById('no_wo');
-    var reparation = document.getElementById("id_reparation");
-    var component = document.getElementById("id_components");
-        if (checkBox.checked == true){
-            text.style.display = "block";
-            text.innerText = "Accepted";
-            reparation.removeAttribute('hidden');
-            component.removeAttribute('hidden');
-            status.setAttribute('value', 's');
-            wo.setAttribute('value', '{{$latest_wo}}')
-            // reparation.setAttribute('hidden', false);
-            // component.setAttribute('hidden', false);
-            var KTModalCheck = function () {
-                var t, e, n, a, o, i;
-                return {
-                    init: function () {
-                        (i = document.querySelector("#kt_modal_repair")) && (o = new bootstrap.Modal(i),
-                            a = document.querySelector("#kt_modal_repair_form"),
-                            t = document.getElementById("kt_modal_repair_submit"),
-                            e = document.getElementById("kt_modal_repair_cancel"),
-                            n = FormValidation.formValidation(a, {
-                                fields: {
-                                    tgl_persetujuan: {
-                                        validators: {
-                                            notEmpty: {
-                                                message: "Approval Date is Required"
-                                            }
-                                        }
-                                    },
-                                    no_wo: {
-                                        validators: {
-                                            notEmpty: {
-                                                message: "Work Order is Required"
-                                            }
-                                        }
-                                    },
-                                    id_dealer: {
-                                        validators: {
-                                            notEmpty: {
-                                                message: "Dealer is Required"
-                                            }
-                                        }
-                                    },
-                                    tgl_perbaikan: {
-                                        validators: {
-                                            notEmpty: {
-                                                message: "Repair at is Required"
-                                            }
-                                        }
-                                    }
-                                },
-                                plugins: {
-                                    trigger: new FormValidation.plugins.Trigger,
-                                    bootstrap: new FormValidation.plugins.Bootstrap5({
-                                        rowSelector: ".row",
-                                        eleInvalidClass: "",
-                                        eleValidClass: ""
-                                    })
-                                }
-                            }),
-                            t.addEventListener("click", (function (e) {
-                                e.preventDefault(), n && n.validate().then((function (e) {
-                                    console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
-                                        t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
-                                            text: "Approval is submitted.",
-                                            icon: "success",
-                                            buttonsStyling: !1,
-                                            confirmButtonText: "Ok, got it!",
-                                            customClass: {
-                                                confirmButton: "btn btn-primary"
-                                            }
-                                        }).then((function (t) {
-                                            a.submit()
-                                            t.isConfirmed && o.hide()
-                                        }))
-                                    }), 2e3)) : Swal.fire({
-                                        text: "Sorry, Errors Detected",
-                                        icon: "error",
-                                        buttonsStyling: !1,
-                                        confirmButtonText: "Ok, got it!",
-                                        customClass: {
-                                            confirmButton: "btn btn-primary"
-                                        }
-                                    })
-                                }))
-                            })),
-                            e.addEventListener("click", (function (t) {
-                                t.preventDefault(), Swal.fire({
-                                    text: "Are You Sure to Cancel It?",
-                                    icon: "warning",
-                                    showCancelButton: !0,
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Yes, cancel it!",
-                                    cancelButtonText: "No, return",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary",
-                                        cancelButton: "btn btn-active-light"
-                                    }
-                                }).then((function (t) {
-                                    t.value ? (a.reset(), o.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                        text: "Your Approval Hasn't been Canceled!.",
-                                        icon: "error",
-                                        buttonsStyling: !1,
-                                        confirmButtonText: "Ok, got it!",
-                                        customClass: {
-                                            confirmButton: "btn btn-primary"
-                                        }
-                                    })
-                                }))
-                            }))
-                        )
-                    }
-                }
-            }();
-            KTUtil.onDOMContentLoaded((function () {
-                KTModalCheck.init()
-            }));
-        } else {
-            // text.style.display = "none";
-            text.innerText = "Rejected";
-            reparation.setAttribute('hidden', true);
-            component.setAttribute('hidden', true);
-            status.setAttribute('value', 't');
-            wo.removeAttribute('value');
-        }
-    }
 
     var KTModalUncheck = function () {
         var t, e, n, a, o, i;
         return {
             init: function () {
-                (i = document.querySelector("#kt_modal_repair")) && (o = new bootstrap.Modal(i),
+                (i = document.querySelector("#kt_modal_repair_form")) && (o = new bootstrap.Modal(i),
                     a = document.querySelector("#kt_modal_repair_form"),
                     t = document.getElementById("kt_modal_repair_submit"),
                     e = document.getElementById("kt_modal_repair_cancel"),
                     n = FormValidation.formValidation(a, {
                         fields: {
-                            tgl_persetujuan: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Approval Date is Required"
+                                tgl_persetujuan: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Tanggal persetujuan harus diisi"
+                                        }
+                                    }
+                                },
+                                no_wo: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "No. WO harus diisi"
+                                        }
+                                    }
+                                },
+                                id_dealer: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Dealer harus dipilih"
+                                        }
+                                    }
+                                },
+                                tgl_perbaikan: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Tgl. perbaikan harus diisi"
+                                        }
+                                    }
+                                },
+                                tgl_selesai: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Tgl. selesai harus diisi"
+                                        }
                                     }
                                 }
                             },
-                            // no_wo: {
-                            //     validators: {
-                            //         notEmpty: {
-                            //             message: "Work Order is Required"
-                            //         }
-                            //     }
-                            // }
-                        },
                         plugins: {
                             trigger: new FormValidation.plugins.Trigger,
                             bootstrap: new FormValidation.plugins.Bootstrap5({
@@ -552,10 +493,10 @@
                         e.preventDefault(), n && n.validate().then((function (e) {
                             console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
                                 t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
-                                    text: "Approval is submitted.",
+                                    text: "Persetujuan perbaikan berhasil disimpan, data tidak bisa dikembalikan!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, saya mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -564,10 +505,10 @@
                                     t.isConfirmed && o.hide()
                                 }))
                             }), 2e3)) : Swal.fire({
-                                text: "Sorry, Errors Detected",
+                                text: "Maaf, ada beberapa error terdeteksi!",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, saya mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -576,22 +517,22 @@
                     })),
                     e.addEventListener("click", (function (t) {
                         t.preventDefault(), Swal.fire({
-                            text: "Are You Sure to Cancel It?",
+                            text: "Anda yakin membatalkan persetujuan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Iya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function (t) {
                             t.value ? (a.reset(), o.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your Approval Hasn't been Canceled!.",
+                                text: "Persetujuan anda belum dibatalkan",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, saya mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -605,5 +546,73 @@
     KTUtil.onDOMContentLoaded((function () {
         KTModalUncheck.init()
     }));
+
+    var KTModalReject = {
+        init: function () {
+            document.getElementById("kt_modal_repair_reject").addEventListener("click", (t => {
+                t.preventDefault(), Swal.fire({
+                    text: "Apakah anda yakin menolak perbaikan?, laporan tidak bisa diganti",
+                    icon: "warning",
+                    showCancelButton: !0,
+                    buttonsStyling: !1,
+                    confirmButtonText: "Ya, saya yakin!",
+                    cancelButtonText: "Tidak, kembali",
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        cancelButton: "btn btn-active-light"
+                    }
+                }).then((function (t) {
+                    t.value ?
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{route("repair.reject")}}',
+                        data: {
+                            '_token': '{{csrf_token()}}',
+                            'id_pengecekan': $('#kt_modal_repair_reject').data('pengecekan')
+                        },
+                        datatype: 'JSON',
+                        success: function (response) {
+                            Swal.fire({
+                                text: "Anda telah menolak perbaikan!.",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, saya mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                },
+                            }),
+                            setTimeout(function(){// wait for 5 secs(2)
+                                location.reload(); // then reload the page.(3)
+                            }, 5000);
+                        },
+                        error: function (response) {
+                            Swal.fire({
+                                text: "Gagal tolak perbaikan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, saya mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }
+                    })
+                    : "cancel" === t.dismiss && Swal.fire({
+                        text: "Tolak perbaikan dibatalkan, anda masih bisa mengganti laporan (diperbaiki/ditolak)!.",
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "Ok, saya mengerti!",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    })
+                }))
+            }))
+        }
+    };
+    KTUtil.onDOMContentLoaded((function () {
+        KTModalReject.init()
+    }));
+
 </script>
 @endpush

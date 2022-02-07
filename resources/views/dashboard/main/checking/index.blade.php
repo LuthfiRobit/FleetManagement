@@ -80,14 +80,14 @@
                                 class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
                                 <thead>
                                     <tr class="fw-bolder fs-6 text-gray-800 px-7">
-                                        <th>No</th>
-                                        <th>No Checking</th>
-                                        <th>Checked By | Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Vehicle Kilometers</th>
-                                        <th>Vehicle Status</th>
-                                        <th>Status Checking</th>
-                                        <th>Action</th>
+                                        <th>No.</th>
+                                        <th>No. Pengecekan</th>
+                                        <th>Oleh</th>
+                                        <th>Kendaraan</th>
+                                        <th>Kilometer</th>
+                                        <th>Status</th>
+                                        <th>Pengecekan</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -104,21 +104,21 @@
                                         <td>{{$pc->km_kendaraan}}</td>
                                         <td>
                                             @if ($pc->status_kendaraan == 'r')
-                                            <span class="badge badge-light-primary">Available</span>
+                                            <span class="badge badge-light-primary">Tersedia</span>
                                             @else
-                                            <span class="badge badge-light-danger">Not Available</span>
+                                            <span class="badge badge-light-danger">Tidak Tersedia</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if($pc->status_pengecekan == 'c')
-                                            <span class="badge badge-light-success">Normal Check</span>
+                                            <span class="badge badge-light-success">Pengecekan Normal</span>
                                             @else
-                                            <span class="badge badge-light-warning">Accident check</span>
+                                            <span class="badge badge-light-warning">Pengecekan Kecelakaan</span>
                                             @endif
                                         </td>
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
-                                                class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
+                                                class="btn btn-light bnt-active-light-primary btn-sm">Selengkapnya</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -133,14 +133,14 @@
                                 class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
                                 <thead>
                                     <tr class="fw-bolder fs-6 text-gray-800 px-7">
-                                        <th>No</th>
-                                        <th>No Checking</th>
-                                        <th>Checked By | Driver</th>
-                                        <th>Vehicle</th>
-                                        <th>Vehicle Kilometers</th>
-                                        <th>Vehicle Status</th>
-                                        <th>Status Checking</th>
-                                        <th>Action</th>
+                                        <th>No.</th>
+                                        <th>No. Pengecekan</th>
+                                        <th>Oleh</th>
+                                        <th>Kendaraan</th>
+                                        <th>Kilometer</th>
+                                        <th>Status</th>
+                                        <th>Pengecekan</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -157,9 +157,9 @@
                                         <td>{{$pc->km_kendaraan}}</td>
                                         <td>
                                             @if ($pc->status_kendaraan == 'r')
-                                            <span class="badge badge-light-primary">Available</span>
+                                            <span class="badge badge-light-primary">Tersedia</span>
                                             @else
-                                            <span class="badge badge-light-danger">Not Available</span>
+                                            <span class="badge badge-light-danger">Tidak Tersedia</span>
                                             @endif
                                         </td>
                                         <td>
