@@ -20,7 +20,9 @@ class PengecekanKendaraan extends Model
         'jam_pengecekan',
         'km_kendaraan',
         'status_kendaraan',
-        'status_pengecekan'
+        'status_pengecekan',
+        'status_perbaikan',
+        'keterangan_penolakan'
     ];
 
     public function detailPengecekan()
