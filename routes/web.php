@@ -67,7 +67,7 @@ Route::name('repair')->prefix('repair')
     ->group(function () {
         Route::get('/', [PerbaikanController::class, 'index'])->name('.main');
         Route::post('/store', [PerbaikanController::class, 'store'])->name('.store');
-        Route::post('reject', [PerbaikanController::class, 'reject'])->name('.reject');
+        Route::post('reject/{id}', [PerbaikanController::class, 'reject'])->name('.reject');
     });
 Route::name('accident')->prefix('accident')
     ->group(function () {
