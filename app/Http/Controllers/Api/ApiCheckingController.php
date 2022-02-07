@@ -121,6 +121,7 @@ class ApiCheckingController extends Controller
     {
         DB::beginTransaction();
         try {
+            $status_kendaraan = $request->status_kendaraan;
             $data = [
                 'id_pengecekan'     => $request->id_pengecekan,
                 'id_driver'         => $request->id_driver,
@@ -128,9 +129,12 @@ class ApiCheckingController extends Controller
                 'tgl_pengecekan'    => Carbon::parse($request->tgl_pengecekan)->format('Y-m-d'),
                 'jam_pengecekan'    => Carbon::parse($request->jam_pengecekan)->format('H:i:s'),
                 'km_kendaraan'      => $request->km_kendaraan,
-                'status_kendaraan'  => $request->status_kendaraan,
+                'status_kendaraan'  => $status_kendaraan,
                 'status_pengecekan' => 'c'
             ];
+            if ($status_kendaraan == 'r') {
+                $data['status_perbaikan'] = 'n';
+            }
             $saveCo = PengecekanKendaraan::create($data);
             $kondisi = $request->kondisi;
             foreach ($kondisi as $key => $value) {
