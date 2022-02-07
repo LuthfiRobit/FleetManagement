@@ -16,8 +16,9 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Vehicle Check</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">More Than 3 Need Approval</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Pengecekan Kendaraan</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Ada
+                            {{$pengecekan->where('status_perbaikan',null)->count()}} Butuh Persetujuan Perbaikan</span>
                     </h3>
 
                 </div>
@@ -30,13 +31,13 @@
                         <!--begin:::Tab item-->
                         <li class="nav-item">
                             <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#tab_avaliable">Available</a>
+                                href="#tab_avaliable">Tersedia</a>
                         </li>
                         <!--end:::Tab item-->
                         <!--begin:::Tab item-->
                         <li class="nav-item">
                             <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#tab_unavaliable">Not Available</a>
+                                data-bs-toggle="tab" href="#tab_unavaliable">Tidak Tersedia</a>
                         </li>
                         <!--end:::Tab item-->
                     </ul>
@@ -164,14 +165,14 @@
                                         </td>
                                         <td>
                                             @if($pc->status_pengecekan == 'c')
-                                            <span class="badge badge-light-success">Normal Check</span>
+                                            <span class="badge badge-light-success">Pengecekan Normal</span>
                                             @else
-                                            <span class="badge badge-light-warning">Accident check</span>
+                                            <span class="badge badge-light-warning">Pengecekan Kecelakaan</span>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
-                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                            {{-- <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
+                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
                                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
                                                 <span class="svg-icon svg-icon-5 m-0">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -199,7 +200,9 @@
                                                         class="menu-link px-3">Detail</a>
                                                 </div>
                                                 <!--end::Menu item-->
-                                            </div>
+                                            </div> --}}
+                                            <a href="{{route('check.detail', $pc->id_pengecekan)}}"
+                                                class="btn btn-light bnt-active-light-primary btn-sm">Selengkapnya</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -212,7 +215,7 @@
                 <!--begin::Body-->
             </div>
 
-            @foreach ($pengecekan->where('status_kendaraan','t') as $pc)
+            {{-- @foreach ($pengecekan->where('status_kendaraan','t') as $pc)
             <!--begin::Modal - Change-->
             <div class=" modal fade" id="kt_modal_change_vechile{{ $loop->iteration }}" tabindex="-1" aria-hidden="true"
                 modal-change="change">
@@ -300,7 +303,7 @@
                 <!--end::Modal dialog-->
             </div>
             <!--end::Modal - Change-->
-            @endforeach
+            @endforeach --}}
 
 
         </div>
