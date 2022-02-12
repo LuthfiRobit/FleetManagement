@@ -37,21 +37,12 @@ class ApiPenugasanController extends Controller
             ->where([['tb_penugasan_driver.id_driver', $id_dr], ['status_penugasan', null]])
             ->get();
 
-        if ($latestDo->count() > 0) {
-            return response()->json(
-                [
-                    'status'        => 'sukses',
-                    'terbaru'     => $latestDo
-                ]
-            );
-        } else {
-            return response()->json(
-                [
-                    'status'        => 'gagal',
-                    'terbaru'     => 'kosong'
-                ]
-            );
-        }
+        return response()->json(
+            [
+                'status'      => 'sukses',
+                'terbaru'     => $latestDo
+            ]
+        );
     }
 
     public function detailPenugasan(Request $request)
@@ -84,7 +75,7 @@ class ApiPenugasanController extends Controller
         if ($detail) {
             return response()->json(
                 [
-                    'status'        => 'sukses',
+                    'status'     => 'sukses',
                     'detail'     => $detail
                 ]
             );
