@@ -15,6 +15,7 @@ class KecelakaanController extends Controller
                 'tb_kecelakaan.id_kecelakaan',
                 'tb_kecelakaan.id_do',
                 'tb_kendaraan.nama_kendaraan as kendaraan',
+                'tb_kendaraan.no_polisi',
                 'tb_kecelakaan.tgl_kecelakaan as tgl',
                 'tb_kecelakaan.jam_kecelakaan as jam',
                 'tb_kecelakaan.lokasi_kejadian as lokasi',
