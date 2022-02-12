@@ -61,21 +61,21 @@ Route::group(
     }
 );
 
-Route::group(
-    ['middleware' => 'api', 'prefix' => 'assign'],
-    function () {
-        Route::get('latest', [ApiServiceOrderController::class, 'latestDo']);
-        Route::get('latest/detail', [ApiServiceOrderController::class, 'latestDetailDo']);
-        Route::post('accept', [ApiServiceOrderController::class, 'acceptDo']);
-        Route::get('accept/list', [ApiServiceOrderController::class, 'listDo']);
-        Route::post('process', [ApiServiceOrderController::class, 'processDo']);
-        Route::post('done', [ApiServiceOrderController::class, 'doneDo']);
-        Route::get('check/list', [ApiServiceOrderController::class, 'listCheckTransport']);
-        Route::get('check', [ApiServiceOrderController::class, 'checkTransportDo']);
-        Route::get('check/latest', [ApiServiceOrderController::class, 'latestIdCo']);
-        Route::post('check/create', [ApiServiceOrderController::class, 'storeCheckingDo']);
-    }
-);
+// Route::group(
+//     ['middleware' => 'api', 'prefix' => 'assign'],
+//     function () {
+//         Route::get('latest', [ApiServiceOrderController::class, 'latestDo']);
+//         Route::get('latest/detail', [ApiServiceOrderController::class, 'latestDetailDo']);
+//         Route::post('accept', [ApiServiceOrderController::class, 'acceptDo']);
+//         Route::get('accept/list', [ApiServiceOrderController::class, 'listDo']);
+//         Route::post('process', [ApiServiceOrderController::class, 'processDo']);
+//         Route::post('done', [ApiServiceOrderController::class, 'doneDo']);
+//         Route::get('check/list', [ApiServiceOrderController::class, 'listCheckTransport']);
+//         Route::get('check', [ApiServiceOrderController::class, 'checkTransportDo']);
+//         Route::get('check/latest', [ApiServiceOrderController::class, 'latestIdCo']);
+//         Route::post('check/create', [ApiServiceOrderController::class, 'storeCheckingDo']);
+//     }
+// );
 
 Route::group(
     ['middleware' => 'api', 'prefix' => 'checking'],
