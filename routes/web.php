@@ -18,6 +18,7 @@ use App\Http\Controllers\Main\KecelakaanController;
 use App\Http\Controllers\Main\PengecekanKendaraanController;
 use App\Http\Controllers\Main\PenugasanDriverController;
 use App\Http\Controllers\Main\PerbaikanController;
+use App\Http\Controllers\Main\RatingDriverController;
 use App\Http\Controllers\MerkKendaraanController;
 use App\Http\Controllers\PetugasController;
 use App\Models\AlokasiKendaraan;
@@ -38,6 +39,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('dashboard.main');
+});
+Route::get('/coba', function () {
+    return view('dashboard.main.rating.insert');
 });
 
 // Route::get('/kendaraan/jenis', [JenisKendaraanController::class, 'index']);
@@ -66,6 +70,11 @@ Route::name('check')->prefix('check')
 Route::name('repair')->prefix('repair')
     ->group(function () {
         Route::get('/', [PerbaikanController::class, 'index'])->name('.main');
+        Route::get('invoice/{id}', [PerbaikanController::class, 'invoice'])->name('.invoice');
+        Route::post('invoice/jml', [PerbaikanController::class, 'updateJumlah'])->name('.invoice.jml');
+        Route::post('invoice/harga', [PerbaikanController::class, 'updateHarga'])->name('.invoice.harga');
+        Route::post('update/{id}', [PerbaikanController::class, 'update'])->name('.update');
+        Route::get('detail/{id}', [PerbaikanController::class, 'detail'])->name('.detail');
         Route::post('/store', [PerbaikanController::class, 'store'])->name('.store');
         Route::post('reject/{id}', [PerbaikanController::class, 'reject'])->name('.reject');
     });
@@ -73,6 +82,11 @@ Route::name('accident')->prefix('accident')
     ->group(function () {
         Route::get('/', [KecelakaanController::class, 'index'])->name('.main');
         Route::get('detail/{id}', [KecelakaanController::class, 'detail'])->name('.detail');
+    });
+Route::name('rating')->prefix('rating')
+    ->group(function () {
+        Route::get('insert', [RatingDriverController::class, 'viewInsert'])->name('.insert');
+        Route::post('store', [RatingDriverController::class, 'storeRating'])->name('.store');
     });
 
 Route::name('dashboard.')->prefix('dashboard')
