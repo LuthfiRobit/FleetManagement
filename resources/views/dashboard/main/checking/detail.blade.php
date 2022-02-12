@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Vehicle Check | Detail')
+@section('title','Laporan Pengecekan | Detail')
 
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -12,7 +12,7 @@
                 <!--begin::Header-->
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Detail Pengecekan</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">DETAIL LAPORAN PENGECEKAN</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Oleh : {{$pengecekan->nama_driver}}</span>
                     </h3>
                 </div>
@@ -87,7 +87,7 @@
                             <!--begin::Details content-->
                             <div id="kt_user_view_details">
                                 <div class="pb-5 fs-6">
-                                    <div class="fw-bolder mt-5">Kilometer</div>
+                                    <div class="fw-bolder mt-5">Kilometer/Pengecekan</div>
                                     <div class="text-gray-600">{{$pengecekan->km_kendaraan}} Km</div>
                                     <div class="fw-bolder mt-5">Merek</div>
                                     <div class="text-gray-600">{{$pengecekan->merk}} </div>
@@ -97,7 +97,7 @@
                                     <div class="text-gray-600">{{$pengecekan->bahan_bakar}}</div>
                                     <div class="fw-bolder mt-5">Warna</div>
                                     <div class="text-gray-600">{{$pengecekan->warna}}</div>
-                                    <div class="fw-bolder mt-5">Jenis Penggerak</div>
+                                    <div class="fw-bolder mt-5">Penggerak</div>
                                     <div class="text-gray-600">{{$pengecekan->jenis_penggerak}}</div>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                 <!--end:: sidebar-->
                 <!--begin:: content-->
                 <div class="flex-lg-row-fluid ms-lg-15" id="kt_table_users">
-                    <div class="card card-flush mb-0 mb-xl-3">
+                    <div class="card card-flush mb-3  mb-xl-3">
                         <!--begin::Card header-->
                         <div class="card-header mt-3">
                             <!--begin::Card title-->
@@ -117,15 +117,15 @@
                                 <h2 class="mb-1">No. Pengecekan</h2>
                                 <div class="fs-6 fw-bold text-muted">VC_{{$pengecekan->id_pengecekan}} |
                                     @if($pengecekan->status_pengecekan == 'c')
-                                    <span class="badge badge-light-success">Pengecekan Normal</span>
+                                    <span class="badge badge-light-primary">Pengecekan Normal</span>
                                     @else
-                                    <span class="badge badge-light-warning">Pengecekan Kecelakaan</span>
+                                    <span class="badge badge-light-danger">Pengecekan Kecelakaan</span>
                                     @endif
                                     |
                                     @if($pengecekan->status_kendaraan == 'r')
-                                    <span class="badge badge-light-success">Tersedia</span>
+                                    <span class="badge badge-light-primary">Tersedia</span>
                                     @else
-                                    <span class="badge badge-light-warning">Tidak Tersedia</span>
+                                    <span class="badge badge-light-danger">Tidak Tersedia</span>
                                     @endif
                                 </div>
                             </div>
@@ -169,12 +169,12 @@
                             </div>
                             @elseif($pengecekan->status_perbaikan == 't')
                             <div
-                                class="notice d-flex bg-light-success rounded border-success border border-dashed mb-12 p-2">
+                                class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-12 p-2">
                                 Sedang Diperbaiki
                             </div>
                             @elseif($pengecekan->status_perbaikan == 'tl')
                             <div
-                                class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-12 p-2">
+                                class="notice d-flex bg-light-danger rounded border-danger border border-dashed mb-12 p-2">
                                 Tidak Diperbaiki
                             </div>
                             @endif
@@ -191,7 +191,7 @@
                                 <!--end::Label-->
                                 <!--begin::Details-->
                                 <div class="fw-bold ms-5">
-                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tanggal dan Waktu
+                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tanggal dan Jam
                                         Pengecekan</a>
                                     <!--begin::Info-->
                                     <div class="fs-7 text-muted">
@@ -396,7 +396,7 @@
                                     id="tgl_perbaikan" value="{{date('Y-m-d')}}" />
                             </div>
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Tanggal Selesai</label>
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Penyelesaian</label>
                                 <input type="date" class="form-control form-control-solid" name="tgl_selesai"
                                     id="tgl_selesai" />
                             </div>
@@ -576,7 +576,7 @@
                                 tgl_selesai: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Tgl. selesai harus diisi"
+                                            message: "Tgl. penyelesaian harus diisi"
                                         }
                                     }
                                 }
