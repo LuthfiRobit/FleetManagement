@@ -160,18 +160,49 @@ class ApiPenugasanController extends Controller
             ->where([['tb_penugasan_driver.id_driver', $id_dr], ['status_penugasan', '!=', null]])
             ->get();
 
-        if ($listDo->count() > 0) {
-            return response()->json(
-                [
-                    'status'        => 'sukses',
-                    'list_penugasan'     => $listDo
-                ]
-            );
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_penugasan'     => $listDo
+            ]
+        );
+    }
+
+    public function batalPenugasanValidasi(Request $request)
+    {
+        $id_do = $request->query('id_do');
+        $id_driver = $request->query('id_driver');
+
+        $pembatalan = DB::table('tb_pembatalan_penugasan')->where([['id_do', $id_do], ['id_driver', $id_driver]])->first();
+
+        if ($pembatalan) {
+            if ($pembatalan->status_pembatalan == null) {
+                return response()->json(
+                    [
+                        'status'    => 'konfirmasi',
+                        'pesan'     => 'pembatalan penugasan menunggu konfirmasi.'
+                    ]
+                );
+            } else if ($pembatalan->status_pembatalan == 'tl') {
+                return response()->json(
+                    [
+                        'status'    => 'tolak',
+                        'pesan'     => 'pembatalan penugasan ditolak, selesaikan penugasan'
+                    ]
+                );
+            } else if ($pembatalan->status_pembatalan == 't') {
+                return response()->json(
+                    [
+                        'status'    => 'terima',
+                        'pesan'     => 'pembatalan penugasan diterima'
+                    ]
+                );
+            }
         } else {
             return response()->json(
                 [
-                    'status'        => 'sukses',
-                    'list_penugasan'     => 'kosong'
+                    'status'    => 'ajukan',
+                    'pesan'     => 'silahkan ajukan pembatalan'
                 ]
             );
         }
