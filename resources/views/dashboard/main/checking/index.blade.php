@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Vehicle Check | Main')
+@section('title','Laporan Pengecekan | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,31 +16,45 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Pengecekan Kendaraan</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">LAPORAN PENGECEKAN</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Ada
                             {{$pengecekan->where('status_perbaikan',null)->count()}} Butuh Persetujuan Perbaikan</span>
                     </h3>
-
+                    <ul
+                        class="align-items-end  nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
+                        <!--begin:::Tab item-->
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
+                                href="#tab_avaliable">TERSEDIA</a>
+                        </li>
+                        <!--end:::Tab item-->
+                        <!--begin:::Tab item-->
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
+                                data-bs-toggle="tab" href="#tab_unavaliable">TIDAK TERSEDIA</a>
+                        </li>
+                        <!--end:::Tab item-->
+                    </ul>
                 </div>
 
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body py-3">
                     <!--begin:::Tabs-->
-                    <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
+                    {{-- <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
                         <!--begin:::Tab item-->
                         <li class="nav-item">
                             <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#tab_avaliable">Tersedia</a>
+                                href="#tab_avaliable">TERSEDIA</a>
                         </li>
                         <!--end:::Tab item-->
                         <!--begin:::Tab item-->
                         <li class="nav-item">
                             <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#tab_unavaliable">Tidak Tersedia</a>
+                                data-bs-toggle="tab" href="#tab_unavaliable">TIDAK TERSEDIA</a>
                         </li>
                         <!--end:::Tab item-->
-                    </ul>
+                    </ul> --}}
                     <!--end:::Tabs-->
                     @if(session()->has('success'))
                     <!--begin::Alert-->
@@ -112,14 +126,14 @@
                                         </td>
                                         <td>
                                             @if($pc->status_pengecekan == 'c')
-                                            <span class="badge badge-light-success">Pengecekan Normal</span>
+                                            <span class="badge badge-light-primary">Normal</span>
                                             @else
-                                            <span class="badge badge-light-warning">Pengecekan Kecelakaan</span>
+                                            <span class="badge badge-light-danger">Kecelakaan</span>
                                             @endif
                                         </td>
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
-                                                class="btn btn-light bnt-active-light-primary btn-sm">Selengkapnya</a>
+                                                class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -165,9 +179,9 @@
                                         </td>
                                         <td>
                                             @if($pc->status_pengecekan == 'c')
-                                            <span class="badge badge-light-success">Pengecekan Normal</span>
+                                            <span class="badge badge-light-primary">Normal</span>
                                             @else
-                                            <span class="badge badge-light-warning">Pengecekan Kecelakaan</span>
+                                            <span class="badge badge-light-danger">Kecelakaan</span>
                                             @endif
                                         </td>
                                         <td>
@@ -202,7 +216,7 @@
                                                 <!--end::Menu item-->
                                             </div> --}}
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
-                                                class="btn btn-light bnt-active-light-primary btn-sm">Selengkapnya</a>
+                                                class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach

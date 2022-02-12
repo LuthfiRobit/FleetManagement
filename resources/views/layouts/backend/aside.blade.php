@@ -77,7 +77,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Service Order</span>
+                        <span class="menu-title">Pesanan Pelayanan</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -89,7 +89,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Penugasan Driver</span>
+                        <span class="menu-title">Laporan Penugasan</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -101,7 +101,19 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Pengecekan Kendaraan</span>
+                        <span class="menu-title">Laporan Pengecekan</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link" href="{{ route('repair.main') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Laporan Perbaikan</span>
                     </a>
                 </div>
                 <div class="menu-item">
