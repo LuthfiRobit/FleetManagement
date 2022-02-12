@@ -84,6 +84,7 @@ Route::group(
         Route::get('id', [ApiCheckingController::class, 'idPengecekan']); //get id pengecekan terbaru
         Route::get('form', [ApiCheckingController::class, 'checkForm']); //form pengecekan
         Route::post('simpan', [ApiCheckingController::class, 'simpanPengecekan']); //simpan pengecekan
+        Route::get('foto', [ApiCheckingController::class, 'listFotoPengecekan']); //list foto pengecekan
         Route::post('foto/simpan', [ApiCheckingController::class, 'simpanFotoPengecekan']); //simpan foto pengecekan
         Route::post('foto/update', [ApiCheckingController::class, 'updateFotoPengecekan']); //update foto pengecekan
         Route::post('foto/delete', [ApiCheckingController::class, 'deleteFotoPengecekan']); //delete foto pengecekan
@@ -97,6 +98,7 @@ Route::group(
         Route::get('detail', [ApiPenugasanController::class, 'detailPenugasan']); //detail penugasan bisa digunakan untuk detail semua penugasan (penugasan/detail?id_do=1)
         Route::post('terima', [ApiPenugasanController::class, 'terimaPenugasan']); //terima penugasan
         Route::get('tab', [ApiPenugasanController::class, 'listPenugasan']); //list penugasan berdasarkan status/tab (penugasan/tab?id_driver=1&tab=t)
+        Route::get('batal/validasi', [ApiPenugasanController::class, 'batalPenugasanValidasi']); //validasi pembatalan
         Route::post('batal', [ApiPenugasanController::class, 'batalPenugasan']); //batal penugasan
         Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan

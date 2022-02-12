@@ -29,22 +29,13 @@ class ApiCheckingController extends Controller
             UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $tgl_sekarang . '")'
         );
 
-        if ($kendaraan) {
-            return response()->json(
-                [
-                    'status'            => 'sukses',
-                    'tgl_sekarang'      => $tgl_sekarang,
-                    'list_kendaraan'    => $kendaraan
-                ]
-            );
-        } else {
-            return response()->json(
-                [
-                    'status'        => 'gagal',
-                    'list_kendaraan' => 'kosong'
-                ]
-            );
-        }
+        return response()->json(
+            [
+                'status'            => 'sukses',
+                'tgl_sekarang'      => $tgl_sekarang,
+                'list_kendaraan'    => $kendaraan
+            ]
+        );
     }
 
     public function idPengecekan(Request $request)
@@ -165,6 +156,37 @@ class ApiCheckingController extends Controller
                 ]
             );
         }
+    }
+
+    public function listFotoPengecekan(Request $request)
+    {
+        $id_pengecekan = $request->query('id_pengecekan');
+        $list_foto = DB::table('tb_detail_foto_pengecekan')
+            ->select(
+                'id_detail_foto_cek',
+                'id_pengecekan',
+                'foto_pengecekan',
+                'keterangan'
+            )
+            ->where('id_pengecekan', $id_pengecekan)
+            ->get()
+            ->map(
+                function ($foto) {
+                    return [
+                        'id_foto' => $foto->id_detail_foto_cek,
+                        'id_pengecekan' => $foto->id_pengecekan,
+                        'path' => '/assets/img_checking/' . $foto->foto_pengecekan,
+                        'keterangan' => $foto->keterangan
+                    ];
+                }
+            );
+
+        return response()->json(
+            [
+                'status' => 'sukses',
+                'list_foto' => $list_foto
+            ]
+        );
     }
 
     public function simpanFotoPengecekan(Request $request)
