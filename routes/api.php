@@ -84,6 +84,7 @@ Route::group(
         Route::get('id', [ApiCheckingController::class, 'idPengecekan']); //get id pengecekan terbaru
         Route::get('form', [ApiCheckingController::class, 'checkForm']); //form pengecekan
         Route::post('simpan', [ApiCheckingController::class, 'simpanPengecekan']); //simpan pengecekan
+        Route::get('foto', [ApiCheckingController::class, 'listFotoPengecekan']); //list foto pengecekan
         Route::post('foto/simpan', [ApiCheckingController::class, 'simpanFotoPengecekan']); //simpan foto pengecekan
         Route::post('foto/update', [ApiCheckingController::class, 'updateFotoPengecekan']); //update foto pengecekan
         Route::post('foto/delete', [ApiCheckingController::class, 'deleteFotoPengecekan']); //delete foto pengecekan
