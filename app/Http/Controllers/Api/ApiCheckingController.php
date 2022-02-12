@@ -29,22 +29,13 @@ class ApiCheckingController extends Controller
             UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $tgl_sekarang . '")'
         );
 
-        if ($kendaraan) {
-            return response()->json(
-                [
-                    'status'            => 'sukses',
-                    'tgl_sekarang'      => $tgl_sekarang,
-                    'list_kendaraan'    => $kendaraan
-                ]
-            );
-        } else {
-            return response()->json(
-                [
-                    'status'        => 'gagal',
-                    'list_kendaraan' => 'kosong'
-                ]
-            );
-        }
+        return response()->json(
+            [
+                'status'            => 'sukses',
+                'tgl_sekarang'      => $tgl_sekarang,
+                'list_kendaraan'    => $kendaraan
+            ]
+        );
     }
 
     public function idPengecekan(Request $request)
