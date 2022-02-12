@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Accident Report | Main')
+@section('title','Laporan Kecelakaan | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,8 +16,9 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Accident Report</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">More Than 3 Accident Report</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">LAPORAN KECELAKAAN</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Ada {{$kecelakaan->count()}} Laporan
+                            Kecelakaan</span>
                     </h3>
                 </div>
 
@@ -60,21 +61,25 @@
                         <thead>
                             <tr class="fw-bolder fs-6 text-gray-800 px-7">
                                 <th>No</th>
-                                <th>ID Report</th>
-                                <th>ID DO</th>
-                                <th>Vehicle</th>
-                                <th>Date | Time</th>
-                                <th>Location</th>
-                                <th>Action</th>
+                                <th>No. Kecelakaan</th>
+                                <th>No. DO</th>
+                                <th>Kendaraan</th>
+                                <th>Tanggal | Jam</th>
+                                <th>Lokasi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kecelakaan as $kc)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>Report_{{$kc->id_kecelakaan}}</td>
+                                <td>ACD_{{$kc->id_kecelakaan}}</td>
                                 <td>DO_{{$kc->id_do}}</td>
-                                <td>{{$kc->kendaraan}}</td>
+                                <td>
+                                    {{$kc->kendaraan}}
+                                    <br>
+                                    <span class="badge badge-light-primary">{{$kc->no_polisi}}</span>
+                                </td>
                                 <td>{{Carbon\Carbon::parse($kc->tgl)->format('d F Y') }} |
                                     {{Carbon\Carbon::parse($kc->jam)->format('H:i') }}</td>
                                 <td>
