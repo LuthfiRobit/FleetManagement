@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Driver Assignment | Main')
+@section('title','Laporan Penugasan | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,8 +16,10 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Penugasan Driver</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 3 Penugasan Sedang Dalam Perjalanan</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">LAPORAN PENUGASAN</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Ada
+                            {{$assignment->where('status_penugasan','p')->count()}}
+                            Driver Sedang Dalam Perjalanan</span>
                     </h3>
                 </div>
 
@@ -75,7 +77,10 @@
                                 <td>DO_{{$as->id_do}}</td>
                                 <td>{{$as->nama_driver}}</td>
                                 <td>{{$as->nama_petugas}}</td>
-                                <td>{{$as->nama_kendaraan}}</td>
+                                <td>{{$as->nama_kendaraan}}
+                                    <br>
+                                    <span class="badge badge-light-primary">{{$as->no_polisi}}</span>
+                                </td>
                                 <td>
                                     @if ($as->status_do == 't')
                                     <span class="badge badge-light-primary">Diterima</span>
