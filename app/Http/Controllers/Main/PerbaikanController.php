@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PengecekanKendaraan;
 use App\Models\PengecekanKendaraanDetail;
 use App\Models\Perbaikan;
+use App\Models\PerbaikanDetail;
 use App\Models\PerbaikanPersetujuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,6 +16,151 @@ class PerbaikanController extends Controller
 {
     public function index(Request $request)
     {
+        $data['perbaikan'] = DB::table('tb_perbaikan')
+            ->select(
+                'tb_perbaikan.id_perbaikan',
+                'tb_perbaikan.tgl_perbaikan',
+                'tb_perbaikan.tgl_selesai',
+                'tb_perbaikan.status_perbaikan',
+                'tb_perbaikan.status_penyelesaian',
+                'tb_dealer.nama_dealer',
+                'tb_persetujuan_perbaikan.no_wo',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi'
+            )
+            ->leftJoin('tb_dealer', 'tb_dealer.id_dealer', '=', 'tb_perbaikan.id_dealer')
+            ->leftJoin('tb_persetujuan_perbaikan', 'tb_persetujuan_perbaikan.id_persetujuan', '=', 'tb_perbaikan.id_persetujuan')
+            ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_pengecekan', '=', 'tb_persetujuan_perbaikan.id_pengecekan')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->orderByDesc('tb_perbaikan.id_perbaikan')
+            ->get();
+
+        // return $data;
+        return view('dashboard.main.repair.index', $data);
+    }
+
+    public function detail(Request $request, $id)
+    {
+        $data['perbaikan'] = DB::table('tb_perbaikan')
+            ->select(
+                'tb_perbaikan.id_perbaikan',
+                'tb_perbaikan.tgl_perbaikan',
+                'tb_perbaikan.tgl_selesai',
+                'tb_perbaikan.tgl_selesai_pengerjaan as tgl_penyelesaian',
+                'tb_perbaikan.status_perbaikan',
+                'tb_perbaikan.status_penyelesaian',
+                'tb_perbaikan.total_biaya_perbaikan as total',
+                'tb_dealer.nama_dealer',
+                'tb_dealer.status_dealer',
+                'tb_dealer.alamat',
+                'tb_persetujuan_perbaikan.no_wo',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_pengecekan_kendaraan.km_kendaraan'
+            )
+            ->leftJoin('tb_dealer', 'tb_dealer.id_dealer', '=', 'tb_perbaikan.id_dealer')
+            ->leftJoin('tb_persetujuan_perbaikan', 'tb_persetujuan_perbaikan.id_persetujuan', '=', 'tb_perbaikan.id_persetujuan')
+            ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_pengecekan', '=', 'tb_persetujuan_perbaikan.id_pengecekan')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('tb_perbaikan.id_perbaikan', $id)
+            ->first();
+
+        $data['detail_perbaikan'] = DB::table('tb_detail_pergantian as tb_ganti')
+            ->select(
+                'tb_ganti.id_detail_pergantian as id_ganti',
+                'tb_ganti.nama_komponen',
+                'tb_ganti.jml_komponen',
+                'tb_ganti.harga_satuan'
+            )
+            ->orderByDesc('id_ganti')
+            ->where('id_perbaikan', $id)
+            ->get();
+        // return $data;
+        return view('dashboard.main.repair.detail', $data);
+    }
+
+    public function invoice(Request $request, $id)
+    {
+        $data['perbaikan'] = DB::table('tb_perbaikan')
+            ->select(
+                'tb_perbaikan.id_perbaikan',
+                'tb_perbaikan.tgl_perbaikan',
+                'tb_perbaikan.tgl_selesai',
+                'tb_perbaikan.status_perbaikan',
+                'tb_perbaikan.status_penyelesaian',
+                'tb_dealer.nama_dealer',
+                'tb_dealer.status_dealer',
+                'tb_dealer.alamat',
+                'tb_persetujuan_perbaikan.no_wo',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_pengecekan_kendaraan.km_kendaraan'
+            )
+            ->leftJoin('tb_dealer', 'tb_dealer.id_dealer', '=', 'tb_perbaikan.id_dealer')
+            ->leftJoin('tb_persetujuan_perbaikan', 'tb_persetujuan_perbaikan.id_persetujuan', '=', 'tb_perbaikan.id_persetujuan')
+            ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_pengecekan', '=', 'tb_persetujuan_perbaikan.id_pengecekan')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('tb_perbaikan.id_perbaikan', $id)
+            ->first();
+
+        $data['detail_perbaikan'] = DB::table('tb_detail_pergantian as tb_ganti')
+            ->select(
+                'tb_ganti.id_detail_pergantian as id_ganti',
+                'tb_ganti.nama_komponen',
+                'tb_ganti.jml_komponen',
+                'tb_ganti.harga_satuan'
+            )
+            ->orderByDesc('id_ganti')
+            ->where('id_perbaikan', $id)
+            ->get();
+        // return $data;
+        return view('dashboard.main.repair.invoice', $data);
+    }
+
+    public function updateJumlah(Request $request)
+    {
+        $findDetail = PerbaikanDetail::find($request->id_detail);
+        $findDetail->jml_komponen = $request->jml;
+        $findDetail->save();
+
+        return $findDetail;
+    }
+
+    public function updateHarga(Request $request)
+    {
+        $findDetail = PerbaikanDetail::find($request->id_detail);
+        $findDetail->harga_satuan = $request->harga;
+        $findDetail->save();
+        return $findDetail;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = [
+            'tgl_selesai_pengerjaan' => $request->tgl_penyelesaian,
+            'status_perbaikan' => 's',
+            'total_biaya_perbaikan' => $request->total_biaya
+        ];
+        $findPerbaikan = Perbaikan::where('id_perbaikan', $id)->first();
+
+        if ($findPerbaikan) {
+            if (Carbon::parse($request->tgl_penyelesaian)->lessThanOrEqualTo(Carbon::parse($request->tgl_selesai))) {
+                $data['status_penyelesaian'] = 'o';
+            }
+            $data['status_penyelesaian'] = 'p';
+            $updatePerbaikan = $findPerbaikan->update($data);
+            // if ($updatePerbaikan) {
+
+            //     $findDetail = PerbaikanDetail::where('id_perbaikan', $id)->get();
+            //     if ($findDetail > 0) {
+            //     } else {
+            //         return redirect()->route('reapair.main')->with('success', 'Gagal! Data tidak ditemukan.');
+            //     }
+            // }
+
+        } else {
+            return redirect()->route('reapair.main')->with('success', 'Gagal! Data tidak ditemukan.');
+        }
     }
 
     public function store(Request $request)
