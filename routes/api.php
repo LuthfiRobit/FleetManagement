@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiCheckingController;
+use App\Http\Controllers\Api\ApiKecelakaanController;
 use App\Http\Controllers\Api\ApiPenugasanController;
 use App\Http\Controllers\Api\ApiServiceOrderController;
 use Illuminate\Http\Request;
@@ -102,5 +103,20 @@ Route::group(
         Route::post('batal', [ApiPenugasanController::class, 'batalPenugasan']); //batal penugasan
         Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
+    }
+);
+
+//multi user (driver/petugas)
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'kecelakaan'],
+    function () {
+        Route::get('list/kendaraan', [ApiKecelakaanController::class, 'listKendaraan']); //list kendaraan
+        Route::get('form', [ApiKecelakaanController::class, 'formKecelakaan']); //form kecelakaan
+        Route::post('simpan', [ApiKecelakaanController::class, 'storeKecelakaan']); //simpan kecelakaan
+        Route::get('foto', [ApiKecelakaanController::class, 'listFotoKecelakaan']); //list foto kecelakaan
+        Route::post('foto/simpan', [ApiKecelakaanController::class, 'storeFotoKecelakaan']); //simpan foto kecelakaan
+        Route::post('foto/update', [ApiKecelakaanController::class, 'updateFotoKecelakaan']); //update foto kecelakaan
+        Route::post('foto/delete', [ApiKecelakaanController::class, 'deletFotoKecelakaan']); //delete foto kecelakaan
     }
 );
