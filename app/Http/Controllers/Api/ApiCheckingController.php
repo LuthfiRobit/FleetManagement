@@ -175,7 +175,7 @@ class ApiCheckingController extends Controller
                     return [
                         'id_foto' => $foto->id_detail_foto_cek,
                         'id_pengecekan' => $foto->id_pengecekan,
-                        'path' => '/assets/img_checking/' . $foto->foto_pengecekan,
+                        'path' => $foto->foto_pengecekan,
                         'keterangan' => $foto->keterangan
                     ];
                 }

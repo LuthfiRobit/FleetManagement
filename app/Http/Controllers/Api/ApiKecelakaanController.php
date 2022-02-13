@@ -150,7 +150,7 @@ class ApiKecelakaanController extends Controller
                     return [
                         'id_foto' => $foto->id_detail_foto,
                         'id_kecelakaan' => $foto->id_kecelakaan,
-                        'path' => '/assets/img_accident/' . $foto->foto_pendukung,
+                        'path' => $foto->foto_pendukung,
                         'keterangan' => $foto->keterangan
                     ];
                 }
