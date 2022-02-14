@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Driver;
 use App\Models\PenugasanBatal;
 use App\Models\PenugasanDriver;
+use App\Models\ServiceOrderDetail;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -266,28 +269,74 @@ class ApiPenugasanController extends Controller
 
     public function selesaiPenugasan(Request $request)
     {
-        $id_dr = $request->id_driver;
-        $id_do = $request->id_do;
-        $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
-        if ($proses == true) {
-            $data = [
-                'km_akhir' => $request->km_akhir,
-                'status_bbm_akhir' => $request->bbm_akhir,
-                'waktu_finish' => $request->waktu_finish,
-                'keterangan_bbm' => $request->keterangan_bbm,
-                'status_penugasan' => 's'
-            ];
-            $proses->update($data);
+        try {
+
+            $id_do = $request->query('id_do');
+            $id_driver = $request->query('id_driver');
+            $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_driver]])->first();
+            $driver = Driver::select('nama_driver', 'no_tlp')->where('id_driver', $id_driver)->first();
+            if ($proses == true) {
+                $findPenumpang = ServiceOrderDetail::where('id_service_order', $proses->id_service_order)->get();
+                if ($findPenumpang) {
+                    foreach ($findPenumpang as $penumpang) {
+                        $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $penumpang->no_tlp);
+                        // $builder = new \AshAllenDesign\ShortURL\Classes\Builder();
+
+                        // $shortURLObject = $builder->destinationUrl($url)->make();
+                        // $shortURL = $shortURLObject->default_short_url;
+                        $client = new Client();
+                        $res = $client->request('POST', 'http://localhost:8000/send-message', [
+                            'form_params' => [
+                                'number' => $penumpang->no_tlp,
+                                'message' => "Halo *" . $penumpang->nama_penumpang . ".*" . "\r\n" .
+                                    "Silahkan lakukan penilaian terhadap driver dalam perjalanan anda" . "\r\n" .
+                                    "*Driver*" . "\r\n" .
+                                    "Nama : *" . $driver->nama_driver . "*" . "\r\n" .
+                                    "No. Tlp : *" . $driver->no_tlp . "*" . "\r\n" .
+                                    "Click Link dibawah" . "\r\n"
+                                    . $url . "\r\n" .
+                                    "*) Link tidak boleh dishare"
+                            ]
+                        ]);
+                        if ($res->getStatusCode() == 200) { // 200 OK
+                            $response_data = $res->getBody()->getContents();
+                        }
+                    }
+                    $data = [
+                        'km_akhir' => $request->km_akhir,
+                        'status_bbm_akhir' => $request->bbm_akhir,
+                        'waktu_finish' => $request->waktu_finish,
+                        'keterangan_bbm' => $request->keterangan_bbm,
+                        'status_penugasan' => 's'
+                    ];
+                    $proses->update($data);
+                    return response()->json(
+                        [
+                            'status'        => 'sukses',
+                            'status_penugasan' => $proses->status_penugasan
+                        ]
+                    );
+                }
+            } else {
+                return response()->json(
+                    [
+                        'status'        => 'gagal'
+                    ]
+                );
+            }
+            // return response()->json(
+            //     [
+            //         'status' => 'gagal',
+            //         'error' => $proses
+            //     ]
+            // );
+        } catch (\Exception $exception) {
+            //throw $th;
+            DB::rollBack();
             return response()->json(
                 [
-                    'status'        => 'sukses',
-                    'status_penugasan' => $proses->status_penugasan
-                ]
-            );
-        } else {
-            return response()->json(
-                [
-                    'status'        => 'gagal'
+                    'status' => 'gagal',
+                    'error' => $exception
                 ]
             );
         }
