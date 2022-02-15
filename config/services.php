@@ -30,4 +30,13 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // config/services.php
+
+    'twilio' => [
+        'sid' => env('AC9917f1f9603f5c6d92a0f664c5d7d556'),
+        'token' => env('a09c7f82e03a77bd0cde5244e30fc4e9'),
+        'whatsapp_from' => env('+6285204557072')
+    ],
+
+
 ];
