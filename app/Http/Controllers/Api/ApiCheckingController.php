@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengecekanKendaraan;
+use App\Models\PengecekanKendaraanDetail;
 use App\Models\PengecekanKendaraanFoto;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -40,21 +41,17 @@ class ApiCheckingController extends Controller
 
     public function idPengecekan(Request $request)
     {
+        // $lastId = DB::table('tb_pengecekan_kendaraan')
+        //     ->select('id_pengecekan')
+        //     ->orderByDesc('id_pengecekan')
+        //     ->first();
+        // $lastId = DB::select('SELECT MAX(CONVERT(id_pengecekan, SIGNED)) as id FROM tb_pengecekan_kendaraan LIMIT 1');
         $lastId = DB::table('tb_pengecekan_kendaraan')
-            ->select('id_pengecekan')
-            ->orderByDesc('id_pengecekan')
+            ->selectRaw('MAX(CONVERT(id_pengecekan, SIGNED)) as id_pengecekan ')
             ->first();
-        if ($lastId != '') {
-            return response()->json(
-                $lastId
-            );
-        } else {
-            return response()->json(
-                [
-                    'id_pengecekan' => 'kosong'
-                ]
-            );
-        }
+        return response()->json(
+            $lastId
+        );
     }
 
     public function checkForm(Request $request)
@@ -93,7 +90,7 @@ class ApiCheckingController extends Controller
         if ($kendaraan) {
             return response()->json(
                 [
-                    'status'            => 'sukses',
+                    'status'       => 'sukses',
                     'kendaraan'    => $kendaraan,
                     'list_pengecekan' => $hasil
                 ]
@@ -121,7 +118,7 @@ class ApiCheckingController extends Controller
                 'jam_pengecekan'    => Carbon::parse($request->jam_pengecekan)->format('H:i:s'),
                 'km_kendaraan'      => $request->km_kendaraan,
                 'status_kendaraan'  => $status_kendaraan,
-                'status_pengecekan' => 'c'
+                'status_pengecekan' => $request->status_pengecekan
             ];
             if ($status_kendaraan == 'r') {
                 $data['status_perbaikan'] = 'n';
@@ -199,14 +196,15 @@ class ApiCheckingController extends Controller
                 'foto_pengecekan' => $name,
                 'keterangan' => $request->keterangan
             ];
-            $simpan = PengecekanKendaraanFoto::create($data);
+            // $simpan = PengecekanKendaraanFoto::create($data);
+            $simpan = DB::table('tb_detail_foto_pengecekan')->insertGetId($data);
             if ($simpan) {
                 $folder_accident = 'assets/img_checking';
                 $foto_pengecekan->move($folder_accident, $name);
                 return response()->json(
                     [
                         'status'         => 'sukses',
-                        'id_detail_foto_cek' => $simpan->id_detail_foto_cek
+                        'id_detail_foto_cek' => $simpan
                     ]
                 );
             }
@@ -230,7 +228,8 @@ class ApiCheckingController extends Controller
         $name = 'checking_' . uniqid() . '.' . $foto_pengecekan->getClientOriginalExtension();
 
         $data = [
-            'foto_pengecekan' => $name
+            'foto_pengecekan' => $name,
+            'keterangan'    => $request->keterangan
         ];
         $update = $find->update($data);
         if ($update) {
@@ -271,6 +270,36 @@ class ApiCheckingController extends Controller
                 [
                     'status'         => 'gagal',
                     'pesan'          => 'data tidak ada'
+                ]
+            );
+        }
+    }
+
+    public function cancelPengecekan(Request $request)
+    {
+        $id_pengecekan = $request->query('id_pengecekan');
+        $findPengecekan = PengecekanKendaraan::where('id_pengecekan', $id_pengecekan)->first();
+        if ($findPengecekan == '') {
+            return response()->json(
+                [
+                    'status'         => 'gagal',
+                    'pesan'       => 'data tidak ada'
+                ]
+            );
+        } else {
+            $findFoto = PengecekanKendaraanFoto::where('id_pengecekan', $id_pengecekan)->get();
+            if ($findFoto->count() > 0) {
+                $findFoto->each(function ($file, $key) {
+                    File::delete('assets/img_checking/' . $file->foto_pengecekan);
+                    $file->delete();
+                });
+            }
+            $findDetail = PengecekanKendaraanDetail::where('id_pengecekan', $id_pengecekan)->delete();
+            $findPengecekan->delete();
+            return response()->json(
+                [
+                    'status'         => 'sukses',
+                    'pesan'          => 'data terhapus'
                 ]
             );
         }
