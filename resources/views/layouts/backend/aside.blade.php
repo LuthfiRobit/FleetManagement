@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="">
+                    <a class="menu-link {{ Request::path() == '/' ? 'active' : '' }}" href="{{route('dashboard')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -60,7 +60,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Dashboard</span>
+                        <span class="menu-title">Monitoring Driver</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -81,6 +81,18 @@
                     </a>
                 </div>
                 <div class="menu-item">
+                    <a class="menu-link" href="{{ route('checking.serviceorder') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Laporan Driver Off</span>
+                    </a>
+                </div>
+                <div class="menu-item">
                     <a class="menu-link" href="{{ route('assign.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
@@ -90,6 +102,30 @@
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Laporan Penugasan</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link" href="{{ route('assign.main') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Laporan Pembatalan Tugas</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link" href="{{ route('assign.main') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Laporan Kinerja/Rating Driver</span>
                     </a>
                 </div>
                 <div class="menu-item">
