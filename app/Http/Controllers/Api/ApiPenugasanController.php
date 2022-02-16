@@ -96,6 +96,7 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    //jadikan query
     public function terimaPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -206,6 +207,7 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    //jadikan query
     public function batalPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -243,6 +245,7 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    //jadikan query
     public function prosesPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
