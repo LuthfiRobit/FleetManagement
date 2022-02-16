@@ -14,6 +14,7 @@ use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\KriteriaRatingController;
 use App\Http\Controllers\Main\CheckingController;
+use App\Http\Controllers\Main\DashboardController;
 use App\Http\Controllers\Main\KecelakaanController;
 use App\Http\Controllers\Main\PengecekanKendaraanController;
 use App\Http\Controllers\Main\PenugasanDriverController;
@@ -37,9 +38,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard.main');
-});
+// Route::get('/', function () {
+//     return view('dashboard.main');
+// });
 Route::get('/coba', function () {
     return view('dashboard.main.rating.insert');
 });
@@ -48,6 +49,9 @@ Route::get('/coba', function () {
 // Route::post('/kendaraan/jenis/post', [JenisKendaraanController::class, 'store']);
 // Route::group(function () {
 // Route::resource('kendaraan', JenisKendaraanController::class);
+
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::name('checking')->prefix('checking')
     ->group(function () {
         Route::get('/serviceorder', [CheckingController::class, 'serviceorder'])->name('.serviceorder');
