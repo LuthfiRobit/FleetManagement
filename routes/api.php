@@ -118,5 +118,6 @@ Route::group(
         Route::post('foto/simpan', [ApiKecelakaanController::class, 'storeFotoKecelakaan']); //simpan foto kecelakaan
         Route::post('foto/update', [ApiKecelakaanController::class, 'updateFotoKecelakaan']); //update foto kecelakaan
         Route::post('foto/delete', [ApiKecelakaanController::class, 'deletFotoKecelakaan']); //delete foto kecelakaan
+        Route::post('foto/cancel', [ApiKecelakaanController::class, 'cancelFotoKecelakaan']); //cancel foto kecelakaan
     }
 );

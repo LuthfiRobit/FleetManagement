@@ -7,12 +7,16 @@ use App\Models\Driver;
 use App\Models\PenugasanBatal;
 use App\Models\PenugasanDriver;
 use App\Models\ServiceOrderDetail;
-use GuzzleHttp\Client;
+// use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Twilio\Rest\Client;
+
+// use Twilio\Rest\Client;
 
 class ApiPenugasanController extends Controller
 {
+
     public function penugasanTerbaru(Request $request)
     {
         $id_dr = $request->query('id_driver');
@@ -92,6 +96,7 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    //jadikan query
     public function terimaPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -202,6 +207,7 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    //jadikan query
     public function batalPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -239,6 +245,7 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    //jadikan query
     public function prosesPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -267,78 +274,125 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    // public function selesaiPenugasan(Request $request)
+    // {
+    //     try {
+
+    //         $id_do = $request->query('id_do');
+    //         $id_driver = $request->query('id_driver');
+    //         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_driver]])->first();
+    //         $driver = Driver::select('nama_driver', 'no_tlp')->where('id_driver', $id_driver)->first();
+    //         if ($proses == true) {
+    //             $findPenumpang = ServiceOrderDetail::where('id_service_order', $proses->id_service_order)->get();
+    //             if ($findPenumpang) {
+    //                 foreach ($findPenumpang as $penumpang) {
+    //                     $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $penumpang->no_tlp);
+    //                     // $builder = new \AshAllenDesign\ShortURL\Classes\Builder();
+
+    //                     // $shortURLObject = $builder->destinationUrl($url)->make();
+    //                     // $shortURL = $shortURLObject->default_short_url;
+    //                     $client = new Client();
+    //                     $res = $client->request('POST', 'http://localhost:8000/send-message', [
+    //                         'form_params' => [
+    //                             'number' => $penumpang->no_tlp,
+    //                             'message' => "Halo *" . $penumpang->nama_penumpang . ".*" . "\r\n" .
+    //                                 "Silahkan lakukan penilaian terhadap driver dalam perjalanan anda" . "\r\n" .
+    //                                 "*Driver*" . "\r\n" .
+    //                                 "Nama : *" . $driver->nama_driver . "*" . "\r\n" .
+    //                                 "No. Tlp : *" . $driver->no_tlp . "*" . "\r\n" .
+    //                                 "Click Link dibawah" . "\r\n"
+    //                                 . $url . "\r\n" .
+    //                                 "*) Link tidak boleh dishare"
+    //                         ]
+    //                     ]);
+    //                     if ($res->getStatusCode() == 200) { // 200 OK
+    //                         $response_data = $res->getBody()->getContents();
+    //                     }
+    //                 }
+    //                 $data = [
+    //                     'km_akhir' => $request->km_akhir,
+    //                     'status_bbm_akhir' => $request->bbm_akhir,
+    //                     'waktu_finish' => $request->waktu_finish,
+    //                     'keterangan_bbm' => $request->keterangan_bbm,
+    //                     'status_penugasan' => 's'
+    //                 ];
+    //                 $proses->update($data);
+    //                 return response()->json(
+    //                     [
+    //                         'status'        => 'sukses',
+    //                         'status_penugasan' => $proses->status_penugasan
+    //                     ]
+    //                 );
+    //             }
+    //         } else {
+    //             return response()->json(
+    //                 [
+    //                     'status'        => 'gagal'
+    //                 ]
+    //             );
+    //         }
+    //         // return response()->json(
+    //         //     [
+    //         //         'status' => 'gagal',
+    //         //         'error' => $proses
+    //         //     ]
+    //         // );
+    //     } catch (\Exception $exception) {
+    //         //throw $th;
+    //         DB::rollBack();
+    //         return response()->json(
+    //             [
+    //                 'status' => 'gagal',
+    //                 'error' => $exception
+    //             ]
+    //         );
+    //     }
+    // }
     public function selesaiPenugasan(Request $request)
     {
-        try {
+        $sid = env("TWILIO_AUTH_SID");
+        $token = env("TWILIO_AUTH_TOKEN");
+        $twilio = new Client($sid, $token);
 
-            $id_do = $request->query('id_do');
-            $id_driver = $request->query('id_driver');
-            $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_driver]])->first();
-            $driver = Driver::select('nama_driver', 'no_tlp')->where('id_driver', $id_driver)->first();
-            if ($proses == true) {
-                $findPenumpang = ServiceOrderDetail::where('id_service_order', $proses->id_service_order)->get();
-                if ($findPenumpang) {
-                    foreach ($findPenumpang as $penumpang) {
-                        $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $penumpang->no_tlp);
-                        // $builder = new \AshAllenDesign\ShortURL\Classes\Builder();
-
-                        // $shortURLObject = $builder->destinationUrl($url)->make();
-                        // $shortURL = $shortURLObject->default_short_url;
-                        $client = new Client();
-                        $res = $client->request('POST', 'http://localhost:8000/send-message', [
-                            'form_params' => [
-                                'number' => $penumpang->no_tlp,
-                                'message' => "Halo *" . $penumpang->nama_penumpang . ".*" . "\r\n" .
-                                    "Silahkan lakukan penilaian terhadap driver dalam perjalanan anda" . "\r\n" .
-                                    "*Driver*" . "\r\n" .
-                                    "Nama : *" . $driver->nama_driver . "*" . "\r\n" .
-                                    "No. Tlp : *" . $driver->no_tlp . "*" . "\r\n" .
-                                    "Click Link dibawah" . "\r\n"
-                                    . $url . "\r\n" .
-                                    "*) Link tidak boleh dishare"
-                            ]
-                        ]);
-                        if ($res->getStatusCode() == 200) { // 200 OK
-                            $response_data = $res->getBody()->getContents();
-                        }
-                    }
-                    $data = [
-                        'km_akhir' => $request->km_akhir,
-                        'status_bbm_akhir' => $request->bbm_akhir,
-                        'waktu_finish' => $request->waktu_finish,
-                        'keterangan_bbm' => $request->keterangan_bbm,
-                        'status_penugasan' => 's'
-                    ];
-                    $proses->update($data);
-                    return response()->json(
-                        [
-                            'status'        => 'sukses',
-                            'status_penugasan' => $proses->status_penugasan
-                        ]
-                    );
-                }
-            } else {
-                return response()->json(
-                    [
-                        'status'        => 'gagal'
-                    ]
-                );
-            }
-            // return response()->json(
-            //     [
-            //         'status' => 'gagal',
-            //         'error' => $proses
-            //     ]
-            // );
-        } catch (\Exception $exception) {
-            //throw $th;
-            DB::rollBack();
-            return response()->json(
+        $message = $twilio->messages
+            ->create(
+                "whatsapp:+6285204557072", // to
                 [
-                    'status' => 'gagal',
-                    'error' => $exception
+                    "from" => "whatsapp:+14155238886",
+                    "body" => "Hello, there!"
                 ]
             );
-        }
+        return $message->sid;
+        // print($message->sid);
+        // $this->whatsappNotification('6285322045436');
+        // $client = new Client();
+        // $res = $client->request('POST',  "https://api.whatsapp.com/send?phone=6287754688520&text=Hola%20este%es%20el%20mensaje", [
+        // 'form_params' => [
+        //     'number' => $penumpang->no_tlp,
+        //     'message' => "Halo *" . $penumpang->nama_penumpang . ".*" . "\r\n" .
+        //         "Silahkan lakukan penilaian terhadap driver dalam perjalanan anda" . "\r\n" .
+        //         "*Driver*" . "\r\n" .
+        //         "Nama : *" . $driver->nama_driver . "*" . "\r\n" .
+        //         "No. Tlp : *" . $driver->no_tlp . "*" . "\r\n" .
+        //         "Click Link dibawah" . "\r\n"
+        //         . $url . "\r\n" .
+        //         "*) Link tidak boleh dishare"
+        // ]
+        // ]);
+        // if ($res->getStatusCode() == 200) { // 200 OK
+        // $response_data = $res->getBody()->getContents();
+        // }
+    }
+
+    private function whatsappNotification(string $recipient)
+    {
+        $sid    = getenv("TWILIO_AUTH_SID");
+        $token  = getenv("TWILIO_AUTH_TOKEN");
+        $wa_from = getenv("TWILIO_WHATSAPP_FROM");
+        $twilio = new Client($sid, $token);
+
+        $body = "Hello, welcome to codelapan.com.";
+
+        return $twilio->messages->create("whatsapp:$recipient", ["from" => "whatsapp:$wa_from", "body" => $body]);
     }
 }
