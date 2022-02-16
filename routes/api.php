@@ -89,6 +89,7 @@ Route::group(
         Route::post('foto/simpan', [ApiCheckingController::class, 'simpanFotoPengecekan']); //simpan foto pengecekan
         Route::post('foto/update', [ApiCheckingController::class, 'updateFotoPengecekan']); //update foto pengecekan
         Route::post('foto/delete', [ApiCheckingController::class, 'deleteFotoPengecekan']); //delete foto pengecekan
+        Route::post('cancel', [ApiCheckingController::class, 'cancelPengecekan']); //delete all pengecekan
     }
 );
 
