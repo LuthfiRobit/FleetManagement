@@ -102,6 +102,7 @@ Route::group(
         Route::get('tab', [ApiPenugasanController::class, 'listPenugasan']); //list penugasan berdasarkan status/tab (penugasan/tab?id_driver=1&tab=t)
         Route::get('batal/validasi', [ApiPenugasanController::class, 'batalPenugasanValidasi']); //validasi pembatalan
         Route::post('batal', [ApiPenugasanController::class, 'batalPenugasan']); //batal penugasan
+        Route::get('proses/validasi', [ApiPenugasanController::class, 'prosesPenugasanValidasi']); //validasi proses penugasan
         Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
     }
@@ -117,8 +118,11 @@ Route::group(
         Route::post('simpan', [ApiKecelakaanController::class, 'storeKecelakaan']); //simpan kecelakaan
         Route::get('foto', [ApiKecelakaanController::class, 'listFotoKecelakaan']); //list foto kecelakaan
         Route::post('foto/simpan', [ApiKecelakaanController::class, 'storeFotoKecelakaan']); //simpan foto kecelakaan
+        Route::post('foto/save', [ApiKecelakaanController::class, 'saveFotoKecelakaan']); //simpan foto kecelakaan tanpa keterangan
         Route::post('foto/update', [ApiKecelakaanController::class, 'updateFotoKecelakaan']); //update foto kecelakaan
+        Route::post('foto/edit', [ApiKecelakaanController::class, 'editFotoKecelakaan']); //simpan foto kecelakaan tanpa keterangan
         Route::post('foto/delete', [ApiKecelakaanController::class, 'deletFotoKecelakaan']); //delete foto kecelakaan
         Route::post('foto/cancel', [ApiKecelakaanController::class, 'cancelFotoKecelakaan']); //cancel foto kecelakaan
+        Route::post('foto/ket/save', [ApiKecelakaanController::class, 'saveKeteranganFotoKecelakaan']); //simpan/update keterangan
     }
 );
