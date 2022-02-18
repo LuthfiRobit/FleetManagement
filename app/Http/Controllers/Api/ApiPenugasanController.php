@@ -90,7 +90,7 @@ class ApiPenugasanController extends Controller
             return response()->json(
                 [
                     'status'        => 'gagal',
-                    'detail'     => 'kosong'
+                    'detail'        => $detail
                 ]
             );
         }
@@ -99,8 +99,8 @@ class ApiPenugasanController extends Controller
     //jadikan query
     public function terimaPenugasan(Request $request)
     {
-        $id_dr = $request->id_driver;
-        $id_do = $request->id_do;
+        $id_dr = $request->query('id_driver');
+        $id_do = $request->query('id_do');
         $acceptDo = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($acceptDo == true) {
             $acceptDo->update(['status_penugasan' => 't']);
@@ -210,8 +210,8 @@ class ApiPenugasanController extends Controller
     //jadikan query
     public function batalPenugasan(Request $request)
     {
-        $id_dr = $request->id_driver;
-        $id_do = $request->id_do;
+        $id_dr = $request->query('id_driver');
+        $id_do = $request->query('id_do');
         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($proses == true) {
             // $proses->update(['status_penugasan' => 'c']);
@@ -245,11 +245,34 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    public function prosesPenugasanValidasi(Request $request)
+    {
+        $id_do = $request->query('id_do');
+        $id_driver = $request->query('id_driver');
+        $findProses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_driver], ['status_penugasan', 'p']])->first();
+
+        if ($findProses == true) {
+            return response()->json(
+                [
+                    'status'    => 'gagal',
+                    'pesan'     => 'anda masih memiliki satu penugasan proses'
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'    => 'sukses',
+                    'pesan'     => 'silahkan melakukan proses'
+                ]
+            );
+        }
+    }
+
     //jadikan query
     public function prosesPenugasan(Request $request)
     {
-        $id_dr = $request->id_driver;
-        $id_do = $request->id_do;
+        $id_dr = $request->query('id_driver');
+        $id_do = $request->query('id_do');
         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($proses == true) {
             $data = [
@@ -350,49 +373,27 @@ class ApiPenugasanController extends Controller
     // }
     public function selesaiPenugasan(Request $request)
     {
-        $sid = env("TWILIO_AUTH_SID");
-        $token = env("TWILIO_AUTH_TOKEN");
-        $twilio = new Client($sid, $token);
-
-        $message = $twilio->messages
-            ->create(
-                "whatsapp:+6285204557072", // to
-                [
-                    "from" => "whatsapp:+14155238886",
-                    "body" => "Hello, there!"
-                ]
-            );
-        return $message->sid;
-        // print($message->sid);
-        // $this->whatsappNotification('6285322045436');
-        // $client = new Client();
-        // $res = $client->request('POST',  "https://api.whatsapp.com/send?phone=6287754688520&text=Hola%20este%es%20el%20mensaje", [
-        // 'form_params' => [
-        //     'number' => $penumpang->no_tlp,
-        //     'message' => "Halo *" . $penumpang->nama_penumpang . ".*" . "\r\n" .
-        //         "Silahkan lakukan penilaian terhadap driver dalam perjalanan anda" . "\r\n" .
-        //         "*Driver*" . "\r\n" .
-        //         "Nama : *" . $driver->nama_driver . "*" . "\r\n" .
-        //         "No. Tlp : *" . $driver->no_tlp . "*" . "\r\n" .
-        //         "Click Link dibawah" . "\r\n"
-        //         . $url . "\r\n" .
-        //         "*) Link tidak boleh dishare"
-        // ]
-        // ]);
-        // if ($res->getStatusCode() == 200) { // 200 OK
-        // $response_data = $res->getBody()->getContents();
-        // }
-    }
-
-    private function whatsappNotification(string $recipient)
-    {
-        $sid    = getenv("TWILIO_AUTH_SID");
-        $token  = getenv("TWILIO_AUTH_TOKEN");
-        $wa_from = getenv("TWILIO_WHATSAPP_FROM");
+        $sid    = env("TWILIO_AUTH_SID");
+        $token  = env("TWILIO_AUTH_TOKEN");
+        $wa_from = env("TWILIO_WHATSAPP_FROM");
+        $recipient = '+6282330199009';
         $twilio = new Client($sid, $token);
 
         $body = "Hello, welcome to codelapan.com.";
 
         return $twilio->messages->create("whatsapp:$recipient", ["from" => "whatsapp:$wa_from", "body" => $body]);
+
+        // $client = new Client();
+        // $res = $client->request('POST', 'https://api.chat-api.com/instance408414/sendMessage?token=750e6o1h0hb9lt8m', [
+        //     'form_params' => [
+        //         'phone' => '15855721186',
+        //         'body' => "Halo Indra"
+        //     ]
+        // ]);
+        // if ($res->getStatusCode() == 404) { // 200 OK
+        //     return $res->getBody()->getContents();
+        // } else {
+        //     return $res->getBody()->getContents();
+        // }
     }
 }
