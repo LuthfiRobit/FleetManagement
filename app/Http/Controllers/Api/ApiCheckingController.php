@@ -277,7 +277,7 @@ class ApiCheckingController extends Controller
 
     public function cancelPengecekan(Request $request)
     {
-        $id_pengecekan = $request->query('id_pengecekan');
+        $id_pengecekan = $request->id_pengecekan;
         $findPengecekan = PengecekanKendaraan::where('id_pengecekan', $id_pengecekan)->first();
         if ($findPengecekan == '') {
             return response()->json(
