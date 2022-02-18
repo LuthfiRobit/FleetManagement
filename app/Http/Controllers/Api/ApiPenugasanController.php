@@ -99,8 +99,8 @@ class ApiPenugasanController extends Controller
     //jadikan query
     public function terimaPenugasan(Request $request)
     {
-        $id_dr = $request->query('id_driver');
-        $id_do = $request->query('id_do');
+        $id_dr = $request->id_driver;
+        $id_do = $request->id_do;
         $acceptDo = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($acceptDo == true) {
             $acceptDo->update(['status_penugasan' => 't']);
@@ -210,8 +210,8 @@ class ApiPenugasanController extends Controller
     //jadikan query
     public function batalPenugasan(Request $request)
     {
-        $id_dr = $request->query('id_driver');
-        $id_do = $request->query('id_do');
+        $id_dr = $request->id_driver;
+        $id_do = $request->id_do;
         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($proses == true) {
             // $proses->update(['status_penugasan' => 'c']);
@@ -271,8 +271,8 @@ class ApiPenugasanController extends Controller
     //jadikan query
     public function prosesPenugasan(Request $request)
     {
-        $id_dr = $request->query('id_driver');
-        $id_do = $request->query('id_do');
+        $id_dr = $request->id_driver;
+        $id_do = $request->id_do;
         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
         if ($proses == true) {
             $data = [
