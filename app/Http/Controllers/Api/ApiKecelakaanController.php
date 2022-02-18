@@ -300,4 +300,92 @@ class ApiKecelakaanController extends Controller
             );
         }
     }
+
+    public function saveFotoKecelakaan(Request $request)
+    {
+        $foto_pendukung = $request->file('foto');
+        $keterangan = $request->keterangan;
+        if ($foto_pendukung != null) {
+            $name = 'accident_' . uniqid() . '.' . $foto_pendukung->getClientOriginalExtension();
+            $data = [
+                // 'id_kecelakaan' => $id_kecelakaan,
+                'foto_pendukung' => $name,
+                // 'keterangan' => $keterangan
+            ];
+            $simpan = KecelakaanFoto::create($data);
+            if ($simpan) {
+                $folder_accident = 'assets/img_accident';
+                $foto_pendukung->move($folder_accident, $name);
+                return response()->json(
+                    [
+                        'status'         => 'sukses',
+                        'id_foto'       => $simpan->id_detail_foto
+                    ]
+                );
+            }
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal'
+                ]
+            );
+        }
+    }
+
+    public function editFotoKecelakaan(Request $request)
+    {
+        $id_foto = $request->query('id_foto');
+        $find = KecelakaanFoto::where('id_detail_foto', $id_foto)->first();
+        if (!is_null($find->foto_pendukung)) {
+            File::delete('assets/img_accident/' . $find->foto_pendukung);
+        }
+        $foto_pendukung = $request->file('foto');
+        $name = 'accident_' . uniqid() . '.' . $foto_pendukung->getClientOriginalExtension();
+
+        $data = [
+            'foto_pendukung' => $name,
+            // 'keterangan' => $request->keterangan
+        ];
+        $update = $find->update($data);
+        if ($update) {
+            $folder_accident = 'assets/img_accident';
+            $foto_pendukung->move($folder_accident, $name);
+            return response()->json(
+                [
+                    'status'         => 'sukses',
+                    'id_foto'       => $find->id_detail_foto
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal'
+                ]
+            );
+        }
+    }
+
+    public function saveKeteranganFotoKecelakaan(Request $request)
+    {
+        $id_foto = $request->query('id_foto');
+        $find = KecelakaanFoto::where('id_detail_foto', $id_foto)->first();
+        if ($find) {
+            $data = [
+                'keterangan' => $request->keterangan
+            ];
+            $find->update($data);
+            return response()->json(
+                [
+                    'status'         => 'sukses',
+                    'id_foto'       => $find->id_detail_foto
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal'
+                ]
+            );
+        }
+    }
 }
