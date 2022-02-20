@@ -15,6 +15,7 @@ class ServiceOrderDetail extends Model
     protected $fillable = [
         'id_detail_so',
         'id_service_order',
+        'id_jabatan',
         'nama_penumpang',
         'no_tlp'
     ];

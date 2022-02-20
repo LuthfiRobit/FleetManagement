@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ApiCheckingController;
 use App\Http\Controllers\Api\ApiKecelakaanController;
 use App\Http\Controllers\Api\ApiPenugasanController;
+use App\Http\Controllers\Api\ApiProfilDriverController;
 use App\Http\Controllers\Api\ApiServiceOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,11 +45,14 @@ Route::group([
 Route::group(
     ['middleware' => 'api', 'prefix' => 'service'],
     function () {
-        Route::post('create', [ApiServiceOrderController::class, 'createSo']);
-        Route::get('latest', [ApiServiceOrderController::class, 'getLastIdDo']);
-        Route::get('list', [ApiServiceOrderController::class, 'getDo']);
-        Route::post('cancel', [ApiServiceOrderController::class, 'cancelDo']);
-        Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']);
+        Route::post('create', [ApiServiceOrderController::class, 'createSo']); //simpan order kendaraan
+        Route::get('latest', [ApiServiceOrderController::class, 'getLastIdDo']); //ambil id terakhir
+        Route::get('list/jabatan', [ApiServiceOrderController::class, 'getJabatan']); //list jabatan
+        Route::get('list', [ApiServiceOrderController::class, 'getDo']); //list order kendaraan
+        Route::post('cancel', [ApiServiceOrderController::class, 'cancelDo']); //cancel order kendaraan
+        Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']); //detail order kendaraan
+
+
         Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
         Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
         Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
@@ -77,6 +81,16 @@ Route::group(
 //         Route::post('check/create', [ApiServiceOrderController::class, 'storeCheckingDo']);
 //     }
 // );
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'driver'],
+    function () {
+        Route::get('profil', [ApiProfilDriverController::class, 'profil']); //profil driver
+        Route::get('status', [ApiProfilDriverController::class, 'status']); //status aktif nonaktif driver
+        Route::post('nonaktif', [ApiProfilDriverController::class, 'nonAktif']); //nonaktifkan driver
+        Route::post('aktif', [ApiProfilDriverController::class, 'aktif']); //aktifkan driver
+    }
+);
 
 Route::group(
     ['middleware' => 'api', 'prefix' => 'checking'],
