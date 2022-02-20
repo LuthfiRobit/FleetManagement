@@ -84,6 +84,29 @@ class ApiServiceOrderController extends Controller
         }
     }
 
+    public function getJabatan(Request $request)
+    {
+        $listJabatan = DB::table('tb_jabatan')
+            ->select('id_jabatan', 'nama_jabatan')
+            ->where('status', 'y')
+            ->get();
+        if ($listJabatan->count() > 0) {
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'list_jabatan' => $listJabatan
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'list_jabatan' => $listJabatan
+                ]
+            );
+        }
+    }
+
     public function getDo(Request $request)
     {
         $id = $request->query('id');
