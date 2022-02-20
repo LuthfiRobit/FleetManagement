@@ -37,6 +37,7 @@ class ApiServiceOrderController extends Controller
             foreach ($namaPenumpang as $key => $value) {
                 $serviceDetail = [
                     'id_service_order'  => $request->id_service_order,
+                    'id_jabatan'        => $request->id_jabatan[$key],
                     'nama_penumpang'    => $request->nama_penumpang[$key],
                     'no_tlp'            => $request->no_tlp[$key]
                 ];
@@ -215,6 +216,7 @@ class ApiServiceOrderController extends Controller
         );
     }
 
+    //kecelakaan
     public function listTransport(Request $request)
     {
         $id = $request->query('id');
