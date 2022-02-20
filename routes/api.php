@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ApiCheckingController;
 use App\Http\Controllers\Api\ApiKecelakaanController;
 use App\Http\Controllers\Api\ApiPenugasanController;
+use App\Http\Controllers\Api\ApiProfilDriverController;
 use App\Http\Controllers\Api\ApiServiceOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -80,6 +81,16 @@ Route::group(
 //         Route::post('check/create', [ApiServiceOrderController::class, 'storeCheckingDo']);
 //     }
 // );
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'driver'],
+    function () {
+        Route::get('profil', [ApiProfilDriverController::class, 'profil']); //profil driver
+        Route::get('status', [ApiProfilDriverController::class, 'status']); //status aktif nonaktif driver
+        Route::post('nonaktif', [ApiProfilDriverController::class, 'nonAktif']); //nonaktifkan driver
+        Route::post('aktif', [ApiProfilDriverController::class, 'aktif']); //aktifkan driver
+    }
+);
 
 Route::group(
     ['middleware' => 'api', 'prefix' => 'checking'],
