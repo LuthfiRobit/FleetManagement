@@ -44,11 +44,14 @@ Route::group([
 Route::group(
     ['middleware' => 'api', 'prefix' => 'service'],
     function () {
-        Route::post('create', [ApiServiceOrderController::class, 'createSo']);
-        Route::get('latest', [ApiServiceOrderController::class, 'getLastIdDo']);
-        Route::get('list', [ApiServiceOrderController::class, 'getDo']);
-        Route::post('cancel', [ApiServiceOrderController::class, 'cancelDo']);
-        Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']);
+        Route::post('create', [ApiServiceOrderController::class, 'createSo']); //simpan order kendaraan
+        Route::get('latest', [ApiServiceOrderController::class, 'getLastIdDo']); //ambil id terakhir
+        Route::get('list/jabatan', [ApiServiceOrderController::class, 'getJabatan']); //list jabatan
+        Route::get('list', [ApiServiceOrderController::class, 'getDo']); //list order kendaraan
+        Route::post('cancel', [ApiServiceOrderController::class, 'cancelDo']); //cancel order kendaraan
+        Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']); //detail order kendaraan
+
+
         Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
         Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
         Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
