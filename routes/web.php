@@ -15,6 +15,7 @@ use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\KriteriaRatingController;
 use App\Http\Controllers\Main\CheckingController;
 use App\Http\Controllers\Main\DashboardController;
+use App\Http\Controllers\Main\DriverStatusController;
 use App\Http\Controllers\Main\KecelakaanController;
 use App\Http\Controllers\Main\PengecekanKendaraanController;
 use App\Http\Controllers\Main\PenugasanDriverController;
@@ -64,6 +65,10 @@ Route::name('assign')->prefix('assign')
     ->group(function () {
         Route::get('/', [PenugasanDriverController::class, 'index'])->name('.main');
         Route::get('/detail/{id}', [PenugasanDriverController::class, 'detail'])->name('.detail');
+        Route::get('batal', [PenugasanDriverController::class, 'indexbatal'])->name('.main.batal');
+        Route::get('batal/detail/{id}', [PenugasanDriverController::class, 'detailbatal'])->name('.detail.batal');
+        Route::get('batal/tolak/{id}', [PenugasanDriverController::class, 'tolakbatal'])->name('.batal.tolak');
+        Route::post('batal/terima', [PenugasanDriverController::class, 'terimabatal'])->name('.batal.terima');
     });
 Route::name('check')->prefix('check')
     ->group(function () {
