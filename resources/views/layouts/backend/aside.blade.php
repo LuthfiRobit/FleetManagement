@@ -81,7 +81,7 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('checking.serviceorder') }}">
+                    <a class="menu-link" href="{{ route('status.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -89,7 +89,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Laporan Driver Off</span>
+                        <span class="menu-title">Laporan Status Driver</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -105,7 +105,7 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('assign.main') }}">
+                    <a class="menu-link" href="{{ route('assign.main.batal') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -125,7 +125,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Laporan Kinerja/Rating Driver</span>
+                        <span class="menu-title">Laporan Kinerja Driver</span>
                     </a>
                 </div>
                 <div class="menu-item">
