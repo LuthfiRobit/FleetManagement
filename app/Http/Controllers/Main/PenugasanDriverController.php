@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
+use App\Models\PenugasanBatal;
+use App\Models\PenugasanDriver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
