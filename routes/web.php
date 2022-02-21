@@ -92,6 +92,11 @@ Route::name('rating')->prefix('rating')
         Route::get('insert', [RatingDriverController::class, 'viewInsert'])->name('.insert');
         Route::post('store', [RatingDriverController::class, 'storeRating'])->name('.store');
     });
+Route::name('status')->prefix('status')
+    ->group(function () {
+        Route::get('/', [DriverStatusController::class, 'index'])->name('.main');
+        Route::get('detail/{id}', [DriverStatusController::class, 'detail'])->name('.detail');
+    });
 
 Route::name('dashboard.')->prefix('dashboard')
     ->group(function () {
