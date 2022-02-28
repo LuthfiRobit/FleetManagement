@@ -120,6 +120,7 @@ Route::group(
         Route::get('proses/validasi', [ApiPenugasanController::class, 'prosesPenugasanValidasi']); //validasi proses penugasan
         Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
+        Route::post('lokasi/update', [ApiPenugasanController::class, 'lokasiUpdate']); //update lokasi
     }
 );
 
