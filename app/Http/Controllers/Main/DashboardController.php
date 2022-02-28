@@ -10,6 +10,12 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+
+        return view('dashboard.dashboard');
+    }
+
+    public function monitoring()
+    {
         $lokasi = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.lat_tujuan',
@@ -33,6 +39,6 @@ class DashboardController extends Controller
         // })
         // ;
         // return $lokasi;
-        return view('dashboard.main', compact('lokasi'));
+        return view('dashboard.monitoring', compact('lokasi'));
     }
 }
