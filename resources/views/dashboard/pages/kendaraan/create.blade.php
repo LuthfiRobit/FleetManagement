@@ -126,7 +126,11 @@
                                 </select>
                             </div>
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Alokasi</label>
+                                <label class="fs-6 fw-bold mb-2">
+                                    <span class="required">Alokasi</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
+                                        title="Anda bisa menambahkan lebih dari 1 alokasi di menu edit kendaraan"></i>
+                                </label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Alokasi" id="id_jenis_alokasi"
                                     name="id_jenis_alokasi">
@@ -228,9 +232,9 @@
                         <!--begin::Actions-->
                         <div class="text-center mt-3">
                             <button type="reset" id="kt_modal_new_target_cancel"
-                                class="btn btn-light me-3">Cancel</button>
+                                class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
-                                <span class="indicator-label">Submit</span>
+                                <span class="indicator-label">Simpan</span>
                                 <span class="indicator-progress">Please wait...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
@@ -473,7 +477,7 @@ var KTModalNewTarget = function () {
                                 text: "Formulir telah berhasil dikirim!",
                                 icon: "success",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -485,7 +489,7 @@ var KTModalNewTarget = function () {
                             text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -498,8 +502,8 @@ var KTModalNewTarget = function () {
                         icon: "warning",
                         showCancelButton: !0,
                         buttonsStyling: !1,
-                        confirmButtonText: "Yes, cancel it!",
-                        cancelButtonText: "No, return",
+                        confirmButtonText: "Iya, batalkan!",
+                        cancelButtonText: "Tidak, kembali",
                         customClass: {
                             confirmButton: "btn btn-primary",
                             cancelButton: "btn btn-active-light"
@@ -511,7 +515,7 @@ var KTModalNewTarget = function () {
                             text: "Formulir Anda belum dibatalkan!.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
