@@ -421,6 +421,53 @@ class DriverController extends Controller
         }
     }
 
+    public function addSim(Request $request, $id)
+    {
+        $findDriver = Driver::where('id_driver', $id)->first();
+        $findSim = JenisSim::where('id_jenis_sim', $request->id_jenis_sim)->first();
+        $findDetailSim = DetailSim::where([['id_driver', $id], ['id_jenis_sim', $request->id_jenis_sim]])->first();
+        if ($findDetailSim) {
+            return redirect()->back()->with('success', 'Gagal Menambahkan SIM Driver, SIM sudah tersedia');
+        } else {
+            $simName = str_replace(" ", "_", $findSim->nama_sim);
+            $rules = [
+                'id_jenis_sim' => 'required',
+                'foto_sim' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput($request->all);
+            } else {
+                $foto_sim = $request->file('foto_sim');
+                $name_sim   = $simName . '_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $data = [
+                    'id_jenis_sim' => $request->id_jenis_sim,
+                    'id_driver' => $id,
+                    'foto_sim' => $name_sim
+                ];
+                // $update = Driver::where('id_driver', $id)->update($data);
+                $addSim = DetailSim::create($data);
+                $folder_sim     = 'assets/img_sim';
+                $foto_sim->move($folder_sim, $name_sim);
+                // return $name_sim;
+                return redirect()->back()->with('success', 'Berhasil Menambahkan SIM Driver');
+                // return $data;
+            }
+        }
+    }
+
+    public function removeSim(Request $request)
+    {
+        $findDetailSim = DetailSim::where('id_detail_sim', $request->id_detail_sim)->first();
+        // if ($findDetailSim) {
+        if (!is_null($findDetailSim->foto_sim)) {
+            File::delete('assets/img_sim/' . $findDetailSim->foto_sim);
+        }
+        $findDetailSim->delete();
+        return $findDetailSim;
+        // }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
