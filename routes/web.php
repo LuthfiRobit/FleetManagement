@@ -52,6 +52,7 @@ Route::get('/coba', function () {
 // Route::resource('kendaraan', JenisKendaraanController::class);
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/monitoring/driver', [DashboardController::class, 'monitoring'])->name('dashboard.monitoring.driver');
 
 Route::name('checking')->prefix('checking')
     ->group(function () {
