@@ -63,7 +63,8 @@
                                         @endfor
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
+                                    <a href="{{route('rating.detail', $rt->id_driver)}}"
+                                        class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                 </td>
                             </tr>
                             @endforeach
