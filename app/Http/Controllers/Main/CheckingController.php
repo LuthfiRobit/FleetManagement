@@ -154,7 +154,7 @@ class CheckingController extends Controller
             "SELECT tb_driver.id_driver, tb_driver.nama_driver FROM tb_driver
             LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
             WHERE tb_driver.status_driver = 'y' AND tb_detail_sim.id_jenis_sim = '$id_sim'
-            AND NOT EXISTS (SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' )"
+            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' )"
         );
         // return response()->json($driver);
 
