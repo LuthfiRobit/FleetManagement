@@ -65,7 +65,7 @@
                                 <th>No. DO</th>
                                 <th>Kendaraan</th>
                                 <th>Tanggal | Jam</th>
-                                <th>Lokasi</th>
+                                <th>Lokasi Kecelakaan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
