@@ -11,6 +11,7 @@ use App\Models\JenisAlokasi;
 use App\Models\JenisKendaraan;
 use App\Models\JenisSim;
 use App\Models\MerkKendaraan;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class KendaraanController extends Controller
@@ -136,6 +137,15 @@ class KendaraanController extends Controller
             ->leftJoin('tb_alokasi_kendaraan', 'tb_alokasi_kendaraan.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
             ->where('tb_kendaraan.id_kendaraan', '=', $id)
             ->first();
+        $data['alokasiKendaraan'] = DB::table('tb_alokasi_kendaraan')
+            ->select(
+                'tb_alokasi_kendaraan.id_alokasi',
+                'tb_alokasi_kendaraan.id_jenis_alokasi',
+                'tb_jenis_alokasi.nama_alokasi'
+            )
+            ->leftJoin('tb_jenis_alokasi', 'tb_jenis_alokasi.id_jenis_alokasi', '=', 'tb_alokasi_kendaraan.id_jenis_alokasi')
+            ->where('tb_alokasi_kendaraan.id_kendaraan', $id)
+            ->get();
         if ($data['kendaraan']) {
             // return $data['kendaraan'];
             return view('dashboard.pages.kendaraan.edit', $data);
@@ -155,18 +165,18 @@ class KendaraanController extends Controller
     public function update(UpdateKendaraanRequest $request, Kendaraan $kendaraan, $id)
     {
         try {
-            $data = $request->except(['_token', '_method', 'id_jenis_alokasi']);
+            $data = $request->except(['_token', '_method']);
             $update = Kendaraan::where('id_kendaraan', $id)->update($data);
-            $findAlokasi = AlokasiKendaraan::where('id_kendaraan', $id)->first();
-            if ($findAlokasi) {
-                $findAlokasi->update(['id_jenis_alokasi' => $request->id_jenis_alokasi]);
-            } else {
-                $dataAlokasi = [
-                    'id_jenis_alokasi' => $request->id_jenis_alokasi,
-                    'id_kendaraan' => $id
-                ];
-                AlokasiKendaraan::create($dataAlokasi);
-            }
+            // $findAlokasi = AlokasiKendaraan::where('id_kendaraan', $id)->first();
+            // if ($findAlokasi) {
+            //     $findAlokasi->update(['id_jenis_alokasi' => $request->id_jenis_alokasi]);
+            // } else {
+            //     $dataAlokasi = [
+            //         'id_jenis_alokasi' => $request->id_jenis_alokasi,
+            //         'id_kendaraan' => $id
+            //     ];
+            //     AlokasiKendaraan::create($dataAlokasi);
+            // }
             return redirect()->route('dashboard.kendaraan.main.index')->with('success', 'Data Berhasil Diganti');
         } catch (\Illuminate\Database\QueryException $exception) {
             // You can check get the details of the error using `errorInfo`:
