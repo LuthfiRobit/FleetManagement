@@ -18,6 +18,7 @@ class ApiProfilDriverController extends Controller
                 'tb_driver.id_driver',
                 'tb_driver.no_badge',
                 'tb_driver.nama_driver',
+                'tb_driver.user as username',
                 'tb_driver.alamat',
                 'tb_driver.umur',
                 'tb_driver.no_tlp',
