@@ -187,4 +187,35 @@ class KendaraanController extends Controller
     {
         //
     }
+
+    public function addAlokasi(Request $request)
+    {
+        $id_kendaraan = $request->id_kendaraan;
+        $id_jenis_alokasi = $request->id_jenis_alokasi;
+        $findAlokasi = AlokasiKendaraan::where([['id_jenis_alokasi', $id_jenis_alokasi], ['id_kendaraan', $id_kendaraan]])->first();
+        if ($findAlokasi) {
+            return redirect()->back()->with('success', 'Gagal Menambah Alokasi Kendaraan (Alokasi Sudah Ada)');
+        } else {
+            $data = [
+                'id_jenis_alokasi' => $id_jenis_alokasi,
+                'id_kendaraan' => $id_kendaraan
+            ];
+
+            $simpanAlokasi = AlokasiKendaraan::create($data);
+            if ($simpanAlokasi) {
+                return redirect()->back()->with('success', 'Berhasil Menambah Alokasi Kendaraan');
+            } else {
+                return redirect()->back()->with('success', 'Gagal Menambah Alokasi Kendaraan');
+            }
+        }
+    }
+
+    public function removeAlokasi(Request $request)
+    {
+        $findAlokasi = AlokasiKendaraan::find($request->id_alokasi);
+        // $findDetail->jml_komponen = $request->jml;
+        $findAlokasi->delete();
+
+        return $findAlokasi;
+    }
 }
