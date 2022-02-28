@@ -118,12 +118,16 @@ Route::name('dashboard.')->prefix('dashboard')
             Route::resource('jenis_alokasi', JenisAlokasiController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
         });
+        Route::post('kendaraan/alokasi/simpan', [KendaraanController::class, 'addAlokasi'])->name('kendaraan.alokasi.simpan');
+        Route::post('kendaraan/alokasi/hapus', [KendaraanController::class, 'removeAlokasi'])->name('kendaraan.alokasi.hapus');
+
         Route::group(['as' => 'pengecekan.', 'prefix' => 'pengecekan'], function () {
             Route::resource('kriteria', KriteriaPengecekanController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
             Route::resource('jenis', JenisPengecekanController::class)->shallow()
                 ->only(['index', 'create', 'store', 'edit', 'update']);
         });
+
         Route::group(['as' => 'petugas.', 'prefix' => 'petugas'], function () {
             Route::resource('main', PetugasController::class)->shallow()
                 ->only(['index', 'create', 'store', 'edit', 'update']);
@@ -134,6 +138,7 @@ Route::name('dashboard.')->prefix('dashboard')
             Route::resource('jabatan', JabatanController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
         });
+
         //independen route
         Route::resource('bahanbakar', BahanBakarController::class)->shallow()
             ->only(['index', 'store', 'edit', 'update']);
