@@ -154,6 +154,16 @@ class DriverController extends Controller
             ->leftJoin('tb_detail_sim', 'tb_detail_sim.id_driver', '=', 'tb_driver.id_driver')
             ->where('tb_driver.id_driver', '=', $id)
             ->first();
+        $data['detailSim'] = DB::table('tb_detail_sim')
+            ->select(
+                'tb_detail_sim.id_detail_sim',
+                'tb_detail_sim.id_jenis_sim',
+                'tb_detail_sim.foto_sim',
+                'tb_jenis_sim.nama_sim'
+            )
+            ->leftJoin('tb_jenis_sim', 'tb_jenis_sim.id_jenis_sim', '=', 'tb_detail_sim.id_jenis_sim')
+            ->where('tb_detail_sim.id_driver', $id)
+            ->get();
         // return $data;
         return view('dashboard.pages.driver.edit', $data);
     }
