@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Driver;
 use App\Models\DriverStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class ApiProfilDriverController extends Controller
                 'tb_driver.id_driver',
                 'tb_driver.no_badge',
                 'tb_driver.nama_driver',
+                'tb_driver.user as username',
                 'tb_driver.alamat',
                 'tb_driver.umur',
                 'tb_driver.no_tlp',
@@ -128,6 +130,30 @@ class ApiProfilDriverController extends Controller
             return response()->json(
                 [
                     'status'         => 'gagal'
+                ]
+            );
+        }
+    }
+
+    public function username(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $username = $request->username;
+        $find = Driver::where('id_driver', $id_driver)->first();
+        if ($find) {
+            $find->update(['user' => $username]);
+            return response()->json(
+                [
+                    'status'        => 'sukses',
+                    'pesan' => 'username berhasil diganti',
+                    'username' => $username
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal',
+                    'pesan' => 'username gagal diganti'
                 ]
             );
         }

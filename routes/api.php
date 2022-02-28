@@ -89,6 +89,7 @@ Route::group(
         Route::get('status', [ApiProfilDriverController::class, 'status']); //status aktif nonaktif driver
         Route::post('nonaktif', [ApiProfilDriverController::class, 'nonAktif']); //nonaktifkan driver
         Route::post('aktif', [ApiProfilDriverController::class, 'aktif']); //aktifkan driver
+        Route::post('username', [ApiProfilDriverController::class, 'username']); //update username
     }
 );
 
@@ -119,6 +120,7 @@ Route::group(
         Route::get('proses/validasi', [ApiPenugasanController::class, 'prosesPenugasanValidasi']); //validasi proses penugasan
         Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
+        Route::post('lokasi/update', [ApiPenugasanController::class, 'lokasiUpdate']); //update lokasi
     }
 );
 
