@@ -148,12 +148,15 @@ Route::name('dashboard.')->prefix('dashboard')
             ->only(['index', 'store', 'edit', 'update']);
         Route::resource('dealer', DealerController::class)->shallow()
             ->only(['index', 'store', 'edit', 'update']);
+
         Route::resource('driver', DriverController::class)->shallow()
             ->except(['show', 'destroy']);
         Route::put('driver/username/update/{id}', [DriverController::class, 'username'])->name('driver.username.update');
         Route::put('driver/password/update/{id}', [DriverController::class, 'password'])->name('driver.password.update');
         Route::put('driver/ktp/update/{id}', [DriverController::class, 'changeKtp'])->name('driver.changeKtp.update');
         Route::put('driver/sim/update/{id}', [DriverController::class, 'changeSim'])->name('driver.changeSim.update');
+        Route::post('driver/sim/add/{id}', [DriverController::class, 'addSim'])->name('driver.sim.add');
+        Route::post('driver/sim/remove', [DriverController::class, 'removeSim'])->name('driver.sim.remove');
         Route::get('driver/status/aktif/{id}', [DriverController::class, 'statusDriverAktif'])->name('driver.status.aktif');
         Route::get('driver/status/nonaktif/{id}', [DriverController::class, 'statusDriverNonAktif'])->name('driver.status.nonaktif');
     });
