@@ -89,6 +89,7 @@ Route::group(
         Route::get('status', [ApiProfilDriverController::class, 'status']); //status aktif nonaktif driver
         Route::post('nonaktif', [ApiProfilDriverController::class, 'nonAktif']); //nonaktifkan driver
         Route::post('aktif', [ApiProfilDriverController::class, 'aktif']); //aktifkan driver
+        Route::post('username', [ApiProfilDriverController::class, 'username']); //update username
     }
 );
 
