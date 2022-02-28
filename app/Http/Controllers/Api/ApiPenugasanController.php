@@ -299,6 +299,35 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    public function lokasiUpdate(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $latitude = $request->latitude;
+        $longitude = $request->longitude;
+
+        $findPenugasan = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', 'p']])->first();
+        if ($findPenugasan) {
+            $data = [
+                'lat_tujuan' => $latitude,
+                'long_tujuan' => $longitude
+            ];
+            $findPenugasan->update($data);
+            return response()->json(
+                [
+                    'status'        => 'sukses',
+                    'pesan' => 'lokasi berhasil diupdate'
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal',
+                    'pesan' =>  'lokasi gagal diupdate'
+                ]
+            );
+        }
+    }
+
     // public function selesaiPenugasan(Request $request)
     // {
     //     try {
