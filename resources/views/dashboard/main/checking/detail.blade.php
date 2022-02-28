@@ -362,7 +362,9 @@
                             </div>
                             <div class="col-lg-4">
                                 <label class="required fs-6 fw-bold mb-2">Tanggal Persetujuan</label>
-                                <input type="date" class="form-control form-control-solid" name="tgl_persetujuan"
+                                <input type="date" class="form-control form-control-solid" value="{{date('Y-m-d')}}"
+                                    disabled />
+                                <input type="hidden" class="form-control form-control-solid" name="tgl_persetujuan"
                                     id="tgl_persetujuan" value="{{date('Y-m-d')}}" />
                             </div>
                             <div class="col-lg-4">
@@ -391,12 +393,12 @@
                                 </select>
                             </div>
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Tanggal Perbaikan</label>
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Mulai Perbaikan</label>
                                 <input type="date" class="form-control form-control-solid" name="tgl_perbaikan"
                                     id="tgl_perbaikan" value="{{date('Y-m-d')}}" />
                             </div>
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Tanggal Penyelesaian</label>
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Penyelesaian Perbaikan</label>
                                 <input type="date" class="form-control form-control-solid" name="tgl_selesai"
                                     id="tgl_selesai" />
                             </div>
@@ -408,6 +410,7 @@
                                         <tr class="text-start text-muted text-uppercase gs-0">
                                             <th>Komponen</th>
                                             <th>Kondisi</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody class="fs-6 fw-bold text-gray-600">
@@ -420,6 +423,9 @@
                                                 @else
                                                 <span class="badge badge-light-danger">Rusak</span>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                {{$dp->keterangan}}
                                             </td>
                                         </tr>
                                         @endforeach
@@ -569,14 +575,14 @@
                                 tgl_perbaikan: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Tgl. perbaikan harus diisi"
+                                            message: "Tgl. mulai perbaikan harus diisi"
                                         }
                                     }
                                 },
                                 tgl_selesai: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Tgl. penyelesaian harus diisi"
+                                            message: "Tgl. penyelesaian perbaikan harus diisi"
                                         }
                                     }
                                 }
