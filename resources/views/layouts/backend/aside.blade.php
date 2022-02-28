@@ -60,6 +60,25 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
+                        <span class="menu-title">Main Dashboard</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link {{ Request::path() == 'monitoring/driver' ? 'active' : '' }}"
+                        href="{{route('dashboard.monitoring.driver')}}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
+                                    <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
+                                    <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
+                                    <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
                         <span class="menu-title">Monitoring Driver</span>
                     </a>
                 </div>
@@ -81,7 +100,7 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('checking.serviceorder') }}">
+                    <a class="menu-link" href="{{ route('status.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -89,7 +108,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Laporan Driver Off</span>
+                        <span class="menu-title">Laporan Status Driver</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -105,7 +124,7 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('assign.main') }}">
+                    <a class="menu-link" href="{{ route('assign.main.batal') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -117,7 +136,7 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('assign.main') }}">
+                    <a class="menu-link" href="{{ route('rating.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -125,7 +144,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Laporan Kinerja/Rating Driver</span>
+                        <span class="menu-title">Laporan Kinerja Driver</span>
                     </a>
                 </div>
                 <div class="menu-item">

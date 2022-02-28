@@ -76,7 +76,7 @@
                         <!--end::Icon-->
                         <!--begin::Content-->
                         <div class="d-flex flex-column pe-0 pe-sm-10">
-                            <h5 class="mb-1">Success</h5>
+                            <h5 class="mb-1">PESAN</h5>
                             <span> {{ session()->get('success') }}</span>
                         </div>
                         <!--end::Content-->
@@ -95,13 +95,19 @@
                         <!--begin:::Tab item-->
                         <li class="nav-item">
                             <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#kt_user_view_overview_tab">Data Umum</a>
+                                href="#kt_driver_umum">Data Umum</a>
+                        </li>
+                        <!--end:::Tab item-->
+                        <!--begin:::Tab item-->
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4 " data-bs-toggle="tab"
+                                href="#kt_driver_sim">Sim</a>
                         </li>
                         <!--end:::Tab item-->
                         <!--begin:::Tab item-->
                         <li class="nav-item">
                             <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#kt_user_view_overview_security">Privasi</a>
+                                data-bs-toggle="tab" href="#kt_driver_privasi">Privasi</a>
                         </li>
                         <!--end:::Tab item-->
                     </ul>
@@ -109,7 +115,7 @@
                     <!--begin:::Tab content-->
                     <div class="tab-content" id="myTabContent">
                         <!--begin:::Tab pane-->
-                        <div class="tab-pane fade show active" id="kt_user_view_overview_tab" role="tabpanel">
+                        <div class="tab-pane fade show active" id="kt_driver_umum" role="tabpanel">
                             <!--begin::Card-->
                             <div class="card card-flush mb-6 mb-xl-9">
                                 <!--begin::Card header-->
@@ -234,7 +240,92 @@
                         </div>
                         <!--end:::Tab pane-->
                         <!--begin:::Tab pane-->
-                        <div class="tab-pane fade" id="kt_user_view_overview_security" role="tabpanel">
+                        <div class="tab-pane fade show " id="kt_driver_sim" role="tabpanel">
+                            <!--begin::Card-->
+                            <div class="card card-flush mb-6 mb-xl-9">
+                                <!--begin::Card header-->
+                                <div class="card-header mt-6">
+                                    <div class="card-title flex-column">
+                                        <h3 class="mb-1">Detail SIM</h3>
+                                    </div>
+                                    <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-trigger="hover" title=""
+                                        data-bs-original-title="Tekan untuk menambah driver">
+                                        <button type="button" class="btn btn-sm btn-light btn-active-primary"
+                                            data-bs-toggle="modal" data-bs-target="#kt_modal_update_sim">
+                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                            <span class="svg-icon svg-icon-3">
+                                                <i class="bi bi-plus fs-3"></i>
+                                                Tambah SIM
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <div class="card-body p-9 pt-4">
+                                    <!--begin::Row-->
+                                    <div class="row g-10">
+                                        @forelse ($detailSim as $ds)
+                                        <!--begin::Col-->
+                                        <div class="col-md-4">
+                                            <!--begin::Hot sales post-->
+                                            <div class="card-xl-stretch me-md-6 ">
+                                                <!--begin::Overlay-->
+                                                <a class="d-block overlay rounded border-primary border border-dashed"
+                                                    data-fslightbox="lightbox-hot-sales"
+                                                    href="{{url('/assets/img_sim/'.$ds->foto_sim)}}">
+                                                    <!--begin::Image-->
+                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-175px"
+                                                        style="background-image:url('{{url('/assets/img_sim/'.$ds->foto_sim)}}')">
+                                                    </div>
+                                                    <!--end::Image-->
+                                                    <!--begin::Action-->
+                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                                        <i class="bi bi-eye-fill fs-2x text-white"></i>
+                                                    </div>
+                                                    <!--end::Action-->
+                                                </a>
+                                                <!--end::Overlay-->
+                                                <!--begin::Body-->
+                                                <div class="mt-5 text-center">
+                                                    <!--begin::Text-->
+                                                    <div class="fw-bold fs-5 text-dark mt-3">{{$ds->nama_sim}}</div>
+                                                    <button type="button" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-trigger="hover"
+                                                        data-bs-original-title="Tekan untuk menghapus SIM"
+                                                        class="btn remove btn-sm btn-icon btn-active-color-primary"
+                                                        data-id="{{$ds->id_detail_sim}}">
+                                                        <i class="bi bi-trash fs-1"></i>
+                                                    </button>
+                                                    <!--end::Text-->
+                                                </div>
+                                                <!--end::Body-->
+                                            </div>
+                                            <!--end::Hot sales post-->
+                                        </div>
+                                        <!--end::Col-->
+                                        @empty
+
+                                        <div
+                                            class="bg-light-primary rounded border-primary border border-dashed p-2 text-center">
+                                            <h3 class="mb-1">Belum Ada SIM, Silahkan Tambahkan atau Hubungi Driver Untuk
+                                                Menambahkan Secara Pribadi!
+                                            </h3>
+                                        </div>
+                                        @endforelse
+                                    </div>
+                                    <!--end::Row-->
+                                </div>
+                                <!--end::Card body-->
+                            </div>
+                            <!--end::Card-->
+
+                        </div>
+                        <!--end:::Tab pane-->
+                        <!--begin:::Tab pane-->
+                        <div class="tab-pane fade" id="kt_driver_privasi" role="tabpanel">
                             <!--begin::Card-->
                             <div class="card pt-4 mb-6 mb-xl-9">
                                 <!--begin::Card header-->
@@ -303,7 +394,7 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td>SIM</td>
                                                     <td>---</td>
                                                     <td class="text-end">
@@ -318,7 +409,7 @@
                                                             <!--end::Svg Icon-->
                                                         </button>
                                                     </td>
-                                                </tr>
+                                                </tr> --}}
                                             </tbody>
                                             <!--end::Table body-->
                                         </table>
@@ -423,10 +514,10 @@
                         <!--begin::Actions-->
                         <div class="text-center pt-15">
                             <button type="reset" class="btn btn-light me-3"
-                                data-kt-users-modal-action="cancel">Discard</button>
+                                data-kt-users-modal-action="cancel">Batal</button>
                             <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-label">Simpan</span>
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -479,7 +570,7 @@
                         @method('PUT')
                         <!--begin::Input group=-->
                         <div class="fv-row mb-10">
-                            <label class="required form-label fs-6 mb-2">Current Password</label>
+                            <label class="required form-label fs-6 mb-2">Password Sekarang</label>
                             <input class="form-control form-control-lg form-control-solid" type="password"
                                 placeholder="" name="current_password" autocomplete="off" />
                         </div>
@@ -489,7 +580,7 @@
                             <!--begin::Wrapper-->
                             <div class="mb-1">
                                 <!--begin::Label-->
-                                <label class="form-label fw-bold fs-6 mb-2">New Password</label>
+                                <label class="form-label fw-bold fs-6 mb-2">Password Baru</label>
                                 <!--end::Label-->
                                 <!--begin::Input wrapper-->
                                 <div class="position-relative mb-3">
@@ -521,7 +612,7 @@
                         <!--end::Input group=-->
                         <!--begin::Input group=-->
                         <div class="fv-row mb-10">
-                            <label class="form-label fw-bold fs-6 mb-2">Confirm New Password</label>
+                            <label class="form-label fw-bold fs-6 mb-2">Konfirmasi Password Baru</label>
                             <input class="form-control form-control-lg form-control-solid" type="password"
                                 placeholder="" name="confirm_password" autocomplete="off" />
                         </div>
@@ -529,10 +620,10 @@
                         <!--begin::Actions-->
                         <div class="text-center pt-15">
                             <button type="reset" class="btn btn-light me-3"
-                                data-kt-users-modal-action="cancel">Discard</button>
+                                data-kt-users-modal-action="cancel">Batal</button>
                             <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-label">Simpan</span>
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -584,7 +675,7 @@
                     <!--begin::Modal body-->
                     <div class="modal-body py-10 px-lg-17">
                         <!--begin::Input group-->
-                        <div class="fv-row mb-7">
+                        {{-- <div class="fv-row mb-7">
                             <!--begin::Label-->
                             <label class="fs-6 fw-bold mb-2">No. KTP</label>
                             <!--end::Label-->
@@ -592,7 +683,7 @@
                             <input type="number" class="form-control form-control-solid"
                                 placeholder="Masukkan Nomer KTP Driver" name="no_ktp" value="" />
                             <!--end::Input-->
-                        </div>
+                        </div> --}}
                         <!--end::Input group-->
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
@@ -616,7 +707,7 @@
                                 <!--begin::Label-->
                                 <label
                                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Ganti KTP">
                                     <i class="bi bi-pencil-fill fs-7"></i>
 
                                     <!--begin::Inputs-->
@@ -629,7 +720,7 @@
                                 <!--begin::Cancel-->
                                 <span
                                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Batalkan KTP">
                                     <i class="bi bi-x fs-2"></i>
                                 </span>
                                 <!--end::Cancel-->
@@ -637,7 +728,7 @@
                                 <!--begin::Remove-->
                                 <span
                                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Hapus KTP">
                                     <i class="bi bi-x fs-2"></i>
                                 </span>
                                 <!--end::Remove-->
@@ -650,12 +741,12 @@
                     <div class="modal-footer flex-center">
                         <!--begin::Button-->
                         <button type="reset" class="btn btn-light me-3"
-                            data-kt-users-modal-action="cancel">Discard</button>
+                            data-kt-users-modal-action="cancel">Batal</button>
                         <!--end::Button-->
                         <!--begin::Button-->
                         <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                            <span class="indicator-label">Submit</span>
-                            <span class="indicator-progress">Please wait...
+                            <span class="indicator-label">Simpan</span>
+                            <span class="indicator-progress">Mohon Tunggu...
                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                         </button>
                         <!--end::Button-->
@@ -675,10 +766,10 @@
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Form-->
-                <form class="form" action="{{route('dashboard.driver.changeSim.update',$driver->id_driver)}}"
+                <form class="form" action="{{route('dashboard.driver.sim.add',$driver->id_driver)}}"
                     id="kt_modal_update_sim_form" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    @method('POST')
                     <!--begin::Modal header-->
                     <div class="modal-header" id="kt_modal_update_user_header">
                         <!--begin::Modal title-->
@@ -714,66 +805,58 @@
                                 name="id_jenis_sim">
                                 <option value="">Pilih Jenis SIM</option>
                                 @foreach ($jenisSim as $js)
-                                <option value="{{$js->id_jenis_sim}}"" {{$driver->id_jenis_sim ==
-                                    $js->id_jenis_sim ? 'selected' :
-                                    ''}}>{{$js->nama_sim}}</option>
+                                <option value="{{$js->id_jenis_sim}}" data-nama="{{$js->nama_sim}}">{{$js->nama_sim}}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
                         <!--end::Input group-->
                         <!--begin::Input group-->
                         <div class=" fv-row mb-7">
-                                    <!--begin::Label-->
-                                    <label class="d-block fw-bold fs-6 mb-5">Foto SIM</label>
-                                    <!--end::Label-->
+                            <!--begin::Label-->
+                            <label class="d-block fw-bold fs-6 mb-5">Foto SIM</label>
+                            <!--end::Label-->
 
-                                    <!--begin::Image input-->
-                                    <div class="image-input image-input-outline" data-kt-image-input="true"
-                                        style="background-image: url({{url('assets/backend/assets/media/avatars/blank.png')}})">
-                                        <!--begin::Preview existing avatar-->
-                                        <div class="image-input-wrapper w-200px h-125px" @if ($driver->foto_sim != null
-                                            )
-                                            style="background-image:url({{url('/assets/img_sim/'.$driver->foto_sim)}})"
-                                            @else
-                                            style="background-image:
-                                            url({{url('assets/backend/assets/media/avatars/blank.png')}})"
-                                            @endif>
-                                        </div>
-                                        <!--end::Preview existing avatar-->
+                            <!--begin::Image input-->
+                            <div class="image-input image-input-outline" data-kt-image-input="true"
+                                style="background-image: url({{url('assets/backend/assets/media/avatars/blank.png')}})">
+                                <!--begin::Preview existing avatar-->
+                                <div class="image-input-wrapper w-200px h-125px" style="background-image:
+                                            url({{url('assets/backend/assets/media/avatars/blank.png')}})">
+                                </div>
+                                <!--end::Preview existing avatar-->
 
-                                        <!--begin::Label-->
-                                        <label
-                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                            data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                            title="Change SIM">
-                                            <i class="bi bi-pencil-fill fs-7"></i>
+                                <!--begin::Label-->
+                                <label
+                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                    title="Tambah Foto SIM">
+                                    <i class="bi bi-pencil-fill fs-7"></i>
 
-                                            <!--begin::Inputs-->
-                                            <input type="file" name="foto_sim" accept=".png, .jpg, .jpeg" />
-                                            <input type="hidden" name="avatar_remove" />
-                                            <!--end::Inputs-->
-                                        </label>
-                                        <!--end::Label-->
+                                    <!--begin::Inputs-->
+                                    <input type="file" name="foto_sim" accept=".png, .jpg, .jpeg" />
+                                    <input type="hidden" name="avatar_remove" />
+                                    <!--end::Inputs-->
+                                </label>
+                                <!--end::Label-->
 
-                                        <!--begin::Cancel-->
-                                        <span
-                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                            title="Cancel SIM">
-                                            <i class="bi bi-x fs-2"></i>
-                                        </span>
-                                        <!--end::Cancel-->
+                                <!--begin::Cancel-->
+                                <span
+                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Batalkan SIM">
+                                    <i class="bi bi-x fs-2"></i>
+                                </span>
+                                <!--end::Cancel-->
 
-                                        <!--begin::Remove-->
-                                        <span
-                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                            data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                            title="Remove SIM">
-                                            <i class="bi bi-x fs-2"></i>
-                                        </span>
-                                        <!--end::Remove-->
-                                    </div>
-                                    <!--end::Image input-->
+                                <!--begin::Remove-->
+                                <span
+                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Hapus SIM">
+                                    <i class="bi bi-x fs-2"></i>
+                                </span>
+                                <!--end::Remove-->
+                            </div>
+                            <!--end::Image input-->
                         </div>
                     </div>
                     <!--end::Modal body-->
@@ -781,12 +864,12 @@
                     <div class="modal-footer flex-center">
                         <!--begin::Button-->
                         <button type="reset" class="btn btn-light me-3"
-                            data-kt-users-modal-action="cancel">Discard</button>
+                            data-kt-users-modal-action="cancel">Batal</button>
                         <!--end::Button-->
                         <!--begin::Button-->
                         <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                            <span class="indicator-label">Submit</span>
-                            <span class="indicator-progress">Please wait...
+                            <span class="indicator-label">Simpan</span>
+                            <span class="indicator-progress">Mohon Tunggu...
                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                         </button>
                         <!--end::Button-->
@@ -1422,5 +1505,46 @@
     KTUtil.onDOMContentLoaded((function() {
         KTUsersUpdateSIM.init()
     }));
+    //hapus sim
+    $(function () {
+        var replyBtns = document.querySelectorAll('button.remove');
+        for (var i = 0; i < replyBtns.length; i++) {
+        replyBtns[i].addEventListener('click', function(e) {
+            var  t;
+            t = $(this);
+            $.ajax({
+                type: 'POST',
+                url: '{{route("dashboard.driver.sim.remove")}}',
+                data: {
+                    '_token': '{{csrf_token()}}',
+                    'id_detail_sim': $(this).data('id')
+                    // 'jml':$(this).val()
+                },
+                datatype: 'JSON',
+                success: function (response) {
+                    Swal.fire(
+                        'Berhasil!',
+                        'SIM Terhapus',
+                        'success'
+                        )
+                    t.parent().parent().remove();
+                    console.log(response);
+                },
+                error: function (response) {
+                    // t.parent().parent().remove();
+                    // alert('Gagal Menghapus');
+                    Swal.fire(
+                        'Gagal!',
+                        'Tidak dapat mengapus SIM',
+                        'error'
+                        )
+                    console.log(response);
+                }
+            });
+            // alert($(this).data('id'));
+            // this.parentNode.parentNode.remove(this.parentNode);
+        }, false);
+        }
+    });
 </script>
 @endpush

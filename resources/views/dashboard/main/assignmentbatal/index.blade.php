@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Laporan Kecelakaan | Utama')
+@section('title','Laporan Pembatalan Tugas | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,9 +16,10 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">LAPORAN KECELAKAAN</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Ada {{$kecelakaan->count()}} Laporan
-                            Kecelakaan</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">LAPORAN PEMBATALAN TUGAS</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Ada
+                            {{$batal->where('statu_pembatalan',null)->count()}}
+                            Pembatalan Butuh Respon</span>
                     </h3>
                 </div>
 
@@ -56,37 +57,40 @@
                     <!--end::Alert-->
                     @endif
                     <!--begin::Table container-->
-                    <table id="kt_datatable_accident"
+                    <table id="kt_datatable_do"
                         class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
                         <thead>
                             <tr class="fw-bolder fs-6 text-gray-800 px-7">
-                                <th>No</th>
-                                <th>No. Kecelakaan</th>
+                                <th>No.</th>
                                 <th>No. DO</th>
-                                <th>Kendaraan</th>
-                                <th>Tanggal | Jam</th>
-                                <th>Lokasi Kecelakaan</th>
+                                <th>Driver</th>
+                                <th>Alasan</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($kecelakaan as $kc)
+                            @foreach ($batal as $asb)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>ACD_{{$kc->id_kecelakaan}}</td>
-                                <td>DO_{{$kc->id_do}}</td>
+                                <td><a href="{{route('assign.detail',$asb->id_do)}}">DO_{{$asb->id_do}}</a></td>
+                                <td>{{$asb->nama_driver}}</td>
+                                <td>{{$asb->alasan}}</td>
                                 <td>
-                                    {{$kc->kendaraan}}
-                                    <br>
-                                    <span class="badge badge-light-primary">{{$kc->no_polisi}}</span>
-                                </td>
-                                <td>{{Carbon\Carbon::parse($kc->tgl)->format('d F Y') }} |
-                                    {{Carbon\Carbon::parse($kc->jam)->format('H:i') }}</td>
-                                <td>
-                                    {{$kc->lokasi}}
+                                    {{Carbon\Carbon::parse($asb->tanggal)->format('d M Y')}}
                                 </td>
                                 <td>
-                                    <a href="{{route('accident.detail', $kc->id_kecelakaan)}}"
+                                    @if ($asb->status_pembatalan == 't')
+                                    <span class="badge badge-light-primary">Diterima</span>
+                                    @elseif($asb->status_pembatalan == 'p')
+                                    <span class="badge badge-light-danger">Ditolak</span>
+                                    @else
+                                    <span class="badge badge-light-warning">Baru</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{route('assign.detail.batal', $asb->id_pembatalan)}}"
                                         class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                 </td>
                             </tr>
@@ -110,7 +114,7 @@
 <script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
-    $("#kt_datatable_accident").DataTable({
+    $("#kt_datatable_do").DataTable({
         "language": {
             "lengthMenu": "Show _MENU_",
         },

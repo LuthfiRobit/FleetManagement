@@ -15,6 +15,7 @@ use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\KriteriaRatingController;
 use App\Http\Controllers\Main\CheckingController;
 use App\Http\Controllers\Main\DashboardController;
+use App\Http\Controllers\Main\DriverStatusController;
 use App\Http\Controllers\Main\KecelakaanController;
 use App\Http\Controllers\Main\PengecekanKendaraanController;
 use App\Http\Controllers\Main\PenugasanDriverController;
@@ -51,6 +52,7 @@ Route::get('/coba', function () {
 // Route::resource('kendaraan', JenisKendaraanController::class);
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/monitoring/driver', [DashboardController::class, 'monitoring'])->name('dashboard.monitoring.driver');
 
 Route::name('checking')->prefix('checking')
     ->group(function () {
@@ -64,6 +66,10 @@ Route::name('assign')->prefix('assign')
     ->group(function () {
         Route::get('/', [PenugasanDriverController::class, 'index'])->name('.main');
         Route::get('/detail/{id}', [PenugasanDriverController::class, 'detail'])->name('.detail');
+        Route::get('batal', [PenugasanDriverController::class, 'indexbatal'])->name('.main.batal');
+        Route::get('batal/detail/{id}', [PenugasanDriverController::class, 'detailbatal'])->name('.detail.batal');
+        Route::get('batal/tolak/{id}', [PenugasanDriverController::class, 'tolakbatal'])->name('.batal.tolak');
+        Route::post('batal/terima', [PenugasanDriverController::class, 'terimabatal'])->name('.batal.terima');
     });
 Route::name('check')->prefix('check')
     ->group(function () {
@@ -89,8 +95,15 @@ Route::name('accident')->prefix('accident')
     });
 Route::name('rating')->prefix('rating')
     ->group(function () {
+        Route::get('/', [RatingDriverController::class, 'index'])->name('.main');
+        Route::get('detail/{id}', [RatingDriverController::class, 'detail'])->name('.detail');
         Route::get('insert', [RatingDriverController::class, 'viewInsert'])->name('.insert');
         Route::post('store', [RatingDriverController::class, 'storeRating'])->name('.store');
+    });
+Route::name('status')->prefix('status')
+    ->group(function () {
+        Route::get('/', [DriverStatusController::class, 'index'])->name('.main');
+        Route::get('detail/{id}', [DriverStatusController::class, 'detail'])->name('.detail');
     });
 
 Route::name('dashboard.')->prefix('dashboard')
@@ -106,12 +119,16 @@ Route::name('dashboard.')->prefix('dashboard')
             Route::resource('jenis_alokasi', JenisAlokasiController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
         });
+        Route::post('kendaraan/alokasi/simpan', [KendaraanController::class, 'addAlokasi'])->name('kendaraan.alokasi.simpan');
+        Route::post('kendaraan/alokasi/hapus', [KendaraanController::class, 'removeAlokasi'])->name('kendaraan.alokasi.hapus');
+
         Route::group(['as' => 'pengecekan.', 'prefix' => 'pengecekan'], function () {
             Route::resource('kriteria', KriteriaPengecekanController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
             Route::resource('jenis', JenisPengecekanController::class)->shallow()
                 ->only(['index', 'create', 'store', 'edit', 'update']);
         });
+
         Route::group(['as' => 'petugas.', 'prefix' => 'petugas'], function () {
             Route::resource('main', PetugasController::class)->shallow()
                 ->only(['index', 'create', 'store', 'edit', 'update']);
@@ -122,6 +139,7 @@ Route::name('dashboard.')->prefix('dashboard')
             Route::resource('jabatan', JabatanController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
         });
+
         //independen route
         Route::resource('bahanbakar', BahanBakarController::class)->shallow()
             ->only(['index', 'store', 'edit', 'update']);
@@ -131,12 +149,15 @@ Route::name('dashboard.')->prefix('dashboard')
             ->only(['index', 'store', 'edit', 'update']);
         Route::resource('dealer', DealerController::class)->shallow()
             ->only(['index', 'store', 'edit', 'update']);
+
         Route::resource('driver', DriverController::class)->shallow()
             ->except(['show', 'destroy']);
         Route::put('driver/username/update/{id}', [DriverController::class, 'username'])->name('driver.username.update');
         Route::put('driver/password/update/{id}', [DriverController::class, 'password'])->name('driver.password.update');
         Route::put('driver/ktp/update/{id}', [DriverController::class, 'changeKtp'])->name('driver.changeKtp.update');
         Route::put('driver/sim/update/{id}', [DriverController::class, 'changeSim'])->name('driver.changeSim.update');
+        Route::post('driver/sim/add/{id}', [DriverController::class, 'addSim'])->name('driver.sim.add');
+        Route::post('driver/sim/remove', [DriverController::class, 'removeSim'])->name('driver.sim.remove');
         Route::get('driver/status/aktif/{id}', [DriverController::class, 'statusDriverAktif'])->name('driver.status.aktif');
         Route::get('driver/status/nonaktif/{id}', [DriverController::class, 'statusDriverNonAktif'])->name('driver.status.nonaktif');
     });
