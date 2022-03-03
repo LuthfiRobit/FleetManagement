@@ -332,11 +332,16 @@ class ApiPenugasanController extends Controller
 
     public function getToken(Request $request)
     {
-        $response = Http::withBasicAuth('Luthfi_ph', 'Trial!123')
-            ->withHeaders([
-                'content-type' => 'application/json'
-            ])->post('https://wappin.id/v1/token/get');
+        $baseid = base64_encode('0146:3b4b553e6e9541bf21a898540bb4e5e12fe2720e');
+        $response = Http::withHeaders([
+            'Authorization' => 'Basic ' . $baseid,
+            'Content-type' => 'application/json'
+        ])->post('https://wappin.id/v1/token/get');
         return $response;
+    }
+
+    public function sendWa(Request $request)
+    {
     }
 
     // public function selesaiPenugasan(Request $request)
