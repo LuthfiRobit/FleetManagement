@@ -7,10 +7,12 @@ use App\Models\Driver;
 use App\Models\PenugasanBatal;
 use App\Models\PenugasanDriver;
 use App\Models\ServiceOrderDetail;
-// use GuzzleHttp\Client;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Http;
+
+// use Twilio\Rest\Client;
 
 // use Twilio\Rest\Client;
 
@@ -328,6 +330,15 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    public function getToken(Request $request)
+    {
+        $response = Http::withBasicAuth('Luthfi_ph', 'Trial!123')
+            ->withHeaders([
+                'content-type' => 'application/json'
+            ])->post('https://wappin.id/v1/token/get');
+        return $response;
+    }
+
     // public function selesaiPenugasan(Request $request)
     // {
     //     try {
@@ -402,29 +413,30 @@ class ApiPenugasanController extends Controller
     //         );
     //     }
     // }
-    public function selesaiPenugasan(Request $request)
-    {
-        $sid    = env("TWILIO_AUTH_SID");
-        $token  = env("TWILIO_AUTH_TOKEN");
-        $wa_from = env("TWILIO_WHATSAPP_FROM");
-        $recipient = '+6282330199009';
-        $twilio = new Client($sid, $token);
 
-        $body = "Hello, welcome to codelapan.com.";
+    // public function selesaiPenugasan(Request $request)
+    // {
+    //     $sid    = env("TWILIO_AUTH_SID");
+    //     $token  = env("TWILIO_AUTH_TOKEN");
+    //     $wa_from = env("TWILIO_WHATSAPP_FROM");
+    //     $recipient = '+6282330199009';
+    //     $twilio = new Client($sid, $token);
 
-        return $twilio->messages->create("whatsapp:$recipient", ["from" => "whatsapp:$wa_from", "body" => $body]);
+    //     $body = "Hello, welcome to codelapan.com.";
 
-        // $client = new Client();
-        // $res = $client->request('POST', 'https://api.chat-api.com/instance408414/sendMessage?token=750e6o1h0hb9lt8m', [
-        //     'form_params' => [
-        //         'phone' => '15855721186',
-        //         'body' => "Halo Indra"
-        //     ]
-        // ]);
-        // if ($res->getStatusCode() == 404) { // 200 OK
-        //     return $res->getBody()->getContents();
-        // } else {
-        //     return $res->getBody()->getContents();
-        // }
-    }
+    //     return $twilio->messages->create("whatsapp:$recipient", ["from" => "whatsapp:$wa_from", "body" => $body]);
+
+    // $client = new Client();
+    // $res = $client->request('POST', 'https://api.chat-api.com/instance408414/sendMessage?token=750e6o1h0hb9lt8m', [
+    //     'form_params' => [
+    //         'phone' => '15855721186',
+    //         'body' => "Halo Indra"
+    //     ]
+    // ]);
+    // if ($res->getStatusCode() == 404) { // 200 OK
+    //     return $res->getBody()->getContents();
+    // } else {
+    //     return $res->getBody()->getContents();
+    // }
+    // }
 }
