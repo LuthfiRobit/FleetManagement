@@ -25,6 +25,7 @@ class RatingDriverController extends Controller
             LEFT JOIN tb_rating_driver ON tb_rating_driver.id_do=tb_penugasan_driver.id_do
             WHERE tb_driver.status_driver = 'y'
             GROUP BY tb_driver.nama_driver, tb_driver.id_driver,tb_departemen.nama_departemen
+            ORDER BY rating DESC
             "
         );
         // return $data;
