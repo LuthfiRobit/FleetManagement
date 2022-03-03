@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
+use App\Models\PenugasanDriver;
 use App\Models\ServiceOrder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -96,44 +97,53 @@ class CheckingController extends Controller
 
     public function serviceAccept(Request $request, $id)
     {
-        $service = DB::table('tb_order_kendaraan')
-            ->select(
-                'tb_order_kendaraan.id_service_order as id_so',
-                'tb_order_kendaraan.tgl_penjemputan as tgl_jpt',
-                'tb_order_kendaraan.jam_penjemputan as jam_jmp',
-                'tb_order_kendaraan.tempat_penjemputan as tmp_jemput',
-                'tb_order_kendaraan.tujuan as tmp_tujuan',
-                'tb_petugas.id_petugas',
-                'tb_petugas.nama_lengkap as petugas',
-                'tb_departemen.nama_departemen as departemen',
-                'tb_jabatan.nama_jabatan as jabatan'
-            )
-            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
-            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
-            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
-            ->where('id_service_order', $id)
-            ->first();
+        $findSo = ServiceOrder::where([['id_service_order', $id], ['status_so', null]])->first();
+        if ($findSo) {
 
-        $kendaraan =  DB::select(
-            'SELECT tb_kendaraan.nama_kendaraan,
-            tb_kendaraan.no_polisi,
-            tb_kendaraan.id_kendaraan,
-            tb_kendaraan.id_jenis_sim,
-            tb_jenis_sim.nama_sim as sim,
-            tb_jenis_alokasi.nama_alokasi as alokasi FROM tb_kendaraan
-            JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
-            JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
-            JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
-            WHERE NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_pengecekan_kendaraan.status_kendaraan = "t"
-            UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = ' . '"' . $service->tgl_jpt . '")'
-        );
-        $data = [
-            'so' => $service,
-            'kendaraan' => $kendaraan,
-        ];
+            $service = DB::table('tb_order_kendaraan')
+                ->select(
+                    'tb_order_kendaraan.id_service_order as id_so',
+                    'tb_order_kendaraan.tgl_penjemputan as tgl_jpt',
+                    'tb_order_kendaraan.jam_penjemputan as jam_jmp',
+                    'tb_order_kendaraan.tempat_penjemputan as tmp_jemput',
+                    'tb_order_kendaraan.tujuan as tmp_tujuan',
+                    'tb_petugas.id_petugas',
+                    'tb_petugas.nama_lengkap as petugas',
+                    'tb_departemen.nama_departemen as departemen',
+                    'tb_jabatan.nama_jabatan as jabatan'
+                )
+                ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+                ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
+                ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
+                ->where('id_service_order', $id)
+                ->first();
 
-        // return $data;
-        return view('dashboard.main.serviceorder.accept', $data);
+            $kendaraan =  DB::select(
+                "SELECT tb_kendaraan.nama_kendaraan,
+                tb_kendaraan.no_polisi,
+                tb_kendaraan.id_kendaraan,
+                tb_kendaraan.id_jenis_sim,
+                tb_jenis_sim.nama_sim as sim,
+                tb_jenis_alokasi.nama_alokasi as alokasi
+                FROM tb_kendaraan
+                JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
+                JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+                JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
+                WHERE NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+                AND tb_pengecekan_kendaraan.status_kendaraan = 't' UNION SELECT id_kendaraan FROM tb_penugasan_driver
+                WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
+                AND tb_penugasan_driver.tgl_penugasan = '$service->tgl_jpt')
+                ORDER BY alokasi DESC"
+            );
+            $data = [
+                'so' => $service,
+                'kendaraan' => $kendaraan,
+            ];
+            // return $data;
+            return view('dashboard.main.serviceorder.accept', $data);
+        } else {
+            return abort(404);
+        }
     }
 
     public function selectDriver(Request $request)
