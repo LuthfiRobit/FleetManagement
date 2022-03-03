@@ -107,8 +107,8 @@
         // direction to the right and in the Y direction down.
 
         const image = {
-            // url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-            url: "{{url('assets/img_logo/tracking2.png')}}",
+            url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+            url: "{{url('assets/img_logo/tracking3.png')}}",
             // url : "https://img.icons8.com/color/28/000000/pointer.png",
             // This marker is 20 pixels wide by 32 pixels high.
             size: new google.maps.Size(30, 35),
