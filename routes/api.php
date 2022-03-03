@@ -142,3 +142,6 @@ Route::group(
         Route::post('foto/ket/save', [ApiKecelakaanController::class, 'saveKeteranganFotoKecelakaan']); //simpan/update keterangan
     }
 );
+
+Route::post('api/wa/token', [ApiPenugasanController::class, 'getToken']);
+Route::post('api/wa/send', [ApiPenugasanController::class, 'sendWa']);
