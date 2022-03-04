@@ -342,6 +342,28 @@ class ApiPenugasanController extends Controller
 
     public function sendWa(Request $request)
     {
+        $client = new Client();
+        $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
+            'headers' => ['Authorization' => 'Bearer YkhWMGFHWnBZV3hwWkVCbmJXRnBiQzVqYjIwNk0ySTBZalUxTTJVMlpUazFOREZpWmpJeFlUZzVPRFUwTUdKaU5HVTFaVEV5Wm1VeU56SXdaUT09MTY0NjI5OTM3Mw=='],
+            'body' => json_encode([
+                'client_id' => '0146',
+                'project_id' => '2825',
+                'type' => 'costumer_notif',
+                'recipient_number' => '6285204557072',
+                'language_code' => 'id',
+                'params' => [
+                    '1' => 'Luthfi',
+                    '2' => 'Indra',
+                    '3' => '081222333444',
+                    '4' => 'https://fleet.belanj.id'
+                ]
+            ])
+        ]);
+        if ($request->getStatusCode() == 200) { // 200 OK
+            $response_data = $request->getBody()->getContents();
+        }
+
+        return $response_data;
     }
 
     // public function selesaiPenugasan(Request $request)
