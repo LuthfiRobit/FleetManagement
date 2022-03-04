@@ -143,5 +143,5 @@ Route::group(
     }
 );
 
-Route::post('api/wa/token', [ApiPenugasanController::class, 'getToken']);
-Route::post('api/wa/send', [ApiPenugasanController::class, 'sendWa']);
+Route::get('api/wa/token', [ApiPenugasanController::class, 'getToken']);
+Route::get('api/wa/send', [ApiPenugasanController::class, 'sendWa']);
