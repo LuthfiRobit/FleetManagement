@@ -344,7 +344,7 @@ class ApiPenugasanController extends Controller
     {
         $client = new Client();
         $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
-            'headers' => ['Authorization' => 'Bearer YkhWMGFHWnBZV3hwWkVCbmJXRnBiQzVqYjIwNk0ySTBZalUxTTJVMlpUazFOREZpWmpJeFlUZzVPRFUwTUdKaU5HVTFaVEV5Wm1VeU56SXdaUT09MTY0NjI5OTM3Mw=='],
+            'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
             'body' => json_encode([
                 'client_id' => '0146',
                 'project_id' => '2825',
