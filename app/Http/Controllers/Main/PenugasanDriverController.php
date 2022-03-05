@@ -71,13 +71,22 @@ class PenugasanDriverController extends Controller
             ->select(
                 'tb_driver.nama_driver',
                 'tb_driver.no_tlp as d_tlp',
-                'tb_departemen.nama_departemen as departemen',
+                'tb_departemen.nama_departemen as departemen'
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->where('tb_driver.id_driver', $data['detail']->id_driver)
             ->first();
 
-        $data['penumpang'] = DB::table('tb_detail_so')->where('id_service_order', $data['detail']->id_service_order)->get();
+        $data['penumpang'] = DB::table('tb_detail_so')
+            ->select(
+                'tb_detail_so.id_detail_so',
+                'tb_detail_so.nama_penumpang',
+                'tb_detail_so.no_tlp',
+                'tb_jabatan.nama_jabatan'
+            )
+            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_detail_so.id_jabatan')
+            ->orderByDesc('id_detail_so')
+            ->where('id_service_order', $data['detail']->id_service_order)->get();
 
         // return $data;
         return view('dashboard.main.assignment.detail', $data);
