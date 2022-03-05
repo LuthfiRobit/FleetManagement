@@ -176,6 +176,7 @@
                                             <tr
                                                 class="border-bottom border-gray-200 text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                                 <th class="min-w-150px">Nama Penumpang</th>
+                                                <th>Jabatan</th>
                                                 <th class="min-w-125px">No. Telepon</th>
                                             </tr>
                                             <!--end::Table row-->
@@ -188,6 +189,7 @@
                                                 <td>
                                                     <label class="w-150px">{{$pn->nama_penumpang}}</label>
                                                 </td>
+                                                <td>{{$pn->nama_jabatan}}</td>
                                                 <td>
                                                     <span class="badge badge-light-danger">{{$pn->no_tlp}}</span>
                                                 </td>

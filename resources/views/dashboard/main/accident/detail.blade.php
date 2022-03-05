@@ -48,231 +48,226 @@
             <!--end::Alert-->
             @endif
 
-            <!--begin:: Layout-->
-            <div class="d-flex flex-column flex-xl-row">
-                <!--end:: sidebar-->
-                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
-                    <div class="card mb-5 mb-xl-8">
+            <!--begin::Layout-->
+            <div class="d-flex flex-column flex-lg-row">
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
+                    <!--begin::Card-->
+                    <div class="card card-flush pt-3 mb-5 mb-xl-10">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2 class="fw-bolder">KECELAKAAN</h2>
+                            </div>
+                            <!--begin::Card title-->
+                        </div>
+                        <!--end::Card header-->
                         <!--begin::Card body-->
-                        <div class="card-body">
-                            <!--begin::Summary-->
-                            <!--begin::User Info-->
-                            <div class="d-flex flex-center flex-column py-5">
-                                <!--begin::Name-->
-                                <a href="#"
-                                    class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{$kecelakaan->kendaraan}}</a>
-                                <!--end::Name-->
-                            </div>
-                            <div class="d-flex flex-wrap flex-center">
-                                <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
-                                    <div class="fs-4 fw-bolder text-gray-700">
-                                        <span class="w-75px">{{$kecelakaan->kode_asset}}</span>
+                        <div class="card-body pt-3">
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Detail:</h5>
+                                <!--end::Title-->
+                                <!--begin::Details-->
+                                <div class="d-flex flex-wrap py-5">
+                                    <!--begin::Row-->
+                                    <div class="flex-equal me-5">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">No. Kecelakaan:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    <a href="#"
+                                                        class="text-gray-800 text-hover-primary">ACD_{{$kecelakaan->id_kecelakaan}}</a>
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">No. Do:</td>
+                                                <td class="text-gray-800">
+                                                    <a
+                                                        href="{{route('assign.detail',$kecelakaan->id_do)}}">DO_{{$kecelakaan->id_do}}</a>
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tanggal Kecelakaan:</td>
+                                                <td class="text-gray-800">
+                                                    {{Carbon\Carbon::parse($kecelakaan->tgl)->format('d F Y')}}</td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Jam Kecelakaan:</td>
+                                                <td class="text-gray-800">
+                                                    {{Carbon\Carbon::parse($kecelakaan->jam)->format('H:i')}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
                                     </div>
-                                </div>
-                                <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
-                                    <div class="fs-4 fw-bolder text-gray-700">
-                                        <span class="w-75px">{{$kecelakaan->no_polisi}}</span>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <div class="flex-equal">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Lokasi Kecelakaan:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    {{$kecelakaan->lokasi}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tujuan Perjalanan:</td>
+                                                <td class="text-gray-800">
+                                                    {{$assignment->tujuan}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Kronologi Kecelakaan:</td>
+                                                <td class="text-gray-800">
+                                                    {{$kecelakaan->kronologi}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
                                     </div>
+                                    <!--end::Row-->
                                 </div>
+                                <!--end::Row-->
                             </div>
-                            <!--end::User Info-->
-                            <!--end::Summary-->
-                            <!--begin::Details toggle-->
-                            <div class="d-flex flex-stack fs-4 py-3">
-                                <div class="fw-bolder rotate collapsible collapsed">Detail Kendaraan
+                            <!--end::Section-->
+                            <!--begin::Section-->
+                            <div class="mb-0">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Foto:</h5>
+                                <!--end::Title-->
+                                <!--begin::Card body-->
+                                <div class="row g-10 row-cols-2 row-cols-lg-5">
+                                    <!--begin::Col-->
+                                    @foreach ($kerusakan as $kr)
+                                    <div class="col text-center">
+                                        <!--begin::Overlay-->
+                                        <a class="d-block overlay" data-fslightbox="lightbox-hot-sales"
+                                            href="{{url('/assets/img_accident/'.$kr->foto_pendukung)}}">
+                                            <!--begin::Image-->
+                                            <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-175px"
+                                                style="background-image:url('{{url('/assets/img_accident/'.$kr->foto_pendukung)}}')">
+                                            </div>
+                                            <!--end::Image-->
+                                            <!--begin::Action-->
+                                            <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                                <i class="bi bi-eye-fill fs-2x text-white"></i>
+                                            </div>
+                                            <!--end::Action-->
+                                        </a>
+                                        {{$kr->keterangan}}
+                                    </div>
+                                    @endforeach
                                 </div>
+                                <!--end::Card body-->
                             </div>
-                            <!--end::Details toggle-->
-                            <div class="separator"></div>
-                            <!--begin::Details content-->
-                            <div id="kt_user_view_details">
-                                <div class="pb-5 fs-6">
-                                    {{-- <div class="fw-bolder mt-5">Latest Kilometers</div>
-                                    <div class="text-gray-600">{{$kecelakaan->km_kendaraan}} Km</div> --}}
-                                    <div class="fw-bolder mt-5">Merk</div>
-                                    <div class="text-gray-600">{{$kecelakaan->merk}} </div>
-                                    <div class="fw-bolder mt-5">Tipe</div>
-                                    <div class="text-gray-600">{{$kecelakaan->jenis}}</div>
-                                    <div class="fw-bolder mt-5">Bahan Bakar</div>
-                                    <div class="text-gray-600">{{$kecelakaan->bahan_bakar}}</div>
-                                    <div class="fw-bolder mt-5">Warna</div>
-                                    <div class="text-gray-600">{{$kecelakaan->warna}}</div>
-                                    <div class="fw-bolder mt-5">Penggerak</div>
-                                    <div class="text-gray-600">{{$kecelakaan->jenis_penggerak}}</div>
-                                </div>
-                            </div>
-                            <!--end::Details content-->
+                            <!--end::Section-->
                         </div>
                         <!--end::Card body-->
                     </div>
+                    <!--end::Card-->
                 </div>
-                <!--end:: sidebar-->
-                <!--begin:: content-->
-                <div class="flex-lg-row-fluid ms-lg-15" id="kt_table_users">
-                    <div class="card card-flush mb-6 mb-xl-9">
+                <!--end::Content-->
+                <!--begin::Sidebar-->
+                <div class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2">
+                    <!--begin::Card-->
+                    <div class="card card-flush mb-0" data-kt-sticky="true" data-kt-sticky-name="subscription-summary"
+                        data-kt-sticky-offset="{default: false, lg: '200px'}" data-kt-sticky-width="{default: false}"
+                        data-kt-sticky-left="auto" data-kt-sticky-top="150px" data-kt-sticky-animation="true"
+                        data-kt-sticky-zindex="95">
                         <!--begin::Card header-->
-                        <div class="card-header mt-6">
+                        <div class="card-header">
                             <!--begin::Card title-->
-                            <div class="card-title flex-column">
-                                <h2 class="mb-1">No. Kecelakaan</h2>
-                                <div class="fs-6 fw-bold text-muted">ACD_{{$kecelakaan->id_kecelakaan}}</div>
+                            <div class="card-title">
+                                <h2>KENDARAAN</h2>
                             </div>
                             <!--end::Card title-->
                         </div>
                         <!--end::Card header-->
                         <!--begin::Card body-->
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex flex-column flex-xl-row">
-                                <div class="flex-column flex-lg-row-auto w-50">
-                                    <!--begin::Item-->
-                                    <div class="d-flex align-items-center position-relative mb-7">
-                                        <!--begin::Label-->
-                                        <div class="position-absolute top-0 start-0 rounded h-100 bg-secondary w-4px">
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Details-->
-                                        <div class="fw-bold ms-5">
-                                            <a class="fs-5 fw-bolder text-dark text-hover-primary">Tanggal dan Jam
-                                                Kecelakaan</a>
-                                            <!--begin::Info-->
-                                            <div class="fs-7 text-muted">
-                                                {{Carbon\Carbon::parse($kecelakaan->tgl)->format('d F Y')}} |
-                                                {{Carbon\Carbon::parse($kecelakaan->jam)->format('H:i')}}
-                                            </div>
-                                            <!--end::Info-->
-                                        </div>
-                                        <!--end::Details-->
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="d-flex align-items-center position-relative mb-7">
-                                        <!--begin::Label-->
-                                        <div class="position-absolute top-0 start-0 rounded h-100 bg-secondary w-4px">
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Details-->
-                                        <div class="fw-bold ms-5">
-                                            <a class="fs-5 fw-bolder text-dark text-hover-primary">Lokasi Kecelakaan</a>
-                                            <!--begin::Info-->
-                                            <div class="fs-7 text-muted">
-                                                {{$kecelakaan->lokasi}}
-                                            </div>
-                                            <!--end::Info-->
-                                        </div>
-                                        <!--end::Details-->
-                                    </div>
-                                    <div class="d-flex align-items-center position-relative mb-7">
-                                        <!--begin::Label-->
-                                        <div class="position-absolute top-0 start-0 rounded h-100 bg-secondary w-4px">
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Details-->
-                                        <div class="fw-bold ms-5">
-                                            <a class="fs-5 fw-bolder text-dark text-hover-primary">Tujuan Perjalanan</a>
-                                            <!--begin::Info-->
-                                            <div class="fs-7 text-muted">
-                                                {{$assignment->tujuan}}
-                                            </div>
-                                            <!--end::Info-->
-                                        </div>
-                                        <!--end::Details-->
-                                    </div>
-                                </div>
-                                <div class="flex-lg-row-fluid ms-lg">
-                                    <!--begin::Item-->
-                                    <div class="d-flex align-items-center position-relative mb-7">
-                                        <!--begin::Label-->
-                                        <div class="position-absolute top-0 start-0 rounded h-100 bg-secondary w-4px">
-                                        </div>
-                                        <!--end::Label-->
-                                        <!--begin::Details-->
-                                        <div class="fw-bold ms-5">
-                                            <a class="fs-5 fw-bolder text-dark text-hover-primary">
-                                                Kronologi Kecelakaan
-                                            </a>
-                                            <!--begin::Info-->
-                                            <div class="fs-7 text-muted" style="text-align: justify">
-                                                {{$kecelakaan->kronologi}}
-                                            </div>
-                                            <!--end::Info-->
-                                        </div>
-                                        <!--end::Details-->
-                                    </div>
-                                    <!--end::Item-->
-                                </div>
-                            </div>
-                            <!--end::Item-->
-                            {{-- <div class="table-responsive">
-                                <!--begin::Table-->
-                                <table class="table align-middle table-row-dashed gy-5"
-                                    id="kt_table_users_login_session">
-                                    <!--begin::Table head-->
-                                    <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
-                                        <!--begin::Table row-->
-                                        <tr class="text-start text-muted text-uppercase gs-0">
-                                            <th class="min-w-100px">Criteria</th>
-                                            <th>Type</th>
-                                            <th>Condition</th>
-                                            <th class="min-w-125px">Description</th>
-                                        </tr>
-                                        <!--end::Table row-->
-                                    </thead>
-                                    <!--end::Table head-->
-                                    <!--begin::Table body-->
-                                    <tbody class="fs-6 fw-bold text-gray-600">
-                                        @foreach ($detail as $dp)
-                                        <tr>
-                                            <td>{{$dp->kriteria}}</td>
-                                            <td>{{$dp->jenis}}</td>
-                                            <td>
-                                                @if($dp->kondisi == 'b')
-                                                <span class="badge badge-light-success">Normal</span>
-                                                @else
-                                                <span class="badge badge-light-danger">Damaged</span>
-                                                @endif
-                                            </td>
-                                            <td>{{$dp->keterangan}}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <!--end::Table body-->
+                        <div class="card-body pt-0 fs-6">
+                            <!--begin::Seperator-->
+                            <div class="separator separator-dashed mb-7"></div>
+                            <!--end::Seperator-->
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Detail:</h5>
+                                <!--end::Title-->
+                                <!--begin::Details-->
+                                <table class="table fs-6 fw-bold gs-0 gy-2 gx-2">
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Nama Kendaraan:</td>
+                                        <td class="text-gray-800">{{$kecelakaan->kendaraan}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Kode Asset:</td>
+                                        <td class="text-gray-800">{{$kecelakaan->kode_asset}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">No. Pol:</td>
+                                        <td class="text-gray-800">{{$kecelakaan->no_polisi}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Merk:</td>
+                                        <td class="text-gray-800">{{$kecelakaan->merk}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Tipe:</td>
+                                        <td class="text-gray-800">{{$kecelakaan->jenis}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Penggerak:</td>
+                                        <td class="text-gray-800">{{$kecelakaan->jenis_penggerak}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Bahan Bakar:</td>
+                                        <td class="text-gray-800">{{$kecelakaan->bahan_bakar}}</td>
+                                    </tr>
+                                    <!--end::Row-->
                                 </table>
-                                <!--end::Table-->
-                            </div> --}}
+                                <!--end::Details-->
+                            </div>
+                            <!--end::Section-->
                         </div>
                         <!--end::Card body-->
                     </div>
-                    <div class="card card-flush mb-3 mb-xl-2">
-                        <!--begin::Card header-->
-                        <div class="card-header mt-3">
-                            <!--begin::Card title-->
-                            <div class="card-title flex-column">
-                                <h5 class="mb-0">Detail Foto Kecelakaan</h5>
-                            </div>
-                            <!--end::Card title-->
-                        </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
-                        <div class="card-body d-flex flex-column">
-                            <div class="row">
-                                @foreach ($kerusakan as $kr)
-                                <div class="col-lg-3 col-md-2 mb-0 mb-lg-3">
-                                    <div class="bg-image hover-overlay  bg-light-danger rounded border-danger border border-dashed"
-                                        data-ripple-color="light">
-                                        <img src="{{url('/assets/img_accident/'.$kr->foto_pendukung)}}" class="w-100" />
-                                    </div>
-                                    {{$kr->keterangan}}
-                                </div>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <!--end::Card body-->
-                    </div>
+                    <!--end::Card-->
                 </div>
-                <!--end:: content-->
+                <!--end::Sidebar-->
             </div>
-            <!--begin:: Layout-->
+            <!--end::Layout-->
         </div>
         <!--end::Container-->
     </div>

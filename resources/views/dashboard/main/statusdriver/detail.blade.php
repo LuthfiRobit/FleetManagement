@@ -124,12 +124,23 @@
                                             <tr>
                                                 <td class="text-gray-400">Bukti:</td>
                                                 <td class="text-gray-800">
-                                                    <div class="col-lg-3 col-md-2 mb-0 mb-lg-3">
-                                                        <div class="bg-image hover-overlay  bg-light-primary rounded border-primary border border-dashed"
-                                                            data-ripple-color="light">
-                                                            <img src="{{url('/assets/img_bukti/'.$status->foto_bukti)}}"
-                                                                class="w-100" />
-                                                        </div>
+                                                    <div
+                                                        class="col text-center bg-light-primary rounded border-primary border border-dashed">
+                                                        <!--begin::Overlay-->
+                                                        <a class="d-block overlay" data-fslightbox="lightbox-hot-sales"
+                                                            href="{{url('/assets/img_bukti/'.$status->foto_bukti)}}">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-175px"
+                                                                style="background-image:url('{{url('/assets/img_bukti/'.$status->foto_bukti)}}')">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Action-->
+                                                            <div
+                                                                class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                                                <i class="bi bi-eye-fill fs-2x text-white"></i>
+                                                            </div>
+                                                            <!--end::Action-->
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>

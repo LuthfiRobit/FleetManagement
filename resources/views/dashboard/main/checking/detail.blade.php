@@ -17,7 +17,6 @@
                     </h3>
                 </div>
             </div>
-
             @if(session()->has('success'))
             <!--begin::Alert-->
             <div
@@ -47,92 +46,22 @@
             </div>
             <!--end::Alert-->
             @endif
-
-            <!--begin:: Layout-->
-            <div class="d-flex flex-column flex-xl-row">
-                <!--end:: sidebar-->
-                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
-                    <div class="card mb-5 mb-xl-8">
-                        <!--begin::Card body-->
-                        <div class="card-body">
-                            <!--begin::Summary-->
-                            <!--begin::User Info-->
-                            <div class="d-flex flex-center flex-column py-5">
-                                <!--begin::Name-->
-                                <a href="#"
-                                    class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{$pengecekan->nama_kendaraan}}</a>
-                                <!--end::Name-->
-                            </div>
-                            <div class="d-flex flex-wrap flex-center">
-                                <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
-                                    <div class="fs-4 fw-bolder text-gray-700">
-                                        <span class="w-75px">{{$pengecekan->kode_asset}}</span>
-                                    </div>
-                                </div>
-                                <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
-                                    <div class="fs-4 fw-bolder text-gray-700">
-                                        <span class="w-75px">{{$pengecekan->no_polisi}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end::User Info-->
-                            <!--end::Summary-->
-                            <!--begin::Details toggle-->
-                            <div class="d-flex flex-stack fs-4 py-3">
-                                <div class="fw-bolder rotate collapsible collapsed">Detail Kendaraan
-                                </div>
-                            </div>
-                            <!--end::Details toggle-->
-                            <div class="separator"></div>
-                            <!--begin::Details content-->
-                            <div id="kt_user_view_details">
-                                <div class="pb-5 fs-6">
-                                    <div class="fw-bolder mt-5">Kilometer/Pengecekan</div>
-                                    <div class="text-gray-600">{{$pengecekan->km_kendaraan}} Km</div>
-                                    <div class="fw-bolder mt-5">Merek</div>
-                                    <div class="text-gray-600">{{$pengecekan->merk}} </div>
-                                    <div class="fw-bolder mt-5">Tipe</div>
-                                    <div class="text-gray-600">{{$pengecekan->jenis}}</div>
-                                    <div class="fw-bolder mt-5">Bahan Bakar</div>
-                                    <div class="text-gray-600">{{$pengecekan->bahan_bakar}}</div>
-                                    <div class="fw-bolder mt-5">Warna</div>
-                                    <div class="text-gray-600">{{$pengecekan->warna}}</div>
-                                    <div class="fw-bolder mt-5">Penggerak</div>
-                                    <div class="text-gray-600">{{$pengecekan->jenis_penggerak}}</div>
-                                </div>
-                            </div>
-                            <!--end::Details content-->
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                </div>
-                <!--end:: sidebar-->
-                <!--begin:: content-->
-                <div class="flex-lg-row-fluid ms-lg-15" id="kt_table_users">
-                    <div class="card card-flush mb-3  mb-xl-3">
+            <!--begin::Layout-->
+            <div class="d-flex flex-column flex-lg-row">
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
+                    <!--begin::Card-->
+                    <div class="card card-flush pt-3 mb-5 mb-xl-10">
                         <!--begin::Card header-->
-                        <div class="card-header mt-3">
+                        <div class="card-header">
                             <!--begin::Card title-->
-                            <div class="card-title flex-column">
-                                <h2 class="mb-1">No. Pengecekan</h2>
-                                <div class="fs-6 fw-bold text-muted">VC_{{$pengecekan->id_pengecekan}} |
-                                    @if($pengecekan->status_pengecekan == 'c')
-                                    <span class="badge badge-light-primary">Pengecekan Normal</span>
-                                    @else
-                                    <span class="badge badge-light-danger">Pengecekan Kecelakaan</span>
-                                    @endif
-                                    |
-                                    @if($pengecekan->status_kendaraan == 'r')
-                                    <span class="badge badge-light-primary">Tersedia</span>
-                                    @else
-                                    <span class="badge badge-light-danger">Tidak Tersedia</span>
-                                    @endif
-                                </div>
+                            <div class="card-title">
+                                <h2 class="fw-bolder">PENGECEKAN</h2>
                             </div>
-                            <!--end::Card title-->
-                            <!--begin::Card toolbar-->
-                            @if ($pengecekan->status_perbaikan == '')
+                            <!--begin::Card title-->
+
                             <div class="card-toolbar">
+                                @if ($pengecekan->status_perbaikan == '')
                                 <!--begin::Add-->
                                 <button type="button" class="btn btn-light-primary btn-sm" data-kt-menu-trigger="click"
                                     data-kt-menu-placement="bottom-end">
@@ -161,152 +90,314 @@
                                 </div>
                                 <!--end::Menu-->
                                 <!--end::Add-->
-                            </div>
-                            @elseif($pengecekan->status_perbaikan == 'n')
-                            <div
-                                class="notice d-flex bg-light-primary rounded border-primary border border-dashed mb-12 p-2">
-                                Dapat Beroprasi
-                            </div>
-                            @elseif($pengecekan->status_perbaikan == 't')
-                            <div
-                                class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-12 p-2">
-                                Sedang Diperbaiki
-                            </div>
-                            @elseif($pengecekan->status_perbaikan == 'tl')
-                            <div
-                                class="notice d-flex bg-light-danger rounded border-danger border border-dashed mb-12 p-2">
-                                Tidak Diperbaiki
-                            </div>
-                            @endif
-
-                            <!--end::Card toolbar-->
-                        </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
-                        <div class="card-body d-flex flex-column ">
-                            <!--begin::Item-->
-                            <div class="d-flex flex-stack position-relative mt-0">
-                                <!--begin::Label-->
-                                <div class="position-absolute h-100 w-4px bg-secondary rounded top-0 start-0"></div>
-                                <!--end::Label-->
-                                <!--begin::Details-->
-                                <div class="fw-bold ms-5">
-                                    <a class="fs-5 fw-bolder text-dark text-hover-primary">Tanggal dan Jam
-                                        Pengecekan</a>
-                                    <!--begin::Info-->
-                                    <div class="fs-7 text-muted">
-                                        {{Carbon\Carbon::parse($pengecekan->tgl_pengecekan)->format('d F Y')}} |
-                                        {{Carbon\Carbon::parse($pengecekan->jam_pengecekan)->format('H:i')}}
-                                    </div>
-                                    <!--end::Info-->
-                                </div>
-                                <!--end::Details-->
-                                <!--begin::Action-->
+                                @elseif($pengecekan->status_perbaikan == 'n')
                                 <div
-                                    class="notice d-flex bg-light-primary rounded border-primary border border-dashed mb-9 p-2">
-                                    @if ($detail[0]->waktu == 'm')
-                                    Pagi
-                                    @elseif ($detail[0]->waktu == 'a')
-                                    Siang
-                                    @else
-                                    Malam
-                                    @endif
+                                    class="notice d-flex bg-light-primary rounded border-primary border border-dashed mb-12 p-2">
+                                    Dapat Beroprasi
                                 </div>
-                                <!--end::Action-->
+                                @elseif($pengecekan->status_perbaikan == 't')
+                                <div
+                                    class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-12 p-2">
+                                    Sedang Diperbaiki
+                                </div>
+                                @elseif($pengecekan->status_perbaikan == 'tl')
+                                <div
+                                    class="notice d-flex bg-light-danger rounded border-danger border border-dashed mb-12 p-2">
+                                    Tidak Diperbaiki
+                                </div>
+                                @endif
                             </div>
-                            <!--end::Item-->
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <div class="card card-flush mb-3 mb-xl-3">
-                        <!--begin::Card header-->
-                        <div class="card-header mt-3">
-                            <!--begin::Card title-->
-                            <div class="card-title flex-column">
-                                <h5 class="mb-1">Detail Komponen</h5>
-                            </div>
-                            <!--end::Card title-->
-                        </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
-                        <div class="card-body d-flex flex-column">
-                            <div class="table-responsive">
-                                <!--begin::Table-->
-                                <table class="table align-middle table-row-dashed gy-5"
-                                    id="kt_table_users_login_session">
-                                    <!--begin::Table head-->
-                                    <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
-                                        <!--begin::Table row-->
-                                        <tr class="text-start text-muted text-uppercase gs-0">
-                                            <th class="min-w-100px">Kriteria</th>
-                                            <th>Tipe</th>
-                                            <th>Kondisi</th>
-                                            <th class="min-w-125px">Keterangan</th>
-                                        </tr>
-                                        <!--end::Table row-->
-                                    </thead>
-                                    <!--end::Table head-->
-                                    <!--begin::Table body-->
-                                    <tbody class="fs-6 fw-bold text-gray-600">
-                                        @foreach ($detail as $dp)
-                                        <tr>
-                                            <td>{{$dp->kriteria}}</td>
-                                            <td>{{$dp->jenis}}</td>
-                                            <td>
-                                                @if($dp->kondisi == 'b')
-                                                <span class="badge badge-light-success">Baik/Normal</span>
-                                                @else
-                                                <span class="badge badge-light-danger">Rusak/Tidak Normal</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($dp->keterangan != null)
-                                                {{$dp->keterangan}}
-                                                @else
-                                                ----
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <!--end::Table body-->
-                                </table>
-                                <!--end::Table-->
-                            </div>
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                    <div class="card card-flush mb-3 mb-xl-3">
-                        <!--begin::Card header-->
-                        <div class="card-header mt-3">
-                            <!--begin::Card title-->
-                            <div class="card-title flex-column">
-                                <h5 class="mb-1">Detail Foto Pengecekan</h5>
-                            </div>
-                            <!--end::Card title-->
+
                         </div>
                         <!--end::Card header-->
                         <!--begin::Card body-->
-                        <div class="card-body d-flex flex-column">
-                            <div class="row text-center">
-                                @foreach ($foto as $ft)
-                                <div class="col-lg-3 col-md-2 mb-0 mb-lg-3">
-                                    <div class="bg-image hover-overlay  bg-light-primary rounded border-primary border border-dashed"
-                                        data-ripple-color="light">
-                                        <img src="{{url('/assets/img_checking/'.$ft->foto_pengecekan)}}"
-                                            class="w-100" />
+                        <div class="card-body pt-3">
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Detail:</h5>
+                                <!--end::Title-->
+                                <!--begin::Details-->
+                                <div class="d-flex flex-wrap py-5">
+                                    <!--begin::Row-->
+                                    <div class="flex-equal me-5">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">No. Pengecekan:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    <a href="#"
+                                                        class="text-gray-800 text-hover-primary">VC_{{$pengecekan->id_pengecekan}}</a>
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Oleh:</td>
+                                                <td class="text-gray-800">{{$pengecekan->nama_driver}}</td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tanggal Pengecekan:</td>
+                                                <td class="text-gray-800">
+                                                    {{Carbon\Carbon::parse($pengecekan->tgl_pengecekan)->format('d F
+                                                    Y')}}</td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Jam Pengecekan:</td>
+                                                <td class="text-gray-800">
+                                                    {{Carbon\Carbon::parse($pengecekan->jam_pengecekan)->format('H:i')}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
                                     </div>
-                                    {{$ft->keterangan}}
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <div class="flex-equal">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Status Pengecekan:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    @if($pengecekan->status_pengecekan == 'c')
+                                                    <span class="badge badge-light-primary">Pengecekan Normal</span>
+                                                    @else
+                                                    <span class="badge badge-light-danger">Pengecekan Kecelakaan</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Status Kendaraan:</td>
+                                                <td class="text-gray-800">
+                                                    @if($pengecekan->status_kendaraan == 'r')
+                                                    <span class="badge badge-light-primary">Tersedia</span>
+                                                    @else
+                                                    <span class="badge badge-light-danger">Tidak Tersedia</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Waktu Pengecekan:</td>
+                                                <td class="text-gray-800">
+                                                    <span class="badge badge-light-primary">
+                                                        @if ($detail[0]->waktu == 'm')
+                                                        Pagi
+                                                        @elseif ($detail[0]->waktu == 'a')
+                                                        Siang
+                                                        @else
+                                                        Malam
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
+                                    </div>
+                                    <!--end::Row-->
                                 </div>
-                                @endforeach
+                                <!--end::Row-->
                             </div>
+                            <!--end::Section-->
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Komponen:</h5>
+                                <!--end::Title-->
+                                <!--begin::Product table-->
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
+                                        <!--begin::Table head-->
+                                        <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
+                                            <!--begin::Table row-->
+                                            <tr class="text-start text-muted text-uppercase gs-0">
+                                                <th class="min-w-100px">Kriteria</th>
+                                                <th>Tipe</th>
+                                                <th>Kondisi</th>
+                                                <th class="min-w-125px">Keterangan</th>
+                                            </tr>
+                                            <!--end::Table row-->
+                                        </thead>
+                                        <!--end::Table head-->
+                                        <!--begin::Table body-->
+                                        <tbody class="fs-6 fw-bold text-gray-600">
+                                            @foreach ($detail as $dp)
+                                            <tr>
+                                                <td>{{$dp->kriteria}}</td>
+                                                <td>{{$dp->jenis}}</td>
+                                                <td>
+                                                    @if($dp->kondisi == 'b')
+                                                    <span class="badge badge-light-success">Baik/Normal</span>
+                                                    @else
+                                                    <span class="badge badge-light-danger">Rusak/Tidak Normal</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($dp->keterangan != null)
+                                                    {{$dp->keterangan}}
+                                                    @else
+                                                    ----
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end::Product table-->
+                            </div>
+                            <!--end::Section-->
+                            <!--begin::Section-->
+                            <div class="mb-0">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Foto:</h5>
+                                <!--end::Title-->
+                                <!--begin::Card body-->
+                                <div class="row g-10 row-cols-2 row-cols-lg-5">
+                                    <!--begin::Col-->
+                                    @foreach ($foto as $ft)
+                                    <div class="col text-center">
+                                        <!--begin::Overlay-->
+                                        <a class="d-block overlay" data-fslightbox="lightbox-hot-sales"
+                                            href="{{url('/assets/img_checking/'.$ft->foto_pengecekan)}}">
+                                            <!--begin::Image-->
+                                            <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-175px"
+                                                style="background-image:url('{{url('/assets/img_checking/'.$ft->foto_pengecekan)}}')">
+                                            </div>
+                                            <!--end::Image-->
+                                            <!--begin::Action-->
+                                            <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                                <i class="bi bi-eye-fill fs-2x text-white"></i>
+                                            </div>
+                                            <!--end::Action-->
+                                        </a>
+                                        {{$ft->keterangan}}
+                                    </div>
+                                    @endforeach
+                                    {{-- <div class="row text-center">
+                                        @foreach ($foto as $ft)
+                                        <div class="col-lg-3 col-md-2 mb-0 mb-lg-3">
+                                            <div class="bg-image hover-overlay  bg-light-primary rounded border-primary border border-dashed"
+                                                data-ripple-color="light">
+                                                <img src="{{url('/assets/img_checking/'.$ft->foto_pengecekan)}}"
+                                                    class="w-100" />
+                                            </div>
+
+                                        </div>
+                                        @endforeach
+                                    </div> --}}
+                                </div>
+                                <!--end::Card body-->
+                            </div>
+                            <!--end::Section-->
                         </div>
                         <!--end::Card body-->
                     </div>
+                    <!--end::Card-->
                 </div>
-                <!--end:: content-->
+                <!--end::Content-->
+                <!--begin::Sidebar-->
+                <div class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2">
+                    <!--begin::Card-->
+                    <div class="card card-flush mb-0" data-kt-sticky="true" data-kt-sticky-name="subscription-summary"
+                        data-kt-sticky-offset="{default: false, lg: '200px'}" data-kt-sticky-width="{default: false}"
+                        data-kt-sticky-left="auto" data-kt-sticky-top="150px" data-kt-sticky-animation="true"
+                        data-kt-sticky-zindex="95">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2>KENDARAAN</h2>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0 fs-6">
+                            <!--begin::Seperator-->
+                            <div class="separator separator-dashed mb-7"></div>
+                            <!--end::Seperator-->
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Detail:</h5>
+                                <!--end::Title-->
+                                <!--begin::Details-->
+                                <table class="table fs-6 fw-bold gs-0 gy-2 gx-2">
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Nama Kendaraan:</td>
+                                        <td class="text-gray-800">{{$pengecekan->nama_kendaraan}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Kode Asset:</td>
+                                        <td class="text-gray-800">{{$pengecekan->kode_asset}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">No. Pol:</td>
+                                        <td class="text-gray-800">{{$pengecekan->no_polisi}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Km/Pengecekan:</td>
+                                        <td class="text-gray-800">{{$pengecekan->km_kendaraan}} Km</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Merk:</td>
+                                        <td class="text-gray-800">{{$pengecekan->merk}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Tipe:</td>
+                                        <td class="text-gray-800">{{$pengecekan->jenis}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Penggerak:</td>
+                                        <td class="text-gray-800">{{$pengecekan->jenis_penggerak}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Bahan Bakar:</td>
+                                        <td class="text-gray-800">{{$pengecekan->bahan_bakar}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                </table>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Sidebar-->
             </div>
-            <!--begin:: Layout-->
+            <!--end::Layout-->
         </div>
         <!--end::Container-->
     </div>
@@ -419,13 +510,17 @@
                                             <td>{{$dp->jenis}}</td>
                                             <td>
                                                 @if($dp->kondisi == 'b')
-                                                <span class="badge badge-light-success">Normal</span>
+                                                <span class="badge badge-light-success">Baik/Normal</span>
                                                 @else
-                                                <span class="badge badge-light-danger">Rusak</span>
+                                                <span class="badge badge-light-danger">Rusak/Tidak Normal</span>
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($dp->keterangan != null)
                                                 {{$dp->keterangan}}
+                                                @else
+                                                ----
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

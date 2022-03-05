@@ -12,92 +12,24 @@
                 <!--begin::Header-->
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Detail Service Order</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">DETAIL SERVICE ORDER</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Dipesan Oleh : {{$serviceorder->nama_lengkap}}</span>
                     </h3>
                 </div>
             </div>
-            <!--begin:: Layout-->
-            <div class="d-flex flex-column flex-xl-row">
-                <!--end:: sidebar-->
-                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
-                    <div class="card mb-5 mb-xl-8">
-                        <!--begin::Card body-->
-                        <div class="card-body">
-                            <!--begin::Summary-->
-                            <!--begin::User Info-->
-                            <div class="d-flex flex-center flex-column py-5">
-                                <!--begin::Name-->
-                                <a href="#"
-                                    class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{$order->nama_lengkap}}</a>
-                                <!--end::Name-->
-                                <!--begin::Position-->
-                                <div class="mb-9">
-                                    <!--begin::Badge-->
-                                    <div class="badge badge-lg badge-light-primary d-inline">
-                                        {{$order->nama_departemen}}
-                                    </div>
-                                    <!--begin::Badge-->
-                                </div>
-                                <!--end::Position-->
-                            </div>
-                            <!--end::User Info-->
-                            <!--end::Summary-->
-                            <!--begin::Details toggle-->
-                            <div class="d-flex flex-stack fs-4 py-3">
-                                <div class="fw-bolder rotate collapsible collapsed">Penumpang
-                                </div>
-                                <span data-bs-toggle="tooltip" data-bs-trigger="hover" title=""
-                                    data-bs-original-title="Edit customer details">
-                                    <a class="btn btn-sm btn-light-primary">{{$jumlahdetail}}</a>
-                                </span>
-                            </div>
-                            <!--end::Details toggle-->
-                            <div class="separator"></div>
-                            <!--begin::Details content-->
-                            <div id="kt_user_view_details">
-                                <!--begin::Table wrapper-->
-                                <div class="table-responsive">
-                                    <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed gy-5"
-                                        id="kt_table_users_login_session">
-                                        <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
-                                            <tr class="text-start text-muted text-uppercase gs-0">
-                                                <th class="min-w-100px">Nama</th>
-                                                <th>No. Telepon</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="fs-6 fw-bold text-gray-600">
-                                            @foreach ($detailso as $ds)
-                                            <tr>
-                                                <td>{{$ds->nama_penumpang}}</td>
-                                                <td>{{$ds->no_tlp}}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <!--end::Table-->
-                                </div>
-                                <!--end::Table wrapper-->
-                            </div>
-                            <!--end::Details content-->
-                        </div>
-                        <!--end::Card body-->
-                    </div>
-                </div>
-                <!--end:: sidebar-->
-                <!--begin:: content-->
-                <div class="flex-lg-row-fluid ms-lg-15" id="kt_table_users">
-                    <div class="card card-flush mb-6 mb-xl-9">
+            <!--begin::Layout-->
+            <div class="d-flex flex-column flex-lg-row">
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
+                    <!--begin::Card-->
+                    <div class="card card-flush pt-3 mb-5 mb-xl-10">
                         <!--begin::Card header-->
-                        <div class="card-header mt-6">
+                        <div class="card-header">
                             <!--begin::Card title-->
-                            <div class="card-title flex-column">
-                                <h2 class="mb-1">ID Service Order</h2>
-                                <div class="fs-6 fw-bold text-muted">SO_{{$serviceorder->id_service_order}}</div>
+                            <div class="card-title">
+                                <h2 class="fw-bolder">SERVICE ORDER</h2>
                             </div>
-                            <!--end::Card title-->
-                            <!--begin::Card toolbar-->
+                            <!--begin::Card title-->
                             <div class="card-toolbar">
                                 @if ($serviceorder->status_so == 't')
                                 <span class="badge badge-light-primary">Diterima</span>
@@ -134,85 +66,206 @@
                                 <!--end::Add-->
                                 @endif
                             </div>
-                            <!--end::Card toolbar-->
                         </div>
                         <!--end::Card header-->
                         <!--begin::Card body-->
-                        <div class="card-body d-flex flex-column">
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center position-relative mt-2">
-                                <!--begin::Label-->
-                                <div class="position-absolute top-0 start-0 rounded h-100 bg-primary w-4px"></div>
-                                <!--end::Label-->
+                        <div class="card-body pt-3">
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Detail:</h5>
+                                <!--end::Title-->
                                 <!--begin::Details-->
-                                <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tanggal dan Jam
-                                        Penjemputan</a>
-                                    <!--begin::Info-->
-                                    <div class="fs-5 text-muted">
-                                        {{Carbon\Carbon::parse($serviceorder->tgl_penjemputan)->format('d F Y')}} |
-                                        {{Carbon\Carbon::parse($serviceorder->jam_penjemputan)->format('H:i')}}
+                                <div class="d-flex flex-wrap py-5">
+                                    <!--begin::Row-->
+                                    <div class="flex-equal me-5">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">No. So:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    <a href="#"
+                                                        class="text-gray-800 text-hover-primary">SO_{{$serviceorder->id_service_order}}</a>
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tanggal Penjemputan:</td>
+                                                <td class="text-gray-800">
+                                                    {{Carbon\Carbon::parse($serviceorder->tgl_penjemputan)->format('d F
+                                                    Y')}}</td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Jam Penjemputan:</td>
+                                                <td class="text-gray-800">
+                                                    {{Carbon\Carbon::parse($serviceorder->jam_penjemputan)->format('H:i')}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tempat Penjemputan:</td>
+                                                <td class="text-gray-800">{{$serviceorder->tempat_penjemputan}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
                                     </div>
-                                    <!--end::Info-->
-                                </div>
-                                <!--end::Details-->
-                            </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center position-relative mt-2">
-                                <!--begin::Label-->
-                                <div class="position-absolute top-0 start-0 rounded h-100 bg-secondary w-4px"></div>
-                                <!--end::Label-->
-                                <!--begin::Details-->
-                                <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tempat Penjemputan</a>
-                                    <!--begin::Info-->
-                                    <div class="fs-5 text-muted">{{$serviceorder->tempat_penjemputan}}
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <div class="flex-equal">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Tempat Tujuan:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    {{$serviceorder->tujuan}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tujuan Perjalanan:</td>
+                                                <td class="text-gray-800">
+                                                    {{$serviceorder->keterangan}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Status:</td>
+                                                <td class="text-gray-800">
+                                                    @if ($serviceorder->status_so == 't')
+                                                    <span class="badge badge-light-primary">Diterima</span>
+                                                    @elseif($serviceorder->status_so == 'tl')
+                                                    <span class="badge badge-light-danger">Ditolak</span>
+                                                    @else
+                                                    <span class="badge badge-light-warning">Butuh Direspon</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
                                     </div>
-                                    <!--end::Info-->
+                                    <!--end::Row-->
                                 </div>
-                                <!--end::Details-->
+                                <!--end::Row-->
                             </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center position-relative mt-2">
-                                <!--begin::Label-->
-                                <div class="position-absolute top-0 start-0 rounded h-100 bg-primary w-4px"></div>
-                                <!--end::Label-->
-                                <!--begin::Details-->
-                                <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tempat Tujuan</a>
-                                    <!--begin::Info-->
-                                    <div class="fs-5 text-muted">{{$serviceorder->tujuan}}
-                                    </div>
-                                    <!--end::Info-->
+                            <!--end::Section-->
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Penumpang:</h5>
+                                <!--end::Title-->
+                                <!--begin::Product table-->
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
+                                        <!--begin::Table head-->
+                                        <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
+                                            <!--begin::Table row-->
+                                            <tr class="text-start text-muted text-uppercase gs-0">
+                                                <th class="min-w-100px">Nama</th>
+                                                <th>Jabatan</th>
+                                                <th class="min-w-125px">No. Tlp</th>
+                                            </tr>
+                                            <!--end::Table row-->
+                                        </thead>
+                                        <!--end::Table head-->
+                                        <!--begin::Table body-->
+                                        <tbody class="fs-6 fw-bold text-gray-600">
+                                            @foreach ($detailso as $ds)
+                                            <tr>
+                                                <td>{{$ds->nama_penumpang}}</td>
+                                                <td>{{$ds->nama_jabatan}}</td>
+                                                <td>{{$ds->no_tlp}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table>
+                                    <!--end::Table-->
                                 </div>
-                                <!--end::Details-->
+                                <!--end::Product table-->
                             </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center position-relative mt-2">
-                                <!--begin::Label-->
-                                <div class="position-absolute top-0 start-0 rounded h-100 bg-secondary w-4px"></div>
-                                <!--end::Label-->
-                                <!--begin::Details-->
-                                <div class="fw-bold ms-5">
-                                    <a class="fs-7 fw-bolder text-dark text-hover-primary">Tujuan Keberangkatan</a>
-                                    <!--begin::Info-->
-                                    <div class="fs-5 text-muted">{{$serviceorder->keterangan}}
-                                    </div>
-                                    <!--end::Info-->
-                                </div>
-                                <!--end::Details-->
-                            </div>
-                            <!--end::Item-->
+                            <!--end::Section-->
                         </div>
                         <!--end::Card body-->
                     </div>
+                    <!--end::Card-->
                 </div>
-                <!--end:: content-->
+                <!--end::Content-->
+                <!--begin::Sidebar-->
+                <div class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2">
+                    <!--begin::Card-->
+                    <div class="card card-flush mb-0" data-kt-sticky="true" data-kt-sticky-name="subscription-summary"
+                        data-kt-sticky-offset="{default: false, lg: '200px'}" data-kt-sticky-width="{default: false}"
+                        data-kt-sticky-left="auto" data-kt-sticky-top="150px" data-kt-sticky-animation="true"
+                        data-kt-sticky-zindex="95">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2>PEMESAN</h2>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0 fs-6">
+                            <!--begin::Seperator-->
+                            <div class="separator separator-dashed mb-7"></div>
+                            <!--end::Seperator-->
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Detail:</h5>
+                                <!--end::Title-->
+                                <!--begin::Details-->
+                                <table class="table fs-6 fw-bold gs-0 gy-2 gx-2">
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Nama Pemesan:</td>
+                                        <td class="text-gray-800">{{$order->nama_lengkap}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Jabatan:</td>
+                                        <td class="text-gray-800">{{$order->nama_jabatan}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">Departemen:</td>
+                                        <td class="text-gray-800">{{$order->nama_departemen}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr class="">
+                                        <td class="text-gray-400">No. Tlp:</td>
+                                        <td class="text-gray-800">{{$order->no_tlp}}</td>
+                                    </tr>
+                                    <!--end::Row-->
+                                </table>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Sidebar-->
             </div>
-            <!--begin:: Layout-->
+            <!--end::Layout-->
         </div>
         <!--end::Container-->
     </div>
