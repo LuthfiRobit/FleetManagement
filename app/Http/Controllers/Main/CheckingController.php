@@ -57,10 +57,12 @@ class CheckingController extends Controller
 
         $detail_so = DB::table('tb_detail_so')
             ->select(
-                'id_detail_so',
-                'nama_penumpang',
-                'no_tlp'
+                'tb_detail_so.id_detail_so',
+                'tb_detail_so.nama_penumpang',
+                'tb_detail_so.no_tlp',
+                'tb_jabatan.nama_jabatan'
             )
+            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_detail_so.id_jabatan')
             ->orderByDesc('id_detail_so')
             ->where('id_service_order', $id)
             ->get();
@@ -69,9 +71,12 @@ class CheckingController extends Controller
             ->select(
                 'tb_petugas.id_petugas',
                 'tb_petugas.nama_lengkap',
+                'tb_petugas.no_tlp',
                 'tb_departemen.nama_departemen',
+                'tb_jabatan.nama_jabatan'
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
+            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
             ->where('id_petugas', $service->id_petugas)
             ->first();
 

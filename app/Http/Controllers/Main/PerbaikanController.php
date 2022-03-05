@@ -144,10 +144,11 @@ class PerbaikanController extends Controller
         $findPerbaikan = Perbaikan::where('id_perbaikan', $id)->first();
 
         if ($findPerbaikan) {
-            if (Carbon::parse($request->tgl_penyelesaian)->lessThanOrEqualTo(Carbon::parse($request->tgl_selesai))) {
+            if (Carbon::parse($request->tgl_penyelesaian)->lessThanOrEqualTo(Carbon::parse($findPerbaikan->tgl_selesai))) {
                 $data['status_penyelesaian'] = 'o';
+            } else {
+                $data['status_penyelesaian'] = 'p';
             }
-            $data['status_penyelesaian'] = 'p';
             $updatePerbaikan = $findPerbaikan->update($data);
             // if ($updatePerbaikan) {
 
