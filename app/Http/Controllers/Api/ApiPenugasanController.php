@@ -332,12 +332,19 @@ class ApiPenugasanController extends Controller
 
     public function getToken(Request $request)
     {
-        $baseid = base64_encode('0146:3b4b553e6e9541bf21a898540bb4e5e12fe2720e');
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . $baseid,
-            'Content-type' => 'application/json'
-        ])->post('https://wappin.id/v1/token/get');
-        return $response;
+        $client = new Client();
+        // $request = $client->post('https://api.wappin.id/v1/token/get', [
+        //     'auth' => [
+        //         'username' => base64_encode(env('WAPPIN_CLIENT_ID')),
+        //         'password' => base64_encode(env('WAPPIN_SECRET_KEY'))
+        //     ]
+        // ]);
+        $request = Http::withBasicAuth(env('WAPPIN_CLIENT_ID'), env('WAPPIN_SECRET_KEY'))->post('https://api.wappin.id/v1/token/get');
+        if ($request->getStatusCode() == 200) { // 200 OK
+            $response_data = $request->getBody()->getContents();
+        }
+
+        return $response_data;
     }
 
     public function sendWa(Request $request)
@@ -364,6 +371,80 @@ class ApiPenugasanController extends Controller
         }
 
         return $response_data;
+    }
+
+    public function selesaiPenugasan(Request $request)
+    {
+        // try {
+
+        $id_do = $request->id_do;
+        $id_driver = $request->id_driver;
+        $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_driver]])->first();
+        $driver = Driver::select('nama_driver', 'no_tlp')->where('id_driver', $id_driver)->first();
+        if ($proses == true) {
+            $findPenumpang = ServiceOrderDetail::where('id_service_order', $proses->id_service_order)->get();
+            if ($findPenumpang) {
+                $data = [
+                    'km_akhir' => $request->km_akhir,
+                    'status_bbm_akhir' => $request->bbm_akhir,
+                    'waktu_finish' => $request->waktu_finish,
+                    'keterangan_bbm' => $request->keterangan_bbm,
+                    'status_penugasan' => 's'
+                ];
+                $proses->update($data);
+                foreach ($findPenumpang as $penumpang) {
+                    $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $penumpang->no_tlp);
+                    $client = new Client();
+                    $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
+                        'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
+                        'body' => json_encode([
+                            'client_id' => '0146',
+                            'project_id' => '2825',
+                            'type' => 'costumer_notif',
+                            'recipient_number' => $penumpang->no_tlp,
+                            'language_code' => 'id',
+                            'params' => [
+                                '1' => $penumpang->nama_penumpang,
+                                '2' => $driver->nama_driver,
+                                '3' => $driver->no_tlp,
+                                '4' => $url
+                            ]
+                        ])
+                    ]);
+                    // if ($request->getStatusCode() == 200) { // 200 OK
+                    //     $response_data = $request->getBody()->getContents();
+                    // }
+                }
+                return response()->json(
+                    [
+                        'status'        => 'sukses',
+                        'status_penugasan' => $proses->status_penugasan
+                    ]
+                );
+            }
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal'
+                ]
+            );
+        }
+        // return response()->json(
+        //     [
+        //         'status' => 'gagal',
+        //         'error' => $proses
+        //     ]
+        // );
+        // } catch (\Exception $exception) {
+        //     //throw $th;
+        //     DB::rollBack();
+        //     return response()->json(
+        //         [
+        //             'status' => 'gagal',
+        //             'error' => $exception
+        //         ]
+        //     );
+        // }
     }
 
     // public function selesaiPenugasan(Request $request)
@@ -439,31 +520,5 @@ class ApiPenugasanController extends Controller
     //             ]
     //         );
     //     }
-    // }
-
-    // public function selesaiPenugasan(Request $request)
-    // {
-    //     $sid    = env("TWILIO_AUTH_SID");
-    //     $token  = env("TWILIO_AUTH_TOKEN");
-    //     $wa_from = env("TWILIO_WHATSAPP_FROM");
-    //     $recipient = '+6282330199009';
-    //     $twilio = new Client($sid, $token);
-
-    //     $body = "Hello, welcome to codelapan.com.";
-
-    //     return $twilio->messages->create("whatsapp:$recipient", ["from" => "whatsapp:$wa_from", "body" => $body]);
-
-    // $client = new Client();
-    // $res = $client->request('POST', 'https://api.chat-api.com/instance408414/sendMessage?token=750e6o1h0hb9lt8m', [
-    //     'form_params' => [
-    //         'phone' => '15855721186',
-    //         'body' => "Halo Indra"
-    //     ]
-    // ]);
-    // if ($res->getStatusCode() == 404) { // 200 OK
-    //     return $res->getBody()->getContents();
-    // } else {
-    //     return $res->getBody()->getContents();
-    // }
     // }
 }
