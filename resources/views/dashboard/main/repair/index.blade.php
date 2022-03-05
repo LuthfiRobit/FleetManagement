@@ -30,14 +30,14 @@
                     <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
                         <!--begin:::Tab item-->
                         <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#tab_done">SELESAI</a>
+                            <a class="nav-link text-active-primary pb-4 active" data-kt-countup-tabs="true"
+                                data-bs-toggle="tab" href="#tab_proses">PROSES</a>
                         </li>
                         <!--end:::Tab item-->
                         <!--begin:::Tab item-->
                         <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#tab_proses">PROSES</a>
+                            <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                href="#tab_done">SELESAI</a>
                         </li>
                         <!--end:::Tab item-->
                     </ul>
@@ -75,68 +75,7 @@
 
                     <div class="tab-content" id="myTabContent">
                         <!--begin:::Tab pane-->
-                        <div class="tab-pane fade show active" id="tab_done" role="tabpanel">
-                            <!--begin::Table container-->
-                            <table id="kt_datatable_done"
-                                class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
-                                <thead>
-                                    <tr class="fw-bolder fs-6 text-gray-800 px-7">
-                                        <th>No.</th>
-                                        <th>No. WO</th>
-                                        <th>Dealer</th>
-                                        <th>Kendaraan</th>
-                                        <th>Tgl. Mulai</th>
-                                        <th>Tgl. Penyelesaian</th>
-                                        <th>Status Perbaikan</th>
-                                        <th>Status Penyelesaian</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($perbaikan->where('status_perbaikan','s') as $pr)
-                                    <tr>
-                                        <td>{{$loop->iteration}}</td>
-                                        <td>WO_{{$pr->no_wo}}</td>
-                                        <td>{{$pr->nama_dealer}}</td>
-                                        <td>
-                                            {{$pr->nama_kendaraan}}
-                                            <br>
-                                            <span class="badge badge-light-primary">{{$pr->no_polisi}}</span>
-                                        </td>
-                                        <td>
-                                            {{\Carbon\Carbon::parse($pr->tgl_perbaikan)->format('d, M Y')}}
-                                        </td>
-                                        <td>
-                                            {{\Carbon\Carbon::parse($pr->tgl_selesai)->format('d, M Y')}}
-                                        </td>
-                                        <td>
-                                            @if($pr->status_perbaikan == 's')
-                                            <span class="badge badge-light-primary">SELESAI</span>
-                                            @else
-                                            <span class="badge badge-light-warning">PROSES</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($pr->status_penyelesaian == 'o')
-                                            <span class="badge badge-light-primary">ON TIME</span>
-                                            @elseif($pr->status_penyelesaian == 'p')
-                                            <span class="badge badge-light-danger">PENALTI</span>
-                                            @else
-                                            <span class="badge badge-light-warning">BELUM</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{route('repair.detail', $pr->id_perbaikan)}}"
-                                                class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <!--end::Table container-->
-                        </div>
-                        <!--begin:::Tab pane-->
-                        <div class="tab-pane fade show " id="tab_proses" role="tabpanel">
+                        <div class="tab-pane fade show active" id="tab_proses" role="tabpanel">
                             <!--begin::Table container-->
                             <table id="kt_datatable_proses"
                                 class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
@@ -189,6 +128,67 @@
                                         <td>
                                             <a href="{{route('repair.invoice', $pr->id_perbaikan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm">Selesaikan</a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <!--end::Table container-->
+                        </div>
+                        <!--begin:::Tab pane-->
+                        <div class="tab-pane fade show " id="tab_done" role="tabpanel">
+                            <!--begin::Table container-->
+                            <table id="kt_datatable_done"
+                                class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
+                                <thead>
+                                    <tr class="fw-bolder fs-6 text-gray-800 px-7">
+                                        <th>No.</th>
+                                        <th>No. WO</th>
+                                        <th>Dealer</th>
+                                        <th>Kendaraan</th>
+                                        <th>Tgl. Mulai</th>
+                                        <th>Tgl. Penyelesaian</th>
+                                        <th>Status Perbaikan</th>
+                                        <th>Status Penyelesaian</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($perbaikan->where('status_perbaikan','s') as $pr)
+                                    <tr>
+                                        <td>{{$loop->iteration}}</td>
+                                        <td>WO_{{$pr->no_wo}}</td>
+                                        <td>{{$pr->nama_dealer}}</td>
+                                        <td>
+                                            {{$pr->nama_kendaraan}}
+                                            <br>
+                                            <span class="badge badge-light-primary">{{$pr->no_polisi}}</span>
+                                        </td>
+                                        <td>
+                                            {{\Carbon\Carbon::parse($pr->tgl_perbaikan)->format('d, M Y')}}
+                                        </td>
+                                        <td>
+                                            {{\Carbon\Carbon::parse($pr->tgl_selesai)->format('d, M Y')}}
+                                        </td>
+                                        <td>
+                                            @if($pr->status_perbaikan == 's')
+                                            <span class="badge badge-light-primary">SELESAI</span>
+                                            @else
+                                            <span class="badge badge-light-warning">PROSES</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($pr->status_penyelesaian == 'o')
+                                            <span class="badge badge-light-primary">ON TIME</span>
+                                            @elseif($pr->status_penyelesaian == 'p')
+                                            <span class="badge badge-light-danger">PENALTI</span>
+                                            @else
+                                            <span class="badge badge-light-warning">BELUM</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{route('repair.detail', $pr->id_perbaikan)}}"
+                                                class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach
