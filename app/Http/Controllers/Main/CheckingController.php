@@ -203,11 +203,11 @@ class CheckingController extends Controller
                 'kembali'           => $request->kembali,
                 'tgl_acc'           => date('Y-m-d'),
                 'tmp_penjemputan'   => $request->tmp_jemput,
-                'lat_jemput'        => '-7.712123326867145',
-                'long_jemput'       => '113.57749476810118',
+                // 'lat_jemput'        => '-7.712123326867145',
+                // 'long_jemput'       => '113.57749476810118',
                 'tmp_tujuan'        => $request->tmp_tujuan,
-                'lat_tujuan'        => '-7.851952179623661',
-                'long_tujuan'       => '112.51991928366783'
+                // 'lat_tujuan'        => '-7.851952179623661',
+                // 'long_tujuan'       => '112.51991928366783'
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($data);
             if ($penugasancreate) {
