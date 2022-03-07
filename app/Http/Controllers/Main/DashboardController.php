@@ -39,7 +39,8 @@ class DashboardController extends Controller
             ->select(
                 'tb_perbaikan.status_perbaikan',
                 'tb_kendaraan.kode_asset',
-                'tb_kendaraan.nama_kendaraan'
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi'
             )
             ->leftJoin('tb_persetujuan_perbaikan', 'tb_persetujuan_perbaikan.id_persetujuan', '=', 'tb_perbaikan.id_persetujuan')
             ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_pengecekan', '=', 'tb_persetujuan_perbaikan.id_pengecekan')
