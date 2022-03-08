@@ -88,11 +88,12 @@
                         <thead>
                             <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
                                 <th>No</th>
-                                <th>Driver</th>
                                 <th>No Badge</th>
+                                <th>Driver</th>
                                 <th>Departemen</th>
                                 <th>Alamat</th>
                                 <th>No. Tlpn</th>
+                                <th>Usia</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -100,11 +101,12 @@
                             @foreach ($driver as $dr)
                             <tr class="odd">
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$dr->nama_driver}}</td>
                                 <td>{{$dr->no_badge}}</td>
+                                <td>{{$dr->nama_driver}}</td>
                                 <td>{{$dr->nama_departemen}}</td>
                                 <td>{{$dr->alamat}}</td>
                                 <td>{{$dr->no_tlp}}</td>
+                                <td>{{$dr->umur}}</td>
                                 <td>
                                     <div class="d-flex justify-content-center flex-shrink-0">
                                         <a href="{{route('dashboard.driver.edit', $dr->id_driver)}}"
@@ -112,6 +114,17 @@
                                             <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                                             <span class="svg-icon svg-icon-2">
                                                 <i class="bi bi-pencil-square fs-6"></i>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </a>
+                                        <a href="{{ route('dashboard.driver.password.reset', $dr->id_driver)}}"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                                            title=""
+                                            data-bs-original-title="Tekan untuk mereset username dan password driver"
+                                            class=" btn btn-icon btn-bg-warning btn-active-color-primary btn-sm me-1">
+                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                            <span class="svg-icon svg-icon-2">
+                                                <i class="bi bi-bootstrap-reboot"></i>
                                             </span>
                                             <!--end::Svg Icon-->
                                         </a>
