@@ -70,7 +70,7 @@
                                     name="id_driver">
                                     {{-- <option value="">Pilih Driver</option> --}}
                                     @foreach ($driver as $dr)
-                                    <option value="{{$dr->id_driver}}">{{$dr->nama_driver}}</option>
+                                    <option value="{{$dr->id_driver}}">{{$dr->no_badge}} | {{$dr->nama_driver}}</option>
                                     @endforeach
                                 </select>
                             </div>
