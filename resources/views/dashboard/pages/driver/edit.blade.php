@@ -335,6 +335,19 @@
                                         <h2>Edit Privasi</h2>
                                     </div>
                                     <!--end::Card title-->
+                                    <div class="card-toolbar " data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-trigger="hover" title=""
+                                        data-bs-original-title="Tekan untuk mereset semua username dan password driver">
+                                        <a href="{{ route('dashboard.driver.password.reset', $driver->id_driver) }}"
+                                            class="btn btn-sm btn-light btn-active-primary">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                            <span class="svg-icon svg-icon-3">
+                                                <i class="bi bi-bootstrap-reboot"></i>
+
+                                            </span>
+                                            <!--end::Svg Icon-->Reset Username Password
+                                        </a>
+                                    </div>
                                 </div>
                                 <!--end::Card header-->
                                 <!--begin::Card body-->
