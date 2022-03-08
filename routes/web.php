@@ -154,6 +154,8 @@ Route::name('dashboard.')->prefix('dashboard')
             ->except(['show', 'destroy']);
         Route::put('driver/username/update/{id}', [DriverController::class, 'username'])->name('driver.username.update');
         Route::put('driver/password/update/{id}', [DriverController::class, 'password'])->name('driver.password.update');
+        Route::get('driver/password/{id}', [DriverController::class, 'resetAllPassword'])->name('driver.password.reset');
+        Route::get('driver/password/reset', [DriverController::class, 'resetAllPassword'])->name('driver.password.reset.all');
         Route::put('driver/ktp/update/{id}', [DriverController::class, 'changeKtp'])->name('driver.changeKtp.update');
         Route::put('driver/sim/update/{id}', [DriverController::class, 'changeSim'])->name('driver.changeSim.update');
         Route::post('driver/sim/add/{id}', [DriverController::class, 'addSim'])->name('driver.sim.add');
