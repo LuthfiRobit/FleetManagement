@@ -90,7 +90,7 @@
                                                 <td class="text-gray-400">No. Do:</td>
                                                 <td class="text-gray-800">
                                                     <a
-                                                        href="{{route('assign.detail',$kecelakaan->id_do)}}">DO_{{$kecelakaan->id_do}}</a>
+                                                        href="{{route('assign.detail',$kecelakaan->id_do)}}">DO_{{$kecelakaan->no_so}}</a>
                                                 </td>
                                             </tr>
                                             <!--end::Row-->

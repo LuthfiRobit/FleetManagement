@@ -71,10 +71,15 @@
                                         <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
                                             <!--begin::Row-->
                                             <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">No. Do:</td>
+                                                <td class="text-gray-800 min-w-200px">DO_{{$detail->no_so}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
                                                 <td class="text-gray-400 min-w-175px w-175px">Pemesan:</td>
-                                                <td class="text-gray-800 min-w-200px">
-                                                    <a href="#"
-                                                        class="text-gray-800 text-hover-primary">{{$detail->nama_petugas}}</a>
+                                                <td class="text-gray-800 min-w-200px">{{$detail->nama_petugas}}
                                                 </td>
                                             </tr>
                                             <!--end::Row-->

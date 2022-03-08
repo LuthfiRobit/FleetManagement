@@ -74,7 +74,7 @@
                             @foreach ($assignment as $as)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>DO_{{$as->id_do}}</td>
+                                <td>DO_{{$as->no_so}}</td>
                                 <td>{{$as->nama_driver}}</td>
                                 <td>{{$as->nama_petugas}}</td>
                                 <td>{{$as->nama_kendaraan}}

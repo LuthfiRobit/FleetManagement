@@ -73,7 +73,7 @@
                             @foreach ($serviceOrder as $so)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>SO_{{$so->id_service_order}}</td>
+                                <td>SO_{{$so->no_so}}</td>
                                 <td>{{$so->nama_lengkap}}</td>
                                 <td>{{Carbon\Carbon::parse($so->tgl_penjemputan)->format('d F Y') }} |
                                     {{Carbon\Carbon::parse($so->jam_penjemputan)->format('H:i') }}</td>

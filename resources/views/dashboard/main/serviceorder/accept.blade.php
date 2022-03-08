@@ -22,6 +22,7 @@
                         <div class="mb-13 text-center">
                             <!--begin::Title-->
                             <h3 class="mb-2 mt-2">Buat Penugasan</h3>
+                            <h4 class="mb-2 mt-2">SO_{{$so->no_so}}</h4>
                             <span class="mt-1 fw-bold fs-7">Pemesan : {{$so->petugas}} | Jabatan :
                                 {{$so->jabatan}} | {{$so->departemen}}</span>
                             <!--end::Title-->
