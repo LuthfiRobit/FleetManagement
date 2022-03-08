@@ -125,6 +125,7 @@ class CheckingController extends Controller
 
             $kendaraan =  DB::select(
                 "SELECT tb_kendaraan.nama_kendaraan,
+                tb_kendaraan.kode_asset,
                 tb_kendaraan.no_polisi,
                 tb_kendaraan.id_kendaraan,
                 tb_kendaraan.id_jenis_sim,
@@ -140,9 +141,18 @@ class CheckingController extends Controller
                 AND tb_penugasan_driver.tgl_penugasan = '$service->tgl_jpt')
                 ORDER BY alokasi DESC"
             );
+            $driver = DB::select(
+                "SELECT tb_driver.id_driver, tb_driver.nama_driver FROM tb_driver
+                -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
+                WHERE tb_driver.status_driver = 'y'
+                AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
+                AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
+                AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' )"
+            );
             $data = [
                 'so' => $service,
                 'kendaraan' => $kendaraan,
+                'driver' => $driver
             ];
             // return $data;
             return view('dashboard.main.serviceorder.accept', $data);
@@ -169,7 +179,9 @@ class CheckingController extends Controller
             "SELECT tb_driver.id_driver, tb_driver.nama_driver FROM tb_driver
             LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
             WHERE tb_driver.status_driver = 'y' AND tb_detail_sim.id_jenis_sim = '$id_sim'
-            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' )"
+            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
+            AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
+            AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' )"
         );
         // return response()->json($driver);
 
