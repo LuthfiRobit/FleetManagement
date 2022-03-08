@@ -142,7 +142,7 @@ class CheckingController extends Controller
                 ORDER BY alokasi DESC"
             );
             $driver = DB::select(
-                "SELECT tb_driver.id_driver, tb_driver.nama_driver FROM tb_driver
+                "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
                 -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
                 WHERE tb_driver.status_driver = 'y'
                 AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
