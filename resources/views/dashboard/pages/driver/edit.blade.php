@@ -338,7 +338,7 @@
                                     <div class="card-toolbar " data-bs-toggle="tooltip" data-bs-placement="top"
                                         data-bs-trigger="hover" title=""
                                         data-bs-original-title="Tekan untuk mereset username dan password driver">
-                                        <a href="{{ route('dashboard.driver.password.reset', $driver->id_driver) }}"
+                                        <a href="{{ route('dashboard.driver.password.reset.satu', $driver->id_driver) }}"
                                             class="btn btn-sm btn-light btn-active-primary">
                                             <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                                             <span class="svg-icon svg-icon-3">

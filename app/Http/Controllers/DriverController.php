@@ -40,7 +40,7 @@ class DriverController extends Controller
                 'tb_driver.foto_ktp',
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
-            ->orderByDesc('tb_driver.umur')
+            ->orderByRaw('tb_driver.no_badge ASC')
             ->get();
         // return $data;
         return view('dashboard.pages.driver.index', $data);
@@ -351,6 +351,7 @@ class DriverController extends Controller
         } catch (\Exception $exception) {
             //throw $th;
             // DB::rollBack();
+            // return $exception;
             return redirect()->back()->with('success', 'Username dan Password driver gagal direset');
         }
     }
@@ -364,7 +365,7 @@ class DriverController extends Controller
                 'password' => Hash::make($findDriver->no_tlp)
             ];
             $update = $findDriver->update($data);
-            return redirect()->back()->with('success', 'Username dan Password driver berhasil direset menjadi No. Telepon');
+            return redirect()->back()->with('success', 'Username dan Password driver ' . $findDriver->nama_driver . ' berhasil direset menjadi No. Telepon');
         } else {
             return redirect()->back()->with('success', 'Username dan Password driver gagal direset');
         }
