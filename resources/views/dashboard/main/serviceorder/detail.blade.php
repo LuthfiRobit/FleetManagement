@@ -86,7 +86,7 @@
                                                 <td class="text-gray-400 min-w-175px w-175px">No. So:</td>
                                                 <td class="text-gray-800 min-w-200px">
                                                     <a href="#"
-                                                        class="text-gray-800 text-hover-primary">SO_{{$serviceorder->id_service_order}}</a>
+                                                        class="text-gray-800 text-hover-primary">SO_{{$serviceorder->no_so}}</a>
                                                 </td>
                                             </tr>
                                             <!--end::Row-->

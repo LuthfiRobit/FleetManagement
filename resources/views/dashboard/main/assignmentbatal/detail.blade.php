@@ -124,7 +124,7 @@
                                                 <td class="text-gray-400 min-w-175px w-175px">No. DO:</td>
                                                 <td class="text-gray-800 min-w-200px">
                                                     <a
-                                                        href="{{route('assign.detail',$batal->id_do)}}">DO_{{$batal->id_do}}</a>
+                                                        href="{{route('assign.detail',$batal->id_do)}}">DO_{{$batal->no_so}}</a>
                                                 </td>
                                             </tr>
                                             <!--end::Row-->
@@ -347,7 +347,7 @@
                                     <span>No. DO</span>
                                 </label>
                                 <!--end::Label-->
-                                <input type="text" class="form-control form-control-solid" value="DO_{{$batal->id_do}}"
+                                <input type="text" class="form-control form-control-solid" value="DO_{{$batal->no_so}}"
                                     disabled />
                                 <input type="hidden" name="id_pembatalan" value="{{$batal->id_pembatalan}}">
                                 <input type="hidden" name="id_do" value="{{$batal->id_do}}">

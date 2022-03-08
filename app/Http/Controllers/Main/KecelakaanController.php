@@ -14,6 +14,7 @@ class KecelakaanController extends Controller
             ->select(
                 'tb_kecelakaan.id_kecelakaan',
                 'tb_kecelakaan.id_do',
+                'tb_order_kendaraan.no_so',
                 'tb_kendaraan.nama_kendaraan as kendaraan',
                 'tb_kendaraan.no_polisi',
                 'tb_kecelakaan.tgl_kecelakaan as tgl',
@@ -21,6 +22,7 @@ class KecelakaanController extends Controller
                 'tb_kecelakaan.lokasi_kejadian as lokasi',
             )
             ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_kecelakaan.id_do')
+            ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->orderByDesc('id_kecelakaan')
             ->get();
@@ -35,6 +37,7 @@ class KecelakaanController extends Controller
             ->select(
                 'tb_kecelakaan.id_kecelakaan',
                 'tb_kecelakaan.id_do',
+                'tb_order_kendaraan.no_so',
                 'tb_kecelakaan.tgl_kecelakaan as tgl',
                 'tb_kecelakaan.jam_kecelakaan as jam',
                 'tb_kecelakaan.lokasi_kejadian as lokasi',
@@ -50,6 +53,7 @@ class KecelakaanController extends Controller
                 'tb_driver.nama_driver'
             )
             ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_kecelakaan.id_do')
+            ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_bahan_bakar', 'tb_bahan_bakar.id_bahan_bakar', '=', 'tb_kendaraan.id_bahan_bakar')
             ->leftJoin('tb_merk_kendaraan', 'tb_merk_kendaraan.id_merk', '=', 'tb_kendaraan.id_merk')

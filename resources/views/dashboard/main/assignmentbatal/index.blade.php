@@ -74,7 +74,7 @@
                             @foreach ($batal as $asb)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td><a href="{{route('assign.detail',$asb->id_do)}}">DO_{{$asb->id_do}}</a></td>
+                                <td><a href="{{route('assign.detail',$asb->id_do)}}">DO_{{$asb->no_so}}</a></td>
                                 <td>{{$asb->nama_driver}}</td>
                                 <td>{{$asb->alasan}}</td>
                                 <td>

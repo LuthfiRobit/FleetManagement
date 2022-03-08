@@ -74,7 +74,7 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>ACD_{{$kc->id_kecelakaan}}</td>
-                                <td>DO_{{$kc->id_do}}</td>
+                                <td>DO_{{$kc->no_so}}</td>
                                 <td>
                                     {{$kc->kendaraan}}
                                     <br>
