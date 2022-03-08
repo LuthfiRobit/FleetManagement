@@ -335,6 +335,41 @@ class DriverController extends Controller
         }
     }
 
+    public function resetAllPassword(Request $request)
+    {
+        try {
+            $driver = Driver::select('id_driver', 'no_tlp')->get();
+            foreach ($driver as $dr) {
+                $data = [
+                    'user' => $dr->no_tlp,
+                    'password' => Hash::make($dr->no_tlp)
+                ];
+                $update = Driver::where('id_driver', $dr->id_driver)->update($data);
+            }
+            // return $driver;
+            return redirect()->back()->with('success', 'Username dan Password driver berhasil direset menjadi No. Telepon');
+        } catch (\Exception $exception) {
+            //throw $th;
+            // DB::rollBack();
+            return redirect()->back()->with('success', 'Username dan Password driver gagal direset');
+        }
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $findDriver = Driver::where('id_driver', $id)->first();
+        if ($findDriver) {
+            $data = [
+                'user' => $findDriver->no_tlp,
+                'password' => Hash::make($findDriver->no_tlp)
+            ];
+            $update = $findDriver->update($data);
+            return redirect()->back()->with('success', 'Username dan Password driver berhasil direset menjadi No. Telepon');
+        } else {
+            return redirect()->back()->with('success', 'Username dan Password driver gagal direset');
+        }
+    }
+
     public function changeKtp(Request $request, $id)
     {
         $find = Driver::where('id_driver', $id)->first();
