@@ -19,7 +19,7 @@
                         <span class="card-label fw-bolder fs-3 mb-1">Data Driver</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 2 Driver</span>
                     </h3>
-                    <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                    <div class="card-toolbar " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                         title="" data-bs-original-title="Tekan untuk menambah driver">
                         <a href="{{ route('dashboard.driver.create') }}"
                             class="btn btn-sm btn-light btn-active-primary">
@@ -33,6 +33,19 @@
                                 </svg>
                             </span>
                             <!--end::Svg Icon-->Tambah Driver
+                        </a>
+                    </div>
+
+                    <div class="card-toolbar " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                        title="" data-bs-original-title="Tekan untuk mereset semua username dan password driver">
+                        <a href="{{ route('dashboard.driver.password.reset.all') }}"
+                            class="btn btn-sm btn-light btn-active-primary">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                            <span class="svg-icon svg-icon-3">
+                                <i class="bi bi-bootstrap-reboot"></i>
+
+                            </span>
+                            <!--end::Svg Icon-->Reset Username Password
                         </a>
                     </div>
                 </div>
