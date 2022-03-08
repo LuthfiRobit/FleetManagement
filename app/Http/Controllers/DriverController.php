@@ -40,7 +40,7 @@ class DriverController extends Controller
                 'tb_driver.foto_ktp',
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
-            ->orderByDesc('tb_driver.id_driver')
+            ->orderByDesc('tb_driver.umur')
             ->get();
         // return $data;
         return view('dashboard.pages.driver.index', $data);
