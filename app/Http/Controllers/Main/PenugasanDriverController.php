@@ -15,6 +15,7 @@ class PenugasanDriverController extends Controller
         $data['assignment'] = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.id_do',
+                'tb_order_kendaraan.no_so',
                 'tb_penugasan_driver.tgl_acc',
                 'tb_penugasan_driver.status_penugasan as status_do',
                 'tb_driver.nama_driver',
@@ -22,6 +23,7 @@ class PenugasanDriverController extends Controller
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi'
             )
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
@@ -45,6 +47,7 @@ class PenugasanDriverController extends Controller
                 'tb_penugasan_driver.status_penugasan as status_do',
                 'tb_order_kendaraan.tempat_penjemputan',
                 'tb_order_kendaraan.tujuan',
+                'tb_order_kendaraan.no_so',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_driver.nama_driver',
                 'tb_petugas.no_tlp as p_tlp',
@@ -82,9 +85,8 @@ class PenugasanDriverController extends Controller
                 'tb_detail_so.id_detail_so',
                 'tb_detail_so.nama_penumpang',
                 'tb_detail_so.no_tlp',
-                'tb_jabatan.nama_jabatan'
+                'tb_detail_so.jabatan as nama_jabatan'
             )
-            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_detail_so.id_jabatan')
             ->orderByDesc('id_detail_so')
             ->where('id_service_order', $data['detail']->id_service_order)->get();
 
@@ -103,8 +105,11 @@ class PenugasanDriverController extends Controller
                 'tb_pembatalan_penugasan.alasan_pembatalan as alasan',
                 'tb_pembatalan_penugasan.tanggal',
                 'tb_pembatalan_penugasan.status_pembatalan',
-                'tb_driver.nama_driver'
+                'tb_driver.nama_driver',
+                'tb_order_kendaraan.no_so'
             )
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_pembatalan_penugasan.id_do')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_pembatalan_penugasan.id_driver')
             ->orderByDesc('tb_pembatalan_penugasan.id_pembatalan')
             ->get();
@@ -129,9 +134,11 @@ class PenugasanDriverController extends Controller
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
                 'tb_kendaraan.id_jenis_sim',
-                'tb_jenis_sim.nama_sim'
+                'tb_jenis_sim.nama_sim',
+                'tb_order_kendaraan.no_so'
             )
             ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_pembatalan_penugasan.id_do')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_jenis_sim', 'tb_jenis_sim.id_jenis_sim', '=', 'tb_kendaraan.id_jenis_sim')
             ->where('tb_pembatalan_penugasan.id_pembatalan', $id)
