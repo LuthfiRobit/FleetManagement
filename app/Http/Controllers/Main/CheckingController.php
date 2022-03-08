@@ -16,6 +16,7 @@ class CheckingController extends Controller
         $data['serviceOrder'] = DB::table('tb_order_kendaraan')
             ->select(
                 'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.no_so',
                 'tb_order_kendaraan.tgl_penjemputan',
                 'tb_order_kendaraan.jam_penjemputan',
                 'tb_order_kendaraan.jml_penumpang',
@@ -39,6 +40,7 @@ class CheckingController extends Controller
         $service = DB::table('tb_order_kendaraan')
             ->select(
                 'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.no_so',
                 'tb_order_kendaraan.tgl_penjemputan',
                 'tb_order_kendaraan.jam_penjemputan',
                 'tb_order_kendaraan.jml_penumpang',
@@ -59,10 +61,9 @@ class CheckingController extends Controller
             ->select(
                 'tb_detail_so.id_detail_so',
                 'tb_detail_so.nama_penumpang',
+                'tb_detail_so.jabatan as nama_jabatan',
                 'tb_detail_so.no_tlp',
-                'tb_jabatan.nama_jabatan'
             )
-            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_detail_so.id_jabatan')
             ->orderByDesc('id_detail_so')
             ->where('id_service_order', $id)
             ->get();
@@ -108,6 +109,7 @@ class CheckingController extends Controller
             $service = DB::table('tb_order_kendaraan')
                 ->select(
                     'tb_order_kendaraan.id_service_order as id_so',
+                    'tb_order_kendaraan.no_so',
                     'tb_order_kendaraan.tgl_penjemputan as tgl_jpt',
                     'tb_order_kendaraan.jam_penjemputan as jam_jmp',
                     'tb_order_kendaraan.tempat_penjemputan as tmp_jemput',
