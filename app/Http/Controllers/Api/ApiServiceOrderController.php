@@ -24,6 +24,7 @@ class ApiServiceOrderController extends Controller
             $so = [
                 'id_service_order'  => $request->id_service_order,
                 'id_petugas'        => $request->id_petugas,
+                'no_so'             => $request->no_so,
                 'tgl_penjemputan'   => $request->tgl_penjemputan,
                 'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i:s'),
                 'jml_penumpang'     => $request->jml_penumpang,
@@ -37,10 +38,15 @@ class ApiServiceOrderController extends Controller
             foreach ($namaPenumpang as $key => $value) {
                 $serviceDetail = [
                     'id_service_order'  => $request->id_service_order,
-                    'id_jabatan'        => $request->id_jabatan[$key],
+                    'jabatan'        => $request->jabatan[$key],
                     'nama_penumpang'    => $request->nama_penumpang[$key],
                     'no_tlp'            => $request->no_tlp[$key]
                 ];
+                if ($key == 0) {
+                    $serviceDetail['status'] = 'y';
+                } else {
+                    $serviceDetail['status'] = 'n';
+                }
                 $saveDetailSo = DB::table('tb_detail_so')->insert($serviceDetail);
             }
 
@@ -68,7 +74,7 @@ class ApiServiceOrderController extends Controller
     public function getLastIdDo(Request $request)
     {
         $latestId = DB::table('tb_order_kendaraan')
-            ->select('id_service_order')
+            ->select('id_service_order', 'no_so')
             ->orderByDesc('id_service_order')
             ->first();
 
@@ -79,7 +85,8 @@ class ApiServiceOrderController extends Controller
         } else {
             return response()->json(
                 [
-                    'id_service_order' => 'kosong'
+                    'id_service_order' => 'kosong',
+                    'no_so'            => 'kosong'
                 ]
             );
         }
@@ -115,6 +122,7 @@ class ApiServiceOrderController extends Controller
         $serviceOrder = DB::table('tb_order_kendaraan')
             ->select(
                 'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.no_so',
                 'tb_order_kendaraan.tgl_penjemputan',
                 'tb_order_kendaraan.jam_penjemputan',
                 'tb_order_kendaraan.jml_penumpang',
@@ -177,10 +185,11 @@ class ApiServiceOrderController extends Controller
 
     public function getDoDetail(Request $request)
     {
-        $id_so = $id = $request->query('id_so');
+        $id_so = $request->query('id_so');
         $detailAccepted = DB::table('tb_order_kendaraan')
             ->select(
                 'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.no_so',
                 'tb_order_kendaraan.tgl_penjemputan',
                 'tb_order_kendaraan.jam_penjemputan',
                 'tb_order_kendaraan.jml_penumpang',
@@ -199,21 +208,30 @@ class ApiServiceOrderController extends Controller
             ->join('tb_petugas', 'tb_order_kendaraan.id_petugas', '=', 'tb_petugas.id_petugas')
             ->where('tb_order_kendaraan.id_service_order', $id_so)
             ->first();
-        $penumpang = DB::table('tb_detail_so')
-            ->select(
-                'nama_penumpang',
-                'no_tlp'
-            )
-            ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_detail_so.id_service_order')
-            ->where('tb_detail_so.id_service_order', $detailAccepted->id_service_order)
-            ->get();
-        return response()->json(
-            [
-                'status'    => 'sukses',
-                'detail'    => $detailAccepted,
-                'penumpang' => $penumpang
-            ]
-        );
+        if ($detailAccepted) {
+            $penumpang = DB::table('tb_detail_so')
+                ->select(
+                    'nama_penumpang',
+                    'jabatan',
+                    'no_tlp'
+                )
+                ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_detail_so.id_service_order')
+                ->where('tb_detail_so.id_service_order', $detailAccepted->id_service_order)
+                ->get();
+            return response()->json(
+                [
+                    'status'    => 'sukses',
+                    'detail'    => $detailAccepted,
+                    'penumpang' => $penumpang
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'    => 'gagal'
+                ]
+            );
+        }
     }
 
     //kecelakaan
