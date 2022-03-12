@@ -26,7 +26,7 @@ class UpdateDealerRequest extends FormRequest
         return [
             'nama_dealer' => 'required|max:100',
             'alamat' => 'required',
-            'no_tlp' => 'required',
+            // 'no_tlp' => 'required',
             'status' => 'required',
             'status_dealer' => 'required'
         ];

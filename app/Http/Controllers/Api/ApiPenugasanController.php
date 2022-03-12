@@ -98,7 +98,6 @@ class ApiPenugasanController extends Controller
         }
     }
 
-    //jadikan query
     public function terimaPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -209,7 +208,6 @@ class ApiPenugasanController extends Controller
         }
     }
 
-    //jadikan query
     public function batalPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -270,7 +268,6 @@ class ApiPenugasanController extends Controller
         }
     }
 
-    //jadikan query
     public function prosesPenugasan(Request $request)
     {
         $id_dr = $request->id_driver;
@@ -445,5 +442,66 @@ class ApiPenugasanController extends Controller
         //         ]
         //     );
         // }
+    }
+
+    public function sendNotif(Request $request)
+    {
+        $key = 'MDg2NjY1ZGYtZTgyYy00NTkyLWIyY2MtMDRhNDYyODBiOTU1';
+        $client = new Client();
+        $request = $client->post('https://onesignal.com/api/v1/notifications', [
+            'headers' => [
+                'Authorization' => 'Basic ' . $key,
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode([
+                'included_segments' => ['Subscribed Users'],
+                'app_id' => '768c8998-943b-4ffa-8829-07c1107a9216',
+                'contents' => ['en' => 'Anda Memiliki Penugasan Baru.'],
+                'headings' => ['en' => 'Silahkan Cek Penugasan Sopir.']
+            ])
+        ]);
+        if ($request->getStatusCode() == 200) { // 200 OK
+            $response_data = $request->getBody()->getContents();
+        }
+
+        return $response_data;
+    }
+
+    public function addDevice(Request $request)
+    {
+        $fields = array(
+            'app_id' => "768c8998-943b-4ffa-8829-07c1107a9216",
+            'identifier' => "ce777617da7f548fe7a9ab6febb56cf39fba6d382000c0395666288d961ee566",
+            'language' => "en",
+            'timezone' => "-28800",
+            'game_version' => "1.0",
+            'device_os' => "9.1.3",
+            'device_type' => "1",
+            'device_model' => "Redmi 8",
+            'tags' => array("foo" => "bar")
+        );
+
+        $fields = json_encode($fields);
+        print("\nJSON sent:\n");
+        print($fields);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/players");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $return["allresponses"] = $response;
+        $return = json_encode($return);
+
+        print("\n\nJSON received:\n");
+        print($return);
+        print("\n");
     }
 }

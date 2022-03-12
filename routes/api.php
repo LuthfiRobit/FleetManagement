@@ -145,3 +145,7 @@ Route::group(
 
 Route::get('api/wa/token', [ApiPenugasanController::class, 'getToken']);
 Route::get('api/wa/send', [ApiPenugasanController::class, 'sendWa']);
+
+//route api notif
+Route::post('api/notif/send', [ApiPenugasanController::class, 'sendNotif']);
+Route::post('api/notif/add/device', [ApiPenugasanController::class, 'addDevice']);
