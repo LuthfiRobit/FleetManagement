@@ -281,8 +281,8 @@ class ApiPenugasanController extends Controller
                 'km_awal' => $request->km_awal,
                 'status_bbm_awal' => $request->bbm_awal,
                 'waktu_start' => $request->waktu_start,
-                'lat_tujuan' => $request->latitude,
-                'long_tujuan' => $request->longitude,
+                'lat_sekarang' => $request->latitude,
+                'long_sekarang' => $request->longitude,
                 'status_penugasan' => 'p'
             ];
             $proses->update($data);
@@ -310,8 +310,8 @@ class ApiPenugasanController extends Controller
         $findPenugasan = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', 'p']])->first();
         if ($findPenugasan) {
             $data = [
-                'lat_tujuan' => $latitude,
-                'long_tujuan' => $longitude
+                'lat_sekarang' => $latitude,
+                'long_sekarang' => $longitude
             ];
             $findPenugasan->update($data);
             return response()->json(
