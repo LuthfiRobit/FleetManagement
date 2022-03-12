@@ -86,7 +86,7 @@ class RatingDriverController extends Controller
             ->where('id_do', $id)
             ->first();
 
-        $data['responden'] = ServiceOrderDetail::where([['id_service_order', $data['driver']->id_service_order], ['no_tlp', $no_tlp]])->first();
+        $data['responden'] = ServiceOrderDetail::where([['id_service_order', $data['driver']->id_service_order], ['no_tlp', $no_tlp], ['status', 'y']])->first();
 
         if ($data['responden'] == true) {
             $data['find'] = RatingDriver::where([['id_do', $id], ['id_detail_so', $data['responden']->id_detail_so]])->get();
