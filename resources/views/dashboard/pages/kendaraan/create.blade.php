@@ -11,11 +11,6 @@
             <div class="card mb-5 mb-xl-8">
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
-                    {{-- <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Input Data Driver</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">=========================</span>
-                    </h3> --}}
-
                 </div>
                 <!--end::Header-->
                 <!--begin::Body-->
@@ -31,11 +26,6 @@
                             <!--begin::Title-->
                             <h1 class="mb-3">Input Kendaraan</h1>
                             <!--end::Title-->
-                            <!--begin::Description-->
-                            <div class="text-muted fw-bold fs-5">Jika memerlukan info lebih lanjut, silahkan klik
-                                <a href="#" class="fw-bolder link-primary">Manual Book</a>.
-                            </div>
-                            <!--end::Description-->
                             @if ($errors->any())
                             <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
                                 <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
@@ -44,7 +34,7 @@
                                 </span>
                                 <!--end::Svg Icon-->
                                 <div class="d-flex flex-column">
-                                    <h4 class="mb-1 text-danger">This is an alert</h4>
+                                    <h4 class="mb-1 text-danger">Pesan Error</h4>
                                     <span>
                                         <ul>
                                             @foreach ($errors->all() as $error)
@@ -53,7 +43,42 @@
                                         </ul>
                                     </span>
                                 </div>
+                                <button type="button"
+                                    class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                                    data-bs-dismiss="alert">
+                                    <i class="bi bi-x fs-1 text-danger"></i>
+                                </button>
                             </div>
+                            @endif
+                            @if(session()->has('success'))
+                            <!--begin::Alert-->
+                            <div
+                                class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                                <!--begin::Icon-->
+                                <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                                <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                                <!--end::Icon-->
+                                <!--begin::Content-->
+                                <div class="d-flex flex-column pe-0 pe-sm-10">
+                                    <h5 class="mb-1">Pesan</h5>
+                                    <span> {{ session()->get('success') }}</span>
+                                </div>
+                                <!--end::Content-->
+                                <!--begin::Close-->
+                                <button type="button"
+                                    class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                                    data-bs-dismiss="alert">
+                                    <i class="bi bi-x fs-1 text-danger"></i>
+                                </button>
+                                <!--end::Close-->
+                            </div>
+                            <!--end::Alert-->
                             @endif
                         </div>
                         <!--end::Heading-->
@@ -235,7 +260,7 @@
                                 class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
                                 <span class="indicator-label">Simpan</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -267,36 +292,6 @@ var KTModalNewTarget = function () {
                 a = document.querySelector("#kt_modal_new_target_form"),
                 t = document.getElementById("kt_modal_new_target_submit"),
                 e = document.getElementById("kt_modal_new_target_cancel")
-                // $(a.querySelector('[name="kode_asset"]')).on("change", (function () {
-                //     n.revalidateField("kode_asset")
-                // })),
-                // $(a.querySelector('[name="nama_kendaraan"]')).on("change", (function () {
-                //     n.revalidateField("nama_kendaraan")
-                // })),
-                // $(a.querySelector('[name="no_badge"]')).on("change", (function () {
-                //     n.revalidateField("no_badge")
-                // })),
-                // $(a.querySelector('[name="no_polisi"]')).on("change", (function () {
-                //     n.revalidateField("no_polisi")
-                // })),
-                // $(a.querySelector('[name="nomor_rangka"]')).on("change", (function () {
-                //     n.revalidateField("nomor_rangka")
-                // })),
-                // $(a.querySelector('[name="nomor_mesin"]')).on("change", (function () {
-                //     n.revalidateField("nomor_mesin")
-                // })),
-                // $(a.querySelector('[name="warna"]')).on("change", (function () {
-                //     n.revalidateField("warna")
-                // })),
-                // $(a.querySelector('[name="jenis_penggerak"]')).on("change", (function () {
-                //     n.revalidateField("jenis_penggerak")
-                // })),
-                // $(a.querySelector('[name="tanggal_pembelian"]')).on("change", (function () {
-                //     n.revalidateField("tanggal_pembelian")
-                // })),
-                // $(a.querySelector('[name="harga"]')).on("change", (function () {
-                //     n.revalidateField("harga")
-                // }))
                 , n = FormValidation.formValidation(a, {
                     fields: {
                         kode_asset: {
@@ -411,13 +406,13 @@ var KTModalNewTarget = function () {
                                 }
                             }
                         },
-                        harga: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Harga Harus Diisi"
-                                }
-                            }
-                        },
+                        // harga: {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: "Harga Harus Diisi"
+                        //         }
+                        //     }
+                        // },
                         status: {
                             validators: {
                                 notEmpty: {
@@ -502,7 +497,7 @@ var KTModalNewTarget = function () {
                         icon: "warning",
                         showCancelButton: !0,
                         buttonsStyling: !1,
-                        confirmButtonText: "Iya, batalkan!",
+                        confirmButtonText: "Ya, batalkan!",
                         cancelButtonText: "Tidak, kembali",
                         customClass: {
                             confirmButton: "btn btn-primary",
