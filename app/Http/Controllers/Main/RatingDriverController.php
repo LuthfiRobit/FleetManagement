@@ -38,6 +38,7 @@ class RatingDriverController extends Controller
             ->select(
                 'tb_driver.nama_driver',
                 'tb_driver.no_tlp',
+                'tb_driver.foto_driver',
                 'tb_departemen.nama_departemen'
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
@@ -75,6 +76,7 @@ class RatingDriverController extends Controller
                 'tb_penugasan_driver.id_do',
                 'tb_penugasan_driver.id_service_order',
                 'tb_driver.nama_driver',
+                'tb_driver.foto_driver',
                 'tb_departemen.nama_departemen as departemen',
                 'tb_driver.no_tlp',
                 'tb_kendaraan.nama_kendaraan',
