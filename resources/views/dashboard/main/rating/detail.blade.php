@@ -133,8 +133,9 @@
                                 <!--begin::Details-->
                                 <div class="d-flex align-items-center">
                                     <!--begin::Avatar-->
-                                    <div class="symbol symbol-60px symbol-circle me-3">
-                                        <img alt="Pic" src="{{url('assets/backend/assets/media/avatars/150-4.jpg')}}" />
+                                    <div
+                                        class="symbol symbol-60px symbol-circle me-3 border-primary border border-dashed">
+                                        <img alt="Pic" src="{{url('assets/img_driver/'.$driver->foto_driver)}}" />
                                     </div>
                                     <!--end::Avatar-->
                                     <!--begin::Info-->

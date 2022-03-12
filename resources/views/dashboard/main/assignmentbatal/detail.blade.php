@@ -240,8 +240,9 @@
                                 <!--begin::Details-->
                                 <div class="d-flex align-items-center">
                                     <!--begin::Avatar-->
-                                    <div class="symbol symbol-60px symbol-circle me-3">
-                                        <img alt="Pic" src="{{url('assets/backend/assets/media/avatars/150-4.jpg')}}" />
+                                    <div
+                                        class="symbol symbol-60px symbol-circle me-3 border-primary border border-dashed">
+                                        <img alt="Pic" src="{{url('assets/img_driver/'.$driver->foto_driver)}}" />
                                     </div>
                                     <!--end::Avatar-->
                                     <!--begin::Info-->
@@ -391,7 +392,7 @@
                             <button type="reset" id="kt_modal_terima_cancel" class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_terima_submit" class="btn btn-primary">
                                 <span class="indicator-label">Simpan</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -449,7 +450,7 @@
                                     text: "Pembatalan Berhasil Disimpan!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -461,7 +462,7 @@
                                 text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -474,8 +475,8 @@
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
@@ -485,7 +486,7 @@
                                 text: "Form Anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }

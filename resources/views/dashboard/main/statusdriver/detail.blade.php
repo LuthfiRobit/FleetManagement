@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Laporan Penugasan | Detail')
+@section('title','Laporan Status Driver | Detail')
 
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -184,8 +184,9 @@
                                 <!--begin::Details-->
                                 <div class="d-flex align-items-center">
                                     <!--begin::Avatar-->
-                                    <div class="symbol symbol-60px symbol-circle me-3">
-                                        <img alt="Pic" src="{{url('assets/backend/assets/media/avatars/150-4.jpg')}}" />
+                                    <div
+                                        class="symbol symbol-60px symbol-circle me-3 border-primary border border-dashed">
+                                        <img alt="Pic" src="{{url('assets/img_driver/'.$status->foto_driver)}}" />
                                     </div>
                                     <!--end::Avatar-->
                                     <!--begin::Info-->
