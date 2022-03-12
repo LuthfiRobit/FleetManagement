@@ -16,6 +16,7 @@ class Kendaraan extends Model
         'id_jenis_kendaraan',
         'id_merk',
         'id_bahan_bakar',
+        'id_jenis_sim',
         'kode_asset',
         'no_polisi',
         'nomor_rangka',
