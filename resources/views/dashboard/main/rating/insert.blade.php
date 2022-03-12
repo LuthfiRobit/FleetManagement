@@ -84,34 +84,7 @@ License: For each use you must have a valid license purchased only from above li
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
                     <!--begin::Toolbar-->
-                    {{-- <div class="toolbar" id="kt_toolbar">
-                        <!--begin::Container-->
-                        <div id="kt_toolbar_container" class="container-xxl d-flex flex-stack">
-                            <!--begin::Page title-->
-                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
-                                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
-                                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
-                                <!--begin::Title-->
-                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">PENILAIAN DRIVER
-                                </h1>
-                                <!--end::Title-->
-                                <!--begin::Separator-->
-                                <span class="h-20px border-gray-200 border-start mx-4"></span>
-                                <!--end::Separator-->
-                            </div>
-                            <!--end::Page title-->
-                            <!--begin::Actions-->
-                            <div class="d-flex align-items-center py-1">
 
-                                <!--begin::Button-->
-                                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#kt_modal_create_app" id="kt_toolbar_primary_button">Create</a>
-                                <!--end::Button-->
-                            </div>
-                            <!--end::Actions-->
-                        </div>
-                        <!--end::Container-->
-                    </div> --}}
                     <!--end::Toolbar-->
                     <!--begin::Post-->
                     <div class="post d-flex flex-column-fluid" id="kt_post">

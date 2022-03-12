@@ -19,33 +19,36 @@
                         <span class="card-label fw-bolder fs-3 mb-1">Data Driver</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 2 Driver</span>
                     </h3>
-                    <div class="card-toolbar " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                        title="" data-bs-original-title="Tekan untuk menambah driver">
-                        <a href="{{ route('dashboard.driver.create') }}"
-                            class="btn btn-sm btn-light btn-active-primary">
-                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                            <span class="svg-icon svg-icon-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
-                                        transform="rotate(-90 11.364 20.364)" fill="black"></rect>
-                                    <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black"></rect>
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->Tambah Driver
-                        </a>
-                    </div>
-
-                    <div class="card-toolbar " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                        title="" data-bs-original-title="Tekan untuk mereset semua username dan password driver">
-                        <a href="{{ route('dashboard.driver.password.all.reset') }}"
-                            class="btn btn-sm btn-light btn-active-primary">
-                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                            <span class="svg-icon svg-icon-3">
-                                <i class="bi bi-bootstrap-reboot"></i>
-                            </span>
-                            <!--end::Svg Icon-->Reset Username Password
-                        </a>
+                    <div class="card-toolbar btn-toolbar">
+                        <div class="btn-group me-2" role="group">
+                            <a href="{{ route('dashboard.driver.create') }}"
+                                class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-trigger="hover" title=""
+                                data-bs-original-title="Tekan untuk menambah driver">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                <span class="svg-icon svg-icon-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none">
+                                        <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                            transform="rotate(-90 11.364 20.364)" fill="black"></rect>
+                                        <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black"></rect>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->Tambah Driver
+                            </a>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <a href="{{ route('dashboard.driver.password.all.reset') }}" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-trigger="hover" title=""
+                                data-bs-original-title="Tekan untuk mereset semua username dan password driver"
+                                class="btn btn-sm btn-light btn-active-primary">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                <span class="svg-icon svg-icon-3">
+                                    <i class="bi bi-bootstrap-reboot"></i>
+                                </span>
+                                <!--end::Svg Icon-->Reset
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <!--end::Header-->
@@ -67,7 +70,7 @@
                         <!--end::Icon-->
                         <!--begin::Content-->
                         <div class="d-flex flex-column pe-0 pe-sm-10">
-                            <h5 class="mb-1">Success</h5>
+                            <h5 class="mb-1">Pesan</h5>
                             <span> {{ session()->get('success') }}</span>
                         </div>
                         <!--end::Content-->
@@ -102,7 +105,12 @@
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$dr->no_badge}}</td>
                                 <td>{{$dr->nama_driver}}</td>
-                                <td>{{$dr->nama_departemen}}</td>
+                                <td>
+                                    @if ($dr->id_departemen == null)
+                                    ---
+                                    @endif
+                                    {{$dr->nama_departemen}}
+                                </td>
                                 <td>{{$dr->alamat}}</td>
                                 <td>{{$dr->no_tlp}}</td>
                                 <td>{{$dr->umur}}</td>

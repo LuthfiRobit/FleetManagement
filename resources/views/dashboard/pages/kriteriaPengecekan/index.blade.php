@@ -78,7 +78,7 @@
                                             <span class=" svg-icon svg-icon-3">
                                                 <i class="bi bi-stack fs-6"></i>
                                             </span>
-                                            Checking Type
+                                            Input Jenis Pengecekan
                                             <!--end::Svg Icon-->
                                         </a>
                                     </div>

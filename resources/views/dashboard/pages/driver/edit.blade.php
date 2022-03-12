@@ -60,6 +60,25 @@
                 <!--begin::Body-->
 
                 <div class="card-body py-3">
+                    @if ($errors->any())
+                    <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
+                        <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
+                            <i class="bi bi-exclamation-triangle fs-1"></i>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <div class="d-flex flex-column">
+                            <h4 class="mb-1 text-danger">Pesan Error</h4>
+                            <span>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                    @endforeach
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                    @endif
                     @if(session()->has('success'))
                     <!--begin::Alert-->
                     <div
@@ -133,27 +152,7 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
-                                        @if ($errors->any())
-                                        <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
-                                            <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
-                                            <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
-                                                <i class="bi bi-exclamation-triangle fs-1"></i>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                            <div class="d-flex flex-column">
-                                                <h4 class="mb-1 text-danger">This is an alert</h4>
-                                                <span>
-                                                    <ul>
-                                                        @foreach ($errors->all() as $error)
-                                                        <li>{{$error}}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        @endif
                                         <!--begin::Input group-->
-
                                         <div class="form-group d-flex mb-8 row">
                                             <div class="col-lg-6">
                                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -178,7 +177,7 @@
                                             <div class="col-lg-6">
                                                 <label class="required fs-6 fw-bold mb-2">Departemen</label>
                                                 <select class="form-select form-select-solid" data-control="select2"
-                                                    data-hide-search="true" data-placeholder="Pilih Departemen"
+                                                    data-hide-search="false" data-placeholder="Pilih Departemen"
                                                     id="id_departemen" name="id_departemen">
                                                     <option value="">Pilih Status</option>
                                                     @foreach ($departemen as $dt)
@@ -220,11 +219,11 @@
                                         <!--begin::Actions-->
                                         <div class="text-center mt-3">
                                             <button type="reset" id="kt_modal_new_target_cancel"
-                                                class="btn btn-light me-3">Cancel</button>
+                                                class="btn btn-light me-3">Batal</button>
                                             <button type="submit" id="kt_modal_new_target_submit"
                                                 class="btn btn-primary">
-                                                <span class="indicator-label">Submit</span>
-                                                <span class="indicator-progress">Please wait...
+                                                <span class="indicator-label">Simpan</span>
+                                                <span class="indicator-progress">Mohon Tunggu...
                                                     <span
                                                         class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                             </button>
@@ -359,7 +358,7 @@
                                             <!--begin::Table body-->
                                             <tbody class="fs-6 fw-bold text-gray-600">
                                                 <tr>
-                                                    <td>Username</td>
+                                                    <td>USERNAME</td>
                                                     <td>{{$driver->user}}</td>
                                                     <td class="text-end">
                                                         <button type="button"
@@ -375,7 +374,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Password</td>
+                                                    <td>PASSWORD</td>
                                                     <td>********</td>
                                                     <td class="text-end">
                                                         <button type="button"
@@ -406,14 +405,13 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-                                                {{-- <tr>
-                                                    <td>SIM</td>
+                                                <tr>
+                                                    <td>PROFIL</td>
                                                     <td>---</td>
                                                     <td class="text-end">
                                                         <button type="button"
                                                             class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#kt_modal_update_sim">
+                                                            data-bs-toggle="modal" data-bs-target="#kt_modal_profil">
                                                             <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                                                             <span class="svg-icon svg-icon-3">
                                                                 <i class="bi bi-pencil-square fs-6"></i>
@@ -421,7 +419,7 @@
                                                             <!--end::Svg Icon-->
                                                         </button>
                                                     </td>
-                                                </tr> --}}
+                                                </tr>
                                             </tbody>
                                             <!--end::Table body-->
                                         </table>
@@ -651,6 +649,116 @@
     </div>
     <!--end::Modal - Update password-->
 
+    <!--begin::Modal - Update Profil-->
+    <div class="modal fade" id="kt_modal_profil" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Form-->
+                <form class="form" action="{{route('dashboard.driver.profil.update',$driver->id_driver)}}"
+                    id="kt_modal_update_profil_form" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <!--begin::Modal header-->
+                    <div class="modal-header" id="kt_modal_update_profil_header">
+                        <!--begin::Modal title-->
+                        <h2 class="fw-bolder">Update Profil Driver</h2>
+                        <!--end::Modal title-->
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                            <span class="svg-icon svg-icon-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1"
+                                        transform="rotate(-45 6 17.3137)" fill="black" />
+                                    <rect x="7.41422" y="6" width="16" height="2" rx="1"
+                                        transform="rotate(45 7.41422 6)" fill="black" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </div>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Modal header-->
+                    <!--begin::Modal body-->
+                    <div class="modal-body py-10 px-lg-17">
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7">
+                            <!--begin::Label-->
+                            <label class="d-block fw-bold fs-6 mb-5">Foto Profil</label>
+                            <!--end::Label-->
+
+                            <!--begin::Image input-->
+                            <div class="image-input image-input-outline" data-kt-image-input="true"
+                                style="background-image: url({{url('assets/backend/assets/media/avatars/blank.png')}})">
+                                <!--begin::Preview existing avatar-->
+                                <div class="image-input-wrapper w-200px h-125px" @if ($driver->foto_driver != null )
+                                    style="background-image:url({{url('/assets/img_driver/'.$driver->foto_driver)}})"
+                                    @else
+                                    style="background-image:
+                                    url({{url('assets/backend/assets/media/avatars/blank.png')}})"
+                                    @endif>
+                                </div>
+                                <!--end::Preview existing avatar-->
+
+                                <!--begin::Label-->
+                                <label
+                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Ganti Profil">
+                                    <i class="bi bi-pencil-fill fs-7"></i>
+
+                                    <!--begin::Inputs-->
+                                    <input type="file" name="foto_driver" accept=".png, .jpg, .jpeg" />
+                                    <input type="hidden" name="avatar_remove" />
+                                    <!--end::Inputs-->
+                                </label>
+                                <!--end::Label-->
+
+                                <!--begin::Cancel-->
+                                <span
+                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                    title="Batalkan Profil">
+                                    <i class="bi bi-x fs-2"></i>
+                                </span>
+                                <!--end::Cancel-->
+
+                                <!--begin::Remove-->
+                                <span
+                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Hapus Profil">
+                                    <i class="bi bi-x fs-2"></i>
+                                </span>
+                                <!--end::Remove-->
+                            </div>
+                            <!--end::Image input-->
+                        </div>
+                    </div>
+                    <!--end::Modal body-->
+                    <!--begin::Modal footer-->
+                    <div class="modal-footer flex-center">
+                        <!--begin::Button-->
+                        <button type="reset" class="btn btn-light me-3"
+                            data-kt-users-modal-action="cancel">Batal</button>
+                        <!--end::Button-->
+                        <!--begin::Button-->
+                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                            <span class="indicator-label">Simpan</span>
+                            <span class="indicator-progress">Mohon Tunggu...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        </button>
+                        <!--end::Button-->
+                    </div>
+                    <!--end::Modal footer-->
+                </form>
+                <!--end::Form-->
+            </div>
+        </div>
+    </div>
+    <!--end::Modal - Update Profil-->
+
     <!--begin::Modal - Update KTP-->
     <div class="modal fade" id="kt_modal_update_ktp" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
@@ -785,7 +893,7 @@
                     <!--begin::Modal header-->
                     <div class="modal-header" id="kt_modal_update_user_header">
                         <!--begin::Modal title-->
-                        <h2 class="fw-bolder">Update SIM Driver</h2>
+                        <h2 class="fw-bolder">Tambah SIM Driver</h2>
                         <!--end::Modal title-->
                         <!--begin::Close-->
                         <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
@@ -941,13 +1049,13 @@
                                     }
                                 }
                             },
-                            id_departemen: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Departemen Harus Dipilih"
-                                    }
-                                }
-                            },
+                            // id_departemen: {
+                            //     validators: {
+                            //         notEmpty: {
+                            //             message: "Departemen Harus Dipilih"
+                            //         }
+                            //     }
+                            // },
                             alamat: {
                                 validators: {
                                     notEmpty: {
@@ -1004,7 +1112,7 @@
                                     text: "Formulir telah berhasil dikirim!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -1016,7 +1124,7 @@
                                 text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -1025,12 +1133,12 @@
                     })),
                     e.addEventListener("click", (function (t) {
                         t.preventDefault(), Swal.fire({
-                            text: "Apakah Anda yakin ingin membatalkan?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
@@ -1039,10 +1147,10 @@
 
                             t.value ?
                             (a.reset(), window.location.href = "{{ route('dashboard.driver.index')}}") : "cancel" === t.dismiss && Swal.fire({
-                                text: "Formulir Anda belum dibatalkan!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -1090,22 +1198,22 @@
                     });
                     t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -1113,22 +1221,22 @@
                         }))
                     })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -1140,10 +1248,10 @@
                         t.preventDefault(), o && o.validate().then((function(t) {
                             console.log("validated!"), "Valid" == t && (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
                                 i.removeAttribute("data-kt-indicator"), i.disabled = !1, Swal.fire({
-                                    text: "Form has been successfully submitted!",
+                                    text: "Formulir telah berhasil dikirim!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -1216,22 +1324,22 @@
                     });
                     t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -1239,22 +1347,22 @@
                         }))
                     })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -1266,10 +1374,10 @@
                         t.preventDefault(), o && o.validate().then((function(t) {
                             console.log("validated!"), "Valid" == t && (a.setAttribute("data-kt-indicator", "on"), a.disabled = !0, setTimeout((function() {
                                 a.removeAttribute("data-kt-indicator"), a.disabled = !1, Swal.fire({
-                                    text: "Form has been successfully submitted!",
+                                    text: "Formulir telah berhasil dikirim!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -1286,6 +1394,111 @@
     }();
     KTUtil.onDOMContentLoaded((function() {
         KTUsersUpdatePassword.init()
+    }));
+      //modal ktp
+    var KTUsersUpdateProfil = function() {
+        const t = document.getElementById("kt_modal_profil"),
+            e = t.querySelector("#kt_modal_update_profil_form"),
+            n = new bootstrap.Modal(t);
+        return {
+            init: function() {
+                    (() => {
+                        var o = FormValidation.formValidation(e, {
+                            fields: {
+                                foto_driver: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: 'Silahkan pilih foto profil'
+                                        },
+                                        file: {
+                                            extension: 'jpg,jpeg,png',
+                                            type: 'image/jpeg,image/png',
+                                            message: 'File tidak falid'
+                                        },
+                                    }
+                                }
+                            },
+                            plugins: {
+                                trigger: new FormValidation.plugins.Trigger,
+                                bootstrap: new FormValidation.plugins.Bootstrap5({
+                                    rowSelector: ".fv-row",
+                                    eleInvalidClass: "",
+                                    eleValidClass: ""
+                                })
+                            }
+                        });
+                        t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
+                            t.preventDefault(), Swal.fire({
+                                text: "Apakah anda yakin ingin membatalkan?",
+                                icon: "warning",
+                                showCancelButton: !0,
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ya, batalkan!",
+                                cancelButtonText: "Tidak, kembali",
+                                customClass: {
+                                    confirmButton: "btn btn-primary",
+                                    cancelButton: "btn btn-active-light"
+                                }
+                            }).then((function(t) {
+                                t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                    text: "Formulir anda belum dibatalkan!.",
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, mengerti!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                })
+                            }))
+                        })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
+                            t.preventDefault(), Swal.fire({
+                                text: "Apakah anda yakin ingin membatalkan?",
+                                icon: "warning",
+                                showCancelButton: !0,
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ya, batalkan!",
+                                cancelButtonText: "Tidak, kembali",
+                                customClass: {
+                                    confirmButton: "btn btn-primary",
+                                    cancelButton: "btn btn-active-light"
+                                }
+                            }).then((function(t) {
+                                t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                    text: "Formulir anda belum dibatalkan!.",
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, mengerti!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                })
+                            }))
+                        }));
+                        const i = t.querySelector('[data-kt-users-modal-action="submit"]');
+                        i.addEventListener("click", (function(t) {
+                            t.preventDefault(), o && o.validate().then((function(t) {
+                                console.log("validated!"), "Valid" == t && (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
+                                    i.removeAttribute("data-kt-indicator"), i.disabled = !1, Swal.fire({
+                                        text: "Formulir telah berhasil dikirim!",
+                                        icon: "success",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, mengerti!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary"
+                                        }
+                                    }).then((function(t) {
+                                        e.submit()
+                                        t.isConfirmed && n.hide()
+                                    }))
+                                }), 2e3))
+                            }))
+                        }))
+                    })()
+                }
+        }
+    }();
+    KTUtil.onDOMContentLoaded((function() {
+        KTUsersUpdateProfil.init()
     }));
     //modal ktp
     var KTUsersUpdateDetails = function() {
@@ -1334,22 +1547,22 @@
                         });
                         t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                             t.preventDefault(), Swal.fire({
-                                text: "Are you sure you would like to cancel?",
+                                text: "Apakah anda yakin ingin membatalkan?",
                                 icon: "warning",
                                 showCancelButton: !0,
                                 buttonsStyling: !1,
-                                confirmButtonText: "Yes, cancel it!",
-                                cancelButtonText: "No, return",
+                                confirmButtonText: "Ya, batalkan!",
+                                cancelButtonText: "Tidak, kembali",
                                 customClass: {
                                     confirmButton: "btn btn-primary",
                                     cancelButton: "btn btn-active-light"
                                 }
                             }).then((function(t) {
                                 t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                    text: "Your form has not been cancelled!.",
+                                    text: "Formulir anda belum dibatalkan!.",
                                     icon: "error",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -1357,22 +1570,22 @@
                             }))
                         })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
                             t.preventDefault(), Swal.fire({
-                                text: "Are you sure you would like to cancel?",
+                                text: "Apakah anda yakin ingin membatalkan?",
                                 icon: "warning",
                                 showCancelButton: !0,
                                 buttonsStyling: !1,
-                                confirmButtonText: "Yes, cancel it!",
-                                cancelButtonText: "No, return",
+                                confirmButtonText: "Ya, batalkan!",
+                                cancelButtonText: "Tidak, kembali",
                                 customClass: {
                                     confirmButton: "btn btn-primary",
                                     cancelButton: "btn btn-active-light"
                                 }
                             }).then((function(t) {
                                 t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                    text: "Your form has not been cancelled!.",
+                                    text: "Formulir anda belum dibatalkan!.",
                                     icon: "error",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -1384,10 +1597,10 @@
                             t.preventDefault(), o && o.validate().then((function(t) {
                                 console.log("validated!"), "Valid" == t && (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
                                     i.removeAttribute("data-kt-indicator"), i.disabled = !1, Swal.fire({
-                                        text: "Form has been successfully submitted!",
+                                        text: "Formulir telah berhasil dikirim!",
                                         icon: "success",
                                         buttonsStyling: !1,
-                                        confirmButtonText: "Ok, got it!",
+                                        confirmButtonText: "Ok, mengerti!",
                                         customClass: {
                                             confirmButton: "btn btn-primary"
                                         }
@@ -1446,22 +1659,22 @@
                         });
                         t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                             t.preventDefault(), Swal.fire({
-                                text: "Are you sure you would like to cancel?",
+                                text: "Apakah anda yakin ingin membatalkan?",
                                 icon: "warning",
                                 showCancelButton: !0,
                                 buttonsStyling: !1,
-                                confirmButtonText: "Yes, cancel it!",
-                                cancelButtonText: "No, return",
+                                confirmButtonText: "Ya, batalkan!",
+                                cancelButtonText: "Tidak, kembali",
                                 customClass: {
                                     confirmButton: "btn btn-primary",
                                     cancelButton: "btn btn-active-light"
                                 }
                             }).then((function(t) {
                                 t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                    text: "Your form has not been cancelled!.",
+                                    text: "Formulir anda belum dibatalkan!.",
                                     icon: "error",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -1469,22 +1682,22 @@
                             }))
                         })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
                             t.preventDefault(), Swal.fire({
-                                text: "Are you sure you would like to cancel?",
+                                text: "Apakah anda yakin ingin membatalkan?",
                                 icon: "warning",
                                 showCancelButton: !0,
                                 buttonsStyling: !1,
-                                confirmButtonText: "Yes, cancel it!",
-                                cancelButtonText: "No, return",
+                                confirmButtonText: "Ya, batalkan!",
+                                cancelButtonText: "Tidak, kembali",
                                 customClass: {
                                     confirmButton: "btn btn-primary",
                                     cancelButton: "btn btn-active-light"
                                 }
                             }).then((function(t) {
                                 t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                    text: "Your form has not been cancelled!.",
+                                    text: "Formulir anda belum dibatalkan!.",
                                     icon: "error",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -1496,10 +1709,10 @@
                             t.preventDefault(), o && o.validate().then((function(t) {
                                 console.log("validated!"), "Valid" == t && (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
                                     i.removeAttribute("data-kt-indicator"), i.disabled = !1, Swal.fire({
-                                        text: "Form has been successfully submitted!",
+                                        text: "Formulir telah berhasil dikirim!",
                                         icon: "success",
                                         buttonsStyling: !1,
-                                        confirmButtonText: "Ok, got it!",
+                                        confirmButtonText: "Ok, mengerti!",
                                         customClass: {
                                             confirmButton: "btn btn-primary"
                                         }

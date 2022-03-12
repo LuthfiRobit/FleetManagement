@@ -155,6 +155,7 @@ Route::name('dashboard.')->prefix('dashboard')
         Route::put('driver/username/update/{id}', [DriverController::class, 'username'])->name('driver.username.update');
         Route::put('driver/password/update/{id}', [DriverController::class, 'password'])->name('driver.password.update');
         Route::put('driver/ktp/update/{id}', [DriverController::class, 'changeKtp'])->name('driver.changeKtp.update');
+        Route::put('driver/profil/update/{id}', [DriverController::class, 'changeProfil'])->name('driver.profil.update');
         Route::put('driver/sim/update/{id}', [DriverController::class, 'changeSim'])->name('driver.changeSim.update');
         Route::post('driver/sim/add/{id}', [DriverController::class, 'addSim'])->name('driver.sim.add');
         Route::post('driver/sim/remove', [DriverController::class, 'removeSim'])->name('driver.sim.remove');
