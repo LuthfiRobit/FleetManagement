@@ -25,6 +25,7 @@ class Driver extends  Authenticatable implements JWTSubject
         'umur',
         'no_tlp',
         'foto_ktp',
+        'foto_driver',
         'user',
         'password',
         'status_driver'
