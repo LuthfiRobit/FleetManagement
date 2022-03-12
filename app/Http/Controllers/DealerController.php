@@ -41,8 +41,13 @@ class DealerController extends Controller
     public function store(StoreDealerRequest $request)
     {
         $data = $request->except(['_token']);
-        Dealer::create($data);
-        return redirect()->route('dashboard.dealer.index');
+        $simpan = Dealer::create($data);
+        if ($simpan) {
+            return redirect()->route('dashboard.dealer.index')->with('success', 'Data Dealer Berhasi Disimpan');
+        } else {
+
+            return redirect()->route('dashboard.dealer.index');
+        }
     }
 
     /**
@@ -83,8 +88,13 @@ class DealerController extends Controller
     public function update(UpdateDealerRequest $request, $id)
     {
         $data = $request->except(['_token', '_method']);
-        Dealer::where('id_dealer', $id)->update($data);
-        return redirect()->route('dashboard.dealer.index');
+        $update = Dealer::where('id_dealer', $id)->update($data);
+        if ($update) {
+            return redirect()->route('dashboard.dealer.index')->with('success', 'Data Dealer Berhasi Diedit');
+        } else {
+
+            return redirect()->route('dashboard.dealer.index');
+        }
     }
 
     /**
