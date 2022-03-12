@@ -17,7 +17,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Data Dealer</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 2 Dealer</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">{{$dealer->count()}} Dealer</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                         title="" data-bs-original-title="Tekan untuk menambah dealer">
@@ -39,6 +39,60 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body py-3">
+                    @if ($errors->any())
+                    <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
+                        <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
+                            <i class="bi bi-exclamation-triangle fs-1"></i>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <div class="d-flex flex-column">
+                            <h4 class="mb-1 text-danger">Pesan Error</h4>
+                            <span>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                    @endforeach
+                                </ul>
+                            </span>
+                        </div>
+                        <button type="button"
+                            class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                            data-bs-dismiss="alert">
+                            <i class="bi bi-x fs-1 text-danger"></i>
+                        </button>
+                    </div>
+                    @endif
+                    @if(session()->has('success'))
+                    <!--begin::Alert-->
+                    <div
+                        class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                        <!--begin::Icon-->
+                        <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                        <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <!--end::Icon-->
+                        <!--begin::Content-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <h5 class="mb-1">Pesan</h5>
+                            <span> {{ session()->get('success') }}</span>
+                        </div>
+                        <!--end::Content-->
+                        <!--begin::Close-->
+                        <button type="button"
+                            class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                            data-bs-dismiss="alert">
+                            <i class="bi bi-x fs-1 text-danger"></i>
+                        </button>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Alert-->
+                    @endif
                     <!--begin::Table container-->
                     <table id="kt_datatable_example_5"
                         class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowr">
@@ -58,7 +112,13 @@
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$de->nama_dealer}}</td>
                                 <td>{{$de->alamat}}</td>
-                                <td>{{$de->no_tlp}}</td>
+                                <td>
+                                    @if ($de->no_tlp != null)
+                                    {{$de->no_tlp}}
+                                    @else
+                                    ---
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($de->status == 'y')
                                     <span class="badge badge-light-primary">Aktif</span>
@@ -200,7 +260,7 @@
                             <button type="reset" id="kt_modal_new_feul_cancel" class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_new_feul_submit" class="btn btn-primary">
                                 <span class="indicator-label">Simpan</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -295,19 +355,19 @@
                                     }
                                 }
                             },
-                            no_tlp: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "No. Tlpn Dealer Harus Diisi"
-                                    },
-                                    stringLength: {
-                                        // options: {
-                                        max: 12,
-                                        message: "No. Tlpn Dealer Maksimal 12 Karakter"
-                                        // }
-                                    }
-                                }
-                            },
+                            // no_tlp: {
+                            //     validators: {
+                            //         notEmpty: {
+                            //             message: "No. Tlpn Dealer Harus Diisi"
+                            //         },
+                            //         stringLength: {
+                            //             // options: {
+                            //             max: 12,
+                            //             message: "No. Tlpn Dealer Maksimal 12 Karakter"
+                            //             // }
+                            //         }
+                            //     }
+                            // },
                             status: {
                                 validators: {
                                     notEmpty: {
@@ -339,7 +399,7 @@
                                     text: "Formulir telah berhasil dikirim!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -351,7 +411,7 @@
                                 text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -364,8 +424,8 @@
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
@@ -375,7 +435,7 @@
                                 text: "Formulir Anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
