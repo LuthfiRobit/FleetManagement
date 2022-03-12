@@ -60,7 +60,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Main Dashboard</span>
+                        <span class="menu-title">Halaman Utama</span>
                     </a>
                 </div>
                 <div class="menu-item">

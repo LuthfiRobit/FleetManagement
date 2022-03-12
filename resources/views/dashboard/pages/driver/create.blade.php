@@ -11,11 +11,6 @@
             <div class="card mb-5 mb-xl-8">
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
-                    {{-- <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Input Data Driver</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">=========================</span>
-                    </h3> --}}
-
                 </div>
                 <!--end::Header-->
                 <!--begin::Body-->
@@ -31,9 +26,6 @@
                             <h1 class="mb-3">Input Driver</h1>
                             <!--end::Title-->
                             <!--begin::Description-->
-                            <div class="text-muted fw-bold fs-5">Jika memerlukan info lebih lanjut, silahkan klik
-                                <a href="#" class="fw-bolder link-primary">Manual Book</a>.
-                            </div>
                             <!--end::Description-->
                             @if ($errors->any())
                             <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
@@ -43,7 +35,7 @@
                                 </span>
                                 <!--end::Svg Icon-->
                                 <div class="d-flex flex-column">
-                                    <h4 class="mb-1 text-danger">This is an alert</h4>
+                                    <h4 class="mb-1 text-danger">Pesan Error</h4>
                                     <span>
                                         <ul>
                                             @foreach ($errors->all() as $error)
@@ -54,6 +46,36 @@
                                 </div>
                             </div>
                             @endif
+                            @if(session()->has('success'))
+                            <!--begin::Alert-->
+                            <div
+                                class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                                <!--begin::Icon-->
+                                <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                                <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                                <!--end::Icon-->
+                                <!--begin::Content-->
+                                <div class="d-flex flex-column pe-0 pe-sm-10">
+                                    <h5 class="mb-1">Pesan</h5>
+                                    <span> {{ session()->get('success') }}</span>
+                                </div>
+                                <!--end::Content-->
+                                <!--begin::Close-->
+                                <button type="button"
+                                    class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                                    data-bs-dismiss="alert">
+                                    <i class="bi bi-x fs-1 text-danger"></i>
+                                </button>
+                                <!--end::Close-->
+                            </div>
+                            <!--end::Alert-->
+                            @endif
                         </div>
                         <!--end::Heading-->
                         <!--begin::Input group-->
@@ -62,6 +84,8 @@
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">NO BADGE</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
+                                        title="No Badge Akan Otomatis Menjadi Username"></i>
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
@@ -76,7 +100,7 @@
                                     placeholder="Masukkan Nama Driver" name="nama_driver" />
                             </div>
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">Departemen</label>
+                                <label class="fs-6 fw-bold mb-2">Departemen</label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Departemen" id="id_departemen"
                                     name="id_departemen">
@@ -99,6 +123,8 @@
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">No. Tlpn</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
+                                        title="No. Telpon Akan Otomatis Menjadi Password"></i>
                                 </label>
                                 <!--end::Label-->
                                 <input type="number" class="form-control form-control-solid"
@@ -113,44 +139,28 @@
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Foto Profil</span>
+                                </label>
+                                <!--end::Label-->
+                                <input type="file" class="form-control form-control-solid"
+                                    placeholder="Masukkan Foto Profil" name="foto_driver" id="foto_driver" />
+                            </div>
+                            <div class="col-lg-6">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Foto Ktp</span>
-                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                        title="Anda Bisa Upload di Lain Hari"></i>
                                 </label>
                                 <!--end::Label-->
                                 <input type="file" class="form-control form-control-solid"
-                                    placeholder="Masukkan Foto KTP" name="foto_ktp" />
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                    <span class="required">Jenis SIM</span>
-                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                        title="Anda Bisa Isi di Lain Hari"></i></label>
-                                <select class="form-select form-select-solid" data-control="select2"
-                                    data-hide-search="false" data-placeholder="Pilih Jenis SIM" id="id_jenis_sim"
-                                    name="id_jenis_sim">
-                                    <option value="">Pilih Jenis SIM</option>
-                                    @foreach ($jenisSim as $js)
-                                    <option value="{{$js->id_jenis_sim}}">{{$js->nama_sim}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                    <span class="required">Foto SIM</span>
-                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                        title="Anda Bisa Upload di Lain Hari"></i>
-                                </label>
-                                <!--end::Label-->
-                                <input type="file" class="form-control form-control-solid"
-                                    placeholder="Masukkan Foto SIM" name="foto_sim" />
+                                    placeholder="Masukkan Foto KTP" name="foto_ktp" id="foto_ktp" />
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
-                            {{-- <div class="col-lg-6">
-                                <label class="required fs-6 fw-bold mb-2">Jenis SIM</label>
+                            <div class="col-lg-6">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Jenis SIM</span>
+                                </label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Jenis SIM" id="id_jenis_sim"
                                     name="id_jenis_sim">
@@ -163,23 +173,21 @@
                             <div class="col-lg-6">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Foto SIM</span>
-                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                        title="Anda Bisa Upload di Lain Hari"></i>
                                 </label>
                                 <!--end::Label-->
                                 <input type="file" class="form-control form-control-solid"
-                                    placeholder="Masukkan Foto SIM" name="foto_sim" />
-                            </div> --}}
+                                    placeholder="Masukkan Foto SIM" name="foto_sim" id="foto_sim" />
+                            </div>
                         </div>
 
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center mt-3">
                             <button type="reset" id="kt_modal_new_target_cancel"
-                                class="btn btn-light me-3">Cancel</button>
+                                class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-label">Kirim</span>
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -239,13 +247,13 @@ var KTModalNewTarget = function () {
                                 }
                             }
                         },
-                        id_departemen: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Departemen Harus Dipilih"
-                                }
-                            }
-                        },
+                        // id_departemen: {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: "Departemen Harus Dipilih"
+                        //         }
+                        //     }
+                        // },
                         alamat: {
                             validators: {
                                 notEmpty: {
@@ -285,6 +293,34 @@ var KTModalNewTarget = function () {
                                 }
                             }
                         },
+                        foto_driver: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Foto Profil Harus Diisi"
+                                }
+                            }
+                        },
+                        foto_ktp: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Foto KTP Harus Diisi"
+                                }
+                            }
+                        },
+                        id_jenis_sim: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Jenis SIM Harus Diisi"
+                                }
+                            }
+                        },
+                        foto_sim: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Foto SIM Harus Diisi"
+                                }
+                            }
+                        }
                     },
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger,
@@ -302,7 +338,7 @@ var KTModalNewTarget = function () {
                                 text: "Formulir telah berhasil dikirim!",
                                 icon: "success",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -314,7 +350,7 @@ var KTModalNewTarget = function () {
                             text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -327,8 +363,8 @@ var KTModalNewTarget = function () {
                         icon: "warning",
                         showCancelButton: !0,
                         buttonsStyling: !1,
-                        confirmButtonText: "Yes, cancel it!",
-                        cancelButtonText: "No, return",
+                        confirmButtonText: "Ya, batalkan!",
+                        cancelButtonText: "Tidak, kembali",
                         customClass: {
                             confirmButton: "btn btn-primary",
                             cancelButton: "btn btn-active-light"
@@ -340,7 +376,7 @@ var KTModalNewTarget = function () {
                             text: "Formulir Anda belum dibatalkan!.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }

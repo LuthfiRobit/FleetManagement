@@ -53,7 +53,8 @@
                                             <i class="fa fa-car fs-3x text-warning"></i>
                                         </span>
                                         <!--end::Svg Icon-->
-                                        <a href="#" class="text-warning fw-bold fs-6">{{$kendaraan}} Mobil</a>
+                                        <a href="{{ route('dashboard.kendaraan.main.index') }}"
+                                            class="text-warning fw-bold fs-6">{{$kendaraan}} Mobil</a>
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
@@ -63,7 +64,8 @@
                                             <i class="bi bi-person-badge fs-3x text-primary"></i>
                                         </span>
                                         <!--end::Svg Icon-->
-                                        <a href="#" class="text-primary fw-bold fs-6">{{$driver}} Driver</a>
+                                        <a href="{{ route('dashboard.driver.index') }}"
+                                            class="text-primary fw-bold fs-6">{{$driver}} Driver</a>
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -77,7 +79,8 @@
                                             <i class="bi bi-pin-map-fill fs-3x text-danger"></i>
                                         </span>
                                         <!--end::Svg Icon-->
-                                        <a href="#" class="text-danger fw-bold fs-6 mt-2">{{$penugasan->count()}}
+                                        <a href="{{ route('assign.main') }}"
+                                            class="text-danger fw-bold fs-6 mt-2">{{$penugasan->count()}}
                                             Perjalanan</a>
                                     </div>
                                     <!--end::Col-->
@@ -88,7 +91,8 @@
                                             <i class="fa fa-wrench fs-3x text-success"></i>
                                         </span>
                                         <!--end::Svg Icon-->
-                                        <a href="#" class="text-success fw-bold fs-6 mt-2">{{$perbaikan->count()}}
+                                        <a href="{{ route('repair.main') }}"
+                                            class="text-success fw-bold fs-6 mt-2">{{$perbaikan->count()}}
                                             Perbaikan</a>
                                     </div>
                                     <!--end::Col-->
@@ -114,7 +118,7 @@
                             </h3>
                             <div class="card-toolbar">
                                 <!--begin::Menu-->
-                                <button type="button"
+                                <a href="{{ route('assign.main') }}" type="button"
                                     class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary active"
                                     data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
@@ -122,7 +126,7 @@
                                         <i class="fa fa-car fs-2x "></i>
                                     </span>
                                     <!--end::Svg Icon-->
-                                </button>
+                                </a>
                                 <!--end::Menu-->
                             </div>
                         </div>
@@ -186,7 +190,7 @@
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Menu-->
-                                        <button type="button"
+                                        <a href="{{ route('status.main') }}" type="button"
                                             class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary active"
                                             data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                             <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
@@ -194,7 +198,7 @@
                                                 <i class="bi bi-person-badge fs-2x "></i>
                                             </span>
                                             <!--end::Svg Icon-->
-                                        </button>
+                                        </a>
                                         <!--end::Menu-->
                                     </div>
                                 </div>
@@ -240,7 +244,7 @@
                                 </div>
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
-                                    <button type="button"
+                                    <a href="{{ route('repair.main') }}" type="button"
                                         class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary active"
                                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                         <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
@@ -248,7 +252,7 @@
                                             <i class="fa fa-wrench fs-2x "></i>
                                         </span>
                                         <!--end::Svg Icon-->
-                                    </button>
+                                    </a>
                                     <!--end::Menu-->
                                 </div>
                                 <!--begin::Table container-->
@@ -292,11 +296,11 @@
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
-                                <span class="card-label fw-bolder fs-3 mb-1">History driver</span>
+                                <span class="card-label fw-bolder fs-3 mb-1">History driver rating tertinggi</span>
                                 {{-- <span class="text-muted mt-1 fw-bold fs-7">5 driver aktif</span> --}}
                             </h3>
                             <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top">
-                                <button type="button"
+                                <a href="{{ route('rating.main') }}" type="button"
                                     class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary active"
                                     data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
@@ -304,7 +308,7 @@
                                         <i class="fa fa-book fs-2x "></i>
                                     </span>
                                     <!--end::Svg Icon-->
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <!--end::Header-->

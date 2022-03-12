@@ -167,7 +167,7 @@
                                                 <td class="text-gray-400 min-w-175px w-175px">Status Pengecekan:</td>
                                                 <td class="text-gray-800 min-w-200px">
                                                     @if($pengecekan->status_pengecekan == 'c')
-                                                    <span class="badge badge-light-primary">Pengecekan Normal</span>
+                                                    <span class="badge badge-light-primary">Pengecekan Harian</span>
                                                     @else
                                                     <span class="badge badge-light-danger">Pengecekan Kecelakaan</span>
                                                     @endif
@@ -179,9 +179,9 @@
                                                 <td class="text-gray-400">Status Kendaraan:</td>
                                                 <td class="text-gray-800">
                                                     @if($pengecekan->status_kendaraan == 'r')
-                                                    <span class="badge badge-light-primary">Tersedia</span>
+                                                    <span class="badge badge-light-primary">Normal</span>
                                                     @else
-                                                    <span class="badge badge-light-danger">Tidak Tersedia</span>
+                                                    <span class="badge badge-light-danger">Rusak</span>
                                                     @endif
                                                 </td>
                                             </tr>

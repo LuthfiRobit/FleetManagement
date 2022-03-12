@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Service Order | Main')
+@section('title','Pesanan Pelayanan | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,9 +16,9 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Service Order</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Pesanan Pelayanan</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$serviceOrder->where('status_so',
-                            '')->count()}} Service Order Perlu Dilihat</span>
+                            '')->count()}} Pesanan Pelayanan Perlu Dilihat</span>
                     </h3>
                 </div>
 

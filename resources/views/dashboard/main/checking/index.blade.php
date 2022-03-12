@@ -172,14 +172,14 @@
                                         <td>{{$pc->km_kendaraan}}</td>
                                         <td>
                                             @if ($pc->status_kendaraan == 'r')
-                                            <span class="badge badge-light-primary">Tersedia</span>
+                                            <span class="badge badge-light-primary">Normal</span>
                                             @else
-                                            <span class="badge badge-light-danger">Tidak Tersedia</span>
+                                            <span class="badge badge-light-danger">Rusak</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if($pc->status_pengecekan == 'c')
-                                            <span class="badge badge-light-primary">Normal</span>
+                                            <span class="badge badge-light-primary">Harian</span>
                                             @else
                                             <span class="badge badge-light-danger">Kecelakaan</span>
                                             @endif
