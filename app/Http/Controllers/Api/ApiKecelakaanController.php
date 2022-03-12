@@ -32,11 +32,12 @@ class ApiKecelakaanController extends Controller
                 'tb_kendaraan.no_polisi',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.jam_berangkat',
-                'tb_penugasan_driver.tmp_penjemputan as jemput',
-                'tb_penugasan_driver.tmp_tujuan as tujuan',
+                'tb_order_kendaraan.tempat_penjemputan as jemput',
+                'tb_order_kendaraan.tujuan',
                 'tb_penugasan_driver.kembali',
                 'tb_penugasan_driver.status_penugasan'
             )
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
@@ -76,11 +77,12 @@ class ApiKecelakaanController extends Controller
                 'tb_kendaraan.no_polisi',
                 'tb_penugasan_driver.tgl_penugasan',
                 'tb_penugasan_driver.jam_berangkat',
-                'tb_penugasan_driver.tmp_penjemputan as jemput',
-                'tb_penugasan_driver.tmp_tujuan as tujuan',
+                'tb_order_kendaraan.tempat_penjemputan as jemput',
+                'tb_order_kendaraan.tujuan',
                 'tb_penugasan_driver.kembali',
                 'tb_penugasan_driver.status_penugasan'
             )
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
