@@ -16,10 +16,11 @@ class DashboardController extends Controller
         $countKendaraan = Kendaraan::where('status', 'y')->count();
         $penugasan = DB::table('tb_penugasan_driver')
             ->select(
-                'tb_penugasan_driver.tmp_tujuan as tujuan',
+                'tb_order_kendaraan.tujuan as tujuan',
                 'tb_driver.nama_driver'
             )
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->where('tb_penugasan_driver.status_penugasan', 'p')
             ->orderByDesc('tb_penugasan_driver.id_do')
             ->limit(5)
@@ -102,12 +103,13 @@ class DashboardController extends Controller
     {
         $lokasi = DB::table('tb_penugasan_driver')
             ->select(
-                'tb_penugasan_driver.lat_tujuan',
-                'tb_penugasan_driver.long_tujuan',
-                'tb_penugasan_driver.tmp_tujuan as tujuan',
+                'tb_penugasan_driver.lat_sekarang',
+                'tb_penugasan_driver.long_sekarang',
+                'tb_order_kendaraan.tujuan as tujuan',
                 'tb_driver.nama_driver',
                 'tb_petugas.nama_lengkap as petugas'
             )
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->where('status_penugasan', 'p')
