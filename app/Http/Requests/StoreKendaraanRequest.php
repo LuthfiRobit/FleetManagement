@@ -35,7 +35,7 @@ class StoreKendaraanRequest extends FormRequest
             'nama_kendaraan' => 'required|max:20',
             'warna' => 'required|max:20',
             'tanggal_pembelian' => 'required',
-            'harga' => 'required',
+            // 'harga' => 'required',
             'jenis_penggerak' => 'required',
             'tahun_kendaraan' => 'required',
             'pemilik' => 'required',
