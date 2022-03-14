@@ -74,6 +74,7 @@ class PenugasanDriverController extends Controller
             ->select(
                 'tb_driver.nama_driver',
                 'tb_driver.no_tlp as d_tlp',
+                'tb_driver.foto_driver',
                 'tb_departemen.nama_departemen as departemen'
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
@@ -151,6 +152,7 @@ class PenugasanDriverController extends Controller
             ->select(
                 'tb_driver.nama_driver',
                 'tb_driver.no_tlp',
+                'tb_driver.foto_driver',
                 'tb_departemen.nama_departemen as departemen',
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')

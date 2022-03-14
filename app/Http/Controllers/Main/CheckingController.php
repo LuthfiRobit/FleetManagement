@@ -203,7 +203,6 @@ class CheckingController extends Controller
 
     public function acceptSo(Request $request, $id)
     {
-        // $find = DB::table('tb_order_kendaraan')->where('id_service_order', $id);
         $find = ServiceOrder::where('id_service_order', $id)->first();
         if ($find == true) {
             $find->update(['status_so' => 't']);
@@ -215,13 +214,7 @@ class CheckingController extends Controller
                 'tgl_penugasan'     => Carbon::parse($find->tgl_penjemputan)->format('Y-m-d'),
                 'jam_berangkat'     => Carbon::parse($find->jam_penjemputan)->format('H:i:s'),
                 'kembali'           => $request->kembali,
-                'tgl_acc'           => date('Y-m-d'),
-                'tmp_penjemputan'   => $request->tmp_jemput,
-                // 'lat_jemput'        => '-7.712123326867145',
-                // 'long_jemput'       => '113.57749476810118',
-                'tmp_tujuan'        => $request->tmp_tujuan,
-                // 'lat_tujuan'        => '-7.851952179623661',
-                // 'long_tujuan'       => '112.51991928366783'
+                'tgl_acc'           => date('Y-m-d')
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($data);
             if ($penugasancreate) {
@@ -232,8 +225,6 @@ class CheckingController extends Controller
         } else {
             return redirect()->route('checking.serviceorder')->with('success', 'Dispath Order Driver Tidak Ditemukan');
         }
-
-        // return redirect()->route('checking.serviceorder')->with('success', 'Service Order is Accepted');
     }
 
     public function rejectSo(Request $request, $id)

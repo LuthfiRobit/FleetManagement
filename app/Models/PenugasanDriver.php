@@ -29,11 +29,7 @@ class PenugasanDriver extends Model
         'keterangan_bbm',
         'waktu_start',
         'waktu_finish',
-        'tmp_penjemputan',
-        'lat_jemput',
-        'long_jemput',
-        'tmp_tujuan',
-        'lat_tujuan',
-        'long_tujuan'
+        'lat_sekarang',
+        'long_sekarang'
     ];
 }

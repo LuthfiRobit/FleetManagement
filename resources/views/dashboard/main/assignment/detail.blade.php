@@ -229,45 +229,6 @@
                             </div>
                             <!--end::Card title-->
                             <!--begin::Card toolbar-->
-                            {{-- <div class="card-toolbar">
-                                <!--begin::More options-->
-                                <a href="#" class="btn btn-sm btn-light btn-icon" data-kt-menu-trigger="click"
-                                    data-kt-menu-placement="bottom-end">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen052.svg-->
-                                    <span class="svg-icon svg-icon-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none">
-                                            <rect x="10" y="10" width="4" height="4" rx="2" fill="black" />
-                                            <rect x="17" y="10" width="4" height="4" rx="2" fill="black" />
-                                            <rect x="3" y="10" width="4" height="4" rx="2" fill="black" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-6 w-200px py-4"
-                                    data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3">Pause Subscription</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3"
-                                            data-kt-subscriptions-view-action="delete">Edit Subscription</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link text-danger px-3"
-                                            data-kt-subscriptions-view-action="edit">Cancel Subscription</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                </div>
-                                <!--end::Menu-->
-                                <!--end::More options-->
-                            </div> --}}
                             <!--end::Card toolbar-->
                         </div>
                         <!--end::Card header-->
@@ -278,8 +239,10 @@
                                 <!--begin::Details-->
                                 <div class="d-flex align-items-center">
                                     <!--begin::Avatar-->
-                                    <div class="symbol symbol-60px symbol-circle me-3">
-                                        <img alt="Pic" src="{{url('assets/backend/assets/media/avatars/150-4.jpg')}}" />
+                                    <div
+                                        class="symbol symbol-60px symbol-circle me-3 border-primary border border-dashed">
+                                        <img alt="Profil Driver {{$driver->nama_driver}}"
+                                            src="{{url('assets/img_driver/'.$driver->foto_driver)}}" />
                                     </div>
                                     <!--end::Avatar-->
                                     <!--begin::Info-->

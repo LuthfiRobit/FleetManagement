@@ -53,16 +53,16 @@ Route::group(
         Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']); //detail order kendaraan
 
 
-        Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
-        Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
-        Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
-        Route::post('report/foto/update', [ApiServiceOrderController::class, 'accidentPictureUpdate']);
-        Route::post('report/foto/delete', [ApiServiceOrderController::class, 'accidentPictureDelete']);
-        Route::post('report/foto/cancel', [ApiServiceOrderController::class, 'accidentCancel']);
-        Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStoreOld']);
-        Route::post('report/store/new', [ApiServiceOrderController::class, 'accidentReportStoreNew']);
-        Route::get('checking', [ApiServiceOrderController::class, 'checkinReport']);
-        Route::post('checking/store', [ApiServiceOrderController::class, 'checkingReportStore']);
+        // Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
+        // Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
+        // Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
+        // Route::post('report/foto/update', [ApiServiceOrderController::class, 'accidentPictureUpdate']);
+        // Route::post('report/foto/delete', [ApiServiceOrderController::class, 'accidentPictureDelete']);
+        // Route::post('report/foto/cancel', [ApiServiceOrderController::class, 'accidentCancel']);
+        // Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStoreOld']);
+        // Route::post('report/store/new', [ApiServiceOrderController::class, 'accidentReportStoreNew']);
+        // Route::get('checking', [ApiServiceOrderController::class, 'checkinReport']);
+        // Route::post('checking/store', [ApiServiceOrderController::class, 'checkingReportStore']);
     }
 );
 
@@ -90,6 +90,14 @@ Route::group(
         Route::post('nonaktif', [ApiProfilDriverController::class, 'nonAktif']); //nonaktifkan driver
         Route::post('aktif', [ApiProfilDriverController::class, 'aktif']); //aktifkan driver
         Route::post('username', [ApiProfilDriverController::class, 'username']); //update username
+        Route::post('foto', [ApiProfilDriverController::class, 'fotoDriver']); //update atau simpan foto driver
+        Route::post('password', [ApiProfilDriverController::class, 'password']); //ganti password
+        Route::get('list/sim', [ApiProfilDriverController::class, 'listSim']); //list sim
+        Route::post('add/sim', [ApiProfilDriverController::class, 'addSim']); //add sim
+        Route::post('update/sim', [ApiProfilDriverController::class, 'updateSim']); //update foto sim
+
+        Route::get('list/jenis/sim', [ApiProfilDriverController::class, 'listJenisSim']); //list jenis sim
+        Route::get('profil/depan', [ApiProfilDriverController::class, 'profilDepan']);
     }
 );
 

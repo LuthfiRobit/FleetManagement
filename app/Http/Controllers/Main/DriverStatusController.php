@@ -42,6 +42,7 @@ class DriverStatusController extends Controller
                 'tb_driver.id_driver',
                 'tb_driver.nama_driver',
                 'tb_driver.no_tlp',
+                'tb_driver.foto_driver',
                 'tb_departemen.nama_departemen as departemen'
             )
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_status_driver.id_driver')
