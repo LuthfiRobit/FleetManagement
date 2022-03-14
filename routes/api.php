@@ -90,6 +90,14 @@ Route::group(
         Route::post('nonaktif', [ApiProfilDriverController::class, 'nonAktif']); //nonaktifkan driver
         Route::post('aktif', [ApiProfilDriverController::class, 'aktif']); //aktifkan driver
         Route::post('username', [ApiProfilDriverController::class, 'username']); //update username
+        Route::post('foto', [ApiProfilDriverController::class, 'fotoDriver']); //update atau simpan foto driver
+        Route::post('password', [ApiProfilDriverController::class, 'password']); //ganti password
+        Route::get('list/sim', [ApiProfilDriverController::class, 'listSim']); //list sim
+        Route::post('add/sim', [ApiProfilDriverController::class, 'addSim']); //add sim
+        Route::post('update/sim', [ApiProfilDriverController::class, 'updateSim']); //update foto sim
+
+        Route::get('list/jenis/sim', [ApiProfilDriverController::class, 'listJenisSim']); //list jenis sim
+        Route::get('profil/depan', [ApiProfilDriverController::class, 'profilDepan']);
     }
 );
 
