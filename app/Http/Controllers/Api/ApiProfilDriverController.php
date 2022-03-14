@@ -45,6 +45,29 @@ class ApiProfilDriverController extends Controller
         );
     }
 
+    public function profilDepan(Request $request)
+    {
+        $id_driver = $request->query('id_driver');
+        $profil_driver = DB::table('tb_driver')
+            ->select(
+                'tb_driver.id_driver',
+                'tb_driver.no_badge',
+                'tb_driver.nama_driver',
+                'tb_driver.foto_driver',
+                'tb_departemen.nama_departemen'
+            )
+            ->where('id_driver', $id_driver)
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
+            ->first();
+
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'profil_driver' => $profil_driver
+            ]
+        );
+    }
+
     public function status(Request $request)
     {
         $id_driver = $request->query('id_driver');
