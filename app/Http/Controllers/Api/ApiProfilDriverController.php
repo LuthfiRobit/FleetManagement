@@ -29,6 +29,7 @@ class ApiProfilDriverController extends Controller
                 'tb_driver.alamat',
                 'tb_driver.umur',
                 'tb_driver.no_tlp',
+                'tb_driver.foto_driver',
                 'tb_driver.id_departemen',
                 'tb_departemen.nama_departemen'
             )
