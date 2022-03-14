@@ -40,13 +40,14 @@ class ApiServiceOrderController extends Controller
                     'id_service_order'  => $request->id_service_order,
                     'jabatan'        => $request->jabatan[$key],
                     'nama_penumpang'    => $request->nama_penumpang[$key],
-                    'no_tlp'            => $request->no_tlp[$key]
+                    'no_tlp'            => $request->no_tlp[$key],
+                    'status'            => $request->status[$key]
                 ];
-                if ($key == 0) {
-                    $serviceDetail['status'] = 'y';
-                } else {
-                    $serviceDetail['status'] = 'n';
-                }
+                // if ($key == 0) {
+                //     $serviceDetail['status'] = 'y';
+                // } else {
+                //     $serviceDetail['status'] = 'n';
+                // }
                 $saveDetailSo = DB::table('tb_detail_so')->insert($serviceDetail);
             }
 
