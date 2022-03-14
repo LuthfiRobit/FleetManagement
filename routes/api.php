@@ -53,16 +53,16 @@ Route::group(
         Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']); //detail order kendaraan
 
 
-        Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
-        Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
-        Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
-        Route::post('report/foto/update', [ApiServiceOrderController::class, 'accidentPictureUpdate']);
-        Route::post('report/foto/delete', [ApiServiceOrderController::class, 'accidentPictureDelete']);
-        Route::post('report/foto/cancel', [ApiServiceOrderController::class, 'accidentCancel']);
-        Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStoreOld']);
-        Route::post('report/store/new', [ApiServiceOrderController::class, 'accidentReportStoreNew']);
-        Route::get('checking', [ApiServiceOrderController::class, 'checkinReport']);
-        Route::post('checking/store', [ApiServiceOrderController::class, 'checkingReportStore']);
+        // Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
+        // Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
+        // Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
+        // Route::post('report/foto/update', [ApiServiceOrderController::class, 'accidentPictureUpdate']);
+        // Route::post('report/foto/delete', [ApiServiceOrderController::class, 'accidentPictureDelete']);
+        // Route::post('report/foto/cancel', [ApiServiceOrderController::class, 'accidentCancel']);
+        // Route::post('report/store', [ApiServiceOrderController::class, 'accidentReportStoreOld']);
+        // Route::post('report/store/new', [ApiServiceOrderController::class, 'accidentReportStoreNew']);
+        // Route::get('checking', [ApiServiceOrderController::class, 'checkinReport']);
+        // Route::post('checking/store', [ApiServiceOrderController::class, 'checkingReportStore']);
     }
 );
 
