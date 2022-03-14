@@ -188,4 +188,227 @@ class ApiProfilDriverController extends Controller
             );
         }
     }
+
+    public function fotoDriver(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $foto_driver = $request->file('foto_driver');
+        $findDriver = Driver::where('id_driver', $id_driver)->select('no_badge', 'foto_driver')->first();
+        if ($findDriver != null) {
+            $name_profil   = 'pdrv_' . $findDriver->no_badge . '.' . $foto_driver->getClientOriginalExtension();
+            $data = [
+                'foto_driver' => $name_profil
+            ];
+            // return $data;
+            if (!is_null($findDriver->foto_driver)) {
+                File::delete('assets/img_driver/' . $findDriver->foto_driver);
+            }
+            $update = Driver::where('id_driver', $id_driver)->update($data);
+            $folder_profil     = 'assets/img_driver';
+            $foto_driver->move($folder_profil, $name_profil);
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'pesan' => 'profil berhasil diganti',
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'pesan' => 'profil tidak ditemukan',
+                ]
+            );
+        }
+    }
+
+    public function password(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $password_lama = $request->password_lama;
+        $password_baru = $request->password_baru;
+        $findDriver = Driver::where('id_driver', $id_driver)->first();
+        $rules = [
+            'password_baru' => [
+                'required',
+                'string',
+                Password::min(8)->mixedCase()
+            ],
+            'password_lama' => [
+                'required',
+                function ($attribute, $value, $fail) use ($findDriver) {
+                    if (!Hash::check($value, $findDriver->password)) {
+                        return $fail(__('Password lama tidak cocok'));
+                    }
+                }
+            ]
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'errors' => $validator->errors()
+                ],
+                422
+            );
+        } else {
+            $data = ['password' => Hash::make($password_baru)];
+            $updatePassword = $findDriver->update($data);
+            if ($updatePassword) {
+                return response()->json(
+                    [
+                        'status' => 'sukses',
+                        'pesan' => 'password berhasil diganti',
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status' => 'gagal',
+                        'pesan' => 'password gagal diganti',
+                    ]
+                );
+            }
+        }
+    }
+
+    public function listSim(Request $request)
+    {
+        $id_driver = $request->query('id_driver');
+        $listSim = DB::table('tb_detail_sim')
+            ->select(
+                'tb_detail_sim.id_driver',
+                'tb_detail_sim.id_detail_sim',
+                'tb_detail_sim.id_jenis_sim',
+                'tb_detail_sim.foto_sim',
+                'tb_jenis_sim.nama_sim'
+            )
+            ->leftJoin('tb_jenis_sim', 'tb_jenis_sim.id_jenis_sim', '=', 'tb_detail_sim.id_jenis_sim')
+            ->where('tb_detail_sim.id_driver', $id_driver)
+            ->get();
+
+        if ($listSim->count() > 0) {
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'list_sim' => $listSim
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'list_sim' => $listSim
+                ]
+            );
+        }
+    }
+
+    public function listJenisSim()
+    {
+        $listJenisSim = DB::table('tb_jenis_sim')
+            ->select('id_jenis_sim', 'nama_sim')
+            ->where('status', 'y')
+            ->get();
+        if ($listJenisSim->count() > 0) {
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'list_jenis_sim' => $listJenisSim
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'list_jenis_sim' => $listJenisSim
+                ]
+            );
+        }
+    }
+
+    public function addSim(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $id_jenis_sim = $request->id_jenis_sim;
+        $foto_sim = $request->file('foto_sim');
+
+        $findDetailSim = DetailSim::where([['id_driver', $id_driver], ['id_jenis_sim', $id_jenis_sim]])->first();
+
+        if ($findDetailSim) {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'pesan' => 'SIM sudah ada'
+                ]
+            );
+        } else {
+            $findDriver = Driver::where('id_driver', $id_driver)->first();
+            $findSim = JenisSim::where('id_jenis_sim', $id_jenis_sim)->first();
+            $simName = str_replace(" ", "_", $findSim->nama_sim);
+            $name_sim   = $simName . '_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+            $data = [
+                'id_jenis_sim' => $id_jenis_sim,
+                'id_driver' => $id_driver,
+                'foto_sim' => $name_sim
+            ];
+            $addSim = DetailSim::create($data);
+            if ($addSim) {
+                $folder_sim     = 'assets/img_sim';
+                $foto_sim->move($folder_sim, $name_sim);
+                return response()->json(
+                    [
+                        'status' => 'sukses',
+                        'pesan' => 'SIM berhasil ditambah'
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status' => 'gagal',
+                        'pesan' => 'SIM gagal ditambah'
+                    ]
+                );
+            }
+        }
+    }
+
+    public function updateSim(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $id_detail_sim = $request->id_detail_sim;
+        $foto_sim = $request->file('foto_sim');
+        $findDetailSim = DetailSim::where('id_detail_sim', $id_detail_sim)->first();
+        if ($findDetailSim) {
+            $findDriver = Driver::where('id_driver', $id_driver)->first();
+            $findSim = JenisSim::where('id_jenis_sim', $findDetailSim->id_jenis_sim)->first();
+            $simName = str_replace(" ", "_", $findSim->nama_sim);
+            $name_sim   = $simName . '_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+            $data = [
+                'foto_sim' => $name_sim
+            ];
+            if (!is_null($findDetailSim->foto_sim)) {
+                File::delete('assets/img_sim/' . $findDetailSim->foto_sim);
+            }
+            $updateSim = $findDetailSim->update($data);
+            if ($updateSim) {
+                $folder_sim     = 'assets/img_sim';
+                $foto_sim->move($folder_sim, $name_sim);
+                return response()->json(
+                    [
+                        'status' => 'sukses',
+                        'pesan' => 'SIM berhasil diganti'
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status' => 'gagal',
+                        'pesan' => 'SIM gagal diganti'
+                    ]
+                );
+            }
+        }
+    }
 }
