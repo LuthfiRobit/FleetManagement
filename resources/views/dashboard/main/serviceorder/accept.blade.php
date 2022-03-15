@@ -22,7 +22,8 @@
                         <div class="mb-13 text-center">
                             <!--begin::Title-->
                             <h3 class="mb-2 mt-2">Buat Penugasan</h3>
-                            <h4 class="mb-2 mt-2">SO_{{$so->no_so}}</h4>
+                            <h4 class="mb-2 mt-2">SO_{{$so->no_so}} | Tgl. Tugas
+                                {{Carbon\Carbon::parse($so->tgl_jpt)->format('d-m-Y')}}</h4>
                             <span class="mt-1 fw-bold fs-7">Pemesan : {{$so->petugas}} | Jabatan :
                                 {{$so->jabatan}} | {{$so->departemen}}</span>
                             <!--end::Title-->
@@ -58,8 +59,8 @@
                                     {{-- <option value="">Pilih Kendaraan</option> --}}
                                     @foreach ($kendaraan as $kd)
                                     <option value="{{$kd->id_kendaraan}}" data-sim="{{$kd->id_jenis_sim}}">
-                                        {{$kd->alokasi}} | {{$kd->nama_kendaraan}} | {{$kd->no_polisi}} |
-                                        {{$kd->sim}}
+                                        {{$kd->alokasi}} | {{$kd->nama_kendaraan}} | {{$kd->kode_asset}} |
+                                        {{$kd->no_polisi}}
                                     </option>
                                     @endforeach
                                 </select>
