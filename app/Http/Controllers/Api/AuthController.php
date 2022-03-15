@@ -86,7 +86,7 @@ class AuthController extends Controller
     public function login2(Request $request)
     {
 
-        $credentials = $request->only('user', 'password');
+        $credentials = $request->only('user', 'password', 'paley_id');
 
         //valid credential
         $validator = Validator::make($credentials, [
@@ -139,6 +139,10 @@ class AuthController extends Controller
                     'message' => 'Could not create token.',
                 ], 500);
             }
+            $data = [
+                'player_id' => $request->palyer_id
+            ];
+            $driver->update($data);
             return response()->json([
                 'success' => 'sukses',
                 'token' => $token,

@@ -129,6 +129,7 @@ Route::group(
         Route::post('proses', [ApiPenugasanController::class, 'prosesPenugasan']); //proses penugasan
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
         Route::post('lokasi/update', [ApiPenugasanController::class, 'lokasiUpdate']); //update lokasi
+        Route::get('notif', [ApiPenugasanController::class, 'notifPenugasan']); //get notif penugasan
     }
 );
 
