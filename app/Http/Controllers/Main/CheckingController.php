@@ -131,17 +131,17 @@ class CheckingController extends Controller
                 tb_kendaraan.no_polisi,
                 tb_kendaraan.id_kendaraan,
                 tb_kendaraan.id_jenis_sim,
-                tb_jenis_sim.nama_sim as sim,
+                -- tb_jenis_sim.nama_sim as sim,
                 tb_jenis_alokasi.nama_alokasi as alokasi
                 FROM tb_kendaraan
-                JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
+                -- JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
                 JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
                 JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
                 WHERE NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
                 AND tb_pengecekan_kendaraan.status_kendaraan = 't' UNION SELECT id_kendaraan FROM tb_penugasan_driver
                 WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
                 AND tb_penugasan_driver.tgl_penugasan = '$service->tgl_jpt')
-                ORDER BY alokasi DESC"
+                ORDER BY tb_kendaraan.id_kendaraan DESC"
             );
             $driver = DB::select(
                 "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
