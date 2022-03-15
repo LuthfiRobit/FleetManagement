@@ -86,7 +86,7 @@ class AuthController extends Controller
     public function login2(Request $request)
     {
 
-        $credentials = $request->only('user', 'password', 'paley_id');
+        $credentials = $request->only('user', 'password');
 
         //valid credential
         $validator = Validator::make($credentials, [
@@ -140,7 +140,7 @@ class AuthController extends Controller
                 ], 500);
             }
             $data = [
-                'player_id' => $request->palyer_id
+                'player_id' => $request->player_id
             ];
             $driver->update($data);
             return response()->json([

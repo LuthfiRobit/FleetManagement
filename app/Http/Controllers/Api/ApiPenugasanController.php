@@ -470,64 +470,25 @@ class ApiPenugasanController extends Controller
 
     public function sendNotif(Request $request)
     {
-        // $key = 'MDg2NjY1ZGYtZTgyYy00NTkyLWIyY2MtMDRhNDYyODBiOTU1';
-        // $client = new Client();
-        // $request = $client->post('https://onesignal.com/api/v1/notifications', [
-        //     'headers' => [
-        //         'Authorization' => 'Basic ' . $key,
-        //         'Content-Type' => 'application/json'
-        //     ],
-        //     'body' => json_encode([
-        //         'included_segments' => ['Subscribed Users'],
-        //         'app_id' => '768c8998-943b-4ffa-8829-07c1107a9216',
-        //         'contents' => ['en' => 'Anda Memiliki Penugasan Baru.'],
-        //         'headings' => ['en' => 'Silahkan Cek Penugasan Sopir.']
-        //     ])
-        // ]);
-        // if ($request->getStatusCode() == 200) { // 200 OK
-        //     $response_data = $request->getBody()->getContents();
-        // }
-
-        // return $response_data;
-        function sendMessage()
-        {
-            $content = array(
-                "en" => 'English Message'
-            );
-
-            $fields = array(
-                'app_id' => "768c8998-943b-4ffa-8829-07c1107a9216",
-                'include_player_ids' => array("e16bbd0c-a429-11ec-af02-7a6aff7aa1a8", "bd46d848-a425-11ec-9d8a-eaa4ca363a90", "7b2be296-a42a-11ec-8a85-4a576d841d16", "4b5d6a06-a427-11ec-85d2-7e01105f6ec8", "192d30a2-a46d-11ec-81e9-a6c7d9db7baf"),
-                'data' => array("foo" => "bar"),
-                'contents' => $content
-            );
-
-            $fields = json_encode($fields);
-            print("\nJSON sent:\n");
-            print($fields);
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json;'));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HEADER, FALSE);
-            curl_setopt($ch, CURLOPT_POST, TRUE);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-            $response = curl_exec($ch);
-            curl_close($ch);
-
-            return $response;
+        $key = 'MDg2NjY1ZGYtZTgyYy00NTkyLWIyY2MtMDRhNDYyODBiOTU1';
+        $client = new Client();
+        $request = $client->post('https://onesignal.com/api/v1/notifications', [
+            'headers' => [
+                'Authorization' => 'Basic ' . $key,
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode([
+                'included_segments' => ['Subscribed Users'],
+                'app_id' => '768c8998-943b-4ffa-8829-07c1107a9216',
+                'contents' => ['en' => 'Anda Memiliki Penugasan Baru.'],
+                'headings' => ['en' => 'Silahkan Cek Penugasan Sopir.']
+            ])
+        ]);
+        if ($request->getStatusCode() == 200) { // 200 OK
+            $response_data = $request->getBody()->getContents();
         }
 
-        $response = sendMessage();
-        $return["allresponses"] = $response;
-        $return = json_encode($return);
-
-        print("\n\nJSON received:\n");
-        print($return);
-        print("\n");
+        return $response_data;
     }
 
     public function addDevice(Request $request)
