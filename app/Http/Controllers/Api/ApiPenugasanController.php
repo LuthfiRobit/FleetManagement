@@ -55,6 +55,27 @@ class ApiPenugasanController extends Controller
         );
     }
 
+    public function notifPenugasan(Request $request)
+    {
+        $id_driver = $request->query('id_driver');
+        $notifPenugasan = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', null]])->get()->count();
+        if ($notifPenugasan > 0) {
+            return response()->json(
+                [
+                    'status'      => 'sukses',
+                    'notif'       => 'ada ' . $notifPenugasan . ' penugasan baru'
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'      => 'gagal',
+                    'notif'       => 'belum ada penugasan baru'
+                ]
+            );
+        }
+    }
+
     public function detailPenugasan(Request $request)
     {
         $id_do = $request->query('id_do');
