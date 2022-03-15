@@ -28,6 +28,7 @@ class Driver extends  Authenticatable implements JWTSubject
         'foto_driver',
         'user',
         'password',
+        'player_id',
         'status_driver'
     ];
 
