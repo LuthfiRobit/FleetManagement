@@ -94,6 +94,8 @@ class ApiPenugasanController extends Controller
                 'tb_penugasan_driver.jam_berangkat',
                 'tb_order_kendaraan.tempat_penjemputan as jemput',
                 'tb_order_kendaraan.tujuan',
+                'tb_order_kendaraan.jml_penumpang',
+                'tb_order_kendaraan.keterangan',
                 'tb_penugasan_driver.kembali',
                 'tb_penugasan_driver.tgl_acc',
                 'tb_penugasan_driver.status_penugasan'
