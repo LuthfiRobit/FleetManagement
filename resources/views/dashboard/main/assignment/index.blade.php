@@ -66,6 +66,7 @@
                                 <th>Driver</th>
                                 <th>Pemesan</th>
                                 <th>Kendaraan</th>
+                                <th>Tanggal | Jam</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -80,6 +81,10 @@
                                 <td>{{$as->nama_kendaraan}}
                                     <br>
                                     <span class="badge badge-light-primary">{{$as->no_polisi}}</span>
+                                </td>
+                                <td>
+                                    {{Carbon\Carbon::parse($as->tgl_penugasan)->format('d F Y') }} |
+                                    {{Carbon\Carbon::parse($as->jam_berangkat)->format('H:i') }}
                                 </td>
                                 <td>
                                     @if ($as->status_do == 't')

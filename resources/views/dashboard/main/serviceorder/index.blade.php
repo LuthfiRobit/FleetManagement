@@ -83,8 +83,10 @@
                                     <span class="badge badge-light-primary">Diterima</span>
                                     @elseif($so->status_so == 'tl')
                                     <span class="badge badge-light-danger">Ditolak</span>
+                                    @elseif($so->status_so == 'c')
+                                    <span class="badge badge-light-success">Dibatalkan</span>
                                     @else
-                                    <span class="badge badge-light-warning">Baru</span>
+                                    <span class="badge badge-light-warning">Butuh Respon</span>
                                     @endif
                                 </td>
                                 <td>

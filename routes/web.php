@@ -134,6 +134,8 @@ Route::name('dashboard.')->prefix('dashboard')
                 ->only(['index', 'create', 'store', 'edit', 'update']);
             Route::put('main/username/update/{id}', [PetugasController::class, 'username'])->name('dashboard.petugas.main.username.update');
             Route::put('main/password/update/{id}', [PetugasController::class, 'password'])->name('dashboard.petugas.main.password.update');
+            Route::get('main/password/reset/all', [PetugasController::class, 'passwordResetAll'])->name('dashboard.petugas.main.password.reset.all');
+            Route::get('main/password/reset/{id}', [PetugasController::class, 'passwordReset'])->name('dashboard.petugas.main.password.reset');
             Route::resource('departemen', DepartemenController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
             Route::resource('jabatan', JabatanController::class)->shallow()

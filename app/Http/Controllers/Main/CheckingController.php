@@ -141,7 +141,7 @@ class CheckingController extends Controller
                 WHERE NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
                 AND tb_pengecekan_kendaraan.status_kendaraan = 't' UNION SELECT id_kendaraan FROM tb_penugasan_driver
                 WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
-                AND tb_penugasan_driver.tgl_penugasan = '$service->tgl_jpt')
+                AND tb_penugasan_driver.tgl_penugasan = '$service->tgl_jpt' AND tb_penugasan_driver.status_penugasan = 'p')
                 ORDER BY tb_kendaraan.id_kendaraan DESC"
             );
             $driver = DB::select(
@@ -150,7 +150,7 @@ class CheckingController extends Controller
                 WHERE tb_driver.status_driver = 'y'
                 AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
                 AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
-                AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' )"
+                AND tb_penugasan_driver.tgl_penugasan = ' $service->tgl_jpt' AND tb_penugasan_driver.status_penugasan = 'p'  )"
             );
             $data = [
                 'so' => $service,
