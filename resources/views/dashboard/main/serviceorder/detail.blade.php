@@ -35,6 +35,8 @@
                                 <span class="badge badge-light-primary">Diterima</span>
                                 @elseif($serviceorder->status_so == 'tl')
                                 <span class="badge badge-light-danger">Ditolak</span>
+                                @elseif($serviceorder->status_so == 'c')
+                                <span class="badge badge-light-success">Dibatalkan</span>
                                 @else
                                 <!--begin::Add-->
                                 <button type="button" class="btn btn-light-primary btn-sm" data-kt-menu-trigger="click"
@@ -43,7 +45,8 @@
                                     <span class="svg-icon svg-icon-3">
                                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                                     </span>
-                                    <!--end::Svg Icon-->Aksi
+                                    Respon Pesanan
+                                    <!--end::Svg Icon-->
                                 </button>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-6 w-200px py-4"
@@ -145,6 +148,8 @@
                                                     <span class="badge badge-light-primary">Diterima</span>
                                                     @elseif($serviceorder->status_so == 'tl')
                                                     <span class="badge badge-light-danger">Ditolak</span>
+                                                    @elseif($serviceorder->status_so == 'c')
+                                                    <span class="badge badge-light-success">Dibatalkan</span>
                                                     @else
                                                     <span class="badge badge-light-warning">Butuh Direspon</span>
                                                     @endif
