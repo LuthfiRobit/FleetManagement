@@ -203,7 +203,7 @@ class ApiServiceOrderController extends Controller
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
             )
-            ->join('tb_penugasan_driver', 'tb_order_kendaraan.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
+            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
             ->join('tb_driver', 'tb_penugasan_driver.id_driver', '=', 'tb_driver.id_driver')
             ->join('tb_kendaraan', 'tb_penugasan_driver.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
             ->join('tb_petugas', 'tb_order_kendaraan.id_petugas', '=', 'tb_petugas.id_petugas')
