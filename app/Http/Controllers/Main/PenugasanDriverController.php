@@ -18,6 +18,8 @@ class PenugasanDriverController extends Controller
                 'tb_order_kendaraan.no_so',
                 'tb_penugasan_driver.tgl_acc',
                 'tb_penugasan_driver.status_penugasan as status_do',
+                'tb_penugasan_driver.tgl_penugasan',
+                'tb_penugasan_driver.jam_berangkat',
                 'tb_driver.nama_driver',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_kendaraan.nama_kendaraan',
