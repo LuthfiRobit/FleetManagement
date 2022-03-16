@@ -83,6 +83,7 @@ class ApiPenugasanController extends Controller
         $detail = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_service_order',
                 'tb_penugasan_driver.id_driver',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_petugas.no_tlp',
@@ -105,10 +106,20 @@ class ApiPenugasanController extends Controller
             ->first();
 
         if ($detail) {
+            $penumpang = DB::table('tb_detail_so')
+                ->select(
+                    'nama_penumpang',
+                    'jabatan',
+                    'no_tlp'
+                )
+                ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_detail_so.id_service_order')
+                ->where('tb_detail_so.id_service_order', $detail->id_service_order)
+                ->get();
             return response()->json(
                 [
                     'status'     => 'sukses',
-                    'detail'     => $detail
+                    'detail'     => $detail,
+                    'penumpang' => $penumpang
                 ]
             );
         } else {
