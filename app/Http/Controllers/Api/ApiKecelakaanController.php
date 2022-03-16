@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Kecelakaan;
 use App\Models\KecelakaanFoto;
+use App\Models\KecelakaanSaksi;
 use App\Models\PenugasanDriver;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ class ApiKecelakaanController extends Controller
         $kendaraan = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_service_order',
                 'tb_penugasan_driver.id_driver',
                 'tb_penugasan_driver.id_petugas',
                 'tb_penugasan_driver.id_kendaraan',
@@ -88,11 +90,19 @@ class ApiKecelakaanController extends Controller
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->where('tb_penugasan_driver.id_do', $id_do)
             ->first();
+        $saksi = DB::table('tb_detail_so')
+            ->select(
+                'tb_detail_so.id_detail_so',
+                'tb_detail_so.nama_penumpang'
+            )
+            ->where('tb_detail_so.id_service_order', $kendaraan->id_service_order)
+            ->get();
         if ($kendaraan != null) {
             return response()->json(
                 [
                     'status'        => 'sukses',
-                    'kendaraan'     => $kendaraan
+                    'kendaraan'     => $kendaraan,
+                    'saksi'         => $saksi
                 ]
             );
         } else {
@@ -119,6 +129,12 @@ class ApiKecelakaanController extends Controller
             ];
             $saveAcd = Kecelakaan::create($data);
             if ($saveAcd) {
+                $dataSaksi = [
+                    'id_kecelakaan' => $saveAcd->id_kecelakaan,
+                    'id_saksi' => $request->id_saksi,
+                    'id_atasan' => $request->id_atasan
+                ];
+                $saveSaksi = KecelakaanSaksi::create($dataSaksi);
                 $findfoto = KecelakaanFoto::where('id_kecelakaan', null)->get();
                 if ($findfoto->count() > 0) {
                     $findfoto->each(function ($file, $key) use ($saveAcd) {
