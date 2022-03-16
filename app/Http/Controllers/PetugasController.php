@@ -63,14 +63,16 @@ class PetugasController extends Controller
     public function store(StorePetugasRequest $request)
     {
         $data = $request->except(['_token']);
-        $defaultPasswordUser = str_replace("-", "", $data['tgl_lahir']);
-        $data['password'] = Hash::make($defaultPasswordUser);
-        $data['user'] = $defaultPasswordUser;
+        $defaultUsername = str_replace("-", "", $request->input('no_badge'));
+        $defaultPassword = str_replace("-", "", $request->input('no_tlp'));
+        // $defaultPasswordUser = str_replace("-", "", $data['tgl_lahir']);
+        $data['password'] = Hash::make($defaultPassword);
+        $data['user'] = $defaultUsername;
         $simpan = Petugas::create($data);
         if ($simpan) {
-            return redirect()->route('dashboard.petugas.main.index');
+            return redirect()->route('dashboard.petugas.main.index')->with('success', 'Petugas berhasil ditambah');
         } else {
-            return "gagal";
+            return redirect()->route('dashboard.petugas.main.index')->with('success', 'Petugas gagal ditambah');
         }
     }
 
@@ -113,10 +115,10 @@ class PetugasController extends Controller
         // $data['password'] = Hash::make($data['password']);
         $update = Petugas::where('id_petugas', $id)->update($data);
         if ($update) {
-            return redirect()->route('dashboard.petugas.main.index');
+            return redirect()->back()->with('success', 'Data petugas berhasil diedit');
             // return $data;
         } else {
-            return "gagal";
+            return redirect()->back()->with('success', 'Data petugas gagal diedit');
         }
     }
 
@@ -126,7 +128,7 @@ class PetugasController extends Controller
         $find = Petugas::where('id_petugas', $id)->first();
         if ($find) {
             $find->update(['user' => $newUsername]);
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Username berhasil diganti');
         }
     }
 
@@ -162,11 +164,46 @@ class PetugasController extends Controller
             ];
             $update_pwd = Petugas::where('id_petugas', $id)->update($data);
             if ($update_pwd) {
-                return redirect()->back();
+                return redirect()->back()->with('success', 'Password berhasil diganti');
             }
         }
     }
 
+    public function passwordReset(Request $request, $id)
+    {
+        $findPetugas = Petugas::where('id_petugas', $id)->first();
+        if ($findPetugas) {
+            $data = [
+                'user' => $findPetugas->no_tlp,
+                'password' => Hash::make($findPetugas->no_tlp)
+            ];
+            $update = $findPetugas->update($data);
+            return redirect()->back()->with('success', 'Username dan Password petugas ' . $findPetugas->nama_lengkap . ' berhasil direset menjadi No. Telepon');
+        } else {
+            return redirect()->back()->with('success', 'Username dan Password petugas gagal direset');
+        }
+    }
+
+    public function passwordResetAll(Request $request)
+    {
+        try {
+            $findPetugas = Petugas::select('id_petugas', 'no_tlp')->get();
+            foreach ($findPetugas as $dr) {
+                $data = [
+                    'user' => $dr->no_tlp,
+                    'password' => Hash::make($dr->no_tlp)
+                ];
+                $update = Petugas::where('id_petugas', $dr->id_petugas)->update($data);
+            }
+            // return $findPetugas;
+            return redirect()->back()->with('success', 'Username dan Password seluruh petugas berhasil direset menjadi No. Telepon');
+        } catch (\Exception $exception) {
+            //throw $th;
+            // DB::rollBack();
+            // return $exception;
+            return redirect()->back()->with('success', 'Username dan Password driver gagal direset');
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
