@@ -91,7 +91,7 @@
                             <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
                                 <th>No</th>
                                 <th>No Bagde</th>
-                                <th>Nama Petugas</th>
+                                <th>Petugas</th>
                                 <th>Departemen</th>
                                 <th>Jabatan</th>
                                 <th>Tanggal Kerja</th>
@@ -105,7 +105,25 @@
                             <tr class="odd">
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$pt->no_badge}}</td>
-                                <td>{{$pt->nama_lengkap}}</td>
+                                <td>
+                                    <!--begin:: Avatar -->
+                                    <div class="symbol symbol-circle symbol-50px overflow-hidden">
+                                        <div class="symbol-label">
+                                            <img @if ($pt->foto_petugas != null)
+                                            src="{{url('/assets/img_petugas/'.$pt->foto_petugas)}}"
+                                            @else
+                                            src="{{url('/assets/backend/assets/media/avatars/blank.png')}}"
+                                            @endif
+                                            class="w-100" />
+                                        </div>
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::User details-->
+                                    <div class="d-flex flex-column">
+                                        {{$pt->nama_lengkap}}
+                                    </div>
+                                    <!--begin::User details-->
+                                </td>
                                 <td>{{$pt->nama_departemen}}</td>
                                 <td>{{$pt->nama_jabatan}}</td>
                                 <td>{{$pt->tgl_mulai_kerja}}</td>
