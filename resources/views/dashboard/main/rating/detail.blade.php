@@ -135,7 +135,12 @@
                                     <!--begin::Avatar-->
                                     <div
                                         class="symbol symbol-60px symbol-circle me-3 border-primary border border-dashed">
-                                        <img alt="Pic" src="{{url('assets/img_driver/'.$driver->foto_driver)}}" />
+                                        <img alt="Pic" @if ($driver->foto_driver != null)
+                                        src="{{url('assets/img_driver/'.$driver->foto_driver)}}"
+                                        @else
+                                        src="{{url('/assets/backend/assets/media/avatars/blank.png')}}"
+                                        @endif
+                                        />
                                     </div>
                                     <!--end::Avatar-->
                                     <!--begin::Info-->

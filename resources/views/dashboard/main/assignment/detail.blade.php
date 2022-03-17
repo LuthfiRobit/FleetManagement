@@ -241,8 +241,12 @@
                                     <!--begin::Avatar-->
                                     <div
                                         class="symbol symbol-60px symbol-circle me-3 border-primary border border-dashed">
-                                        <img alt="Profil Driver {{$driver->nama_driver}}"
-                                            src="{{url('assets/img_driver/'.$driver->foto_driver)}}" />
+                                        <img alt="Profil Driver {{$driver->nama_driver}}" @if ($driver->foto_driver !=
+                                        null)
+                                        src="{{url('assets/img_driver/'.$driver->foto_driver)}}"
+                                        @else
+                                        src="{{url('/assets/backend/assets/media/avatars/blank.png')}}"
+                                        @endif />
                                     </div>
                                     <!--end::Avatar-->
                                     <!--begin::Info-->
