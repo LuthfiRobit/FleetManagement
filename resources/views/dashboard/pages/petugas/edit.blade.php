@@ -10,281 +10,483 @@
         <div id="kt_content_container" class="container-xxl">
             <div class="card mb-5 mb-xl-8">
                 <!--begin::Header-->
-                <div class="card-header border-0 pt-5">
+                <div class="card-header border-0 ">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Edit Data Petugas</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">{{$petugas->no_badge}} |
-                            {{$petugas->nama_lengkap}}</span>
+                        {{-- <span class="text-muted mt-1 fw-bold fs-7">{{$petugas->no_badge}} |
+                            {{$petugas->nama_lengkap}}</span> --}}
                     </h3>
                 </div>
                 <!--end::Header-->
-                <!--begin::Body-->
-
-                <div class="card-body py-3">
-                    <!--begin::Form-->
-                    <!--begin:::Tabs-->
-                    <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#kt_user_view_overview_tab">Data Umum</a>
-                        </li>
-                        <!--end:::Tab item-->
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#kt_user_view_overview_security">Keamanan</a>
-                        </li>
-                        <!--end:::Tab item-->
-                    </ul>
-                    <!--end:::Tabs-->
-                    <!--begin:::Tab content-->
-                    <div class="tab-content" id="myTabContent">
-                        <!--begin:::Tab pane-->
-                        <div class="tab-pane fade show active" id="kt_user_view_overview_tab" role="tabpanel">
-                            <!--begin::Card-->
-                            <div class="card card-flush mb-6 mb-xl-9">
-                                <!--begin::Card header-->
-                                <div class="card-header mt-6">
-                                    <div class="card-title flex-column">
-                                        <h3 class="mb-1">Edit Data Umum</h3>
-                                    </div>
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body p-9 pt-4">
-                                    <!--begin::Form-->
-                                    <form id="kt_modal_new_target_form" class="form"
-                                        action="{{ route('dashboard.petugas.main.update', $petugas->id_petugas)}}"
-                                        method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        @method('PUT')
-                                        <!--begin::Input group-->
-                                        @if ($errors->any())
-                                        <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
-                                            <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
-                                            <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
-                                                <i class="bi bi-exclamation-triangle fs-1"></i>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                            <div class="d-flex flex-column">
-                                                <h4 class="mb-1 text-danger">This is an alert</h4>
-                                                <span>
-                                                    <ul>
-                                                        @foreach ($errors->all() as $error)
-                                                        <li>{{$error}}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        @endif
-                                        <div class="form-group d-flex mb-8 row">
-                                            <div class="col-lg-4">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">No. Badge</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Masukkan No. Badge" name="no_badge"
-                                                    value="{{$petugas->no_badge}}" />
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label class="required fs-6 fw-bold mb-2">Departemen</label>
-                                                <select class="form-select form-select-solid" data-control="select2"
-                                                    data-hide-search="false" data-placeholder="Pilih Departemen"
-                                                    id="id_departemen" name="id_departemen">
-                                                    <option value="">Pilih Departemen</option>
-                                                    @foreach ($departemen as $dp)
-                                                    <option value="{{$dp->id_departemen}}" {{$petugas->id_departemen ==
-                                                        $dp->id_departemen ? 'selected' : ''}}>
-                                                        {{$dp->nama_departemen}}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label class="required fs-6 fw-bold mb-2">Jabatan</label>
-                                                <select class="form-select form-select-solid" data-control="select2"
-                                                    data-hide-search="false" data-placeholder="Pilih Jabatan"
-                                                    id="id_jabatan" name="id_jabatan">
-                                                    <option value="">Pilih Jabatan</option>
-                                                    @foreach ($jabatan as $jb)
-                                                    <option value="{{$jb->id_jabatan}}" {{$petugas->id_jabatan ==
-                                                        $jb->id_jabatan ? 'selected' : ''}}>{{$jb->nama_jabatan}}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group d-flex mb-8 row">
-                                            <div class="col-lg-4">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Nama Petugas</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Masukkan Nama Petugas" name="nama_lengkap"
-                                                    value="{{$petugas->nama_lengkap}}" />
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Tempat Lahir</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Masukkan Tempat Lahir" name="tempat_lahir"
-                                                    value="{{$petugas->tempat_lahir}}" />
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Tanggal Lahir</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="date" class="form-control form-control-solid"
-                                                    placeholder="Masukkan Tanggal Lahir" name="tgl_lahir"
-                                                    value="{{$petugas->tgl_lahir}}" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group d-flex mb-8 row">
-                                            <div class="col-lg-4">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">No. Tlpn</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="number" class="form-control form-control-solid"
-                                                    placeholder="Masukkan No. Tlpn" name="no_tlp"
-                                                    value="{{$petugas->no_tlp}}" />
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Tanggal Mulai Kerja</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="date" class="form-control form-control-solid"
-                                                    placeholder="Masukkan Tanggal Mulai Kerja" name="tgl_mulai_kerja"
-                                                    value="{{$petugas->tgl_mulai_kerja}}" />
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Status</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <select class="form-select form-select-solid" data-control="select2"
-                                                    data-hide-search="true" data-placeholder="Pilih Status" id="status"
-                                                    name="status">
-                                                    <option value="">Pilih Status</option>
-                                                    <option value="y" {{$petugas->status == 'y' ? 'selected' : ''}}>
-                                                        Aktif</option>
-                                                    <option value="t" {{$petugas->status == 't' ? 'selected' : ''}}>
-                                                        Nonaktif</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!--end::Input group-->
-                                        <!--begin::Actions-->
-                                        <div class="text-center mt-3">
-                                            <button type="reset" id="kt_modal_new_target_cancel"
-                                                class="btn btn-light me-3">Cancel</button>
-                                            <button type="submit" id="kt_modal_new_target_submit"
-                                                class="btn btn-primary">
-                                                <span class="indicator-label">Submit</span>
-                                                <span class="indicator-progress">Please wait...
-                                                    <span
-                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                            </button>
-                                        </div>
-                                        <!--end::Actions-->
-                                    </form>
-                                    <!--end:Form-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Card-->
-
-                        </div>
-                        <!--end:::Tab pane-->
-                        <!--begin:::Tab pane-->
-                        <div class="tab-pane fade" id="kt_user_view_overview_security" role="tabpanel">
-                            <!--begin::Card-->
-                            <div class="card pt-4 mb-6 mb-xl-9">
-                                <!--begin::Card header-->
-                                <div class="card-header border-0">
-                                    <!--begin::Card title-->
-                                    <div class="card-title">
-                                        <h2>Edit Keamanan</h2>
-                                    </div>
-                                    <!--end::Card title-->
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body pt-0 pb-5">
-                                    <!--begin::Table wrapper-->
-                                    <div class="table-responsive">
-                                        <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed gy-5"
-                                            id="kt_table_users_login_session">
-                                            <!--begin::Table body-->
-                                            <tbody class="fs-6 fw-bold text-gray-600">
-                                                <tr>
-                                                    <td>Username</td>
-                                                    <td>{{$petugas->user}}</td>
-                                                    <td class="text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#kt_modal_update_email">
-                                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                                            <span class="svg-icon svg-icon-3">
-                                                                <i class="bi bi-pencil-square fs-6"></i>
-                                                            </span>
-                                                            <!--end::Svg Icon-->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Password</td>
-                                                    <td>********</td>
-                                                    <td class="text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#kt_modal_update_password">
-                                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                                            <span class="svg-icon svg-icon-3">
-                                                                <i class="bi bi-pencil-square fs-6"></i>
-                                                            </span>
-                                                            <!--end::Svg Icon-->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            <!--end::Table body-->
-                                        </table>
-                                        <!--end::Table-->
-                                    </div>
-                                    <!--end::Table wrapper-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Card-->
-                        </div>
-                        <!--end:::Tab pane-->
-                    </div>
-                    <!--end:::Tab content-->
-                    <!--end:Form-->
-                </div>
-                <!--begin::Body-->
             </div>
+
+            @if ($errors->any())
+            <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
+                <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
+                <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
+                    <i class="bi bi-exclamation-triangle fs-1"></i>
+                </span>
+                <!--end::Svg Icon-->
+                <div class="d-flex flex-column">
+                    <h4 class="mb-1 text-danger">Pesan Error</h4>
+                    <span>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{$error}}</li>
+                            @endforeach
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            @endif
+            @if(session()->has('success'))
+            <!--begin::Alert-->
+            <div
+                class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                <!--begin::Icon-->
+                <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </svg>
+                </span>
+                <!--end::Svg Icon-->
+                <!--end::Icon-->
+                <!--begin::Content-->
+                <div class="d-flex flex-column pe-0 pe-sm-10">
+                    <h5 class="mb-1">PESAN</h5>
+                    <span> {{ session()->get('success') }}</span>
+                </div>
+                <!--end::Content-->
+                <!--begin::Close-->
+                <button type="button"
+                    class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                    data-bs-dismiss="alert">
+                    <i class="bi bi-x fs-1 text-danger"></i>
+                </button>
+                <!--end::Close-->
+            </div>
+            <!--end::Alert-->
+            @endif
+            <!--begin::Layout-->
+            <div class="d-flex flex-column flex-xl-row">
+                <!--begin::Sidebar-->
+                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
+                    <!--begin::Card-->
+                    <div class="card mb-5 mb-xl-8">
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Summary-->
+                            <!--begin::User Info-->
+                            <div class="d-flex flex-center flex-column py-5">
+                                <!--begin::Avatar-->
+                                <div class="symbol symbol-100px symbol-circle mb-7">
+                                    <img @if ($petugas->foto_petugas != null)
+                                    src="{{url('/assets/img_petugas/'.$petugas->foto_petugas)}}"
+                                    @else
+                                    src="{{url('/assets/backend/assets/media/avatars/blank.png')}}"
+                                    @endif
+                                    alt="image" />
+                                </div>
+                                <button type="button" class="btn btn-icon btn-light-primary w-30px h-30px"
+                                    data-bs-toggle="modal" data-bs-target="#kt_modal_update_profil">
+                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <i class="bi bi-pencil-square fs-6"></i>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </button>
+                                <!--end::Avatar-->
+                                <!--begin::Name-->
+                                <a
+                                    class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{$petugas->nama_lengkap}}</a>
+                                <!--end::Name-->
+                                <!--begin::Position-->
+                                <div class="mb-9">
+                                    <!--begin::Badge-->
+                                    <div class="badge badge-lg badge-light-primary d-inline">
+                                        {{$petugas->nama_departemen}}</div>
+                                    <!--begin::Badge-->
+                                </div>
+                                <!--end::Position-->
+                                <!--begin::Info-->
+                                <!--begin::Info heading-->
+                                {{-- <div class="fw-bolder mb-3">
+                                    Pemesanan Layanan
+                                </div> --}}
+                                <!--end::Info heading-->
+                                {{-- <div class="d-flex flex-wrap flex-center">
+                                    <!--begin::Stats-->
+                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+                                        <div class="fs-4 fw-bolder text-gray-700">
+                                            <span class="w-75px">243</span>
+                                        </div>
+                                        <div class="fw-bold text-muted">Pesanan</div>
+                                    </div>
+                                    <!--end::Stats-->
+                                    <!--begin::Stats-->
+                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mx-4 mb-3">
+                                        <div class="fs-4 fw-bolder text-gray-700">
+                                            <span class="w-50px">56</span>
+                                        </div>
+                                        <div class="fw-bold text-muted">Diterima</div>
+                                    </div>
+                                    <!--end::Stats-->
+                                    <!--begin::Stats-->
+                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+                                        <div class="fs-4 fw-bolder text-gray-700">
+                                            <span class="w-50px">188</span>
+                                        </div>
+                                        <div class="fw-bold text-muted">Dibatalkan</div>
+                                    </div>
+                                    <!--end::Stats-->
+                                </div> --}}
+                                <!--end::Info-->
+                            </div>
+                            <!--end::User Info-->
+                            <!--end::Summary-->
+                            <!--begin::Details toggle-->
+                            <div class="d-flex flex-stack fs-4 py-3">
+                                <div class="fw-bolder rotate collapsible">Keamanan
+                                </div>
+                            </div>
+                            <!--end::Details toggle-->
+                            <div class="separator"></div>
+                            <!--begin::Details content-->
+                            <div id="kt_user_view_details" class="">
+                                <!--begin::Details-->
+                                <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                    <!--begin::Row-->
+                                    <tr>
+                                        <td>Username :</td>
+                                        <td>{{$petugas->user}}</td>
+                                        <td class="text-end">
+                                            <button type="button"
+                                                class="btn btn-icon btn-light-primary w-30px h-30px ms-auto"
+                                                data-bs-toggle="modal" data-bs-target="#kt_modal_update_email">
+                                                <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                <span class="svg-icon svg-icon-3">
+                                                    <i class="bi bi-pencil-square fs-6"></i>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr>
+                                        <td>Password :</td>
+                                        <td>************</td>
+                                        <td class="text-end">
+                                            <button type="button"
+                                                class="btn btn-icon btn-light-primary w-30px h-30px ms-auto"
+                                                data-bs-toggle="modal" data-bs-target="#kt_modal_update_password">
+                                                <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                <span class="svg-icon svg-icon-3">
+                                                    <i class="bi bi-pencil-square fs-6"></i>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!--end::Row-->
+                                </table>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::Details content-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Sidebar-->
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid ms-lg-15">
+                    <!--begin::Card-->
+                    <div class="card card-flush mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <div class="card-header mt-6">
+                            <!--begin::Card title-->
+                            <div class="card-title flex-column">
+                                <h2 class="mb-1">Data Umum</h2>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body p-9 pt-4">
+                            <!--begin::Form-->
+                            <form id="kt_modal_new_target_form" class="form"
+                                action="{{ route('dashboard.petugas.main.update', $petugas->id_petugas)}}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <!--begin::Input group-->
+                                @if ($errors->any())
+                                <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
+                                    <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
+                                        <i class="bi bi-exclamation-triangle fs-1"></i>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                    <div class="d-flex flex-column">
+                                        <h4 class="mb-1 text-danger">This is an alert</h4>
+                                        <span>
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                <li>{{$error}}</li>
+                                                @endforeach
+                                            </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                                @endif
+                                <div class="form-group d-flex mb-8 row">
+                                    <div class="col-lg-4">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">No. Badge</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="text" class="form-control form-control-solid"
+                                            placeholder="Masukkan No. Badge" name="no_badge"
+                                            value="{{$petugas->no_badge}}" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="required fs-6 fw-bold mb-2">Departemen</label>
+                                        <select class="form-select form-select-solid" data-control="select2"
+                                            data-hide-search="false" data-placeholder="Pilih Departemen"
+                                            id="id_departemen" name="id_departemen">
+                                            <option value="">Pilih Departemen</option>
+                                            @foreach ($departemen as $dp)
+                                            <option value="{{$dp->id_departemen}}" {{$petugas->id_departemen ==
+                                                $dp->id_departemen ? 'selected' : ''}}>
+                                                {{$dp->nama_departemen}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="required fs-6 fw-bold mb-2">Jabatan</label>
+                                        <select class="form-select form-select-solid" data-control="select2"
+                                            data-hide-search="false" data-placeholder="Pilih Jabatan" id="id_jabatan"
+                                            name="id_jabatan">
+                                            <option value="">Pilih Jabatan</option>
+                                            @foreach ($jabatan as $jb)
+                                            <option value="{{$jb->id_jabatan}}" {{$petugas->id_jabatan ==
+                                                $jb->id_jabatan ? 'selected' : ''}}>{{$jb->nama_jabatan}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex mb-8 row">
+                                    <div class="col-lg-4">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Nama Petugas</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="text" class="form-control form-control-solid"
+                                            placeholder="Masukkan Nama Petugas" name="nama_lengkap"
+                                            value="{{$petugas->nama_lengkap}}" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Tempat Lahir</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="text" class="form-control form-control-solid"
+                                            placeholder="Masukkan Tempat Lahir" name="tempat_lahir"
+                                            value="{{$petugas->tempat_lahir}}" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Tanggal Lahir</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="date" class="form-control form-control-solid"
+                                            placeholder="Masukkan Tanggal Lahir" name="tgl_lahir"
+                                            value="{{$petugas->tgl_lahir}}" />
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex mb-8 row">
+                                    <div class="col-lg-4">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">No. Tlpn</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="number" class="form-control form-control-solid"
+                                            placeholder="Masukkan No. Tlpn" name="no_tlp"
+                                            value="{{$petugas->no_tlp}}" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Tanggal Mulai Kerja</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="date" class="form-control form-control-solid"
+                                            placeholder="Masukkan Tanggal Mulai Kerja" name="tgl_mulai_kerja"
+                                            value="{{$petugas->tgl_mulai_kerja}}" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Status</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <select class="form-select form-select-solid" data-control="select2"
+                                            data-hide-search="true" data-placeholder="Pilih Status" id="status"
+                                            name="status">
+                                            <option value="">Pilih Status</option>
+                                            <option value="y" {{$petugas->status == 'y' ? 'selected' : ''}}>
+                                                Aktif</option>
+                                            <option value="t" {{$petugas->status == 't' ? 'selected' : ''}}>
+                                                Nonaktif</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!--end::Input group-->
+                                <!--begin::Actions-->
+                                <div class="text-center mt-3">
+                                    <button type="reset" id="kt_modal_new_target_cancel"
+                                        class="btn btn-light me-3">Batalkan</button>
+                                    <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
+                                        <span class="indicator-label">Simpan</span>
+                                        <span class="indicator-progress">Mohon Tunggu...
+                                            <span
+                                                class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                    </button>
+                                </div>
+                                <!--end::Actions-->
+                            </form>
+                            <!--end:Form-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Content-->
+            </div>
+            <!--end::Layout-->
         </div>
         <!--end::Container-->
     </div>
 
+
+    <!--begin::Modal - Update email-->
+    <div class="modal fade" id="kt_modal_update_profil" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bolder">Update Profil</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1"
+                                    transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)"
+                                    fill="black" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                    <!--begin::Form-->
+                    <form id="kt_modal_update_profil_form" class="form"
+                        action="{{route('dashboard.petugas.dashboard.petugas.profil.update', $petugas->id_petugas)}}"
+                        method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <!--begin::Input group-->
+                        <div class="mb-7 fv-row text-center">
+                            <!--begin::Label-->
+                            <label class="fs-6 fw-bold mb-2">
+                                <span>Foto Profil Petugas</span>
+                                <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
+                                    title="Tipe file yang diizinkan: png, jpg, jpeg."></i>
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Image input wrapper-->
+                            <div class="mt-1">
+                                <!--begin::Image input-->
+                                <div class="image-input image-input-outline" data-kt-image-input="true"
+                                    style="background-image: url({{url('/assets/backend/assets/media/avatars/blank.png')}})">
+                                    <!--begin::Preview existing avatar-->
+                                    <div class="image-input-wrapper w-125px h-125px"
+                                        style="background-image: url({{url('/assets/img_petugas/'.$petugas->foto_petugas)}})">
+                                    </div>
+                                    <!--end::Preview existing avatar-->
+                                    <!--begin::Edit-->
+                                    <label
+                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                        title="Ganti Profil">
+                                        <i class="bi bi-pencil-fill fs-7"></i>
+                                        <!--begin::Inputs-->
+                                        <input type="file" name="foto_petugas" id="foto_petugas"
+                                            accept=".png, .jpg, .jpeg" />
+                                        <input type="hidden" name="avatar_remove" />
+                                        <!--end::Inputs-->
+                                    </label>
+                                    <!--end::Edit-->
+                                    <!--begin::Cancel-->
+                                    <span
+                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Batalkan">
+                                        <i class="bi bi-x fs-2"></i>
+                                    </span>
+                                    <!--end::Cancel-->
+                                    <!--begin::Remove-->
+                                    <span
+                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                        title="Hapus Profil">
+                                        <i class="bi bi-x fs-2"></i>
+                                    </span>
+                                    <!--end::Remove-->
+                                </div>
+                                <!--end::Image input-->
+                            </div>
+                            <!--end::Image input wrapper-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="text-center pt-15">
+                            <button type="reset" class="btn btn-light me-3"
+                                data-kt-users-modal-action="cancel">Batalkan</button>
+                            <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                <span class="indicator-label">Simpan</span>
+                                <span class="indicator-progress">Mohon Tunggu...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - Update email-->
+
     <!--begin::Modal - Update email-->
     <div class="modal fade" id="kt_modal_update_email" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -364,10 +566,10 @@
                         <!--begin::Actions-->
                         <div class="text-center pt-15">
                             <button type="reset" class="btn btn-light me-3"
-                                data-kt-users-modal-action="cancel">Discard</button>
+                                data-kt-users-modal-action="cancel">Batalkan</button>
                             <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-label">Simpan</span>
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -385,7 +587,7 @@
     <!--begin::Modal - Update password-->
     <div class="modal fade" id="kt_modal_update_password" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -419,7 +621,7 @@
                         @method('PUT')
                         <!--begin::Input group=-->
                         <div class="fv-row mb-10">
-                            <label class="required form-label fs-6 mb-2">Current Password</label>
+                            <label class="required form-label fs-6 mb-2">Password Lama</label>
                             <input class="form-control form-control-lg form-control-solid" type="password"
                                 placeholder="" name="current_password" autocomplete="off" />
                         </div>
@@ -429,7 +631,7 @@
                             <!--begin::Wrapper-->
                             <div class="mb-1">
                                 <!--begin::Label-->
-                                <label class="form-label fw-bold fs-6 mb-2">New Password</label>
+                                <label class="form-label fw-bold fs-6 mb-2">Password Baru</label>
                                 <!--end::Label-->
                                 <!--begin::Input wrapper-->
                                 <div class="position-relative mb-3">
@@ -454,14 +656,14 @@
                             </div>
                             <!--end::Wrapper-->
                             <!--begin::Hint-->
-                            <div class="text-muted">Use 8 or more characters with a mix of letters, numbers &amp;
-                                symbols.</div>
+                            <div class="text-muted">Gunakan minimal 8 karakter dengan paduan huruf, angka &amp;
+                                simbol.</div>
                             <!--end::Hint-->
                         </div>
                         <!--end::Input group=-->
                         <!--begin::Input group=-->
                         <div class="fv-row mb-10">
-                            <label class="form-label fw-bold fs-6 mb-2">Confirm New Password</label>
+                            <label class="form-label fw-bold fs-6 mb-2">Konfirmasik Password Baru</label>
                             <input class="form-control form-control-lg form-control-solid" type="password"
                                 placeholder="" name="confirm_password" autocomplete="off" />
                         </div>
@@ -469,10 +671,10 @@
                         <!--begin::Actions-->
                         <div class="text-center pt-15">
                             <button type="reset" class="btn btn-light me-3"
-                                data-kt-users-modal-action="cancel">Discard</button>
+                                data-kt-users-modal-action="cancel">Batalkan</button>
                             <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-label">Simpan</span>
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -608,7 +810,7 @@
                                 text: "Formulir telah berhasil dikirim!",
                                 icon: "success",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -620,7 +822,7 @@
                             text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -629,12 +831,12 @@
                 })),
                 e.addEventListener("click", (function (t) {
                     t.preventDefault(), Swal.fire({
-                        text: "Apakah Anda yakin ingin membatalkan?",
+                        text: "Apakah anda yakin ingin membatalkan?",
                         icon: "warning",
                         showCancelButton: !0,
                         buttonsStyling: !1,
-                        confirmButtonText: "Yes, cancel it!",
-                        cancelButtonText: "No, return",
+                        confirmButtonText: "Ya, batalkan!",
+                        cancelButtonText: "Tidak, kembali",
                         customClass: {
                             confirmButton: "btn btn-primary",
                             cancelButton: "btn btn-active-light"
@@ -643,10 +845,10 @@
 
                         t.value ?
                         (a.reset(), window.location.href = "{{ route('dashboard.petugas.main.index')}}") : "cancel" === t.dismiss && Swal.fire({
-                            text: "Formulir Anda belum dibatalkan!.",
+                            text: "Formulir anda belum dibatalkan!.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -660,6 +862,111 @@
         KTModalNewTarget.init()
     }));
 
+
+    var KTUsersUpdateProfil = function() {
+        const t = document.getElementById("kt_modal_update_profil"),
+            e = t.querySelector("#kt_modal_update_profil_form"),
+            n = new bootstrap.Modal(t);
+        return {
+            init: function() {
+                (() => {
+                    var o = FormValidation.formValidation(e, {
+                        fields: {
+                            foto_petugas: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Silahkan pilih foto profil'
+                                    },
+                                    file: {
+                                        extension: 'jpg,jpeg,png',
+                                        type: 'image/jpeg,image/png',
+                                        message: 'File tidak falid'
+                                    },
+                                }
+                            }
+                        },
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger,
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: ".fv-row",
+                                eleInvalidClass: "",
+                                eleValidClass: ""
+                            })
+                        }
+                    });
+                    t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah anda yakin ingin membatalkan?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
+                            customClass: {
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
+                            }
+                        }).then((function(t) {
+                            t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                text: "Formulir anda belum dibatalkan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah anda yakin ingin membatalkan?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
+                            customClass: {
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
+                            }
+                        }).then((function(t) {
+                            t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                text: "Formulir anda belum dibatalkan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    }));
+                    const i = t.querySelector('[data-kt-users-modal-action="submit"]');
+                    i.addEventListener("click", (function(t) {
+                        t.preventDefault(), o && o.validate().then((function(t) {
+                            console.log("validated!"), "Valid" == t && (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
+                                i.removeAttribute("data-kt-indicator"), i.disabled = !1, Swal.fire({
+                                    text: "Formulir anda berhasil dikirim!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, mengerti!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then((function(t) {
+                                    e.submit()
+                                    t.isConfirmed && n.hide()
+                                }))
+                            }), 2e3))
+                        }))
+                    }))
+                })()
+            }
+        }
+    }();
+    KTUtil.onDOMContentLoaded((function() {
+        KTUsersUpdateProfil.init()
+    }));
 
     var KTUsersUpdateEmail = function() {
         const t = document.getElementById("kt_modal_update_email"),
@@ -678,7 +985,7 @@
                                     stringLength: {
                                     // options: {
                                     max: 15,
-                                    message: "Username Maksimal 15 Karakter"
+                                    message: "Username maksimal 15 Karakter"
                                     // }
                                     }
                                 }
@@ -695,22 +1002,22 @@
                     });
                     t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -718,22 +1025,22 @@
                         }))
                     })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -745,10 +1052,10 @@
                         t.preventDefault(), o && o.validate().then((function(t) {
                             console.log("validated!"), "Valid" == t && (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
                                 i.removeAttribute("data-kt-indicator"), i.disabled = !1, Swal.fire({
-                                    text: "Form has been successfully submitted!",
+                                    text: "Formulir anda berhasil dikirim!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -821,22 +1128,22 @@
                     });
                     t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -844,22 +1151,22 @@
                         }))
                     })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (t => {
                         t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to cancel?",
+                            text: "Apakah anda yakin ingin membatalkan?",
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
                             }
                         }).then((function(t) {
                             t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
-                                text: "Your form has not been cancelled!.",
+                                text: "Formulir anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -871,10 +1178,10 @@
                         t.preventDefault(), o && o.validate().then((function(t) {
                             console.log("validated!"), "Valid" == t && (a.setAttribute("data-kt-indicator", "on"), a.disabled = !0, setTimeout((function() {
                                 a.removeAttribute("data-kt-indicator"), a.disabled = !1, Swal.fire({
-                                    text: "Form has been successfully submitted!",
+                                    text: "Formulir anda berhasil dikirim!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }

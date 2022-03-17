@@ -37,7 +37,7 @@ class DriverController extends Controller
                 'tb_driver.umur',
                 'tb_driver.no_tlp',
                 'tb_driver.status_driver as status',
-                'tb_driver.foto_ktp',
+                'tb_driver.foto_driver',
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->orderByRaw('tb_driver.no_badge ASC')
@@ -159,10 +159,12 @@ class DriverController extends Controller
                 'tb_driver.user',
                 'tb_driver.password',
                 'tb_driver.status_driver',
+                'tb_departemen.nama_departemen',
                 // 'tb_detail_sim.id_jenis_sim',
                 // 'tb_detail_sim.foto_sim'
             )
             // ->leftJoin('tb_detail_sim', 'tb_detail_sim.id_driver', '=', 'tb_driver.id_driver')
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->where('tb_driver.id_driver', '=', $id)
             ->first();
         $data['detailSim'] = DB::table('tb_detail_sim')

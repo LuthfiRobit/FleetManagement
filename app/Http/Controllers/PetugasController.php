@@ -9,6 +9,7 @@ use App\Models\Departemen;
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -27,6 +28,7 @@ class PetugasController extends Controller
                 'tb_petugas.id_petugas',
                 'tb_petugas.no_badge',
                 'tb_petugas.nama_lengkap',
+                'tb_petugas.foto_petugas',
                 'tb_departemen.nama_departemen',
                 'tb_jabatan.nama_jabatan',
                 'tb_petugas.tgl_mulai_kerja',
@@ -65,11 +67,17 @@ class PetugasController extends Controller
         $data = $request->except(['_token']);
         $defaultUsername = str_replace("-", "", $request->input('no_badge'));
         $defaultPassword = str_replace("-", "", $request->input('no_tlp'));
+        $foto_petugas = $request->file('foto_petugas');
+        $take_profil = $request->no_badge;
+        $name_profil = 'prp_' . $take_profil . '.' . $foto_petugas->getClientOriginalExtension();
         // $defaultPasswordUser = str_replace("-", "", $data['tgl_lahir']);
+        $data['foto_petugas'] = $name_profil;
         $data['password'] = Hash::make($defaultPassword);
         $data['user'] = $defaultUsername;
         $simpan = Petugas::create($data);
         if ($simpan) {
+            $folder_profil = 'assets/img_petugas';
+            $foto_petugas->move($folder_profil, $name_profil);
             return redirect()->route('dashboard.petugas.main.index')->with('success', 'Petugas berhasil ditambah');
         } else {
             return redirect()->route('dashboard.petugas.main.index')->with('success', 'Petugas gagal ditambah');
@@ -97,7 +105,28 @@ class PetugasController extends Controller
     {
         $data['departemen'] = Departemen::where('status', 'y')->get();
         $data['jabatan']    = Jabatan::where('status', 'y')->get();
-        $data['petugas']    = Petugas::where('id_petugas', $id)->first();
+        // $data['petugas']    = Petugas::where('id_petugas', $id)->first();
+        $data['petugas'] = DB::table('tb_petugas')
+            ->select(
+                'tb_petugas.id_petugas',
+                'tb_petugas.id_departemen',
+                'tb_petugas.id_jabatan',
+                'tb_petugas.tempat_lahir',
+                'tb_petugas.tgl_lahir',
+                'tb_petugas.no_badge',
+                'tb_petugas.nama_lengkap',
+                'tb_departemen.nama_departemen',
+                'tb_jabatan.nama_jabatan',
+                'tb_petugas.tgl_mulai_kerja',
+                'tb_petugas.no_tlp',
+                'tb_petugas.user',
+                'tb_petugas.foto_petugas',
+                'tb_petugas.status'
+            )
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
+            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
+            ->where('tb_petugas.id_petugas', $id)
+            ->first();
         // return $data;
         return view('dashboard.pages.petugas.edit', $data);
     }
@@ -202,6 +231,33 @@ class PetugasController extends Controller
             // DB::rollBack();
             // return $exception;
             return redirect()->back()->with('success', 'Username dan Password driver gagal direset');
+        }
+    }
+
+    public function changeProfil(Request $request, $id)
+    {
+        $find = Petugas::where('id_petugas', $id)->first();
+        $rules = [
+            'foto_petugas' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5040'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput($request->all);
+        } else {
+            $foto_petugas = $request->file('foto_petugas');
+            $take_profil = $find->no_badge;
+            $name_profil = 'prp_' . $take_profil . '.' . $foto_petugas->getClientOriginalExtension();
+            $data = [
+                'foto_petugas' => $name_profil
+            ];
+            // return $data;
+            if (!is_null($find->foto_petugas)) {
+                File::delete('assets/img_petugas/' . $find->foto_petugas);
+            }
+            $update = Petugas::where('id_petugas', $id)->update($data);
+            $folder_profil     = 'assets/img_petugas';
+            $foto_petugas->move($folder_profil, $name_profil);
+            return redirect()->back()->with('success', 'Foto Profil Berhasil Diganti');
         }
     }
     /**

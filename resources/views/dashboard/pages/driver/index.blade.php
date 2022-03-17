@@ -105,7 +105,25 @@
                             <tr class="odd">
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$dr->no_badge}}</td>
-                                <td>{{$dr->nama_driver}}</td>
+                                <td>
+                                    <!--begin:: Avatar -->
+                                    <div class="symbol symbol-circle symbol-50px overflow-hidden">
+                                        <div class="symbol-label">
+                                            <img @if ($dr->foto_driver != null)
+                                            src="{{url('/assets/img_driver/'.$dr->foto_driver)}}"
+                                            @else
+                                            src="{{url('/assets/backend/assets/media/avatars/blank.png')}}"
+                                            @endif
+                                            class="w-100" />
+                                        </div>
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::User details-->
+                                    <div class="d-flex flex-column">
+                                        {{$dr->nama_driver}}
+                                    </div>
+                                    <!--begin::User details-->
+                                </td>
                                 <td>
                                     @if ($dr->id_departemen == null)
                                     ---
