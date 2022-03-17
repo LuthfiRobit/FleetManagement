@@ -31,9 +31,6 @@
                             <h1 class="mb-3">Input Petugas</h1>
                             <!--end::Title-->
                             <!--begin::Description-->
-                            <div class="text-muted fw-bold fs-5">Jika memerlukan info lebih lanjut, silahkan klik
-                                <a href="#" class="fw-bolder link-primary">Manual Book</a>.
-                            </div>
                             <!--end::Description-->
                             @if ($errors->any())
                             <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
@@ -117,7 +114,7 @@
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">No. Tlpn</span>
                                 </label>
@@ -125,7 +122,7 @@
                                 <input type="number" class="form-control form-control-solid"
                                     placeholder="Masukkan No. Tlpn" name="no_tlp" />
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Tanggal Mulai Kerja</span>
                                 </label>
@@ -133,7 +130,15 @@
                                 <input type="date" class="form-control form-control-solid"
                                     placeholder="Masukkan Tanggal Mulai Kerja" name="tgl_mulai_kerja" />
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Foto Profil</span>
+                                </label>
+                                <!--end::Label-->
+                                <input type="file" class="form-control form-control-solid"
+                                    placeholder="Masukkan Foto Profil" name="foto_petugas" id="foto_petugas" />
+                            </div>
+                            <div class="col-lg-3">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Status</span>
                                 </label>
@@ -268,6 +273,13 @@ var KTModalNewTarget = function () {
                                 }
                             }
                         },
+                        foto_petugas: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Foto Profil Harus Diisi"
+                                }
+                            }
+                        },
                         status: {
                             validators: {
                                 notEmpty: {
@@ -292,7 +304,7 @@ var KTModalNewTarget = function () {
                                 text: "Formulir telah berhasil dikirim!",
                                 icon: "success",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -304,7 +316,7 @@ var KTModalNewTarget = function () {
                             text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -317,8 +329,8 @@ var KTModalNewTarget = function () {
                         icon: "warning",
                         showCancelButton: !0,
                         buttonsStyling: !1,
-                        confirmButtonText: "Yes, cancel it!",
-                        cancelButtonText: "No, return",
+                        confirmButtonText: "Ya, batalkan!",
+                        cancelButtonText: "Tidak, kembali",
                         customClass: {
                             confirmButton: "btn btn-primary",
                             cancelButton: "btn btn-active-light"
@@ -330,7 +342,7 @@ var KTModalNewTarget = function () {
                             text: "Formulir Anda belum dibatalkan!.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
