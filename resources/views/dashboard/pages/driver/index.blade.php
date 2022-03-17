@@ -96,6 +96,7 @@
                                 <th>Alamat</th>
                                 <th>No. Tlpn</th>
                                 <th>Usia</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -114,6 +115,13 @@
                                 <td>{{$dr->alamat}}</td>
                                 <td>{{$dr->no_tlp}}</td>
                                 <td>{{$dr->umur}}</td>
+                                <td>
+                                    @if ($dr->status == 'y')
+                                    <span class="badge badge-light-primary">Aktif</span>
+                                    @else
+                                    <span class="badge badge-light-danger">Nonaktif</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="d-flex justify-content-center flex-shrink-0">
                                         <a href="{{route('dashboard.driver.edit', $dr->id_driver)}}"
