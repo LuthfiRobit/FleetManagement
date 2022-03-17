@@ -27,9 +27,10 @@ class Petugas extends  Authenticatable implements JWTSubject
         'tgl_lahir',
         'tgl_mulai_kerja',
         'no_tlp',
+        'foto_petugas',
         'user',
         'password',
-        'foto_petugas',
+        'player_id',
         'status'
     ];
 
