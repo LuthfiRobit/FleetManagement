@@ -28,6 +28,7 @@ class PetugasController extends Controller
                 'tb_petugas.id_petugas',
                 'tb_petugas.no_badge',
                 'tb_petugas.nama_lengkap',
+                'tb_petugas.foto_petugas',
                 'tb_departemen.nama_departemen',
                 'tb_jabatan.nama_jabatan',
                 'tb_petugas.tgl_mulai_kerja',
