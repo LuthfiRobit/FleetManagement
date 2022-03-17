@@ -36,7 +36,7 @@ class DriverController extends Controller
                 'tb_driver.alamat',
                 'tb_driver.umur',
                 'tb_driver.no_tlp',
-                'tb_driver.id_driver',
+                'tb_driver.status_driver as status',
                 'tb_driver.foto_ktp',
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
@@ -263,16 +263,16 @@ class DriverController extends Controller
     public function resetAllPassword(Request $request)
     {
         try {
-            $driver = Driver::select('id_driver', 'no_tlp')->get();
+            $driver = Driver::select('id_driver', 'no_badge', 'no_tlp')->get();
             foreach ($driver as $dr) {
                 $data = [
-                    'user' => $dr->no_tlp,
+                    'user' => $dr->no_badge,
                     'password' => Hash::make($dr->no_tlp)
                 ];
                 $update = Driver::where('id_driver', $dr->id_driver)->update($data);
             }
             // return $driver;
-            return redirect()->back()->with('success', 'Username dan Password driver berhasil direset menjadi No. Telepon');
+            return redirect()->back()->with('success', 'Username dan Password seluruh driver berhasil direset menjadi NO. BADGE dan NO. TLFN');
         } catch (\Exception $exception) {
             //throw $th;
             // DB::rollBack();
@@ -286,11 +286,11 @@ class DriverController extends Controller
         $findDriver = Driver::where('id_driver', $id)->first();
         if ($findDriver) {
             $data = [
-                'user' => $findDriver->no_tlp,
+                'user' => $findDriver->no_badge,
                 'password' => Hash::make($findDriver->no_tlp)
             ];
             $update = $findDriver->update($data);
-            return redirect()->back()->with('success', 'Username dan Password driver ' . $findDriver->nama_driver . ' berhasil direset menjadi No. Telepon');
+            return redirect()->back()->with('success', 'Username dan Password driver ' . $findDriver->nama_driver . ' berhasil direset menjadi NO. BADGE dan NO. TLFN');
         } else {
             return redirect()->back()->with('success', 'Username dan Password driver gagal direset');
         }

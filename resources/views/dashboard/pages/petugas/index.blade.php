@@ -95,6 +95,7 @@
                                 <th>Departemen</th>
                                 <th>Jabatan</th>
                                 <th>Tanggal Kerja</th>
+                                <th>No. Tlfn</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -108,6 +109,7 @@
                                 <td>{{$pt->nama_departemen}}</td>
                                 <td>{{$pt->nama_jabatan}}</td>
                                 <td>{{$pt->tgl_mulai_kerja}}</td>
+                                <td>{{$pt->no_tlp}}</td>
                                 <td>@if ($pt->status == 'y')
                                     <span class="badge badge-light-primary">Aktif</span>
                                     @else

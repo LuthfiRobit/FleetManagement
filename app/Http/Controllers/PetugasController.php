@@ -174,11 +174,11 @@ class PetugasController extends Controller
         $findPetugas = Petugas::where('id_petugas', $id)->first();
         if ($findPetugas) {
             $data = [
-                'user' => $findPetugas->no_tlp,
+                'user' => $findPetugas->no_badge,
                 'password' => Hash::make($findPetugas->no_tlp)
             ];
             $update = $findPetugas->update($data);
-            return redirect()->back()->with('success', 'Username dan Password petugas ' . $findPetugas->nama_lengkap . ' berhasil direset menjadi No. Telepon');
+            return redirect()->back()->with('success', 'Username dan Password petugas ' . $findPetugas->nama_lengkap . ' berhasil direset menjadi NO. BADGE dan NO. TLFN');
         } else {
             return redirect()->back()->with('success', 'Username dan Password petugas gagal direset');
         }
@@ -187,16 +187,16 @@ class PetugasController extends Controller
     public function passwordResetAll(Request $request)
     {
         try {
-            $findPetugas = Petugas::select('id_petugas', 'no_tlp')->get();
+            $findPetugas = Petugas::select('id_petugas', 'no_badge', 'no_tlp')->get();
             foreach ($findPetugas as $dr) {
                 $data = [
-                    'user' => $dr->no_tlp,
+                    'user' => $dr->no_badge,
                     'password' => Hash::make($dr->no_tlp)
                 ];
                 $update = Petugas::where('id_petugas', $dr->id_petugas)->update($data);
             }
             // return $findPetugas;
-            return redirect()->back()->with('success', 'Username dan Password seluruh petugas berhasil direset menjadi No. Telepon');
+            return redirect()->back()->with('success', 'Username dan Password seluruh petugas berhasil direset menjadi NO. BADGE dan NO. TLFN');
         } catch (\Exception $exception) {
             //throw $th;
             // DB::rollBack();
