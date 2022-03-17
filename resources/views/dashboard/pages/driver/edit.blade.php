@@ -10,11 +10,9 @@
         <div id="kt_content_container" class="container-xxl">
             <div class="card mb-5 mb-xl-8">
                 <!--begin::Header-->
-                <div class="card-header border-0 pt-5">
+                <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Edit Data Driver</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">{{$driver->no_badge}} |
-                            {{$driver->nama_driver}}
+                        <span class="card-label fw-bolder fs-3 mb-1">Edit Data Driver |
                             @if ($driver->status_driver == 'y')
                             <span class="badge badge-light-primary">Aktif</span>
                             @elseif($driver->status_driver == 't')
@@ -23,6 +21,9 @@
                             <span>----</span>
                             @endif
                         </span>
+                        {{-- <span class="text-muted mt-1 fw-bold fs-7">{{$driver->no_badge}} |
+                            {{$driver->nama_driver}}
+                        </span> --}}
 
                     </h3>
                     <div class="card-toolbar">
@@ -57,386 +58,396 @@
                     </div>
                 </div>
                 <!--end::Header-->
-                <!--begin::Body-->
-
-                <div class="card-body py-3">
-                    @if ($errors->any())
-                    <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
-                        <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
-                            <i class="bi bi-exclamation-triangle fs-1"></i>
-                        </span>
-                        <!--end::Svg Icon-->
-                        <div class="d-flex flex-column">
-                            <h4 class="mb-1 text-danger">Pesan Error</h4>
-                            <span>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                    <li>{{$error}}</li>
-                                    @endforeach
-                                </ul>
-                            </span>
-                        </div>
-                    </div>
-                    @endif
-                    @if(session()->has('success'))
-                    <!--begin::Alert-->
-                    <div
-                        class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
-                        <!--begin::Icon-->
-                        <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
-                        <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none">
-                                <i class="fa fa-check" aria-hidden="true"></i>
-                            </svg>
-                        </span>
-                        <!--end::Svg Icon-->
-                        <!--end::Icon-->
-                        <!--begin::Content-->
-                        <div class="d-flex flex-column pe-0 pe-sm-10">
-                            <h5 class="mb-1">PESAN</h5>
-                            <span> {{ session()->get('success') }}</span>
-                        </div>
-                        <!--end::Content-->
-                        <!--begin::Close-->
-                        <button type="button"
-                            class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
-                            data-bs-dismiss="alert">
-                            <i class="bi bi-x fs-1 text-danger"></i>
-                        </button>
-                        <!--end::Close-->
-                    </div>
-                    <!--end::Alert-->
-                    @endif
-                    <!--begin:::Tabs-->
-                    <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#kt_driver_umum">Data Umum</a>
-                        </li>
-                        <!--end:::Tab item-->
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4 " data-bs-toggle="tab"
-                                href="#kt_driver_sim">Sim</a>
-                        </li>
-                        <!--end:::Tab item-->
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#kt_driver_privasi">Privasi</a>
-                        </li>
-                        <!--end:::Tab item-->
-                    </ul>
-                    <!--end:::Tabs-->
-                    <!--begin:::Tab content-->
-                    <div class="tab-content" id="myTabContent">
-                        <!--begin:::Tab pane-->
-                        <div class="tab-pane fade show active" id="kt_driver_umum" role="tabpanel">
-                            <!--begin::Card-->
-                            <div class="card card-flush mb-6 mb-xl-9">
-                                <!--begin::Card header-->
-                                <div class="card-header mt-6">
-                                    <div class="card-title flex-column">
-                                        <h3 class="mb-1">Edit Data Umum</h3>
-                                    </div>
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body p-9 pt-4">
-                                    <!--begin::Form-->
-                                    <form id="kt_modal_new_target_form" class="form"
-                                        action="{{ route('dashboard.driver.update', $driver->id_driver)}}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        @method('PUT')
-                                        <!--begin::Input group-->
-                                        <div class="form-group d-flex mb-8 row">
-                                            <div class="col-lg-6">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">NO BADGE</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Masukkan NO BADGE" name="no_badge"
-                                                    value="{{$driver->no_badge}}" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Nama Driver</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Masukkan Nama Driver" name="nama_driver"
-                                                    value="{{$driver->nama_driver}}" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group d-flex mb-8 row">
-                                            <div class="col-lg-6">
-                                                <label class="required fs-6 fw-bold mb-2">Departemen</label>
-                                                <select class="form-select form-select-solid" data-control="select2"
-                                                    data-hide-search="false" data-placeholder="Pilih Departemen"
-                                                    id="id_departemen" name="id_departemen">
-                                                    <option value="">Pilih Status</option>
-                                                    @foreach ($departemen as $dt)
-                                                    <option value="{{$dt->id_departemen}}" {{$dt->id_departemen ==
-                                                        $driver->id_departemen ? 'selected' :
-                                                        ''}}>{{$dt->nama_departemen}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Alamat</span>
-                                                </label>
-                                                <textarea name="alamat" class="form-control form-control-solid"
-                                                    placeholder="Masukkan Alamat Driver">{{$driver->alamat}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group d-flex mb-8 row">
-                                            <div class="col-lg-6">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">Usia</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="number" class="form-control form-control-solid"
-                                                    placeholder="Masukkan Usia" name="umur" value="{{$driver->umur}}" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                                    <span class="required">No. Tlpn</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <input type="number" class="form-control form-control-solid"
-                                                    placeholder="Masukkan No. Tlpn" name="no_tlp"
-                                                    value="{{$driver->no_tlp}}" />
-                                            </div>
-                                        </div>
-
-                                        <!--end::Input group-->
-                                        <!--begin::Actions-->
-                                        <div class="text-center mt-3">
-                                            <button type="reset" id="kt_modal_new_target_cancel"
-                                                class="btn btn-light me-3">Batal</button>
-                                            <button type="submit" id="kt_modal_new_target_submit"
-                                                class="btn btn-primary">
-                                                <span class="indicator-label">Simpan</span>
-                                                <span class="indicator-progress">Mohon Tunggu...
-                                                    <span
-                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                            </button>
-                                        </div>
-                                        <!--end::Actions-->
-                                    </form>
-                                    <!--end:Form-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Card-->
-
-                        </div>
-                        <!--end:::Tab pane-->
-                        <!--begin:::Tab pane-->
-                        <div class="tab-pane fade show " id="kt_driver_sim" role="tabpanel">
-                            <!--begin::Card-->
-                            <div class="card card-flush mb-6 mb-xl-9">
-                                <!--begin::Card header-->
-                                <div class="card-header mt-6">
-                                    <div class="card-title flex-column">
-                                        <h3 class="mb-1">Detail SIM</h3>
-                                    </div>
-                                    <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        data-bs-trigger="hover" title=""
-                                        data-bs-original-title="Tekan untuk menambah driver">
-                                        <button type="button" class="btn btn-sm btn-light btn-active-primary"
-                                            data-bs-toggle="modal" data-bs-target="#kt_modal_update_sim">
-                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                            <span class="svg-icon svg-icon-3">
-                                                <i class="bi bi-plus fs-3"></i>
-                                                Tambah SIM
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </button>
-                                    </div>
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body p-9 pt-4">
-                                    <!--begin::Row-->
-                                    <div class="row g-10">
-                                        @forelse ($detailSim as $ds)
-                                        <!--begin::Col-->
-                                        <div class="col-md-4">
-                                            <!--begin::Hot sales post-->
-                                            <div class="card-xl-stretch me-md-6 ">
-                                                <!--begin::Overlay-->
-                                                <a class="d-block overlay rounded border-primary border border-dashed"
-                                                    data-fslightbox="lightbox-hot-sales"
-                                                    href="{{url('/assets/img_sim/'.$ds->foto_sim)}}">
-                                                    <!--begin::Image-->
-                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-175px"
-                                                        style="background-image:url('{{url('/assets/img_sim/'.$ds->foto_sim)}}')">
-                                                    </div>
-                                                    <!--end::Image-->
-                                                    <!--begin::Action-->
-                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
-                                                        <i class="bi bi-eye-fill fs-2x text-white"></i>
-                                                    </div>
-                                                    <!--end::Action-->
-                                                </a>
-                                                <!--end::Overlay-->
-                                                <!--begin::Body-->
-                                                <div class="mt-5 text-center">
-                                                    <!--begin::Text-->
-                                                    <div class="fw-bold fs-5 text-dark mt-3">{{$ds->nama_sim}}</div>
-                                                    <button type="button" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" data-bs-trigger="hover"
-                                                        data-bs-original-title="Tekan untuk menghapus SIM"
-                                                        class="btn remove btn-sm btn-icon btn-active-color-primary"
-                                                        data-id="{{$ds->id_detail_sim}}">
-                                                        <i class="bi bi-trash fs-1"></i>
-                                                    </button>
-                                                    <!--end::Text-->
-                                                </div>
-                                                <!--end::Body-->
-                                            </div>
-                                            <!--end::Hot sales post-->
-                                        </div>
-                                        <!--end::Col-->
-                                        @empty
-
-                                        <div
-                                            class="bg-light-primary rounded border-primary border border-dashed p-2 text-center">
-                                            <h3 class="mb-1">Belum Ada SIM, Silahkan Tambahkan atau Hubungi Driver Untuk
-                                                Menambahkan Secara Pribadi!
-                                            </h3>
-                                        </div>
-                                        @endforelse
-                                    </div>
-                                    <!--end::Row-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Card-->
-
-                        </div>
-                        <!--end:::Tab pane-->
-                        <!--begin:::Tab pane-->
-                        <div class="tab-pane fade" id="kt_driver_privasi" role="tabpanel">
-                            <!--begin::Card-->
-                            <div class="card pt-4 mb-6 mb-xl-9">
-                                <!--begin::Card header-->
-                                <div class="card-header border-0">
-                                    <!--begin::Card title-->
-                                    <div class="card-title">
-                                        <h2>Edit Privasi</h2>
-                                    </div>
-                                    <!--end::Card title-->
-                                    <div class="card-toolbar " data-bs-toggle="tooltip" data-bs-placement="top"
-                                        data-bs-trigger="hover" title=""
-                                        data-bs-original-title="Tekan untuk mereset username dan password driver">
-                                        <a href="{{ route('dashboard.driver.password.reset.satu', $driver->id_driver) }}"
-                                            class="btn btn-sm btn-light btn-active-primary">
-                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                                            <span class="svg-icon svg-icon-3">
-                                                <i class="bi bi-bootstrap-reboot"></i>
-                                            </span>
-                                            <!--end::Svg Icon-->Reset Username Password
-                                        </a>
-                                    </div>
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body pt-0 pb-5">
-                                    <!--begin::Table wrapper-->
-                                    <div class="table-responsive">
-                                        <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed gy-5"
-                                            id="kt_table_users_login_session">
-                                            <!--begin::Table body-->
-                                            <tbody class="fs-6 fw-bold text-gray-600">
-                                                <tr>
-                                                    <td>USERNAME</td>
-                                                    <td>{{$driver->user}}</td>
-                                                    <td class="text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#kt_modal_update_username">
-                                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                                            <span class="svg-icon svg-icon-3">
-                                                                <i class="bi bi-pencil-square fs-6"></i>
-                                                            </span>
-                                                            <!--end::Svg Icon-->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>PASSWORD</td>
-                                                    <td>********</td>
-                                                    <td class="text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#kt_modal_update_password">
-                                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                                            <span class="svg-icon svg-icon-3">
-                                                                <i class="bi bi-pencil-square fs-6"></i>
-                                                            </span>
-                                                            <!--end::Svg Icon-->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>KTP</td>
-                                                    <td>---</td>
-                                                    <td class="text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#kt_modal_update_ktp">
-                                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                                            <span class="svg-icon svg-icon-3">
-                                                                <i class="bi bi-pencil-square fs-6"></i>
-                                                            </span>
-                                                            <!--end::Svg Icon-->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>PROFIL</td>
-                                                    <td>---</td>
-                                                    <td class="text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto"
-                                                            data-bs-toggle="modal" data-bs-target="#kt_modal_profil">
-                                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                                            <span class="svg-icon svg-icon-3">
-                                                                <i class="bi bi-pencil-square fs-6"></i>
-                                                            </span>
-                                                            <!--end::Svg Icon-->
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            <!--end::Table body-->
-                                        </table>
-                                        <!--end::Table-->
-                                    </div>
-                                    <!--end::Table wrapper-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Card-->
-                        </div>
-                        <!--end:::Tab pane-->
-                    </div>
-                    <!--end:::Tab content-->
-                </div>
-                <!--begin::Body-->
             </div>
+            @if ($errors->any())
+            <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
+                <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
+                <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
+                    <i class="bi bi-exclamation-triangle fs-1"></i>
+                </span>
+                <!--end::Svg Icon-->
+                <div class="d-flex flex-column">
+                    <h4 class="mb-1 text-danger">Pesan Error</h4>
+                    <span>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{$error}}</li>
+                            @endforeach
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            @endif
+            @if(session()->has('success'))
+            <!--begin::Alert-->
+            <div
+                class="alert alert-dismissible bg-light-primary border border-primary border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                <!--begin::Icon-->
+                <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                <span class="svg-icon svg-icon-2hx svg-icon-primary me-4 mb-5 mb-sm-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </svg>
+                </span>
+                <!--end::Svg Icon-->
+                <!--end::Icon-->
+                <!--begin::Content-->
+                <div class="d-flex flex-column pe-0 pe-sm-10">
+                    <h5 class="mb-1">PESAN</h5>
+                    <span> {{ session()->get('success') }}</span>
+                </div>
+                <!--end::Content-->
+                <!--begin::Close-->
+                <button type="button"
+                    class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                    data-bs-dismiss="alert">
+                    <i class="bi bi-x fs-1 text-danger"></i>
+                </button>
+                <!--end::Close-->
+            </div>
+            <!--end::Alert-->
+            @endif
+            <!--begin::Layout-->
+            <div class="d-flex flex-column flex-xl-row">
+                <!--begin::Sidebar-->
+                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
+                    <!--begin::Card-->
+                    <div class="card mb-5 mb-xl-8">
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Summary-->
+                            <!--begin::User Info-->
+                            <div class="d-flex flex-center flex-column py-5">
+                                <!--begin::Avatar-->
+                                <div class="symbol symbol-100px symbol-circle mb-7">
+                                    <img @if ($driver->foto_driver != null)
+                                    src="{{url('/assets/img_driver/'.$driver->foto_driver)}}"
+                                    @else
+                                    src="{{url('/assets/backend/assets/media/avatars/blank.png')}}"
+                                    @endif
+                                    alt="image" />
+                                </div>
+                                <button type="button" class="btn btn-icon btn-light-primary w-30px h-30px"
+                                    data-bs-toggle="modal" data-bs-target="#kt_modal_profil">
+                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <i class="bi bi-pencil-square fs-6"></i>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </button>
+                                <!--end::Avatar-->
+                                <!--begin::Name-->
+                                <a
+                                    class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{$driver->nama_driver}}</a>
+                                <!--end::Name-->
+                                <!--begin::Position-->
+                                <div class="mb-9">
+                                    <!--begin::Badge-->
+                                    <div class="badge badge-lg badge-light-primary d-inline">
+                                        {{$driver->nama_departemen}}
+                                    </div>
+                                    <!--begin::Badge-->
+                                </div>
+                                <!--end::Position-->
+                            </div>
+                            <!--end::User Info-->
+                            <!--end::Summary-->
+                            <!--begin::Details toggle-->
+                            <div class="d-flex flex-stack fs-4 py-3">
+                                <div class="fw-bolder rotate collapsible">Keamanan
+                                </div>
+                                <span data-bs-toggle="tooltip" data-bs-trigger="hover" title=""
+                                    data-bs-original-title="Tekan untuk mereset username dan password driver">
+                                    <a href="{{ route('dashboard.driver.password.reset.satu', $driver->id_driver) }}"
+                                        class="btn btn-sm btn-light-primary">
+                                        <span class="svg-icon svg-icon-3">
+                                            <i class="bi bi-bootstrap-reboot"></i>
+                                        </span>
+                                        Reset
+                                    </a>
+                                </span>
+                            </div>
+                            <!--end::Details toggle-->
+                            <div class="separator"></div>
+                            <!--begin::Details content-->
+                            <div id="kt_user_view_details" class="">
+                                <!--begin::Details-->
+                                <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                    <!--begin::Row-->
+                                    <tr>
+                                        <td>Username : </td>
+                                        <td>{{$driver->user}}</td>
+                                        <td class="text-end">
+                                            <button type="button"
+                                                class="btn btn-icon btn-light-primary w-30px h-30px ms-auto"
+                                                data-bs-toggle="modal" data-bs-target="#kt_modal_update_username">
+                                                <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                <span class="svg-icon svg-icon-3">
+                                                    <i class="bi bi-pencil-square fs-6"></i>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <tr>
+                                        <td>Password :</td>
+                                        <td>************</td>
+                                        <td class="text-end">
+                                            <button type="button"
+                                                class="btn btn-icon btn-light-primary w-30px h-30px ms-auto"
+                                                data-bs-toggle="modal" data-bs-target="#kt_modal_update_password">
+                                                <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                <span class="svg-icon svg-icon-3">
+                                                    <i class="bi bi-pencil-square fs-6"></i>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!--end::Row-->
+                                </table>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::Details content-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                    <div class="card mb-5 mb-xl-8">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0">
+                            <div class="card-title">
+                                <h3 class="fw-bolder m-0">KTP</h3>
+                            </div>
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-2 text-center">
+                            @if ($driver->foto_ktp != null)
+                            <div class="card-xl-stretch me-md-6">
+                                <!--begin::Overlay-->
+                                <a class="d-block overlay rounded border-primary border border-dashed"
+                                    data-fslightbox="lightbox-hot-sales"
+                                    href="{{url('/assets/img_ktp/'.$driver->foto_ktp)}}">
+                                    <!--begin::Image-->
+                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-175px"
+                                        style="background-image:url('{{url('/assets/img_ktp/'.$driver->foto_ktp)}}')">
+                                    </div>
+                                    <!--end::Image-->
+                                    <!--begin::Action-->
+                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                        <i class="bi bi-eye-fill fs-2x text-white"></i>
+                                    </div>
+                                    <!--end::Action-->
+                                </a>
+                                <!--end::Overlay-->
+                            </div>
+                            @else
+                            <div class="bg-light-primary rounded border-primary border border-dashed p-2 text-center">
+                                <h3 class="mb-1">Belum Ada KTP, Silahkan Tambahkan atau Hubungi Driver Untuk
+                                    Menambahkan Secara Pribadi!
+                                </h3>
+                            </div>
+                            @endif
+                        </div>
+                        <!--end::Card body-->
+                        <!--begin::Card footer-->
+                        <div class="card-footer border-0 d-flex justify-content-center pt-0">
+                            <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_update_ktp">Tambah / Ganti KTP</button>
+                        </div>
+                        <!--end::Card footer-->
+                    </div>
+                </div>
+                <!--end::Sidebar-->
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid ms-lg-15">
+                    <!--begin::Card-->
+                    <div class="card card-flush mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title flex-column">
+                                <h5 class="mb-1">Data Umum</h5>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body p-9 pt-4">
+                            <!--begin::Form-->
+                            <form id="kt_modal_new_target_form" class="form"
+                                action="{{ route('dashboard.driver.update', $driver->id_driver)}}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <!--begin::Input group-->
+                                <div class="form-group d-flex mb-8 row">
+                                    <div class="col-lg-6">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">NO BADGE</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="text" class="form-control form-control-solid"
+                                            placeholder="Masukkan NO BADGE" name="no_badge"
+                                            value="{{$driver->no_badge}}" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Nama Driver</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="text" class="form-control form-control-solid"
+                                            placeholder="Masukkan Nama Driver" name="nama_driver"
+                                            value="{{$driver->nama_driver}}" />
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex mb-8 row">
+                                    <div class="col-lg-6">
+                                        <label class="required fs-6 fw-bold mb-2">Departemen</label>
+                                        <select class="form-select form-select-solid" data-control="select2"
+                                            data-hide-search="false" data-placeholder="Pilih Departemen"
+                                            id="id_departemen" name="id_departemen">
+                                            <option value="">Pilih Status</option>
+                                            @foreach ($departemen as $dt)
+                                            <option value="{{$dt->id_departemen}}" {{$dt->id_departemen ==
+                                                $driver->id_departemen ? 'selected' :
+                                                ''}}>{{$dt->nama_departemen}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Alamat</span>
+                                        </label>
+                                        <textarea name="alamat" class="form-control form-control-solid"
+                                            placeholder="Masukkan Alamat Driver">{{$driver->alamat}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex mb-8 row">
+                                    <div class="col-lg-6">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">Usia</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="number" class="form-control form-control-solid"
+                                            placeholder="Masukkan Usia" name="umur" value="{{$driver->umur}}" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                            <span class="required">No. Tlpn</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="number" class="form-control form-control-solid"
+                                            placeholder="Masukkan No. Tlpn" name="no_tlp" value="{{$driver->no_tlp}}" />
+                                    </div>
+                                </div>
+
+                                <!--end::Input group-->
+                                <!--begin::Actions-->
+                                <div class="text-center mt-3">
+                                    <button type="reset" id="kt_modal_new_target_cancel"
+                                        class="btn btn-light me-3">Batal</button>
+                                    <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
+                                        <span class="indicator-label">Simpan</span>
+                                        <span class="indicator-progress">Mohon Tunggu...
+                                            <span
+                                                class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                    </button>
+                                </div>
+                                <!--end::Actions-->
+                            </form>
+                            <!--end:Form-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                    <!--begin::Card-->
+                    <div class="card card-flush mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title flex-column">
+                                <h5 class="mb-1">List Sim</h5>
+                            </div>
+                            <!--end::Card title-->
+                            <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-trigger="hover" title="" data-bs-original-title="Tekan untuk menambah driver">
+                                <button type="button" class="btn btn-sm btn-light btn-active-primary"
+                                    data-bs-toggle="modal" data-bs-target="#kt_modal_update_sim">
+                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <i class="bi bi-plus fs-3"></i>
+                                        Tambah SIM
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </button>
+                            </div>
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body p-9 pt-4">
+                            <!--begin::Row-->
+                            <div class="row g-10">
+                                @forelse ($detailSim as $ds)
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <!--begin::Hot sales post-->
+                                    <div class="card-xl-stretch me-md-6 ">
+                                        <!--begin::Overlay-->
+                                        <a class="d-block overlay rounded border-primary border border-dashed"
+                                            data-fslightbox="lightbox-hot-sales"
+                                            href="{{url('/assets/img_sim/'.$ds->foto_sim)}}">
+                                            <!--begin::Image-->
+                                            <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-175px"
+                                                style="background-image:url('{{url('/assets/img_sim/'.$ds->foto_sim)}}')">
+                                            </div>
+                                            <!--end::Image-->
+                                            <!--begin::Action-->
+                                            <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                                <i class="bi bi-eye-fill fs-2x text-white"></i>
+                                            </div>
+                                            <!--end::Action-->
+                                        </a>
+                                        <!--end::Overlay-->
+                                        <!--begin::Body-->
+                                        <div class="mt-5 text-center">
+                                            <!--begin::Text-->
+                                            <div class="fw-bold fs-5 text-dark mt-3">{{$ds->nama_sim}}</div>
+                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-trigger="hover"
+                                                data-bs-original-title="Tekan untuk menghapus SIM"
+                                                class="btn remove btn-sm btn-icon btn-active-color-primary"
+                                                data-id="{{$ds->id_detail_sim}}">
+                                                <i class="bi bi-trash fs-1"></i>
+                                            </button>
+                                            <!--end::Text-->
+                                        </div>
+                                        <!--end::Body-->
+                                    </div>
+                                    <!--end::Hot sales post-->
+                                </div>
+                                <!--end::Col-->
+                                @empty
+                                <div
+                                    class="bg-light-primary rounded border-primary border border-dashed p-2 text-center">
+                                    <h3 class="mb-1">Belum Ada SIM, Silahkan Tambahkan atau Hubungi Driver Untuk
+                                        Menambahkan Secara Pribadi!
+                                    </h3>
+                                </div>
+                                @endforelse
+                            </div>
+                            <!--end::Row-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Content-->
+            </div>
+            <!--end::Layout-->
         </div>
         <!--end::Container-->
     </div>
@@ -444,7 +455,7 @@
     <!--begin::Modal - Update username-->
     <div class="modal fade" id="kt_modal_update_username" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -546,7 +557,7 @@
     <!--begin::Modal - Update password-->
     <div class="modal fade" id="kt_modal_update_password" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -615,8 +626,8 @@
                             </div>
                             <!--end::Wrapper-->
                             <!--begin::Hint-->
-                            <div class="text-muted">Use 8 or more characters with a mix of letters, numbers &amp;
-                                symbols.</div>
+                            <div class="text-muted">Gunakan minimal 8 karakter dengan paduan huruf, angka &amp;
+                                simbol.</div>
                             <!--end::Hint-->
                         </div>
                         <!--end::Input group=-->
@@ -652,7 +663,7 @@
     <!--begin::Modal - Update Profil-->
     <div class="modal fade" id="kt_modal_profil" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Form-->
@@ -685,7 +696,7 @@
                     <!--begin::Modal body-->
                     <div class="modal-body py-10 px-lg-17">
                         <!--begin::Input group-->
-                        <div class="fv-row mb-7">
+                        <div class="fv-row mb-7 text-center">
                             <!--begin::Label-->
                             <label class="d-block fw-bold fs-6 mb-5">Foto Profil</label>
                             <!--end::Label-->
@@ -762,7 +773,7 @@
     <!--begin::Modal - Update KTP-->
     <div class="modal fade" id="kt_modal_update_ktp" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Form-->
@@ -806,7 +817,7 @@
                         </div> --}}
                         <!--end::Input group-->
                         <!--begin::Input group-->
-                        <div class="fv-row mb-7">
+                        <div class="fv-row mb-7 text-center">
                             <!--begin::Label-->
                             <label class="d-block fw-bold fs-6 mb-5">Foto KTP</label>
                             <!--end::Label-->
@@ -882,7 +893,7 @@
     <!--begin::Modal - Update SIM-->
     <div class="modal fade" id="kt_modal_update_sim" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-dialog modal-dialog-centered">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Form-->
@@ -913,7 +924,7 @@
                     </div>
                     <!--end::Modal header-->
                     <!--begin::Modal body-->
-                    <div class="modal-body py-10 px-lg-17">
+                    <div class="modal-body py-10 px-lg-17 text-center">
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
