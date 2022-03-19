@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiCheckingController;
 use App\Http\Controllers\Api\ApiKecelakaanController;
 use App\Http\Controllers\Api\ApiPenugasanController;
 use App\Http\Controllers\Api\ApiProfilDriverController;
+use App\Http\Controllers\Api\ApiProfilPetugasController;
 use App\Http\Controllers\Api\ApiServiceOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PetugasController;
 use App\Http\Controllers\Api\TerimaOrderController;
+use Twilio\TwiML\Video\Room;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +100,18 @@ Route::group(
 
         Route::get('list/jenis/sim', [ApiProfilDriverController::class, 'listJenisSim']); //list jenis sim
         Route::get('profil/depan', [ApiProfilDriverController::class, 'profilDepan']);
+    }
+);
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'petugas'],
+    function () {
+        Route::get('profil', [ApiProfilPetugasController::class, 'profil']); //profil petugas
+        Route::post('foto', [ApiProfilPetugasController::class, 'fotoPetugas']); //simpan atau update foto petugas
+        Route::post('username', [ApiProfilPetugasController::class, 'username']); //update username
+        Route::post('password', [ApiProfilPetugasController::class, 'password']); //ganti password
+        Route::get('form/edit/data', [ApiProfilPetugasController::class, 'formEdit']); //form edit data diri
+        Route::post('update/data', [ApiProfilPetugasController::class, 'updateData']); //update data diri
     }
 );
 
