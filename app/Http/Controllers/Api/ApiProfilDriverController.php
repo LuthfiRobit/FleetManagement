@@ -195,7 +195,7 @@ class ApiProfilDriverController extends Controller
         $foto_driver = $request->file('foto_driver');
         $findDriver = Driver::where('id_driver', $id_driver)->select('no_badge', 'foto_driver')->first();
         if ($findDriver != null) {
-            $name_profil   = 'pdrv_' . $findDriver->no_badge . '.' . $foto_driver->getClientOriginalExtension();
+            $name_profil   = 'pdrv_' . uniqid() . '.' . $foto_driver->getClientOriginalExtension();
             $data = [
                 'foto_driver' => $name_profil
             ];
@@ -347,7 +347,7 @@ class ApiProfilDriverController extends Controller
             $findDriver = Driver::where('id_driver', $id_driver)->first();
             $findSim = JenisSim::where('id_jenis_sim', $id_jenis_sim)->first();
             $simName = str_replace(" ", "_", $findSim->nama_sim);
-            $name_sim   = $simName . '_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+            $name_sim   = $simName . '_' . uniqid() . '.' . $foto_sim->getClientOriginalExtension();
             $data = [
                 'id_jenis_sim' => $id_jenis_sim,
                 'id_driver' => $id_driver,
@@ -384,7 +384,7 @@ class ApiProfilDriverController extends Controller
             $findDriver = Driver::where('id_driver', $id_driver)->first();
             $findSim = JenisSim::where('id_jenis_sim', $findDetailSim->id_jenis_sim)->first();
             $simName = str_replace(" ", "_", $findSim->nama_sim);
-            $name_sim   = $simName . '_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+            $name_sim   = $simName . '_' . uniqid() . '.' . $foto_sim->getClientOriginalExtension();
             $data = [
                 'foto_sim' => $name_sim
             ];

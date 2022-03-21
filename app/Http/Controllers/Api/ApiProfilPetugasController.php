@@ -57,7 +57,7 @@ class ApiProfilPetugasController extends Controller
         $foto_petugas = $request->file('foto_petugas');
         $findPetugas = Petugas::select('no_badge', 'foto_petugas')->where('id_petugas', $id_petugas)->first();
         if ($findPetugas != null) {
-            $name_profil = 'prp_' . $findPetugas->no_badge . '.' . $foto_petugas->getClientOriginalExtension();
+            $name_profil = 'prp_' . uniqid() . '.' . $foto_petugas->getClientOriginalExtension();
             $data = [
                 'foto_petugas' => $name_profil
             ];
