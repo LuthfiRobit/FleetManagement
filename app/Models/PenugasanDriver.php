@@ -18,6 +18,7 @@ class PenugasanDriver extends Model
         'id_kendaraan',
         'id_petugas',
         'tgl_penugasan',
+        'tgl_selesai',
         'jam_berangkat',
         'kembali',
         'tgl_acc',

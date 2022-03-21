@@ -170,6 +170,7 @@ class ApiPenugasanController extends Controller
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
                 'tb_penugasan_driver.tgl_penugasan',
+                'tb_penugasan_driver.tgl_selesai',
                 'tb_penugasan_driver.jam_berangkat',
                 'tb_order_kendaraan.tempat_penjemputan as jemput',
                 'tb_order_kendaraan.tujuan',
@@ -419,6 +420,7 @@ class ApiPenugasanController extends Controller
             $findPenumpang = ServiceOrderDetail::where([['id_service_order', $proses->id_service_order], ['status', 'y']])->first();
             if ($findPenumpang) {
                 $data = [
+                    'tgl_selesai' => $request->tgl_selesai,
                     'km_akhir' => $request->km_akhir,
                     'status_bbm_akhir' => $request->bbm_akhir,
                     'waktu_finish' => $request->waktu_finish,

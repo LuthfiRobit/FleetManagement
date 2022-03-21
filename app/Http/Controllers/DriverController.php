@@ -88,8 +88,8 @@ class DriverController extends Controller
             $take_profil = $request->no_badge;
             $findSim = JenisSim::where('id_jenis_sim', $request->id_jenis_sim)->first();
             // $take_sim = $request->no_badge;
-            $name_ktp   = 'ktp_' . $take_ktp . '.' . $foto_ktp->getClientOriginalExtension();
-            $name_profil = 'pdrv_' . $take_profil . '.' . $foto_driver->getClientOriginalExtension();
+            $name_ktp   = 'ktp_' . uniqid() . '.' . $foto_ktp->getClientOriginalExtension();
+            $name_profil = 'pdrv_' . uniqid() . '.' . $foto_driver->getClientOriginalExtension();
             // $name_sim = 'sim_' . $take_sim . '.' . $foto_sim->getClientOriginalExtension();
             $data['foto_ktp'] = $name_ktp;
             $data['foto_driver'] = $name_profil;
@@ -100,7 +100,7 @@ class DriverController extends Controller
             $simpan = Driver::create($data);
             if ($simpan) {
                 $simName = str_replace(" ", "_", $findSim->nama_sim);
-                $name_sim = $simName . '_' .  $request->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $name_sim = $simName . '_' . uniqid() . '.' . $foto_sim->getClientOriginalExtension();
                 $dataSim = [
                     'id_driver' => $simpan->id_driver,
                     'id_jenis_sim' => $request->id_jenis_sim,
@@ -311,7 +311,7 @@ class DriverController extends Controller
         } else {
             $foto_ktp = $request->file('foto_ktp');
             $take_ktp = $find->no_badge;
-            $name_ktp   = 'ktp_' . $take_ktp . '.' . $foto_ktp->getClientOriginalExtension();
+            $name_ktp   = 'ktp_' . uniqid() . '.' . $foto_ktp->getClientOriginalExtension();
             $data = [
                 // 'no_ktp' => $request->no_ktp,
                 'foto_ktp' => $name_ktp
@@ -341,7 +341,7 @@ class DriverController extends Controller
         } else {
             $foto_driver = $request->file('foto_driver');
             $take_profil = $find->no_badge;
-            $name_profil   = 'pdrv_' . $take_profil . '.' . $foto_driver->getClientOriginalExtension();
+            $name_profil   = 'pdrv_' . uniqid() . '.' . $foto_driver->getClientOriginalExtension();
             $data = [
                 'foto_driver' => $name_profil
             ];
@@ -371,7 +371,7 @@ class DriverController extends Controller
             } else {
                 $foto_sim = $request->file('foto_sim');
                 // $take_sim = $request->no_sim;
-                $name_sim   = 'sim_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $name_sim   = 'sim_' . uniqid() . '.' . $foto_sim->getClientOriginalExtension();
                 $data = [
                     'id_jenis_sim' => $request->id_jenis_sim,
                     'foto_sim' => $name_sim
@@ -398,7 +398,7 @@ class DriverController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput($request->all);
             } else {
                 $foto_sim = $request->file('foto_sim');
-                $name_sim   = 'sim_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $name_sim   = 'sim_' . uniqid() . '.' . $foto_sim->getClientOriginalExtension();
                 $data = [
                     'id_jenis_sim' => $request->id_jenis_sim,
                     'id_driver' => $id,
@@ -433,7 +433,7 @@ class DriverController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput($request->all);
             } else {
                 $foto_sim = $request->file('foto_sim');
-                $name_sim   = $simName . '_' . $findDriver->no_badge . '.' . $foto_sim->getClientOriginalExtension();
+                $name_sim   = $simName . '_' . uniqid() . '.' . $foto_sim->getClientOriginalExtension();
                 $data = [
                     'id_jenis_sim' => $request->id_jenis_sim,
                     'id_driver' => $id,
