@@ -113,48 +113,25 @@ class ApiProfilPetugasController extends Controller
         $password_lama = $request->password_lama;
         $password_baru = $request->password_baru;
         $findPetugas = Petugas::where('id_petugas', $id_petugas)->first();
-        $rules = [
-            'password_baru' => [
-                'required',
-                'string',
-                Password::min(8)->mixedCase()
-            ],
-            'password_lama' => [
-                'required',
-                function ($attribute, $value, $fail) use ($findPetugas) {
-                    if (!Hash::check($value, $findPetugas->password)) {
-                        return $fail(__('Password lama tidak cocok'));
-                    }
-                }
-            ]
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'status' => 'gagal',
-                    'errors' => $validator->errors()
-                ],
-                422
-            );
-        } else {
+        $validator = Validator::make($request->all(), [
+            'password_baru' => 'required',
+            'password_lama' => 'required'
+        ]);
+
+        if (Hash::check($password_lama, $findPetugas->password)) {
             $data = ['password' => Hash::make($password_baru)];
             $updatePassword = $findPetugas->update($data);
             if ($updatePassword) {
-                return response()->json(
-                    [
-                        'status' => 'sukses',
-                        'pesan' => 'password berhasil diganti',
-                    ]
-                );
-            } else {
-                return response()->json(
-                    [
-                        'status' => 'gagal',
-                        'pesan' => 'password gagal diganti',
-                    ]
-                );
+                return response()->json([
+                    'status' => 'sukses',
+                    'pesan' => 'password berhasil diganti'
+                ]);
             }
+        } else {
+            return response()->json([
+                'status' => 'gagal',
+                'pesan' => 'password lama tidak cocok'
+            ]);
         }
     }
 

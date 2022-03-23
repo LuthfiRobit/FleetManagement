@@ -228,48 +228,25 @@ class ApiProfilDriverController extends Controller
         $password_lama = $request->password_lama;
         $password_baru = $request->password_baru;
         $findDriver = Driver::where('id_driver', $id_driver)->first();
-        $rules = [
-            'password_baru' => [
-                'required',
-                'string',
-                Password::min(8)->mixedCase()
-            ],
-            'password_lama' => [
-                'required',
-                function ($attribute, $value, $fail) use ($findDriver) {
-                    if (!Hash::check($value, $findDriver->password)) {
-                        return $fail(__('Password lama tidak cocok'));
-                    }
-                }
-            ]
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'status' => 'gagal',
-                    'errors' => $validator->errors()
-                ],
-                422
-            );
-        } else {
+        $validator = Validator::make($request->all(), [
+            'password_baru' => 'required',
+            'password_lama' => 'required'
+        ]);
+
+        if (Hash::check($password_lama, $findDriver->password)) {
             $data = ['password' => Hash::make($password_baru)];
             $updatePassword = $findDriver->update($data);
             if ($updatePassword) {
-                return response()->json(
-                    [
-                        'status' => 'sukses',
-                        'pesan' => 'password berhasil diganti',
-                    ]
-                );
-            } else {
-                return response()->json(
-                    [
-                        'status' => 'gagal',
-                        'pesan' => 'password gagal diganti',
-                    ]
-                );
+                return response()->json([
+                    'status' => 'sukses',
+                    'pesan' => 'password berhasil diganti'
+                ]);
             }
+        } else {
+            return response()->json([
+                'status' => 'gagal',
+                'pesan' => 'password lama tidak cocok'
+            ]);
         }
     }
 
