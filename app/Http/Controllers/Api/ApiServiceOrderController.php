@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Driver;
 use App\Models\Kecelakaan;
 use App\Models\KecelakaanFoto;
 use App\Models\KriteriaPengecekan;
@@ -17,6 +18,46 @@ use Illuminate\Support\Facades\File;
 class ApiServiceOrderController extends Controller
 {
 
+
+    public function formSo(Request $request)
+    {
+        $tgl_jemput = $request->query('tgl_jemput');
+        $kendaraan =  DB::select(
+            "SELECT
+            tb_kendaraan.id_kendaraan,
+            tb_kendaraan.nama_kendaraan,
+            tb_kendaraan.kode_asset,
+            tb_kendaraan.no_polisi,
+            -- tb_jenis_sim.nama_sim as sim,
+            tb_jenis_alokasi.nama_alokasi as alokasi
+            FROM tb_kendaraan
+            -- JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
+            LEFT JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+            LEFT JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
+            WHERE tb_kendaraan.status = 'y' AND NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+            AND tb_pengecekan_kendaraan.status_kendaraan = 't' AND tb_pengecekan_kendaraan.tgl_pengecekan = '$tgl_jemput' UNION SELECT id_kendaraan FROM tb_penugasan_driver
+            WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
+            AND tb_penugasan_driver.tgl_penugasan = '$tgl_jemput' AND tb_penugasan_driver.status_penugasan = 'p')
+            ORDER BY tb_kendaraan.id_kendaraan DESC"
+        );
+        $driver = DB::select(
+            "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
+            -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
+            WHERE tb_driver.status_driver = 'y'
+            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
+            AND tb_status_driver.status = 'n' AND tb_status_driver.tgl_nonaktif = '$tgl_jemput' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
+            AND tb_penugasan_driver.tgl_penugasan = ' $tgl_jemput' AND tb_penugasan_driver.status_penugasan = 'p'  )"
+        );
+
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_kendaraan' => $kendaraan,
+                'list_driver'    => $driver
+            ]
+        );
+    }
+
     public function createSo(Request $request)
     {
         DB::beginTransaction();
@@ -25,15 +66,54 @@ class ApiServiceOrderController extends Controller
                 'id_service_order'  => $request->id_service_order,
                 'id_petugas'        => $request->id_petugas,
                 'no_so'             => $request->no_so,
-                'tgl_penjemputan'   => $request->tgl_penjemputan,
+                'tgl_penjemputan'   => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
                 'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i:s'),
                 'jml_penumpang'     => $request->jml_penumpang,
                 'tempat_penjemputan' => $request->tempat_penjemputan,
                 'tujuan'            => $request->tujuan,
                 'keterangan'        => $request->keterangan,
+                'status_so'         => 't'
             ];
             // $saveSo = DB::table('tb_order_kendaraan')->insert($so);
             $saveSo = ServiceOrder::create($so);
+            $do = [
+                'id_service_order'  => $request->id_service_order,
+                'id_driver'         => $request->id_driver,
+                'id_kendaraan'      => $request->id_kendaraan,
+                'id_petugas'        => $request->id_petugas,
+                'tgl_penugasan'     => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
+                'jam_berangkat'     => Carbon::parse($request->jam_penjemputan)->format('H:i:s'),
+                'kembali'           => $request->kembali,
+                'tgl_acc'           => date('Y-m-d')
+            ];
+            $penugasancreate = DB::table('tb_penugasan_driver')->insert($do);
+            $findDriver = Driver::select('id_driver', 'player_id')->where('id_driver', $request->id_driver)->first();
+            $content = array(
+                "en" => 'Anda Mempunyai Penugasan Baru!'
+            );
+
+            $fields = array(
+                'app_id' => "768c8998-943b-4ffa-8829-07c1107a9216",
+                'include_player_ids' => array("$findDriver->player_id"),
+                'data' => array("foo" => "bar"),
+                'contents' => $content
+            );
+
+            $fields = json_encode($fields);
+            // print("\nJSON sent:\n");
+            // print($fields);
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json;'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($ch, CURLOPT_HEADER, FALSE);
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+            $response = curl_exec($ch);
+            curl_close($ch);
             $namaPenumpang = $request->nama_penumpang;
             foreach ($namaPenumpang as $key => $value) {
                 $serviceDetail = [
@@ -43,11 +123,6 @@ class ApiServiceOrderController extends Controller
                     'no_tlp'            => $request->no_tlp[$key],
                     'status'            => $request->status[$key]
                 ];
-                // if ($key == 0) {
-                //     $serviceDetail['status'] = 'y';
-                // } else {
-                //     $serviceDetail['status'] = 'n';
-                // }
                 $saveDetailSo = DB::table('tb_detail_so')->insert($serviceDetail);
             }
 
@@ -65,7 +140,7 @@ class ApiServiceOrderController extends Controller
             return response()->json(
                 [
                     'pesan' => 'gagal',
-                    'errors' => $exception
+                    // 'errors' => $exception
                 ],
                 400
             );
