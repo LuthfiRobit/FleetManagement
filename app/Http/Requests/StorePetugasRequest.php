@@ -26,7 +26,7 @@ class StorePetugasRequest extends FormRequest
     {
         return [
             // 'id_petugas'        => 'required',
-            'no_badge'          => 'required|max:10',
+            'no_badge'          => 'required|max:10|unique:tb_petugas',
             'id_jabatan'        => 'required',
             'id_departemen'     => 'required',
             'nama_lengkap'      => 'required|max:45',
@@ -46,4 +46,11 @@ class StorePetugasRequest extends FormRequest
             // ]
         ];
     }
+
+    // public function messages()
+    // {
+    //     return [
+    //         'no_badge.unique' => 'No. Badge Sudah Digunakan'
+    //     ];
+    // }
 }

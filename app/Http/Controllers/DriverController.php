@@ -190,10 +190,14 @@ class DriverController extends Controller
      */
     public function update(UpdateDriverRequest $request, $id)
     {
+        $defaultUsernameDriver = str_replace("-", "", $request->input('no_badge'));
+        $defaultPasswordDriver = str_replace("-", "", $request->input('no_tlp'));
         $data = $request->except(['_token', '_method']);
+        $data['password'] = Hash::make($defaultPasswordDriver);
+        $data['user'] = $defaultUsernameDriver;
         $update = Driver::where('id_driver', $id)->update($data);
         if ($update) {
-            return redirect()->back()->with('success', 'Data Umum Driver Berhasil Diganti');
+            return redirect()->back()->with('success', 'Data Umum Driver Berhasil Diganti, Username dan Password direset menjadi NO. BADGE dan NO. TLFN');
         } else {
             return redirect()->back()->with('success', 'Data Umum Driver Gagal Diganti');
         }

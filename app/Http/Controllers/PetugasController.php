@@ -81,6 +81,8 @@ class PetugasController extends Controller
             return redirect()->route('dashboard.petugas.main.index')->with('success', 'Petugas berhasil ditambah');
         } else {
             return redirect()->route('dashboard.petugas.main.index')->with('success', 'Petugas gagal ditambah');
+
+            // return redirect()->back()->with('success', 'Petugas gagal ditambah');
         }
     }
 
@@ -140,11 +142,14 @@ class PetugasController extends Controller
      */
     public function update(UpdatePetugasRequest $request, $id)
     {
+        $defaultUsername = str_replace("-", "", $request->input('no_badge'));
+        $defaultPassword = str_replace("-", "", $request->input('no_tlp'));
         $data = $request->except(['_token', '_method']);
-        // $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($defaultPassword);
+        $data['user'] = $defaultUsername;
         $update = Petugas::where('id_petugas', $id)->update($data);
         if ($update) {
-            return redirect()->back()->with('success', 'Data petugas berhasil diedit');
+            return redirect()->back()->with('success', 'Data petugas berhasil diedit, Username dan Password direset menjadi NO. BADGE dan NO. TLFN');
             // return $data;
         } else {
             return redirect()->back()->with('success', 'Data petugas gagal diedit');

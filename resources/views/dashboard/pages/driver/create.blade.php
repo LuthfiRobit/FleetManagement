@@ -44,6 +44,13 @@
                                         </ul>
                                     </span>
                                 </div>
+                                <!--begin::Close-->
+                                <button type="button"
+                                    class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                                    data-bs-dismiss="alert">
+                                    <i class="bi bi-x fs-1 text-danger"></i>
+                                </button>
+                                <!--end::Close-->
                             </div>
                             @endif
                             @if(session()->has('success'))
