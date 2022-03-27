@@ -26,7 +26,7 @@ class UpdateDriverRequest extends FormRequest
     {
         return [
             // 'id_departemen' => 'required',
-            'no_badge'      => 'required',
+            'no_badge'      => 'required|max:10',
             'nama_driver'   => 'required|max:45',
             'alamat'        => 'required|max:60',
             'umur'          => 'required|max:3',
