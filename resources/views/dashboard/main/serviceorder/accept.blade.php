@@ -59,8 +59,8 @@
                                     {{-- <option value="">Pilih Kendaraan</option> --}}
                                     @foreach ($kendaraan as $kd)
                                     <option value="{{$kd->id_kendaraan}}" data-sim="{{$kd->id_jenis_sim}}">
-                                        {{$kd->alokasi}} | {{$kd->nama_kendaraan}} | {{$kd->kode_asset}} |
-                                        {{$kd->no_polisi}}
+                                        {{$kd->nama_kendaraan}} | {{$kd->kode_asset}} |
+                                        {{$kd->no_polisi}} | {{$kd->alokasi}}
                                     </option>
                                     @endforeach
                                 </select>

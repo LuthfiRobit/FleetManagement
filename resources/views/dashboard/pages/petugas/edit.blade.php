@@ -37,6 +37,13 @@
                         </ul>
                     </span>
                 </div>
+                <!--begin::Close-->
+                <button type="button"
+                    class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                    data-bs-dismiss="alert">
+                    <i class="bi bi-x fs-1 text-danger"></i>
+                </button>
+                <!--end::Close-->
             </div>
             @endif
             @if(session()->has('success'))
@@ -109,39 +116,6 @@
                                     <!--begin::Badge-->
                                 </div>
                                 <!--end::Position-->
-                                <!--begin::Info-->
-                                <!--begin::Info heading-->
-                                {{-- <div class="fw-bolder mb-3">
-                                    Pemesanan Layanan
-                                </div> --}}
-                                <!--end::Info heading-->
-                                {{-- <div class="d-flex flex-wrap flex-center">
-                                    <!--begin::Stats-->
-                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
-                                        <div class="fs-4 fw-bolder text-gray-700">
-                                            <span class="w-75px">243</span>
-                                        </div>
-                                        <div class="fw-bold text-muted">Pesanan</div>
-                                    </div>
-                                    <!--end::Stats-->
-                                    <!--begin::Stats-->
-                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mx-4 mb-3">
-                                        <div class="fs-4 fw-bolder text-gray-700">
-                                            <span class="w-50px">56</span>
-                                        </div>
-                                        <div class="fw-bold text-muted">Diterima</div>
-                                    </div>
-                                    <!--end::Stats-->
-                                    <!--begin::Stats-->
-                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
-                                        <div class="fs-4 fw-bolder text-gray-700">
-                                            <span class="w-50px">188</span>
-                                        </div>
-                                        <div class="fw-bold text-muted">Dibatalkan</div>
-                                    </div>
-                                    <!--end::Stats-->
-                                </div> --}}
-                                <!--end::Info-->
                             </div>
                             <!--end::User Info-->
                             <!--end::Summary-->
@@ -149,6 +123,16 @@
                             <div class="d-flex flex-stack fs-4 py-3">
                                 <div class="fw-bolder rotate collapsible">Keamanan
                                 </div>
+                                <span data-bs-toggle="tooltip" data-bs-trigger="hover" title=""
+                                    data-bs-original-title="Tekan untuk mereset username dan password pertugas">
+                                    <a href="{{ route('dashboard.petugas.dashboard.petugas.main.password.reset', $petugas->id_petugas) }}"
+                                        class="btn btn-sm btn-light-primary">
+                                        <span class="svg-icon svg-icon-3">
+                                            <i class="bi bi-bootstrap-reboot"></i>
+                                        </span>
+                                        Reset
+                                    </a>
+                                </span>
                             </div>
                             <!--end::Details toggle-->
                             <div class="separator"></div>
@@ -222,25 +206,6 @@
                                 @csrf
                                 @method('PUT')
                                 <!--begin::Input group-->
-                                @if ($errors->any())
-                                <div class="alert alert-danger d-flex align-items-center p-5 mb-10">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
-                                    <span class="svg-icon svg-icon-2hx svg-icon-danger me-2">
-                                        <i class="bi bi-exclamation-triangle fs-1"></i>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <div class="d-flex flex-column">
-                                        <h4 class="mb-1 text-danger">This is an alert</h4>
-                                        <span>
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                <li>{{$error}}</li>
-                                                @endforeach
-                                            </ul>
-                                        </span>
-                                    </div>
-                                </div>
-                                @endif
                                 <div class="form-group d-flex mb-8 row">
                                     <div class="col-lg-4">
                                         <label class="d-flex align-items-center fs-6 fw-bold mb-2">
