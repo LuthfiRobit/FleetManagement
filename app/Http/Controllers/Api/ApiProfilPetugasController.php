@@ -35,11 +35,21 @@ class ApiProfilPetugasController extends Controller
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
             ->where('tb_petugas.id_petugas', $id_petugas)
             ->first();
+        $soSelesai = DB::table('tb_order_kendaraan')
+            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
+            ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 't'], ['tb_penugasan_driver.status_penugasan', 's']])
+            ->count();
+        $soBatal = DB::table('tb_order_kendaraan')
+            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
+            ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 'c'], ['tb_penugasan_driver.status_penugasan', 'c']])
+            ->count();
         if ($findPetugas) {
             return response()->json(
                 [
                     'status'        => 'sukses',
-                    'profil_petugas' => $findPetugas
+                    'profil_petugas' => $findPetugas,
+                    'so_selesai'     => $soSelesai,
+                    'so_batal'       => $soBatal
                 ]
             );
         } else {

@@ -55,6 +55,7 @@ Route::group(
         Route::post('cancel', [ApiServiceOrderController::class, 'cancelDo']); //cancel order kendaraan
         Route::get('accepted/detail', [ApiServiceOrderController::class, 'getDoDetail']); //detail order kendaraan
 
+        Route::get('list/history', [ApiServiceOrderController::class, 'listHistory']); //history so selesai atau batal
 
         // Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
         // Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
