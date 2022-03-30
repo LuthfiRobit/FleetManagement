@@ -201,29 +201,41 @@ class ApiServiceOrderController extends Controller
                 'tb_order_kendaraan.no_so',
                 'tb_order_kendaraan.tgl_penjemputan',
                 'tb_order_kendaraan.jam_penjemputan',
-                'tb_order_kendaraan.jml_penumpang',
                 'tb_order_kendaraan.tempat_penjemputan',
                 'tb_order_kendaraan.tujuan',
-                'tb_order_kendaraan.keterangan',
+                'tb_penugasan_driver.kembali',
                 'tb_order_kendaraan.status_so',
-                'tb_order_kendaraan.keterangan_penolakan',
-                'tb_petugas.id_petugas',
-                'tb_petugas.nama_lengkap',
+                'tb_penugasan_driver.status_penugasan',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                // 'tb_petugas.nama_lengkap',
+                // 'tb_petugas.foto_petugas'
+                'tb_driver.nama_driver',
+                'tb_driver.foto_driver',
+                'tb_driver.no_tlp',
             )
-            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
-            ->where('tb_order_kendaraan.id_petugas', $id)
-            ->when($tab == '', function ($status) use ($tab) {
-                $status->where('status_so', null);
+            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', 'tb_penugasan_driver.id_kendaraan')
+            ->join('tb_driver', 'tb_driver.id_driver', 'tb_penugasan_driver.id_driver')
+            // ->where('tb_order_kendaraan.id_petugas', $id)
+            ->when($tab == '', function ($status) use ($tab, $id) {
+                $status
+                    ->where([['tb_order_kendaraan.id_petugas', $id], ['tb_order_kendaraan.status_so', 't'], ['tb_penugasan_driver.status_penugasan', null]]);
+                // ->where('status_so', null);
             })
-            ->when($tab == 't', function ($status) use ($tab) {
-                $status->where('status_so', 't');
+            ->when($tab == 'terima', function ($status) use ($tab, $id) {
+                $status
+                    ->where([['tb_order_kendaraan.id_petugas', $id], ['tb_order_kendaraan.status_so', 't'], ['tb_penugasan_driver.status_penugasan', 't']]);
+                // ->where('status_so', 't');
             })
-            ->when($tab == 'tl', function ($status) use ($tab) {
-                $status->where('status_so', 'tl');
+            ->when($tab == 'proses', function ($status) use ($tab, $id) {
+                $status
+                    ->where([['tb_order_kendaraan.id_petugas', $id], ['tb_order_kendaraan.status_so', 't'], ['tb_penugasan_driver.status_penugasan', 'p']]);
+                // ->where('status_so', 'tl');
             })
-            ->when($tab == 'c', function ($status) use ($tab) {
-                $status->where('status_so', 'c');
-            })
+            // ->when($tab == 'c', function ($status) use ($tab) {
+            //     $status->where('status_so', 'c');
+            // })
             ->get();
 
         return response()->json(
@@ -274,6 +286,7 @@ class ApiServiceOrderController extends Controller
                 'tb_order_kendaraan.keterangan',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_driver.nama_driver',
+                'tb_driver.foto_driver',
                 'tb_driver.no_tlp',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
@@ -308,6 +321,52 @@ class ApiServiceOrderController extends Controller
                 ]
             );
         }
+    }
+
+    public function listHistory(Request $request)
+    {
+        $id_petugas = $request->query('id_petugas');
+        $status = $request->query('status'); //selesai //batal
+        $tgl = $request->query('tanggal');
+        $history = DB::table('tb_order_kendaraan')
+            ->select(
+                'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.no_so',
+                'tb_order_kendaraan.tgl_penjemputan',
+                'tb_order_kendaraan.jam_penjemputan',
+                'tb_order_kendaraan.tempat_penjemputan',
+                'tb_order_kendaraan.tujuan',
+                'tb_penugasan_driver.kembali',
+                'tb_order_kendaraan.status_so',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                // 'tb_petugas.nama_lengkap',
+                // 'tb_petugas.foto_petugas'
+                'tb_driver.nama_driver'
+            )
+            // ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', 'tb_order_kendaraan.id_petugas')
+            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', 'tb_penugasan_driver.id_kendaraan')
+            ->join('tb_driver', 'tb_driver.id_driver', 'tb_penugasan_driver.id_driver')
+            ->when($status == 'selesai', function ($find) use ($id_petugas, $tgl) {
+                $find->when($tgl != '', function ($filter) use ($tgl) {
+                    $filter->where('tb_order_kendaraan.tgl_penjemputan', $tgl);
+                })
+                    ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 't'], ['tb_penugasan_driver.status_penugasan', 's']]);
+            })
+            ->when($status == 'batal', function ($find) use ($id_petugas, $tgl) {
+                $find->when($tgl != '', function ($filter) use ($tgl) {
+                    $filter->where('tb_order_kendaraan.tgl_penjemputan', $tgl);
+                })
+                    ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 'c'], ['tb_penugasan_driver.status_penugasan', 'c']]);
+            })
+            ->get();
+        return response()->json(
+            [
+                'status' => 'sukses',
+                'history' => $history
+            ]
+        );
     }
 
     //kecelakaan
