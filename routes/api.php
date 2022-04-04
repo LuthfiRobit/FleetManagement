@@ -57,6 +57,11 @@ Route::group(
 
         Route::get('list/history', [ApiServiceOrderController::class, 'listHistory']); //history so selesai atau batal
 
+        Route::get('list/pembatalan', [ApiServiceOrderController::class, 'listPembatalan']); //list pembataln tugas
+        Route::get('detail/pembatalan', [ApiServiceOrderController::class, 'detailPembatalan']); //detail pembatalan
+        Route::post('terima/pembatalan', [ApiServiceOrderController::class, 'terimaPembatalan']); //terima pembatalan
+        Route::post('tolak/pembatalan', [ApiServiceOrderController::class, 'tolakPembatalan']); //tolak pembatalan
+
         // Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
         // Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
         // Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
@@ -102,6 +107,8 @@ Route::group(
 
         Route::get('list/jenis/sim', [ApiProfilDriverController::class, 'listJenisSim']); //list jenis sim
         Route::get('profil/depan', [ApiProfilDriverController::class, 'profilDepan']);
+
+        Route::post('ktp', [ApiProfilDriverController::class, 'fotoKtp']); //post or update ktp
     }
 );
 
@@ -146,6 +153,10 @@ Route::group(
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
         Route::post('lokasi/update', [ApiPenugasanController::class, 'lokasiUpdate']); //update lokasi
         Route::get('notif', [ApiPenugasanController::class, 'notifPenugasan']); //get notif penugasan
+        //baru
+        Route::get('list/selesai', [ApiPenugasanController::class, 'listSelesai']); //list penugasan selesai
+        Route::get('list/batal', [ApiPenugasanController::class, 'listBatal']); //list penugasan batal
+        Route::get('detail/batal', [ApiPenugasanController::class, 'detailBatal']); //detail penugasan batal
     }
 );
 
@@ -174,3 +185,6 @@ Route::get('api/wa/send', [ApiPenugasanController::class, 'sendWa']);
 //route api notif
 Route::post('api/notif/send', [ApiPenugasanController::class, 'sendNotif']);
 Route::post('api/notif/add/device', [ApiPenugasanController::class, 'addDevice']);
+
+//LIST MANAJEMEN
+Route::get('list/manajemen', [ApiProfilPetugasController::class, 'listManajemen']);

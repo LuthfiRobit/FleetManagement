@@ -7,6 +7,8 @@ use App\Models\DetailSim;
 use App\Models\Driver;
 use App\Models\DriverStatus;
 use App\Models\JenisSim;
+use App\Models\PenugasanBatal;
+use App\Models\PenugasanDriver;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +33,8 @@ class ApiProfilDriverController extends Controller
                 'tb_driver.no_tlp',
                 'tb_driver.foto_driver',
                 'tb_driver.id_departemen',
-                'tb_departemen.nama_departemen'
+                'tb_departemen.nama_departemen',
+                'tb_driver.foto_ktp'
             )
             ->where('id_driver', $id_driver)
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
@@ -59,11 +62,15 @@ class ApiProfilDriverController extends Controller
             ->where('id_driver', $id_driver)
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->first();
+        $do_selesai = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', 's']])->count();
+        $do_batal = PenugasanBatal::where([['id_driver', $id_driver], ['status_pembatalan', '!=', null]])->count();
 
         return response()->json(
             [
                 'status'        => 'sukses',
-                'profil_driver' => $profil_driver
+                'profil_driver' => $profil_driver,
+                'do_selesai'    => $do_selesai,
+                'do_batal' => $do_batal
             ]
         );
     }
@@ -386,6 +393,39 @@ class ApiProfilDriverController extends Controller
                     ]
                 );
             }
+        }
+    }
+
+    public function fotoKtp(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $foto_ktp = $request->file('foto_ktp');
+        $findDriver = Driver::where('id_driver', $id_driver)->select('no_badge', 'foto_ktp')->first();
+        if ($findDriver != null) {
+            $name_profil   = 'ktp_' . uniqid() . '.' . $foto_ktp->getClientOriginalExtension();
+            $data = [
+                'foto_ktp' => $name_profil
+            ];
+            // return $data;
+            if (!is_null($findDriver->foto_ktp)) {
+                File::delete('assets/img_ktp/' . $findDriver->foto_ktp);
+            }
+            $update = Driver::where('id_driver', $id_driver)->update($data);
+            $folder_profil     = 'assets/img_ktp';
+            $foto_ktp->move($folder_profil, $name_profil);
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'pesan' => 'ktp berhasil diganti',
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'pesan' => 'ktp tidak ditemukan',
+                ]
+            );
         }
     }
 }

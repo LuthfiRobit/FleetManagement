@@ -220,4 +220,25 @@ class ApiProfilPetugasController extends Controller
             );
         }
     }
+
+    public function listManajemen(Request $request)
+    {
+        $list_manajemen = DB::table('tb_petugas')
+            ->select(
+                'tb_petugas.id_petugas',
+                'tb_petugas.nama_lengkap',
+                'tb_petugas.foto_petugas',
+                'tb_petugas.no_tlp'
+            )
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
+            ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
+            ->where('tb_petugas.status', 'y')
+            ->get();
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_manajemen' => $list_manajemen
+            ]
+        );
+    }
 }
