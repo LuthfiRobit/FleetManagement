@@ -102,6 +102,8 @@ Route::group(
 
         Route::get('list/jenis/sim', [ApiProfilDriverController::class, 'listJenisSim']); //list jenis sim
         Route::get('profil/depan', [ApiProfilDriverController::class, 'profilDepan']);
+
+        Route::post('ktp', [ApiProfilDriverController::class, 'fotoKtp']); //post or update ktp
     }
 );
 
