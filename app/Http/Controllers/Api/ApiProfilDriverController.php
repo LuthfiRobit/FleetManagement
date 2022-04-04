@@ -388,4 +388,37 @@ class ApiProfilDriverController extends Controller
             }
         }
     }
+
+    public function fotoKtp(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $foto_ktp = $request->file('foto_ktp');
+        $findDriver = Driver::where('id_driver', $id_driver)->select('no_badge', 'foto_ktp')->first();
+        if ($findDriver != null) {
+            $name_profil   = 'ktp_' . uniqid() . '.' . $foto_ktp->getClientOriginalExtension();
+            $data = [
+                'foto_ktp' => $name_profil
+            ];
+            // return $data;
+            if (!is_null($findDriver->foto_ktp)) {
+                File::delete('assets/img_ktp/' . $findDriver->foto_ktp);
+            }
+            $update = Driver::where('id_driver', $id_driver)->update($data);
+            $folder_profil     = 'assets/img_ktp';
+            $foto_ktp->move($folder_profil, $name_profil);
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'pesan' => 'ktp berhasil diganti',
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    'pesan' => 'ktp tidak ditemukan',
+                ]
+            );
+        }
+    }
 }
