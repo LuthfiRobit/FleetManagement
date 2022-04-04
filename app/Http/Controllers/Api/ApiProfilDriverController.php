@@ -7,6 +7,8 @@ use App\Models\DetailSim;
 use App\Models\Driver;
 use App\Models\DriverStatus;
 use App\Models\JenisSim;
+use App\Models\PenugasanBatal;
+use App\Models\PenugasanDriver;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +33,8 @@ class ApiProfilDriverController extends Controller
                 'tb_driver.no_tlp',
                 'tb_driver.foto_driver',
                 'tb_driver.id_departemen',
-                'tb_departemen.nama_departemen'
+                'tb_departemen.nama_departemen',
+                'tb_driver.foto_ktp'
             )
             ->where('id_driver', $id_driver)
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
@@ -59,11 +62,15 @@ class ApiProfilDriverController extends Controller
             ->where('id_driver', $id_driver)
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->first();
+        $do_selesai = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', 's']])->count();
+        $do_batal = PenugasanBatal::where([['id_driver', $id_driver], ['status_pembatalan', '!=', null]])->count();
 
         return response()->json(
             [
                 'status'        => 'sukses',
-                'profil_driver' => $profil_driver
+                'profil_driver' => $profil_driver,
+                'do_selesai'    => $do_selesai,
+                'do_batal' => $do_batal
             ]
         );
     }
