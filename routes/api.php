@@ -57,6 +57,11 @@ Route::group(
 
         Route::get('list/history', [ApiServiceOrderController::class, 'listHistory']); //history so selesai atau batal
 
+        Route::get('list/pembatalan', [ApiServiceOrderController::class, 'listPembatalan']); //list pembataln tugas
+        Route::get('detail/pembatalan', [ApiServiceOrderController::class, 'detailPembatalan']); //detail pembatalan
+        Route::post('terima/pembatalan', [ApiServiceOrderController::class, 'terimaPembatalan']); //terima pembatalan
+        Route::post('tolak/pembatalan', [ApiServiceOrderController::class, 'tolakPembatalan']); //tolak pembatalan
+
         // Route::get('check/list/transport', [ApiServiceOrderController::class, 'listTransport']);
         // Route::get('report', [ApiServiceOrderController::class, 'accidentReport']);
         // Route::post('report/foto/store', [ApiServiceOrderController::class, 'accidentPictureStore']);
