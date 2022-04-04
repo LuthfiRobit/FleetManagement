@@ -146,6 +146,10 @@ Route::group(
         Route::post('selesai', [ApiPenugasanController::class, 'selesaiPenugasan']); //selesai penugasan
         Route::post('lokasi/update', [ApiPenugasanController::class, 'lokasiUpdate']); //update lokasi
         Route::get('notif', [ApiPenugasanController::class, 'notifPenugasan']); //get notif penugasan
+        //baru
+        Route::get('list/selesai', [ApiPenugasanController::class, 'listSelesai']); //list penugasan selesai
+        Route::get('list/batal', [ApiPenugasanController::class, 'listBatal']); //list penugasan batal
+        Route::get('detail/batal', [ApiPenugasanController::class, 'detailBatal']); //detail penugasan batal
     }
 );
 
