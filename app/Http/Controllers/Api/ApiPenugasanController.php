@@ -76,6 +76,86 @@ class ApiPenugasanController extends Controller
         }
     }
 
+    public function listSelesai(Request $request)
+    {
+        $id_driver = $request->query('id_driver');
+        $tgl = $request->query('fil_tgl');
+        $list_selesai = DB::table('tb_penugasan_driver')
+            ->select(
+                'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_driver',
+                'tb_petugas.nama_lengkap as nama_petugas',
+                'tb_petugas.foto_petugas',
+                'tb_petugas.no_tlp',
+                'tb_driver.nama_driver',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_penugasan_driver.tgl_penugasan',
+                'tb_penugasan_driver.tgl_selesai',
+                'tb_penugasan_driver.jam_berangkat',
+                'tb_order_kendaraan.tempat_penjemputan as jemput',
+                'tb_order_kendaraan.tujuan',
+                'tb_penugasan_driver.kembali',
+                'tb_penugasan_driver.tgl_acc',
+                'tb_penugasan_driver.status_penugasan'
+            )
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
+            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->orderByDesc('id_do')
+            ->where([['tb_penugasan_driver.id_driver', $id_driver], ['tb_penugasan_driver.status_penugasan', 's']])
+            ->when($tgl != null, function ($filter) use ($tgl) {
+                $filter->where('tb_penugasan_driver.tgl_selesai', $tgl);
+            })
+            ->get();
+
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_selesai'     => $list_selesai
+            ]
+        );
+    }
+
+    public function listBatal(Request $request)
+    {
+        $id_driver = $request->query('id_driver');
+        $tgl = $request->query('fil_tgl');
+        $list_batal = DB::table('tb_pembatalan_penugasan')
+            ->select(
+                'tb_pembatalan_penugasan.id_pembatalan',
+                'tb_pembatalan_penugasan.id_do',
+                'tb_pembatalan_penugasan.id_driver',
+                'tb_pembatalan_penugasan.tanggal',
+                'tb_pembatalan_penugasan.alasan_pembatalan as alasan',
+                'tb_pembatalan_penugasan.status_pembatalan',
+                'tb_pembatalan_penugasan.bukti',
+                'tb_driver.nama_driver',
+                'tb_order_kendaraan.no_so',
+                'tb_petugas.nama_lengkap as nama_petugas',
+                'tb_petugas.foto_petugas',
+                'tb_petugas.no_tlp'
+            )
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_pembatalan_penugasan.id_do')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_pembatalan_penugasan.id_driver')
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
+            ->where('tb_pembatalan_penugasan.id_driver', $id_driver)
+            ->orderByDesc('tb_pembatalan_penugasan.id_pembatalan')
+            ->when($tgl != null, function ($filter) use ($tgl) {
+                $filter->where('tb_pembatalan_penugasan.tanggal', $tgl);
+            })
+            ->get();
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_batal'     => $list_batal
+            ]
+        );
+    }
+
     public function detailPenugasan(Request $request)
     {
         $id_do = $request->query('id_do');
