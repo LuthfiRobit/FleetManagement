@@ -174,3 +174,6 @@ Route::get('api/wa/send', [ApiPenugasanController::class, 'sendWa']);
 //route api notif
 Route::post('api/notif/send', [ApiPenugasanController::class, 'sendNotif']);
 Route::post('api/notif/add/device', [ApiPenugasanController::class, 'addDevice']);
+
+//LIST MANAJEMEN
+Route::get('list/manajemen', [ApiProfilPetugasController::class, 'listManajemen']);
