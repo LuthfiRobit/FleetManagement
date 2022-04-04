@@ -8,6 +8,7 @@ use App\Models\Kecelakaan;
 use App\Models\KecelakaanFoto;
 use App\Models\KriteriaPengecekan;
 use App\Models\PengecekanKendaraan;
+use App\Models\PenugasanBatal;
 use App\Models\PenugasanDriver;
 use App\Models\ServiceOrder;
 use Carbon\Carbon;
@@ -367,6 +368,140 @@ class ApiServiceOrderController extends Controller
                 'history' => $history
             ]
         );
+    }
+
+    public function listPembatalan(Request $request)
+    {
+        $batal = DB::table('tb_pembatalan_penugasan')
+            ->select(
+                'tb_pembatalan_penugasan.id_pembatalan',
+                'tb_pembatalan_penugasan.id_do',
+                'tb_pembatalan_penugasan.id_driver',
+                'tb_pembatalan_penugasan.tanggal',
+                'tb_pembatalan_penugasan.alasan_pembatalan as alasan',
+                'tb_pembatalan_penugasan.status_pembatalan',
+                'tb_driver.nama_driver',
+                'tb_driver.no_tlp',
+                'tb_driver.foto_driver',
+                'tb_departemen.nama_departemen as departemen',
+                'tb_order_kendaraan.no_so'
+            )
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_pembatalan_penugasan.id_do')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_pembatalan_penugasan.id_driver')
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
+            ->where('tb_pembatalan_penugasan.status_pembatalan', 't')
+            ->orderByDesc('tb_pembatalan_penugasan.id_pembatalan')
+            ->get();
+        return response()->json(
+            [
+                'status' => 'sukses',
+                'pembatalan' => $batal
+            ]
+        );
+    }
+
+    public function detailPembatalan(Request $request)
+    {
+        $id_batal = $request->query('id_batal');
+        $batal = DB::table('tb_pembatalan_penugasan')
+            ->select(
+                'tb_pembatalan_penugasan.id_pembatalan',
+                'tb_pembatalan_penugasan.id_do',
+                'tb_pembatalan_penugasan.id_driver',
+                'tb_pembatalan_penugasan.tanggal',
+                'tb_pembatalan_penugasan.alasan_pembatalan as alasan',
+                'tb_pembatalan_penugasan.status_pembatalan',
+                'tb_pembatalan_penugasan.bukti',
+                'tb_penugasan_driver.tgl_penugasan',
+                'tb_driver.nama_driver',
+                'tb_driver.no_tlp',
+                'tb_driver.foto_driver',
+                'tb_departemen.nama_departemen as departemen',
+                'tb_order_kendaraan.no_so'
+            )
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_pembatalan_penugasan.id_do')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_pembatalan_penugasan.id_driver')
+            ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
+            ->where('tb_pembatalan_penugasan.id_pembatalan', $id_batal)
+            ->first();
+        if ($batal) {
+            $drivers = DB::select(
+                "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
+                -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
+                WHERE tb_driver.status_driver = 'y'
+                AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
+                AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
+                AND tb_penugasan_driver.tgl_penugasan = '$batal->tgl_penugasan' AND tb_penugasan_driver.status_penugasan = 'p'  )"
+            );
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'detail' => $batal,
+                    'list_driver' => $drivers
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal'
+                ]
+            );
+        }
+    }
+
+    public function terimaPembatalan(Request $request)
+    {
+        $id_batal = $request->id_batal;
+        $id_do = $request->id_do;
+        $id_driver_baru = $request->id_driver_baru;
+
+        $find = PenugasanBatal::where('id_pembatalan', $id_batal)->first();
+        if ($find) {
+            $find->update(['status_pembatalan' => 't']);
+            $find_do = PenugasanDriver::where('id_do', $id_do)->first();
+            $data = [
+                'id_driver' => $id_driver_baru
+            ];
+            $find_do->update($data);
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'id_batal' => $find->id_pembatalan,
+                    'status_batal' => $find->status_pembatalan
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal'
+                ]
+            );
+        }
+    }
+
+    public function tolakPembatalan(Request $request)
+    {
+        $id_batal = $request->id_batal;
+        $find = PenugasanBatal::where('id_pembatalan', $id_batal)->first();
+        if ($find) {
+            // return $find;
+            $find->update(['status_pembatalan' => 'tl']);
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'id_batal' => $find->id_pembatalan,
+                    'status_batal' => $find->status_pembatalan
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal'
+                ]
+            );
+        }
     }
 
     //kecelakaan
