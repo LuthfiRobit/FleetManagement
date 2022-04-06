@@ -247,12 +247,13 @@ class ApiPenugasanController extends Controller
                 'tb_penugasan_driver.id_do',
                 'tb_penugasan_driver.id_driver',
                 'tb_petugas.nama_lengkap as nama_petugas',
+                'tb_petugas.foto_petugas',
                 'tb_petugas.no_tlp',
                 'tb_driver.nama_driver',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
                 'tb_penugasan_driver.tgl_penugasan',
-                'tb_penugasan_driver.tgl_selesai',
+                // 'tb_penugasan_driver.tgl_selesai',
                 'tb_penugasan_driver.jam_berangkat',
                 'tb_order_kendaraan.tempat_penjemputan as jemput',
                 'tb_order_kendaraan.tujuan',
@@ -264,20 +265,24 @@ class ApiPenugasanController extends Controller
             ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
-            ->orderByDesc('id_do')
+            // ->orderByDesc('id_do')
+            ->when($tab == 'n', function ($status) use ($tab) {
+                $status->where('status_penugasan', null);
+            })
             ->when($tab == 't', function ($status) use ($tab) {
                 $status->where('status_penugasan', 't');
             })
             ->when($tab == 'p', function ($status) use ($tab) {
                 $status->where('status_penugasan', 'p');
             })
-            ->when($tab == 's', function ($status) use ($tab) {
-                $status->where('status_penugasan', 's');
-            })
+            // ->when($tab == 's', function ($status) use ($tab) {
+            //     $status->where('status_penugasan', 's');
+            // })
             ->when($tab == 'c', function ($status) use ($tab) {
                 $status->where('status_penugasan', 'c');
             })
-            ->where([['tb_penugasan_driver.id_driver', $id_dr], ['status_penugasan', '!=', null]])
+            ->where('tb_penugasan_driver.id_driver', $id_dr)
+            ->orderBy(DB::raw("ABS(DATEDIFF(tb_penugasan_driver.tgl_penugasan, NOW())),CASE status_penugasan WHEN null THEN 1 WHEN 't' THEN 2 WHEN 'p' THEN 3 WHEN 'c' THEN 4 END"))
             ->get();
 
         return response()->json(
