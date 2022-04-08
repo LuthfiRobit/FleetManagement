@@ -282,7 +282,7 @@ class ApiPenugasanController extends Controller
                 $status->where('status_penugasan', 'c');
             })
             ->where('tb_penugasan_driver.id_driver', $id_dr)
-            ->orderBy(DB::raw("ABS(DATEDIFF(tb_penugasan_driver.tgl_penugasan, NOW())),CASE status_penugasan WHEN null THEN 1 WHEN 't' THEN 2 WHEN 'p' THEN 3 WHEN 'c' THEN 4 END"))
+            ->orderBy(DB::raw("CASE status_penugasan WHEN null THEN 1 WHEN 't' THEN 2 WHEN 'p' THEN 3 WHEN 'c' THEN 4 WHEN 's' THEN 5 END"))
             ->get();
 
         return response()->json(
