@@ -390,7 +390,7 @@ class ApiServiceOrderController extends Controller
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_pembatalan_penugasan.id_driver')
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
-            ->where('tb_pembatalan_penugasan.status_pembatalan', 't')
+            // ->where('tb_pembatalan_penugasan.status_pembatalan', 't')
             ->orderByDesc('tb_pembatalan_penugasan.id_pembatalan')
             ->get();
         return response()->json(
