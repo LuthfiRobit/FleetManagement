@@ -90,17 +90,21 @@ class ApiKecelakaanController extends Controller
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->where('tb_penugasan_driver.id_do', $id_do)
             ->first();
-        $saksi = DB::table('tb_detail_so')
-            ->select(
-                'tb_detail_so.id_detail_so',
-                'tb_detail_so.nama_penumpang'
-            )
-            ->where('tb_detail_so.id_service_order', $kendaraan->id_service_order)
-            ->get();
+
         if ($kendaraan != null) {
+            $data = ['id_do' => $id_do];
+            $kecelakaan = Kecelakaan::create($data);
+            $saksi = DB::table('tb_detail_so')
+                ->select(
+                    'tb_detail_so.id_detail_so',
+                    'tb_detail_so.nama_penumpang'
+                )
+                ->where('tb_detail_so.id_service_order', $kendaraan->id_service_order)
+                ->get();
             return response()->json(
                 [
                     'status'        => 'sukses',
+                    'id_kecelakaan' => $kecelakaan->id_kecelakaan,
                     'kendaraan'     => $kendaraan,
                     'saksi'         => $saksi
                 ]
@@ -127,18 +131,20 @@ class ApiKecelakaanController extends Controller
                 'lokasi_kejadian' => $request->lokasi_kejadian,
                 'kronologi' => $request->kronologi
             ];
-            $saveAcd = Kecelakaan::create($data);
+            $id_kecelakaan = $request->id_kecelakaan;
+            // $saveAcd = Kecelakaan::create($data);
+            $saveAcd = Kecelakaan::where('id_kecelakaan', $id_kecelakaan)->update($data);
             if ($saveAcd) {
                 $dataSaksi = [
-                    'id_kecelakaan' => $saveAcd->id_kecelakaan,
+                    'id_kecelakaan' => $id_kecelakaan,
                     'id_saksi' => $request->id_saksi,
                     'id_atasan' => $request->id_atasan
                 ];
                 $saveSaksi = KecelakaanSaksi::create($dataSaksi);
-                $findfoto = KecelakaanFoto::where('id_kecelakaan', null)->get();
+                $findfoto = KecelakaanFoto::where('id_kecelakaan', $id_kecelakaan)->get();
                 if ($findfoto->count() > 0) {
-                    $findfoto->each(function ($file, $key) use ($saveAcd) {
-                        $file->update(array('id_kecelakaan' => $saveAcd->id_kecelakaan));
+                    $findfoto->each(function ($file, $key) use ($saveAcd, $id_kecelakaan) {
+                        $file->update(array('id_kecelakaan' => $id_kecelakaan));
                     });
                 } else {
                     return response()->json(
@@ -149,7 +155,7 @@ class ApiKecelakaanController extends Controller
                     );
                 }
             }
-            PenugasanDriver::where('id_do', $saveAcd->id_do)->update(
+            PenugasanDriver::where('id_do', $request->id_do)->update(
                 [
                     'status_penugasan' => 's'
                 ]
@@ -158,7 +164,7 @@ class ApiKecelakaanController extends Controller
             return response()->json(
                 [
                     'status'         => 'sukses',
-                    'id_kecelakaan' => $saveAcd->id_kecelakaan
+                    'id_kecelakaan' => $id_kecelakaan
                 ]
             );
         } catch (\Exception $exception) {
@@ -296,13 +302,14 @@ class ApiKecelakaanController extends Controller
 
     public function cancelFotoKecelakaan(Request $request)
     {
-        $find = KecelakaanFoto::where('id_kecelakaan', null)->get();
+        $id_kecelakaan = $request->id_kecelakaan;
+        $find = KecelakaanFoto::where('id_kecelakaan', $id_kecelakaan)->get();
 
-        if ($find->count() > 0) {
-            $find->each(function ($file, $key) {
-                File::delete('assets/img_accident/' . $file->foto_pendukung);
-                $file->delete();
-            });
+        if ($find->count() == 0) {
+
+            KecelakaanSaksi::where('id_kecelakaan', $id_kecelakaan)->delete();
+            Kecelakaan::where('id_kecelakaan', $id_kecelakaan)->delete();
+
             return response()->json(
                 [
                     'status'         => 'sukses',
@@ -310,10 +317,16 @@ class ApiKecelakaanController extends Controller
                 ]
             );
         } else {
+            $find->each(function ($file, $key) {
+                File::delete('assets/img_accident/' . $file->foto_pendukung);
+                $file->delete();
+            });
+            KecelakaanSaksi::where('id_kecelakaan', $id_kecelakaan)->delete();
+            Kecelakaan::where('id_kecelakaan', $id_kecelakaan)->delete();
             return response()->json(
                 [
-                    'status'         => 'gagal',
-                    'pesan'       => 'data tidak ada'
+                    'status'         => 'sukses',
+                    'pesan'       => 'data terhapus'
                 ]
             );
         }
@@ -321,12 +334,13 @@ class ApiKecelakaanController extends Controller
 
     public function saveFotoKecelakaan(Request $request)
     {
+        $id_kecelakaan = $request->id_kecelakaan;
         $foto_pendukung = $request->file('foto');
         $keterangan = $request->keterangan;
         if ($foto_pendukung != null) {
             $name = 'accident_' . uniqid() . '.' . $foto_pendukung->getClientOriginalExtension();
             $data = [
-                // 'id_kecelakaan' => $id_kecelakaan,
+                'id_kecelakaan' => $id_kecelakaan,
                 'foto_pendukung' => $name,
                 // 'keterangan' => $keterangan
             ];
