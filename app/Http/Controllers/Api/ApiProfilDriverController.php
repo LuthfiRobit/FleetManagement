@@ -63,7 +63,7 @@ class ApiProfilDriverController extends Controller
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_driver.id_departemen')
             ->first();
         $do_selesai = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', 's']])->count();
-        $do_batal = PenugasanBatal::where([['id_driver', $id_driver], ['status_pembatalan', '!=', null]])->count();
+        $do_batal = PenugasanBatal::where('id_driver', $id_driver)->count();
 
         return response()->json(
             [
