@@ -97,6 +97,7 @@
                                     <tr class="fw-bolder fs-6 text-gray-800 px-7">
                                         <th>No.</th>
                                         <th>No. Pengecekan</th>
+                                        <th>Tanggal</th>
                                         <th>Oleh</th>
                                         <th>Kendaraan</th>
                                         <th>Kilometer</th>
@@ -110,6 +111,7 @@
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
                                         <td>VC_{{$pc->id_pengecekan}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pc->tgl_pengecekan)->translatedFormat('d-m-Y') }}
                                         <td>{{$pc->nama_driver}}</td>
                                         <td>
                                             {{$pc->nama_kendaraan}}
@@ -134,6 +136,9 @@
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
+                                            <a href="{{route('check.exprt.car', $pc->id_pengecekan)}}"
+                                                class="btn btn-light bnt-active-light-success btn-sm"><i
+                                                    class="bi bi-file-earmark-excel"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -151,6 +156,7 @@
                                         <th>No.</th>
                                         <th>No. Pengecekan</th>
                                         <th>Oleh</th>
+                                        <th>Tanggal</th>
                                         <th>Kendaraan</th>
                                         <th>Kilometer</th>
                                         <th>Status</th>
@@ -163,6 +169,8 @@
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
                                         <td>VC_{{$pc->id_pengecekan}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pc->tgl_pengecekan)->translatedFormat('d-m-Y') }}
+                                        </td>
                                         <td>{{$pc->nama_driver}}</td>
                                         <td>
                                             {{$pc->nama_kendaraan}}
@@ -185,6 +193,11 @@
                                             @endif
                                         </td>
                                         <td>
+                                            <a href="{{route('check.detail', $pc->id_pengecekan)}}"
+                                                class="btn btn-light bnt-active-light-primary btn-sm mb-1">Detail</a>
+                                            <a href="{{route('check.exprt.car', $pc->id_pengecekan)}}"
+                                                class="btn btn-light bnt-active-light-success btn-sm"><i
+                                                    class="bi bi-file-earmark-excel"></i></a>
                                             {{-- <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
                                                 data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
                                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
@@ -215,8 +228,6 @@
                                                 </div>
                                                 <!--end::Menu item-->
                                             </div> --}}
-                                            <a href="{{route('check.detail', $pc->id_pengecekan)}}"
-                                                class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach
