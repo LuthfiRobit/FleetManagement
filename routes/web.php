@@ -76,6 +76,7 @@ Route::name('check')->prefix('check')
         Route::get('/', [PengecekanKendaraanController::class, 'index'])->name('.main');
         Route::put('change/{id}', [PengecekanKendaraanController::class, 'updateVehicle'])->name('.updateVehicle');
         Route::get('/detail/{id}', [PengecekanKendaraanController::class, 'detail'])->name('.detail');
+        Route::get('/export/car/{id}', [PengecekanKendaraanController::class, 'exportCar'])->name('.exprt.car');
     });
 Route::name('repair')->prefix('repair')
     ->group(function () {
