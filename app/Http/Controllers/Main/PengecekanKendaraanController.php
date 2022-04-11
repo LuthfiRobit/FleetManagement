@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Exports\PengecekanCarExport;
 use App\Http\Controllers\Controller;
 use App\Models\PenugasanDriver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PengecekanKendaraanController extends Controller
 {
@@ -136,5 +138,18 @@ class PengecekanKendaraanController extends Controller
         }
         // return $data;
         return view('dashboard.main.checking.detail', $data);
+    }
+
+    public function exportCar($id)
+    {
+        $kendaraan = DB::table('tb_pengecekan_kendaraan')
+            ->select(
+                'tb_pengecekan_kendaraan.id_pengecekan',
+                'tb_kendaraan.nama_kendaraan',
+            )
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('id_pengecekan', $id)
+            ->first();
+        return Excel::download(new PengecekanCarExport($id), 'Laporan_pengecekan_' . $kendaraan->nama_kendaraan . '.xlsx');
     }
 }
