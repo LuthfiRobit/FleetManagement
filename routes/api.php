@@ -104,6 +104,7 @@ Route::group(
         Route::get('list/sim', [ApiProfilDriverController::class, 'listSim']); //list sim
         Route::post('add/sim', [ApiProfilDriverController::class, 'addSim']); //add sim
         Route::post('update/sim', [ApiProfilDriverController::class, 'updateSim']); //update foto sim
+        Route::post('update/data', [ApiProfilDriverController::class, 'updateData']); //update data diri
 
         Route::get('list/jenis/sim', [ApiProfilDriverController::class, 'listJenisSim']); //list jenis sim
         Route::get('profil/depan', [ApiProfilDriverController::class, 'profilDepan']);

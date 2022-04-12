@@ -428,4 +428,49 @@ class ApiProfilDriverController extends Controller
             );
         }
     }
+
+    public function updateData(Request $request)
+    {
+        $id_driver = $request->id_driver;
+        $nama_driver = $request->nama_driver;
+        $alamat = $request->alamat;
+        $umur = $request->umur;
+        $no_tlp = $request->no_tlp;
+        $findDriver = Driver::where('id_driver', $id_driver)->first();
+        if ($findDriver) {
+            $defaultUsernameDriver = str_replace("-", "", $findDriver->no_badge);
+            $defaultPasswordDriver = str_replace("-", "", $no_tlp);
+            $data = [
+                'nama_driver' => $nama_driver,
+                'alamat' => $alamat,
+                'umur'  => $umur,
+                'no_tlp' => $no_tlp,
+                'user' => $defaultUsernameDriver,
+                'password' => Hash::make($defaultPasswordDriver)
+            ];
+            $update = $findDriver->update($data);
+            if ($update) {
+                return response()->json(
+                    [
+                        'status' => 'sukses',
+                        'pesan' => 'Data Umum Driver Berhasil Diganti, Username dan Password direset menjadi NO. BADGE dan NO. TLFN',
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status' => 'gagal',
+                        'pesan' => 'Data Umum Driver Gagal Diganti',
+                    ]
+                );
+            }
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal',
+                    'pesan'         => 'data tidak ditemukan'
+                ]
+            );
+        }
+    }
 }
