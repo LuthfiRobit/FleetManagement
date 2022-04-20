@@ -280,6 +280,19 @@ class CheckingController extends Controller
         return redirect()->route('checking.serviceorder')->with('success', 'Service Order is Rejected');
     }
 
+    public function cancelSo($id_so)
+    {
+        $cancelSo = ServiceOrder::where('id_service_order', $id_so)->first();
+        if ($cancelSo == true) {
+            $cancelSo->update(['status_so' => 'c']);
+            $findDo = PenugasanDriver::where('id_service_order', $id_so)->first();
+            $cancelDo = $findDo->update(['status_penugasan' => 'c']);
+            return redirect()->route('checking.serviceorder')->with('success', 'Penugasan dengan SO_' . $cancelSo->no_so . ' berhasil dibatalkan');
+        } else {
+            return redirect()->route('checking.serviceorder')->with('success', 'Pembatalan gagal diproses');
+        }
+    }
+
     // public function createSo(Request $request)
     // {
     //     DB::beginTransaction();
