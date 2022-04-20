@@ -28,7 +28,9 @@ class CheckingController extends Controller
                 'tb_order_kendaraan.keterangan_penolakan',
                 'tb_petugas.id_petugas',
                 'tb_petugas.nama_lengkap',
+                'tb_penugasan_driver.status_penugasan'
             )
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
             ->orderByDesc('id_service_order')
             ->get();
