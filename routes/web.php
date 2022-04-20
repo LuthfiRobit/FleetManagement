@@ -61,6 +61,7 @@ Route::name('checking')->prefix('checking')
         Route::get('/serviceorder/accept/form/{id}', [CheckingController::class, 'serviceAccept'])->name('.serviceorder.accept.form');
         Route::post('/serviceorder/accept/{id}', [CheckingController::class, 'acceptSo'])->name('.serviceorder.accept');
         Route::put('/serviceorder/reject/{id}', [CheckingController::class, 'rejectSo'])->name('.serviceorder.reject');
+        Route::get('/serviceorder/cancel/{id}', [CheckingController::class, 'cancelSo'])->name('.serviceorder.cancel');
     });
 Route::name('assign')->prefix('assign')
     ->group(function () {
@@ -77,6 +78,7 @@ Route::name('check')->prefix('check')
         Route::put('change/{id}', [PengecekanKendaraanController::class, 'updateVehicle'])->name('.updateVehicle');
         Route::get('/detail/{id}', [PengecekanKendaraanController::class, 'detail'])->name('.detail');
         Route::get('/export/car/{id}', [PengecekanKendaraanController::class, 'exportCar'])->name('.exprt.car');
+        Route::get('/export/filter/', [PengecekanKendaraanController::class, 'exportCarFilter'])->name('.export.filter');
     });
 Route::name('repair')->prefix('repair')
     ->group(function () {
