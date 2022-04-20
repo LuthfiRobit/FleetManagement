@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Laporan Pembatalan Tugas | Detail')
+@section('title','Pengajuan Pembatalan Tugas | Detail')
 
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">

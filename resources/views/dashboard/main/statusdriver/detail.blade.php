@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Laporan Status Driver | Detail')
+@section('title','Status Driver | Detail')
 
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">

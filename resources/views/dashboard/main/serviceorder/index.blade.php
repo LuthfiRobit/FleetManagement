@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Pesanan Pelayanan | Utama')
+@section('title','Penugasan Driver | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,10 +16,25 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Pesanan Pelayanan</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$serviceOrder->where('status_so',
-                            '')->count()}} Pesanan Pelayanan Perlu Dilihat</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Penugasan Driver</span>
+                        <span class="text-muted mt-1 fw-bold fs-7"></span>
                     </h3>
+                    <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                        title="" data-bs-original-title="Tekan untuk menambah bahan bakar">
+                        <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal"
+                            data-bs-target="#kt_modal_new_feul">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                            <span class="svg-icon svg-icon-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                        transform="rotate(-90 11.364 20.364)" fill="black"></rect>
+                                    <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black"></rect>
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->Buat Penugasan
+                        </a>
+                    </div>
                 </div>
 
                 <!--end::Header-->
@@ -80,7 +95,7 @@
                                 <td>{{$so->tujuan}}</td>
                                 <td>
                                     @if ($so->status_so == 't')
-                                    <span class="badge badge-light-primary">Diterima</span>
+                                    <span class="badge badge-light-primary">Penugasan</span>
                                     @elseif($so->status_so == 'tl')
                                     <span class="badge badge-light-danger">Ditolak</span>
                                     @elseif($so->status_so == 'c')
@@ -90,6 +105,11 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if ($so->status_penugasan == null || $so->status_penugasan == 't')
+                                    <button type="button" class="btn btn-light btn-light-danger btn-sm btn-cancel"
+                                        data-id="{{$so->id_service_order}}" data-so="{{$so->no_so}}"
+                                        data-petugas="{{$so->nama_lengkap}}">Batalkan</button>
+                                    @endif
                                     <a href="{{route('checking.serviceorder.detail',$so->id_service_order)}}"
                                         class="btn btn-light bnt-active-light-primary btn-sm">Lihat</a>
                                 </td>
@@ -130,6 +150,63 @@
             "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
             "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
             ">"
+    });
+    function logout(id) {
+        Swal.fire({
+            text: "Salah satu harga belum diisi.",
+            icon: "error",
+            buttonsStyling: !1,
+            confirmButtonText: "Ok, saya mengerti!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+    }
+    $(function () {
+        $('.btn-cancel').each(function () {
+            var id = $(this).data('id');
+            var so = $(this).data('so');
+            var oleh = $(this).data('petugas');
+            var url = '{{route("checking.serviceorder.cancel",":id")}}';
+            url = url.replace(':id', id);
+            $(this).on("click", (t => {
+            t.preventDefault(), Swal.fire({
+                html:
+                    'Apakah anda yakin membatalkan penugasan dengan <b>SO_'+so+'</b>, ' +
+                    'oleh <b>'+oleh+'</b>?',
+                icon: "warning",
+                showCancelButton: !0,
+                buttonsStyling: !1,
+                confirmButtonText: "Ya, batalkan",
+                cancelButtonText: "Tidak, kembali",
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: "btn btn-active-light"
+                }
+            }).then((function (t) {
+                t.value ? Swal.fire({
+                    text: "Anda telah membatalkan penugasan, penugasan tidak bisa diproses kembali!.",
+                    icon: "success",
+                    buttonsStyling: !1,
+                    confirmButtonText: "Ok, mengerti!",
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then((function (t) {
+                        window.location.href = url
+                    }))
+                    : "cancel" === t.dismiss && Swal.fire({
+                    text: "Penugasan masih aktif!.",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "Ok, mengerti!",
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                })
+            }))
+            }));
+        });
     });
 </script>
 @endpush
