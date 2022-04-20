@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Main;
 
 use App\Exports\PengecekanCarExport;
+use App\Exports\PengecekanDateExport;
 use App\Http\Controllers\Controller;
 use App\Models\PenugasanDriver;
 use Illuminate\Http\Request;
@@ -38,11 +39,9 @@ class PengecekanKendaraanController extends Controller
                 'tb_kendaraan.id_kendaraan',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
+                'tb_kendaraan.kode_asset'
             )
-            // ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
-            ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
-            // ->whereNull('tb_penugasan_driver.id_kendaraan')
-            ->whereNull('tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('status', 'y')
             ->orderByDesc('id_kendaraan')
             ->get();
         // return $data;
@@ -151,5 +150,21 @@ class PengecekanKendaraanController extends Controller
             ->where('id_pengecekan', $id)
             ->first();
         return Excel::download(new PengecekanCarExport($id), 'Laporan_pengecekan_' . $kendaraan->nama_kendaraan . '.xlsx');
+    }
+
+    public function exportCarFilter(Request $request)
+    {
+        $tgl_pengecekan = $request->tgl_pengecekan;
+        $id_kendaraan = $request->id_kendaraan;
+        $tanggal = \Carbon\Carbon::parse($tgl_pengecekan)->translatedFormat('j F Y');
+        $kendaraan = DB::table('tb_pengecekan_kendaraan')
+            ->select(
+                'tb_pengecekan_kendaraan.id_pengecekan',
+                'tb_kendaraan.nama_kendaraan',
+            )
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('tb_pengecekan_kendaraan.id_kendaraan', $id_kendaraan)
+            ->first();
+        return Excel::download(new PengecekanDateExport($id_kendaraan, $tgl_pengecekan), 'Laporan_pengecekan_' . $kendaraan->nama_kendaraan . '_tanggal_' . $tanggal . '.xlsx');
     }
 }
