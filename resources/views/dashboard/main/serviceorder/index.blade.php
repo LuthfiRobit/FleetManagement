@@ -20,9 +20,9 @@
                         <span class="text-muted mt-1 fw-bold fs-7"></span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                        title="" data-bs-original-title="Tekan untuk menambah bahan bakar">
-                        <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal"
-                            data-bs-target="#kt_modal_new_feul">
+                        title="" data-bs-original-title="Tekan untuk membuat penugasan">
+                        <a href="{{ route('checking.serviceorder.form') }}"
+                            class="btn btn-sm btn-light btn-active-primary">
                             <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                             <span class="svg-icon svg-icon-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
