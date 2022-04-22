@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Driver;
 use App\Models\PenugasanDriver;
 use App\Models\ServiceOrder;
+use App\Models\ServiceOrderDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -328,6 +329,95 @@ class CheckingController extends Controller
         // dd($data);
         return view('dashboard.main.serviceorder.create2', $data);
     }
+
+    public function createSo(Request $request)
+    {
+        // dd($request->all());
+        $so = [
+            'id_service_order'  => $request->id_service_order,
+            'id_petugas'        => "10",
+            'no_so'             => $request->no_so,
+            'tgl_penjemputan'   => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
+            'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i'),
+            'jml_penumpang'     => $request->jml_penumpang,
+            'tempat_penjemputan' => $request->tmp_penjemputan,
+            'tujuan'            => $request->tmp_tujuan,
+            'keterangan'        => $request->agenda,
+            'status_so'         => 't'
+        ];
+
+        $saveSo = ServiceOrder::create($so);
+        if ($saveSo) {
+            $do = [
+                'id_service_order'  => $request->id_service_order,
+                'id_driver'         => $request->id_driver,
+                'id_kendaraan'      => $request->id_kendaraan,
+                'id_petugas'        => "10",
+                'tgl_penugasan'     => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
+                'jam_berangkat'     => Carbon::parse($request->jam_penjemputan)->format('H:i'),
+                'kembali'           => $request->tmp_kembali,
+                'tgl_acc'           => date('Y-m-d')
+            ];
+            $penugasancreate = PenugasanDriver::create($do);
+            if ($penugasancreate) {
+                $findDriver = Driver::select('id_driver', 'player_id')->where('id_driver', $request->id_driver)->first();
+                $content = array(
+                    "en" => 'Anda Mempunyai Penugasan Baru!'
+                );
+
+                $fields = array(
+                    'app_id' => "768c8998-943b-4ffa-8829-07c1107a9216",
+                    'include_player_ids' => array("$findDriver->player_id"),
+                    'data' => array("foo" => "bar"),
+                    'contents' => $content
+                );
+
+                $fields = json_encode($fields);
+                // print("\nJSON sent:\n");
+                // print($fields);
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json;'));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($ch, CURLOPT_HEADER, FALSE);
+                curl_setopt($ch, CURLOPT_POST, TRUE);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                $number = 0;
+                foreach ($request->nama_penumpang as $key => $penumpang) {
+                    if (isset($request->status[$key])) {
+                        $status = 'n';
+                    } else {
+                        $status = 'y';
+                    }
+                    $serviceDetail = [
+                        'id_service_order'  => $request->id_service_order,
+                        'jabatan'           => $request->jbtn_penumpang[$key],
+                        'nama_penumpang'    => $request->nama_penumpang[$key],
+                        'no_tlp'            => $request->no_tlp[$key],
+                        'status'            => $status
+                    ];
+                    $number++;
+                    $saveDetailSo = ServiceOrderDetail::create($serviceDetail);
+                }
+            } else {
+                $findSo = ServiceOrder::where('id_service_order',  $request->id_service_order)->first();
+                if ($findSo) {
+                    $findSo->delete();
+                }
+                return redirect()->route('checking.serviceorder')->with('success', 'Penugasan dengan gagal dibuat');
+            }
+            return redirect()->route('checking.serviceorder')->with('success', 'Penugasan dengan berhasil dibuat');
+        } else {
+            return redirect()->route('checking.serviceorder')->with('success', 'Penugasan dengan gagal dibuat');
+        }
+    }
+
     // public function createSo(Request $request)
     // {
     //     DB::beginTransaction();
