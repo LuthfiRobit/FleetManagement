@@ -321,4 +321,42 @@ class ApiCheckingController extends Controller
             );
         }
     }
+
+    public function FilterBy(Request $request){
+        $nomorpolisi = $request->query('noplat');
+        $tgl_sekarang = Carbon::now()->format('Y-m-d');
+        $jam_awal = $request->query('jam_awal');
+        $jam_akhir = $request->query('jam_akhir');
+       
+
+        $kendaraan = DB::select(
+            "SELECT
+            tb_kendaraan.id_kendaraan,
+            tb_kendaraan.nama_kendaraan,
+            tb_kendaraan.no_polisi,
+            tb_jenis_sim.nama_sim as sim
+            -- tb_jenis_alokasi.nama_alokasi as alokasi
+            FROM tb_kendaraan
+            
+            LEFT JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
+            -- JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+            -- JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
+            WHERE  tb_kendaraan.no_polisi LIKE '%$nomorpolisi%' AND NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_pengecekan_kendaraan.status_kendaraan = 't'
+            AND  tb_pengecekan_kendaraan.jam_pengecekan BETWEEN '$jam_awal' AND '$jam_akhir' AND tb_pengecekan_kendaraan.tgl_pengecekan = '$tgl_sekarang'
+            UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang')"
+
+        );
+        return response()->json(
+            [
+                'status'            => 'sukses',
+                'tgl_sekarang'      => $tgl_sekarang,
+                'list_kendaraan'    => $kendaraan
+            ]
+        ); 
+       
+
+        // if($kendaraan->count()> 0){
+             
+        // }
+    }
 }
