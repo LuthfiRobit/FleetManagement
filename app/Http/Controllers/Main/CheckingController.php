@@ -320,6 +320,14 @@ class CheckingController extends Controller
         }
     }
 
+    public function formSo(Request $request)
+    {
+        $data['last_so'] = DB::table('tb_order_kendaraan')
+            ->select('id_service_order', 'no_so')
+            ->orderByDesc('id_service_order')->first();
+        // dd($data);
+        return view('dashboard.main.serviceorder.create2', $data);
+    }
     // public function createSo(Request $request)
     // {
     //     DB::beginTransaction();
