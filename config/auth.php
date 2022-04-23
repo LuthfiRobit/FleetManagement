@@ -17,7 +17,7 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -39,14 +39,14 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'petugas',
         ],
         'api2' => [
             'driver' => 'jwt',
             'provider' => 'petugas',
             'hash' => false,
         ],
-        'api' =>[
+        'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
@@ -80,15 +80,12 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\Driver::class,
-        
-    ],
-    'petugas' => [
-                'driver' => 'eloquent',
-                'model' => App\Models\Petugas::class,  
-    ]
-   
 
-
+        ],
+        'petugas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Petugas::class,
+        ]
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
