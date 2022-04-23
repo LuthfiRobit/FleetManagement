@@ -10,6 +10,7 @@ use App\Models\PerbaikanDetail;
 use App\Models\PerbaikanPersetujuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PerbaikanController extends Controller
@@ -168,7 +169,7 @@ class PerbaikanController extends Controller
     {
 
         $id_pengecekan = $request->id_pengecekan;
-        $id_petugas = 4;
+        $id_petugas = Auth::user()->id_petugas;
 
         $data_approval = [
             'no_wo' => $request->no_wo,
