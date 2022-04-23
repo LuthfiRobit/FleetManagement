@@ -81,7 +81,8 @@
                         <!--begin::Menu wrapper-->
                         <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click"
                             data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                            <img src="{{url('assets/backend/assets/media/avatars/150-26.jpg')}}" alt="user" />
+                            <img
+                                src="{{ url(Auth::user()->foto_petugas == null ? '/assets/backend/assets/media/avatars/blank.png' : '/assets/img_petugas/'.Auth::user()->foto_petugas) }}" />
                         </div>
                         <!--begin::Menu-->
                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
@@ -92,16 +93,18 @@
                                     <!--begin::Avatar-->
                                     <div class="symbol symbol-50px me-5">
                                         <img alt="Logo"
-                                            src="{{url('assets/backend/assets/media/avatars/150-26.jpg')}}" />
+                                            src="{{ url(Auth::user()->foto_petugas == null ? '/assets/backend/assets/media/avatars/blank.png' : '/assets/img_petugas/'.Auth::user()->foto_petugas) }}" />
                                     </div>
                                     <!--end::Avatar-->
                                     <!--begin::Username-->
                                     <div class="d-flex flex-column">
-                                        <div class="fw-bolder d-flex align-items-center fs-5">Max Smith
+                                        <div class="fw-bolder d-flex align-items-center fs-5">
+                                            {{Auth::user()->nama_lengkap}}
                                             <span
-                                                class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span>
+                                                class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">{{Auth::user()->jabatan->nama_jabatan}}</span>
                                         </div>
-                                        <a href="#" class="fw-bold text-muted text-hover-primary fs-7">max@kt.com</a>
+                                        <a href="#"
+                                            class="fw-bold text-muted text-hover-primary fs-7">{{Auth::user()->user}}</a>
                                     </div>
                                     <!--end::Username-->
                                 </div>
@@ -113,14 +116,20 @@
 
                             <!--begin::Menu item-->
                             <div class="menu-item px-5 my-1">
-                                <a href="../../demo1/dist/account/settings.html" class="menu-link px-5">Account
-                                    Settings</a>
+                                <a href="{{route('dashboard.petugas.main.edit', Auth::user()->id_petugas)}}"
+                                    class="menu-link px-5">Pengaturan Akun</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-5">
-                                <a href="../../demo1/dist/authentication/flows/basic/sign-in.html"
-                                    class="menu-link px-5">Sign Out</a>
+                                <form action="{{route('logout.petugas')}}" class="d-block" method="POST"
+                                    id="logoutform">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger w-100 mb-5">Log Out</button>
+                                </form>
+                                {{-- <a href="#" onclick="document.getElementById('logoutform').submit()"
+                                    class="menu-link px-5">Sign
+                                    Out</a> --}}
                             </div>
                             <!--end::Menu item-->
                         </div>
