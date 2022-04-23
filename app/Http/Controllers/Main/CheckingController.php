@@ -9,6 +9,7 @@ use App\Models\ServiceOrder;
 use App\Models\ServiceOrderDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CheckingController extends Controller
@@ -335,7 +336,7 @@ class CheckingController extends Controller
         // dd($request->all());
         $so = [
             'id_service_order'  => $request->id_service_order,
-            'id_petugas'        => "10",
+            'id_petugas'        => Auth::user()->id_petugas,
             'no_so'             => $request->no_so,
             'tgl_penjemputan'   => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
             'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i'),
@@ -352,7 +353,7 @@ class CheckingController extends Controller
                 'id_service_order'  => $request->id_service_order,
                 'id_driver'         => $request->id_driver,
                 'id_kendaraan'      => $request->id_kendaraan,
-                'id_petugas'        => "10",
+                'id_petugas'        => Auth::user()->id_petugas,
                 'tgl_penugasan'     => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
                 'jam_berangkat'     => Carbon::parse($request->jam_penjemputan)->format('H:i'),
                 'kembali'           => $request->tmp_kembali,
