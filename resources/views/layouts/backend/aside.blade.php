@@ -46,7 +46,8 @@
                     </div>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link {{ Request::path() == '/' ? 'active' : '' }}" href="{{route('dashboard')}}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}"
+                        href="{{route('dashboard')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -64,7 +65,7 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link {{ Request::path() == 'monitoring/driver' ? 'active' : '' }}"
+                    <a class="menu-link {{ Route::currentRouteName() == 'dashboard.monitoring.driver' ? 'active' : '' }}"
                         href="{{route('dashboard.monitoring.driver')}}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
@@ -88,7 +89,8 @@
                     </div>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('checking.serviceorder') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'checking.serviceorder' ? 'active' : '' }}"
+                        href="{{ route('checking.serviceorder') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -100,7 +102,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('status.main') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'status.main' ? 'active' : '' }}"
+                        href="{{ route('status.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -112,7 +115,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('assign.main') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'assign.main' ? 'active' : '' }}"
+                        href="{{ route('assign.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -124,7 +128,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('assign.main.batal') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'assign.main.batal' ? 'active' : '' }}"
+                        href="{{ route('assign.main.batal') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -136,7 +141,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('rating.main') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'rating.main' ? 'active' : '' }}"
+                        href="{{ route('rating.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -148,7 +154,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('check.main') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'check.main' ? 'active' : '' }}"
+                        href="{{ route('check.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -160,7 +167,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('repair.main') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'repair.main' ? 'active' : '' }}"
+                        href="{{ route('repair.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -172,7 +180,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('accident.main') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'accident.main' ? 'active' : '' }}"
+                        href="{{ route('accident.main') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -189,8 +198,10 @@
                         <span class="menu-section text-muted text-uppercase fs-8 ls-1">Data Master</span>
                     </div>
                 </div>
-
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                {{-- @dd(Route::currentRouteName() == 'dashboard.kendaraan.main.index') --}}
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::currentRouteName() == 'dashboard.kendaraan.main.index' ||
+                    Route::currentRouteName() == 'dashboard.bahanbakar.index' || Route::currentRouteName() == 'dashboard.kendaraan.merk.index' || Route::currentRouteName() == 'dashboard.kendaraan.jenis.index' || Route::currentRouteName() == 'dashboard.kendaraan.jenis_alokasi.index'
+                     ? 'show' : '' }}">
                     <span class="menu-link">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen009.svg-->
@@ -212,7 +223,8 @@
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.kendaraan.main.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.kendaraan.main.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.kendaraan.main.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -220,7 +232,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.bahanbakar.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.bahanbakar.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.bahanbakar.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -228,7 +241,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.kendaraan.merk.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.kendaraan.merk.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.kendaraan.merk.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -236,7 +250,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.kendaraan.jenis.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.kendaraan.jenis.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.kendaraan.jenis.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -244,7 +259,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.kendaraan.jenis_alokasi.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.kendaraan.jenis_alokasi.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.kendaraan.jenis_alokasi.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -254,7 +270,8 @@
                     </div>
                 </div>
 
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::currentRouteName() == 'dashboard.driver.index' ||
+                Route::currentRouteName() == 'dashboard.sim.index' ? 'show' : '' }}">
                     <span class="menu-link">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen009.svg-->
@@ -276,7 +293,8 @@
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.driver.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.driver.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.driver.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -284,7 +302,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.sim.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.sim.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.sim.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -294,7 +313,9 @@
                     </div>
                 </div>
 
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                <div data-kt-menu-trigger="click"
+                    class="menu-item menu-accordion {{ Route::currentRouteName() == 'dashboard.petugas.main.index' ||
+                Route::currentRouteName() == 'dashboard.petugas.departemen.index' || Route::currentRouteName() == 'dashboard.petugas.jabatan.index' || Route::currentRouteName() == 'dashboard.dealer.index' ? 'show' : '' }}">
                     <span class="menu-link">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen009.svg-->
@@ -316,7 +337,8 @@
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.petugas.main.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.petugas.main.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.petugas.main.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -324,7 +346,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.petugas.departemen.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.petugas.departemen.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.petugas.departemen.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -332,7 +355,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.petugas.jabatan.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.petugas.jabatan.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.petugas.jabatan.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -340,7 +364,8 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('dashboard.dealer.index') }}">
+                            <a class="menu-link {{ Route::currentRouteName() == 'dashboard.dealer.index' ? 'active' : '' }}"
+                                href="{{ route('dashboard.dealer.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -357,7 +382,8 @@
                 </div>
 
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('dashboard.pengecekan.kriteria.index') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'dashboard.pengecekan.kriteria.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard.pengecekan.kriteria.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -369,7 +395,8 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('dashboard.kriteria_rating.index') }}">
+                    <a class="menu-link {{ Route::currentRouteName() == 'dashboard.kriteria_rating.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard.kriteria_rating.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
