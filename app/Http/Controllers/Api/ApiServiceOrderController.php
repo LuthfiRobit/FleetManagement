@@ -45,9 +45,14 @@ class ApiServiceOrderController extends Controller
             "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
             -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
             WHERE tb_driver.status_driver = 'y'
-            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
-            AND tb_status_driver.status = 'n' AND tb_status_driver.tgl_nonaktif = '$tgl_jemput' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
-            AND tb_penugasan_driver.tgl_penugasan = ' $tgl_jemput' AND tb_penugasan_driver.status_penugasan = 'p'  )"
+            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver
+            WHERE tb_status_driver.id_driver = tb_driver.id_driver
+            AND tb_status_driver.status = 'n'
+            -- AND tb_status_driver.tgl_nonaktif = '$tgl_jemput'
+            UNION SELECT id_driver FROM tb_penugasan_driver
+            WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
+            AND tb_penugasan_driver.tgl_penugasan = ' $tgl_jemput'
+            AND tb_penugasan_driver.status_penugasan = 'p'  )"
         );
 
         return response()->json(
