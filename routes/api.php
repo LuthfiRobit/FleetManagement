@@ -169,6 +169,7 @@ Route::group(
     ['middleware' => 'api', 'prefix' => 'kecelakaan'],
     function () {
         Route::get('list/kendaraan', [ApiKecelakaanController::class, 'listKendaraan']); //list kendaraan
+        Route::get('list/kendaraan/filter', [ApiKecelakaanController::class, 'listKendaraanFilter']); //list kendaraan filter
         Route::get('form', [ApiKecelakaanController::class, 'formKecelakaan']); //form kecelakaan
         Route::post('simpan', [ApiKecelakaanController::class, 'storeKecelakaan']); //simpan kecelakaan
         Route::get('foto', [ApiKecelakaanController::class, 'listFotoKecelakaan']); //list foto kecelakaan

@@ -61,6 +61,68 @@ class ApiKecelakaanController extends Controller
         );
     }
 
+    public function listKendaraanFilter(Request $request)
+    {
+        $level = $request->query('level');
+        $id = $request->query('id');
+        $no_pol = $request->query('noplat');
+        $kendaraan = DB::table('tb_penugasan_driver')
+            ->select(
+                'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_driver',
+                'tb_penugasan_driver.id_petugas',
+                'tb_penugasan_driver.id_kendaraan',
+                'tb_petugas.nama_lengkap as nama_petugas',
+                'tb_petugas.no_tlp as no_petugas',
+                'tb_driver.nama_driver',
+                'tb_driver.no_tlp as no_driver',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_penugasan_driver.tgl_penugasan',
+                'tb_penugasan_driver.jam_berangkat',
+                'tb_order_kendaraan.tempat_penjemputan as jemput',
+                'tb_order_kendaraan.tujuan',
+                'tb_penugasan_driver.kembali',
+                'tb_penugasan_driver.status_penugasan'
+            )
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
+            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->when($level == 'driver', function ($by_driver) use ($id, $no_pol) {
+                $by_driver->when($no_pol != '', function ($by_nopol) use ($no_pol) {
+                    $by_nopol->where('tb_kendaraan.no_polisi', 'like', '%' . $no_pol . '%');
+                })
+                    ->where('tb_penugasan_driver.id_driver', $id)
+                    ->whereIn('tb_penugasan_driver.status_penugasan', ['t', 'p']);
+            })
+            ->when($level == 'petugas', function ($by_petugas) use ($id, $no_pol) {
+                $by_petugas->when($no_pol != '', function ($by_nopol) use ($no_pol) {
+                    $by_nopol->where('tb_kendaraan.no_polisi', 'like', '%' . $no_pol . '%');
+                })
+                    ->where('tb_penugasan_driver.id_petugas', $id)
+                    ->whereIn('tb_penugasan_driver.status_penugasan', ['t', 'p']);
+            })
+            ->orderByDesc('tb_penugasan_driver.id_do')
+            ->get();
+
+        if ($kendaraan->count() > 0) {
+            return response()->json(
+                [
+                    'status'        => 'sukses',
+                    'list_kendaraan' => $kendaraan
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal',
+                    'list_kendaraan' => 'tidak ada'
+                ]
+            );
+        }
+    }
+
     public function formKecelakaan(Request $request)
     {
         $id_do = $request->query('id_do');
