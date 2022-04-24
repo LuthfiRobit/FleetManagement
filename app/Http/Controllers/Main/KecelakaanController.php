@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Exports\KecelakaanExportDate;
+use App\Exports\KecelakaanExportOne;
 use App\Http\Controllers\Controller;
+use App\Models\Kecelakaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KecelakaanController extends Controller
 {
@@ -38,6 +42,7 @@ class KecelakaanController extends Controller
                 'tb_kecelakaan.id_kecelakaan',
                 'tb_kecelakaan.id_do',
                 'tb_order_kendaraan.no_so',
+                'tb_order_kendaraan.tujuan',
                 'tb_kecelakaan.tgl_kecelakaan as tgl',
                 'tb_kecelakaan.jam_kecelakaan as jam',
                 'tb_kecelakaan.lokasi_kejadian as lokasi',
@@ -50,7 +55,9 @@ class KecelakaanController extends Controller
                 'tb_merk_kendaraan.nama_merk as merk',
                 'tb_jenis_kendaraan.nama_jenis as jenis',
                 'tb_bahan_bakar.nama_bahan_bakar as bahan_bakar',
-                'tb_driver.nama_driver'
+                'tb_driver.nama_driver',
+                'tb_petugas.nama_lengkap as atasan',
+                'tb_detail_so.nama_penumpang as saksi'
             )
             ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_kecelakaan.id_do')
             ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
@@ -59,23 +66,26 @@ class KecelakaanController extends Controller
             ->leftJoin('tb_merk_kendaraan', 'tb_merk_kendaraan.id_merk', '=', 'tb_kendaraan.id_merk')
             ->leftJoin('tb_jenis_kendaraan', 'tb_jenis_kendaraan.id_jenis_kendaraan', '=', 'tb_kendaraan.id_jenis_kendaraan')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
-            ->where('id_kecelakaan', $id)
+            ->join('tb_saksi_kecelakaan', 'tb_saksi_kecelakaan.id_kecelakaan', '=', 'tb_kecelakaan.id_kecelakaan')
+            ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_saksi_kecelakaan.id_atasan')
+            ->join('tb_detail_so', 'tb_detail_so.id_detail_so', '=', 'tb_saksi_kecelakaan.id_saksi')
+            ->where('tb_kecelakaan.id_kecelakaan', $id)
             ->first();
 
-        $data['assignment'] = DB::table('tb_penugasan_driver')
-            ->select(
-                'tb_penugasan_driver.kembali',
-                'tb_petugas.nama_lengkap as nama_petugas',
-                'tb_kendaraan.nama_kendaraan',
-                'tb_kendaraan.no_polisi',
-                'tb_order_kendaraan.tempat_penjemputan',
-                'tb_order_kendaraan.tujuan'
-            )
-            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
-            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
-            ->rightJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
-            ->where('id_do', $data['kecelakaan']->id_do)
-            ->first();
+        // $data['assignment'] = DB::table('tb_penugasan_driver')
+        //     ->select(
+        //         'tb_penugasan_driver.kembali',
+        //         'tb_petugas.nama_lengkap as nama_petugas',
+        //         'tb_kendaraan.nama_kendaraan',
+        //         'tb_kendaraan.no_polisi',
+        //         'tb_order_kendaraan.tempat_penjemputan',
+        //         'tb_order_kendaraan.tujuan'
+        //     )
+        //     ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
+        //     ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+        //     ->rightJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+        //     ->where('id_do', $data['kecelakaan']->id_do)
+        //     ->first();
         $data['kerusakan'] = DB::table('tb_detail_foto_kecelakaan as tb_foto')
             ->select(
                 'tb_foto.foto_pendukung',
@@ -87,5 +97,29 @@ class KecelakaanController extends Controller
         // return $data;
 
         return view('dashboard.main.accident.detail', $data);
+    }
+
+
+    public function exportAcdFilter(Request $request)
+    {
+        $tgl_kecelakaan = $request->tgl_kecelakaan;
+        $tanggal = \Carbon\Carbon::parse($tgl_kecelakaan)->translatedFormat('j F Y');
+        $find = Kecelakaan::where('tgl_kecelakaan', $tgl_kecelakaan)->get();
+        // return $find;
+        if ($find->count() > 0) {
+            return Excel::download(new KecelakaanExportDate($tgl_kecelakaan), 'Laporan_kecelakaan_tanggal_' . $tanggal . '.xlsx');
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Tanggal kecelakaan tidak ditemukan');
+        }
+    }
+
+    public function exportOne($id)
+    {
+        $find = Kecelakaan::select('id_kecelakaan')->where('id_kecelakaan', $id)->first();
+        if ($find) {
+            return Excel::download(new KecelakaanExportOne($id), 'Laporan_kecelakaan_ACD' . $find->id_kecelakaan . '.xlsx');
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Data kecelakaan tidak ditemukan');
+        }
     }
 }
