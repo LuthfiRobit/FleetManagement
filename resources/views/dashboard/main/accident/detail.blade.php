@@ -98,7 +98,7 @@
                                             <tr>
                                                 <td class="text-gray-400">Tanggal Kecelakaan:</td>
                                                 <td class="text-gray-800">
-                                                    {{Carbon\Carbon::parse($kecelakaan->tgl)->format('d F Y')}}</td>
+                                                    {{Carbon\Carbon::parse($kecelakaan->tgl)->format('d-m-Y')}}</td>
                                             </tr>
                                             <!--end::Row-->
                                             <!--begin::Row-->
@@ -106,6 +106,14 @@
                                                 <td class="text-gray-400">Jam Kecelakaan:</td>
                                                 <td class="text-gray-800">
                                                     {{Carbon\Carbon::parse($kecelakaan->jam)->format('H:i')}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Atasan:</td>
+                                                <td class="text-gray-800">
+                                                    {{$kecelakaan->atasan}}
                                                 </td>
                                             </tr>
                                             <!--end::Row-->
@@ -119,6 +127,14 @@
                                         <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
                                             <!--begin::Row-->
                                             <tr>
+                                                <td class="text-gray-400">Saksi:</td>
+                                                <td class="text-gray-800">
+                                                    {{$kecelakaan->saksi}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
                                                 <td class="text-gray-400 min-w-175px w-175px">Lokasi Kecelakaan:</td>
                                                 <td class="text-gray-800 min-w-200px">
                                                     {{$kecelakaan->lokasi}}
@@ -129,7 +145,7 @@
                                             <tr>
                                                 <td class="text-gray-400">Tujuan Perjalanan:</td>
                                                 <td class="text-gray-800">
-                                                    {{$assignment->tujuan}}
+                                                    {{$kecelakaan->tujuan}}
                                                 </td>
                                             </tr>
                                             <!--end::Row-->
