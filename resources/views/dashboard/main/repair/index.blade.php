@@ -20,7 +20,111 @@
                         <span class="text-muted mt-1 fw-bold fs-7">Ada
                             {{$perbaikan->where('status_perbaikan','p')->count()}} Dalam Proses</span>
                     </h3>
+                    <!--begin::Card toolbar-->
+                    <div class="card-toolbar">
+                        <!--begin::Toolbar-->
+                        <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                            <!--begin::Export-->
+                            <button type="button" class="btn btn-light-primary btn-sm mb-5" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_export_users">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="bi bi-file-earmark-excel"></i></a>
+                                </span>
+                                <!--end::Svg Icon-->Export
+                            </button>
+                            <!--end::Export-->
+                        </div>
+                        <!--end::Toolbar-->
+                        <!--begin::Modal - Adjust Balance-->
+                        <div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
+                            <!--begin::Modal dialog-->
+                            <div class="modal-dialog modal-dialog-centered mw-450px">
+                                <!--begin::Modal content-->
+                                <div class="modal-content">
+                                    <!--begin::Modal header-->
+                                    <div class="modal-header">
+                                        <!--begin::Modal title-->
+                                        <h2 class="fw-bolder">Export Excel Perbaikan</h2>
+                                        <!--end::Modal title-->
+                                        <!--begin::Close-->
+                                        <div class="btn btn-icon btn-sm btn-active-icon-primary"
+                                            data-kt-users-modal-action="close">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                                            <span class="svg-icon svg-icon-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1"
+                                                        transform="rotate(-45 6 17.3137)" fill="black" />
+                                                    <rect x="7.41422" y="6" width="16" height="2" rx="1"
+                                                        transform="rotate(45 7.41422 6)" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </div>
+                                        <!--end::Close-->
+                                    </div>
+                                    <!--end::Modal header-->
+                                    <!--begin::Modal body-->
+                                    <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                                        <!--begin::Form-->
+                                        <form id="kt_modal_export_users_form" class="form"
+                                            action="{{route('repair.export.status')}}" method="GET"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-10">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-bold form-label mb-2">Status Perbaikan:</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <select name="status" data-control="select2"
+                                                    data-placeholder="Pilih Kendaraan" data-hide-search="true"
+                                                    class="form-select form-select-solid fw-bolder">
+                                                    <option></option>
+                                                    <option value="p">Proses</option>
+                                                    <option value="s">Selesai</option>
+                                                </select>
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-10">
+                                                <!--begin::Label-->
+                                                <label class="required fs-5 fw-bold form-label mb-5">Tanggal</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    placeholder="Pick a date" name="tanggal" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
 
+                                            <!--begin::Actions-->
+                                            <div class="text-center">
+                                                <button type="reset" class="btn btn-light me-3"
+                                                    data-kt-users-modal-action="cancel">Batal</button>
+                                                <button type="submit" class="btn btn-primary"
+                                                    data-kt-users-modal-action="submit">
+                                                    <span class="indicator-label">Kirim</span>
+                                                    <span class="indicator-progress">Mohon Tunggu...
+                                                        <span
+                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                </button>
+                                            </div>
+                                            <!--end::Actions-->
+                                        </form>
+                                        <!--end::Form-->
+                                    </div>
+                                    <!--end::Modal body-->
+                                </div>
+                                <!--end::Modal content-->
+                            </div>
+                            <!--end::Modal dialog-->
+                        </div>
+                        <!--end::Modal - New Card-->
+                    </div>
+                    <!--end::Card toolbar-->
                 </div>
 
                 <!--end::Header-->
@@ -187,6 +291,9 @@
                                             @endif
                                         </td>
                                         <td>
+                                            <a href="{{route('repair.export.one', $pr->id_perbaikan)}}"
+                                                class="btn btn-light bnt-active-light-success btn-sm mb-1"><i
+                                                    class="bi bi-file-earmark-excel"></i></a>
                                             <a href="{{route('repair.detail', $pr->id_perbaikan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                         </td>
@@ -249,5 +356,120 @@
             "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
             ">"
     });
+
+    "use strict";
+    var KTModalExportUsers = function() {
+        const t = document.getElementById("kt_modal_export_users"),
+            e = t.querySelector("#kt_modal_export_users_form"),
+            n = new bootstrap.Modal(t);
+        return {
+            init: function() {
+                ! function() {
+                    var o = FormValidation.formValidation(e, {
+                        fields: {
+                            status: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Statu Harus Diisi"
+                                    }
+                                }
+                            },
+                            tanggal: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Tanggal Harus Diisi"
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger,
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: ".fv-row",
+                                eleInvalidClass: "",
+                                eleValidClass: ""
+                            })
+                        }
+                    });
+                    const i = t.querySelector('[data-kt-users-modal-action="submit"]');
+                    i.addEventListener("click", (function(t) {
+                        t.preventDefault(), o && o.validate().then((function(t) {
+                            console.log("validated!"), "Valid" == t ? (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
+                                i.removeAttribute("data-kt-indicator"), Swal.fire({
+                                    text: "Export Perbaikan Berhasil Dikirim, Mohon Tunggu!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, mengerti!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then((function(t) {
+                                    e.submit()
+                                    t.isConfirmed && (n.hide(), i.disabled = !1)
+                                }))
+                            }), 2e3)) : Swal.fire({
+                                text: "Silahkan Isi Field",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (function(t) {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah Anda Yakin Membatalkan Export?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "No, return",
+                            customClass: {
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
+                            }
+                        }).then((function(t) {
+                            t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                text: "Export Anda Dibatalkan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    })), t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (function(t) {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah Anda Yakin Membatalkan Export?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
+                            customClass: {
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
+                            }
+                        }).then((function(t) {
+                            t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                text: "Export Anda Belum Dibatalkan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    }))
+                }()
+            }
+        }
+    }();
+    KTUtil.onDOMContentLoaded((function() {
+        KTModalExportUsers.init()
+    }));
 </script>
 @endpush
