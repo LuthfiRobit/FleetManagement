@@ -376,7 +376,7 @@ class ApiPenugasanController extends Controller
     {
         $id_do = $request->query('id_do');
         $id_driver = $request->query('id_driver');
-        $findProses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_driver], ['status_penugasan', 'p']])->first();
+        $findProses = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', 'p']])->first();
 
         if ($findProses == true) {
             return response()->json(

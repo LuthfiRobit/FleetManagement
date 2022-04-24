@@ -346,6 +346,16 @@ class ApiCheckingController extends Controller
             UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang')"
 
         );
+       
+       if($kendaraan == null){
+        return response()->json(
+            [
+                'status'            => 'gagal',
+                'tgl_sekarang'      => $tgl_sekarang,
+                'list_kendaraan'    => 'tidak ada'
+            ]
+        ); 
+       }else{
         return response()->json(
             [
                 'status'            => 'sukses',
@@ -353,10 +363,6 @@ class ApiCheckingController extends Controller
                 'list_kendaraan'    => $kendaraan
             ]
         ); 
-       
-
-        // if($kendaraan->count()> 0){
-             
-        // }
+       }
     }
 }
