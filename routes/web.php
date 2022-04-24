@@ -102,6 +102,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->group(function () {
             Route::get('/', [KecelakaanController::class, 'index'])->name('.main');
             Route::get('detail/{id}', [KecelakaanController::class, 'detail'])->name('.detail');
+            Route::get('/export/{id}', [KecelakaanController::class, 'exportOne'])->name('.exprt.acd.one');
+            Route::get('/filter/export', [KecelakaanController::class, 'exportAcdFilter'])->name('.filter.export');
         });
     Route::name('rating')->prefix('rating')
         ->group(function () {
