@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Exports\PerbaikanOneIdExport;
+use App\Exports\PerbaikanStatusBulanExport;
 use App\Http\Controllers\Controller;
 use App\Models\PengecekanKendaraan;
 use App\Models\PengecekanKendaraanDetail;
@@ -10,7 +12,9 @@ use App\Models\PerbaikanDetail;
 use App\Models\PerbaikanPersetujuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PerbaikanController extends Controller
 {
@@ -168,7 +172,7 @@ class PerbaikanController extends Controller
     {
 
         $id_pengecekan = $request->id_pengecekan;
-        $id_petugas = 4;
+        $id_petugas = Auth::user()->id_petugas;
 
         $data_approval = [
             'no_wo' => $request->no_wo,
@@ -269,5 +273,52 @@ class PerbaikanController extends Controller
         // } else {
         //     return redirect()->back()->with('success', 'Gagal tolak perbaikan!');
         // }
+    }
+
+    public function exportSelesaiAll(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $status = $request->status;
+        $bulan =  Carbon::parse($tanggal)->format('m');
+        $tahun = Carbon::parse($tanggal)->format('Y');
+        // $data = [
+        //     'bulan' => Carbon::parse($tgl)->format('m'),
+        //     'tahun' => Carbon::parse($tgl)->format('Y')
+        // ];
+        // dd($data);
+        if ($status == 's') {
+            $find = Perbaikan::whereMonth('tgl_perbaikan', $bulan)->whereYear('tgl_perbaikan', $tahun)->where('status_perbaikan', 's')->get();
+            if ($find->count() > 0) {
+                // return $find;
+                return Excel::download(new PerbaikanStatusBulanExport($tanggal, $bulan, $tahun, $status), 'Laporan_perbaikan_tahun' . $tahun . '_bulan_' . $bulan . '_selesai.xlsx');
+            } else {
+                return redirect()->back()->with('success', 'Maaf, Data yang anda cari tidak ditemukan');
+            }
+        } else {
+            $find = Perbaikan::whereMonth('tgl_perbaikan', $bulan)->whereYear('tgl_perbaikan', $tahun)->where('status_perbaikan', 'p')->get();
+            if ($find->count() > 0) {
+                // return $find;
+                return Excel::download(new PerbaikanStatusBulanExport($tanggal, $bulan, $tahun, $status), 'Laporan_perbaikan_tahun' . $tahun . '_bulan_' . $bulan . '_proses.xlsx');
+            } else {
+                return redirect()->back()->with('success', 'Maaf, Data yang anda cari tidak ditemukan');
+            }
+        }
+    }
+
+    public function exportOne($id)
+    {
+        $find = DB::table('tb_perbaikan')
+            ->select(
+                'tb_perbaikan.id_perbaikan',
+                'tb_persetujuan_perbaikan.no_wo'
+            )
+            ->leftJoin('tb_persetujuan_perbaikan', 'tb_persetujuan_perbaikan.id_persetujuan', '=', 'tb_perbaikan.id_persetujuan')
+            ->where('tb_perbaikan.id_perbaikan', $id)
+            ->first();
+        if ($find) {
+            return Excel::download(new PerbaikanOneIdExport($id), 'Laporan_perbaikan_' . $find->no_wo . '.xlsx');
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Data yang anda cari tidak ditemukan');
+        }
     }
 }

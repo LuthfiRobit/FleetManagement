@@ -177,8 +177,8 @@ return [
 
         // jwt
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        
-
+        //maatExcel
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -238,7 +238,8 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
-
+        //maatExcel
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

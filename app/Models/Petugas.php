@@ -34,6 +34,11 @@ class Petugas extends  Authenticatable implements JWTSubject
         'status'
     ];
 
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'id_jabatan');
+    }
+
 
     protected $hidden = [
         'password',

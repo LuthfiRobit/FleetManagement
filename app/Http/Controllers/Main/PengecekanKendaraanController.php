@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Exports\PengecekanCarExport;
+use App\Exports\PengecekanDateExport;
 use App\Http\Controllers\Controller;
+use App\Models\PengecekanKendaraan;
 use App\Models\PenugasanDriver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PengecekanKendaraanController extends Controller
 {
@@ -28,7 +32,8 @@ class PengecekanKendaraanController extends Controller
             )
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_pengecekan_kendaraan.id_driver')
-            ->orderByDesc('tb_pengecekan_kendaraan.id_pengecekan')
+            // ->orderByDesc('tb_pengecekan_kendaraan.id_pengecekan')
+            ->orderByRaw('CONVERT(tb_pengecekan_kendaraan.id_pengecekan, SIGNED) desc')
             ->get();
 
         $data['kendaraan'] = DB::table('tb_kendaraan')
@@ -36,11 +41,9 @@ class PengecekanKendaraanController extends Controller
                 'tb_kendaraan.id_kendaraan',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
+                'tb_kendaraan.kode_asset'
             )
-            // ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
-            ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
-            // ->whereNull('tb_penugasan_driver.id_kendaraan')
-            ->whereNull('tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('status', 'y')
             ->orderByDesc('id_kendaraan')
             ->get();
         // return $data;
@@ -136,5 +139,43 @@ class PengecekanKendaraanController extends Controller
         }
         // return $data;
         return view('dashboard.main.checking.detail', $data);
+    }
+
+    public function exportCar($id)
+    {
+        $kendaraan = DB::table('tb_pengecekan_kendaraan')
+            ->select(
+                'tb_pengecekan_kendaraan.id_pengecekan',
+                'tb_kendaraan.nama_kendaraan',
+            )
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('id_pengecekan', $id)
+            ->first();
+        return Excel::download(new PengecekanCarExport($id), 'Laporan_pengecekan_' . $kendaraan->nama_kendaraan . '.xlsx');
+    }
+
+    public function exportCarFilter(Request $request)
+    {
+        $tgl_pengecekan = $request->tgl_pengecekan;
+        $id_kendaraan = $request->id_kendaraan;
+        $tanggal = \Carbon\Carbon::parse($tgl_pengecekan)->translatedFormat('j F Y');
+        $find = PengecekanKendaraan::where('tgl_pengecekan', $tgl_pengecekan)->get();
+        if ($find->count() > 0) {
+            if ($id_kendaraan != '') {
+                $kendaraan = DB::table('tb_pengecekan_kendaraan')
+                    ->select(
+                        'tb_pengecekan_kendaraan.id_pengecekan',
+                        'tb_kendaraan.nama_kendaraan',
+                    )
+                    ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+                    ->where('tb_pengecekan_kendaraan.id_kendaraan', $id_kendaraan)
+                    ->first();
+                return Excel::download(new PengecekanDateExport($id_kendaraan, $tgl_pengecekan), 'Laporan_pengecekan_' . $kendaraan->nama_kendaraan . '_tanggal_' . $tanggal . '.xlsx');
+            } else {
+                return Excel::download(new PengecekanDateExport($id_kendaraan, $tgl_pengecekan), 'Laporan_pengecekan_tanggal_' . $tanggal . '.xlsx');
+            }
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Tanggal pengecekan tidak ditemukan');
+        }
     }
 }

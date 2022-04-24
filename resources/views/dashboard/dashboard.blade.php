@@ -47,7 +47,9 @@
                                 <!--begin::Row-->
                                 <div class="row g-0">
                                     <!--begin::Col-->
-                                    <div class="col bg-light-warning px-6 py-8 rounded-2 me-7 mb-7">
+                                    <div class="col bg-light-warning px-6 py-8 rounded-2 me-7 mb-7"
+                                        onclick="location.href='{{ route('dashboard.kendaraan.main.index') }}'"
+                                        style="cursor:pointer">
                                         <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
                                         <span class="svg-icon svg-icon-3x svg-icon-warning d-block my-2">
                                             <i class="fa fa-car fs-3x text-warning"></i>
@@ -58,7 +60,9 @@
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
-                                    <div class="col bg-light-primary px-6 py-8 rounded-2 mb-7">
+                                    <div class="col bg-light-primary px-6 py-8 rounded-2 mb-7"
+                                        onclick="location.href='{{ route('dashboard.driver.index') }}'"
+                                        style="cursor:pointer">
                                         <!--begin::Svg Icon | path: icons/duotune/finance/fin006.svg-->
                                         <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
                                             <i class="bi bi-person-badge fs-3x text-primary"></i>
@@ -73,7 +77,8 @@
                                 <!--begin::Row-->
                                 <div class="row g-0">
                                     <!--begin::Col-->
-                                    <div class="col bg-light-danger px-6 py-8 rounded-2 me-7">
+                                    <div class="col bg-light-danger px-6 py-8 rounded-2 me-7"
+                                        onclick="location.href='{{ route('assign.main') }}'" style="cursor:pointer">
                                         <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                                         <span class="svg-icon svg-icon-3x svg-icon-danger d-block my-2">
                                             <i class="bi bi-pin-map-fill fs-3x text-danger"></i>
@@ -85,7 +90,8 @@
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
-                                    <div class="col bg-light-success px-6 py-8 rounded-2">
+                                    <div class="col bg-light-success px-6 py-8 rounded-2"
+                                        onclick="location.href='{{ route('repair.main') }}'" style="cursor:pointer">
                                         <!--begin::Svg Icon | path: icons/duotune/communication/com010.svg-->
                                         <span class="svg-icon svg-icon-3x svg-icon-success d-block my-2">
                                             <i class="fa fa-wrench fs-3x text-success"></i>
@@ -343,7 +349,7 @@
                                             </td>
                                             <td>
                                                 @if ($hs->penugasan == 0)
-                                                -
+                                                0
                                                 @else
                                                 {{$hs->penugasan}}
                                                 @endif
@@ -351,7 +357,7 @@
                                             </td>
                                             <td>
                                                 @if ($hs->pembatalan == 0)
-                                                -
+                                                0
                                                 @else
                                                 {{$hs->pembatalan}}
                                                 @endif
@@ -359,7 +365,7 @@
                                             </td>
                                             <td>
                                                 @if ($hs->nonaktif == null)
-                                                -
+                                                0
                                                 @else
                                                 {{$hs->nonaktif}}
                                                 @endif
@@ -367,7 +373,7 @@
                                             </td>
                                             <td>
                                                 @if ($hs->kecelakaan == 0)
-                                                -
+                                                0
                                                 @else
                                                 {{$hs->kecelakaan}}
                                                 @endif

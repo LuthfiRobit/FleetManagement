@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Laporan Pembatalan Tugas | Utama')
+@section('title','Pengajuan Pembatalan Tugas | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,7 +16,7 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">LAPORAN PEMBATALAN TUGAS</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">PENGAJUAN PEMBATALAN TUGAS</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Ada
                             {{$batal->where('statu_pembatalan',null)->count()}}
                             Pembatalan Butuh Respon</span>
