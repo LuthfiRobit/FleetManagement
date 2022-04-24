@@ -26,7 +26,7 @@ class PengecekanCarExport implements FromView
     public function view(): View
     {
         $id = $this->id;
-        return view('dashboard.export.expengecekanCar', [
+        return view('dashboard.export.exPengecekanCar', [
             'checkCar' =>  DB::table('tb_pengecekan_kendaraan')
                 ->select(
                     'tb_pengecekan_kendaraan.id_pengecekan',

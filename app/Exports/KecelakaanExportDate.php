@@ -26,7 +26,7 @@ class KecelakaanExportDate implements FromView
     public function view(): View
     {
         $tgl_kecelakaan = $this->tgl_kecelakaan;
-        return view('dashboard.export.exkecelakaanDate', [
+        return view('dashboard.export.exKecelakaanDate', [
             'acdn' =>  DB::table('tb_kecelakaan')
                 ->select(
                     'tb_kecelakaan.id_kecelakaan',
