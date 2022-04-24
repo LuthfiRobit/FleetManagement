@@ -102,11 +102,11 @@ class PengecekanDateExport implements FromView
         }
         // dd($detail);
         if ($id_kendaraan != '') {
-            return view('dashboard.export.expengecekanDateCar', [
+            return view('dashboard.export.exPengecekanDateCar', [
                 'checkCar' => $detail
             ]);
         } else {
-            return view('dashboard.export.expengecekanDate', [
+            return view('dashboard.export.exPengecekanDate', [
                 'checkCar' => $detail
             ]);
         }

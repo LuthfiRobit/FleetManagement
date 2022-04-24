@@ -27,7 +27,7 @@ class KecelakaanExportOne implements FromView
     public function view(): View
     {
         $id = $this->id;
-        return view('dashboard.export.exkecelakaanOne', [
+        return view('dashboard.export.exKecelakaanOne', [
             'acd' =>  DB::table('tb_kecelakaan')
                 ->select(
                     'tb_kecelakaan.id_kecelakaan',
