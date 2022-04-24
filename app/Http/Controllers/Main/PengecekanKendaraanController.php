@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Main;
 use App\Exports\PengecekanCarExport;
 use App\Exports\PengecekanDateExport;
 use App\Http\Controllers\Controller;
+use App\Models\PengecekanKendaraan;
 use App\Models\PenugasanDriver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -157,14 +158,23 @@ class PengecekanKendaraanController extends Controller
         $tgl_pengecekan = $request->tgl_pengecekan;
         $id_kendaraan = $request->id_kendaraan;
         $tanggal = \Carbon\Carbon::parse($tgl_pengecekan)->translatedFormat('j F Y');
-        $kendaraan = DB::table('tb_pengecekan_kendaraan')
-            ->select(
-                'tb_pengecekan_kendaraan.id_pengecekan',
-                'tb_kendaraan.nama_kendaraan',
-            )
-            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
-            ->where('tb_pengecekan_kendaraan.id_kendaraan', $id_kendaraan)
-            ->first();
-        return Excel::download(new PengecekanDateExport($id_kendaraan, $tgl_pengecekan), 'Laporan_pengecekan_' . $kendaraan->nama_kendaraan . '_tanggal_' . $tanggal . '.xlsx');
+        $find = PengecekanKendaraan::where('tgl_pengecekan', $tgl_pengecekan)->get();
+        if ($find->count() > 0) {
+            if ($id_kendaraan != '') {
+                $kendaraan = DB::table('tb_pengecekan_kendaraan')
+                    ->select(
+                        'tb_pengecekan_kendaraan.id_pengecekan',
+                        'tb_kendaraan.nama_kendaraan',
+                    )
+                    ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+                    ->where('tb_pengecekan_kendaraan.id_kendaraan', $id_kendaraan)
+                    ->first();
+                return Excel::download(new PengecekanDateExport($id_kendaraan, $tgl_pengecekan), 'Laporan_pengecekan_' . $kendaraan->nama_kendaraan . '_tanggal_' . $tanggal . '.xlsx');
+            } else {
+                return Excel::download(new PengecekanDateExport($id_kendaraan, $tgl_pengecekan), 'Laporan_pengecekan_tanggal_' . $tanggal . '.xlsx');
+            }
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Tanggal pengecekan tidak ditemukan');
+        }
     }
 }
