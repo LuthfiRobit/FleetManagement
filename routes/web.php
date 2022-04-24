@@ -97,6 +97,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('detail/{id}', [PerbaikanController::class, 'detail'])->name('.detail');
             Route::post('/store', [PerbaikanController::class, 'store'])->name('.store');
             Route::post('reject/{id}', [PerbaikanController::class, 'reject'])->name('.reject');
+            Route::get('export/status', [PerbaikanController::class, 'exportSelesaiAll'])->name('.export.status');
+            Route::get('export/one/{id}', [PerbaikanController::class, 'exportOne'])->name('.export.one');
         });
     Route::name('accident')->prefix('accident')
         ->group(function () {
@@ -105,13 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/export/{id}', [KecelakaanController::class, 'exportOne'])->name('.exprt.acd.one');
             Route::get('/filter/export', [KecelakaanController::class, 'exportAcdFilter'])->name('.filter.export');
         });
-    Route::name('rating')->prefix('rating')
-        ->group(function () {
-            Route::get('/', [RatingDriverController::class, 'index'])->name('.main');
-            Route::get('detail/{id}', [RatingDriverController::class, 'detail'])->name('.detail');
-            Route::get('insert', [RatingDriverController::class, 'viewInsert'])->name('.insert');
-            Route::post('store', [RatingDriverController::class, 'storeRating'])->name('.store');
-        });
+
     Route::name('status')->prefix('status')
         ->group(function () {
             Route::get('/', [DriverStatusController::class, 'index'])->name('.main');
@@ -184,3 +180,11 @@ Route::group(['middleware' => 'auth'], function () {
     //as api
     Route::get('driver/select', [CheckingController::class, 'selectDriver'])->name('driver.select');
 });
+
+Route::name('rating')->prefix('rating')
+    ->group(function () {
+        Route::get('/', [RatingDriverController::class, 'index'])->name('.main');
+        Route::get('detail/{id}', [RatingDriverController::class, 'detail'])->name('.detail');
+        Route::get('insert', [RatingDriverController::class, 'viewInsert'])->name('.insert');
+        Route::post('store', [RatingDriverController::class, 'storeRating'])->name('.store');
+    });
