@@ -67,7 +67,7 @@ class CheckingController extends Controller
                 'tb_detail_so.id_detail_so',
                 'tb_detail_so.nama_penumpang',
                 'tb_detail_so.jabatan as nama_jabatan',
-                'tb_detail_so.no_tlp',
+                'tb_detail_so.no_tlp'
             )
             ->orderByDesc('id_detail_so')
             ->where('id_service_order', $id)
@@ -327,6 +327,12 @@ class CheckingController extends Controller
         $data['last_so'] = DB::table('tb_order_kendaraan')
             ->select('id_service_order', 'no_so')
             ->orderByDesc('id_service_order')->first();
+        if ($data['last_so'] == false) {
+            $data['last_so'] = (object) array(
+                'id_service_order' => 0,
+                'no_so' => 0
+            );
+        }
         // dd($data);
         return view('dashboard.main.serviceorder.create2', $data);
     }
