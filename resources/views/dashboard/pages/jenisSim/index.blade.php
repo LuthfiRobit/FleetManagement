@@ -21,7 +21,7 @@
                             Jenis SIM</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                        title="" data-bs-original-title="Tekan untuk menambah bahan bakar">
+                        title="" data-bs-original-title="Tekan untuk menambah jenis SIM">
                         <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal"
                             data-bs-target="#kt_modal_new_feul">
                             <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
@@ -157,7 +157,7 @@
                             <button type="reset" id="kt_modal_new_feul_cancel" class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_new_feul_submit" class="btn btn-primary">
                                 <span class="indicator-label">Simpan</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -256,7 +256,7 @@
                                     text: "Formulir telah berhasil dikirim!",
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "Ok, mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary"
                                     }
@@ -268,7 +268,7 @@
                                 text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -281,8 +281,8 @@
                             icon: "warning",
                             showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Yes, cancel it!",
-                            cancelButtonText: "No, return",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light"
@@ -292,7 +292,7 @@
                                 text: "Formulir Anda belum dibatalkan!.",
                                 icon: "error",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }

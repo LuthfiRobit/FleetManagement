@@ -64,10 +64,10 @@
                         <!--begin::Actions-->
                         <div class="text-center">
                             <button type="reset" id="kt_modal_new_target_cancel"
-                                class="btn btn-light me-3">Cancel</button>
+                                class="btn btn-light me-3">Batal</button>
                             <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
+                                <span class="indicator-label">Kirim</span>
+                                <span class="indicator-progress">Mohon Tunggu...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                         </div>
@@ -119,7 +119,7 @@ var KTModalNewTarget = function () {
                         status: {
                             validators: {
                                 notEmpty: {
-                                    message: "Status Merk Harus Diisi"
+                                    message: "Status Jenis Harus Diisi"
                                 }
                             }
                         }
@@ -140,7 +140,7 @@ var KTModalNewTarget = function () {
                                 text: "Formulir telah berhasil dikirim!",
                                 icon: "success",
                                 buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "Ok, mengerti!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -152,7 +152,7 @@ var KTModalNewTarget = function () {
                             text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -165,8 +165,8 @@ var KTModalNewTarget = function () {
                         icon: "warning",
                         showCancelButton: !0,
                         buttonsStyling: !1,
-                        confirmButtonText: "Yes, cancel it!",
-                        cancelButtonText: "No, return",
+                        confirmButtonText: "Ya, batalkan!",
+                        cancelButtonText: "Tidak, kembali",
                         customClass: {
                             confirmButton: "btn btn-primary",
                             cancelButton: "btn btn-active-light"
@@ -174,11 +174,11 @@ var KTModalNewTarget = function () {
                     }).then((function (t) {
 
                         t.value ?
-                        (a.reset(), window.location.href = "{{ route('dashboard.bahanbakar.index')}}") : "cancel" === t.dismiss && Swal.fire({
+                        (a.reset(), window.location.href = "{{ route('dashboard.sim.index')}}") : "cancel" === t.dismiss && Swal.fire({
                             text: "Formulir Anda belum dibatalkan!.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Ok, mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
