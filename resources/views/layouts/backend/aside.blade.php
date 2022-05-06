@@ -192,6 +192,19 @@
                         <span class="menu-title">Laporan Kecelakaan</span>
                     </a>
                 </div>
+                <div class="menu-item">
+                    <a class="menu-link {{ Route::currentRouteName() == 'accident.main' ? 'active' : '' }}"
+                        href="{{ route('accident.main') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-concierge-bell"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Tagihan Biaya Penugasan</span>
+                    </a>
+                </div>
 
                 <div class="menu-item">
                     <div class="menu-content pt-8 pb-2">
@@ -405,6 +418,19 @@
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Kriteria Rating</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link {{ Route::currentRouteName() == 'dashboard.jenis_pengeluaran.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard.jenis_pengeluaran.index') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-warehouse"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Jenis Pengeluaran</span>
                     </a>
                 </div>
             </div>
