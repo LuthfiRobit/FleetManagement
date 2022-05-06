@@ -386,12 +386,22 @@ class ApiPenugasanController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    'status'    => 'sukses',
-                    'pesan'     => 'silahkan melakukan proses'
-                ]
-            );
+            $findNow = PenugasanDriver::where('id_do', $id_do)->first();
+            if ($findNow->tgl_penugasan == Carbon::now()->format('Y-m-d')) {
+                return response()->json(
+                    [
+                        'status'    => 'sukses',
+                        'pesan'     => 'silahkan melakukan proses'
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status'    => 'gagal',
+                        'pesan'     => 'proses hanya bisa dilakukan pada tanggal penugasan'
+                    ]
+                );
+            }
         }
     }
 
