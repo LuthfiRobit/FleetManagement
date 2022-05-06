@@ -10,6 +10,7 @@ use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JenisAlokasiController;
 use App\Http\Controllers\JenisKendaraanController;
 use App\Http\Controllers\JenisPengecekanController;
+use App\Http\Controllers\JenisPengeluaranController;
 use App\Http\Controllers\JenisSimController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\PetugasController;
 use App\Models\AlokasiKendaraan;
 use App\Models\Driver;
 use App\Models\JenisAlokasi;
+use App\Models\JenisPengeluaran;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -159,6 +161,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('kriteria_rating', KriteriaRatingController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
             Route::resource('dealer', DealerController::class)->shallow()
+                ->only(['index', 'store', 'edit', 'update']);
+            Route::resource('jenis_pengeluaran', JenisPengeluaranController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
 
             Route::resource('driver', DriverController::class)->shallow()
