@@ -85,6 +85,7 @@ class PengecekanKendaraanController extends Controller
                 'tb_pengecekan_kendaraan.status_kendaraan',
                 'tb_pengecekan_kendaraan.status_pengecekan',
                 'tb_pengecekan_kendaraan.status_perbaikan',
+                'tb_pengecekan_kendaraan.keterangan_pengecekan',
                 'tb_kendaraan.kode_asset',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
@@ -103,7 +104,28 @@ class PengecekanKendaraanController extends Controller
             ->where('id_pengecekan', $id)
             ->first();
         // return $data;
-
+        $kriteria = DB::table('tb_kriteria_pengecekan')->where('status', 'y')->get();
+        $hasil = array();
+        foreach ($kriteria as  $krt) {
+            $hasil_awal = array();
+            $hasil_awal['id_kriteria'] = $krt->id_kriteria;
+            $hasil_awal['nama_kriteria'] = $krt->nama_kriteria;
+            $kedua = DB::table('tb_detail_pengecekan')->where('id_kriteria', $krt->id_kriteria)
+                ->leftJoin('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
+                ->get();
+            $hasil_awal['list_jenis'] = array();
+            foreach ($kedua as $axx) {
+                $hasil_dua = array();
+                $hasil_dua['id_detail_pengecekan'] = $axx->id_detail_pengecekan;
+                $hasil_dua['kondisi'] = $axx->kondisi;
+                $hasil_dua['keterangan'] = $axx->keterangan;
+                $hasil_dua['waktu'] = $axx->waktu_pengecekan;
+                $hasil_dua['jenis'] = $axx->jenis_pengecekan;
+                array_push($hasil_awal['list_jenis'], $hasil_dua);
+            }
+            array_push($hasil, $hasil_awal);
+        }
+        $data['detail_check'] = $hasil;
         $data['detail'] = DB::table('tb_detail_pengecekan')
             ->select(
                 'tb_detail_pengecekan.id_detail_pengecekan',
