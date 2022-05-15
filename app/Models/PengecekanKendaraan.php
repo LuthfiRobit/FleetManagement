@@ -22,7 +22,8 @@ class PengecekanKendaraan extends Model
         'status_kendaraan',
         'status_pengecekan',
         'status_perbaikan',
-        'keterangan_penolakan'
+        'keterangan_penolakan',
+        'keterangan_pengecekan'
     ];
 
     public function detailPengecekan()

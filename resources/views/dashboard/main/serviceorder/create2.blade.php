@@ -53,7 +53,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid" placeholder="Isi No. So"
-                                    name="no_so" />
+                                    name="no_so" required />
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -61,7 +61,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
-                                    placeholder="Isi tempat tujuan" name="tmp_tujuan" />
+                                    placeholder="Isi tempat tujuan" name="tmp_tujuan" required />
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -69,7 +69,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
-                                    placeholder="Isi tempat penjemputan" name="tmp_penjemputan" />
+                                    placeholder="Isi tempat penjemputan" name="tmp_penjemputan" required />
                             </div>
                         </div>
                         <div class="form-group d-flex mb-8 row">
@@ -79,7 +79,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <textarea type="text" class="form-control form-control-solid"
-                                    placeholder="Isi agenda penugasan" name="agenda"></textarea>
+                                    placeholder="Isi agenda penugasan" name="agenda" required></textarea>
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -87,7 +87,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="time" class="form-control form-control-solid"
-                                    placeholder="Isi jam penjemputan" name="jam_penjemputan" />
+                                    placeholder="Isi jam penjemputan" name="jam_penjemputan" required />
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -97,7 +97,8 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="date" class="form-control form-control-solid"
-                                    placeholder="Isi tanggal penjemputan" name="tgl_penjemputan" id="tgl_penjemputan" />
+                                    placeholder="Isi tanggal penjemputan" name="tgl_penjemputan" id="tgl_penjemputan"
+                                    required />
                             </div>
                         </div>
                         <div class="form-group mb-8 row">
@@ -109,7 +110,7 @@
                                 </label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Kendaraan" id="id_kendaraan"
-                                    name="id_kendaraan">
+                                    name="id_kendaraan" required>
                                 </select>
                             </div>
                             <div class="col-lg-3">
@@ -120,7 +121,7 @@
                                 </label>
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="false" data-placeholder="Pilih Driver" id="id_driver"
-                                    name="id_driver">
+                                    name="id_driver" required>
                                 </select>
                             </div>
                             <div class="col-lg-3">
@@ -129,7 +130,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
-                                    placeholder="Isi tempat kembali driver" name="tmp_kembali" />
+                                    placeholder="Isi tempat kembali driver" name="tmp_kembali" required />
                             </div>
                             <div class="col-lg-2">
                                 <label class="d-flex fs-6 fw-bold mb-2">
@@ -137,7 +138,8 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="number" class="form-control form-control-solid"
-                                    placeholder="Isi jumlah penumpang" name="jml_penumpang" id="jml_penumpang" />
+                                    placeholder="Isi jumlah penumpang" name="jml_penumpang" id="jml_penumpang"
+                                    required />
                             </div>
                         </div>
                         <div class="isi form-group d-flex mb-8 row">
@@ -171,162 +173,162 @@
 
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
-    var KTFormAccept = function () {
-        var t, e, n, a, i;
-        return {
-            init: function () {
-                (
-                    a = document.querySelector("#kt_form_accept"),
-                    t = document.getElementById("kt_button_submit"),
-                    e = document.getElementById("kt_button_cancel")
-                    , n = FormValidation.formValidation(a, {
-                        fields: {
-                            no_so: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "No. So Harus Diisi"
-                                    }
-                                }
-                            },
-                            tmp_tujuan: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Tempat Tujuann Harus Diisi"
-                                    }
-                                }
-                            },
-                            tmp_penjemputan: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Tempat Penjemputan Harus Diisi"
-                                    }
-                                }
-                            },
-                            agenda: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Agenda Penugasan Harus Diisi"
-                                    }
-                                }
-                            },
-                            jam_penjemputan: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Jam Penjemputan Harus Diisi"
-                                    }
-                                }
-                            },
-                            tgl_penjemputan: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Tgl. Pejemputan Harus Diisi"
-                                    }
-                                }
-                            },
-                            id_kendaraan: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Kendaraan Harus Dipilih"
-                                    }
-                                }
-                            },
-                            id_driver: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Driver Harus Dipilih"
-                                    }
-                                }
-                            },
-                            tmp_kembali: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Kembali Harus Diisi"
-                                    }
-                                }
-                            },
-                            jml_penumpang: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Jumlah Penumpang Harus Diisi"
-                                    }
-                                }
-                            }
-                            // nama_pe: {
-                            //     validators: {
-                            //         notEmpty: {
-                            //             message: "Kembali Harus Diisi"
-                            //         }
-                            //     }
-                            // }
-                        },
-                        plugins: {
-                            trigger: new FormValidation.plugins.Trigger,
-                            bootstrap: new FormValidation.plugins.Bootstrap5({
-                                rowSelector: ".row",
-                                // eleInvalidClass: "",
-                                // eleValidClass: ""
-                            })
-                        }
-                    }),
-                    t.addEventListener("click", (function (e) {
-                        e.preventDefault(), n && n.validate().then((function (e) {
-                            console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
-                                t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
-                                    text: "Formulir telah berhasil dikirim!",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                }).then((function (t) {
-                                    a.submit()
-                                    t.isConfirmed && o.hide()
-                                }))
-                            }), 2e3)) : Swal.fire({
-                                text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
-                                icon: "error",
-                                buttonsStyling: !1,
-                                confirmButtonText: "Ok, mengerti!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            })
-                        }))
-                    })),
-                    e.addEventListener("click", (function (t) {
-                        t.preventDefault(), Swal.fire({
-                            text: "Apakah Anda yakin ingin membatalkan?",
-                            icon: "warning",
-                            showCancelButton: !0,
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ya, batalkan!",
-                            cancelButtonText: "Tidak, kembali",
-                            customClass: {
-                                confirmButton: "btn btn-primary",
-                                cancelButton: "btn btn-active-light"
-                            }
-                        }).then((function (t) {
+    // var KTFormAccept = function () {
+    //     var t, e, n, a, i;
+    //     return {
+    //         init: function () {
+    //             (
+    //                 a = document.querySelector("#kt_form_accept"),
+    //                 t = document.getElementById("kt_button_submit"),
+    //                 e = document.getElementById("kt_button_cancel")
+    //                 , n = FormValidation.formValidation(a, {
+    //                     fields: {
+    //                         no_so: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "No. So Harus Diisi"
+    //                                 }
+    //                             }
+    //                         },
+    //                         tmp_tujuan: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Tempat Tujuann Harus Diisi"
+    //                                 }
+    //                             }
+    //                         },
+    //                         tmp_penjemputan: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Tempat Penjemputan Harus Diisi"
+    //                                 }
+    //                             }
+    //                         },
+    //                         agenda: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Agenda Penugasan Harus Diisi"
+    //                                 }
+    //                             }
+    //                         },
+    //                         jam_penjemputan: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Jam Penjemputan Harus Diisi"
+    //                                 }
+    //                             }
+    //                         },
+    //                         tgl_penjemputan: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Tgl. Pejemputan Harus Diisi"
+    //                                 }
+    //                             }
+    //                         },
+    //                         id_kendaraan: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Kendaraan Harus Dipilih"
+    //                                 }
+    //                             }
+    //                         },
+    //                         id_driver: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Driver Harus Dipilih"
+    //                                 }
+    //                             }
+    //                         },
+    //                         tmp_kembali: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Kembali Harus Diisi"
+    //                                 }
+    //                             }
+    //                         },
+    //                         jml_penumpang: {
+    //                             validators: {
+    //                                 notEmpty: {
+    //                                     message: "Jumlah Penumpang Harus Diisi"
+    //                                 }
+    //                             }
+    //                         }
+    //                         // nama_pe: {
+    //                         //     validators: {
+    //                         //         notEmpty: {
+    //                         //             message: "Kembali Harus Diisi"
+    //                         //         }
+    //                         //     }
+    //                         // }
+    //                     },
+    //                     plugins: {
+    //                         trigger: new FormValidation.plugins.Trigger,
+    //                         bootstrap: new FormValidation.plugins.Bootstrap5({
+    //                             rowSelector: ".row",
+    //                             // eleInvalidClass: "",
+    //                             // eleValidClass: ""
+    //                         })
+    //                     }
+    //                 }),
+    //                 t.addEventListener("click", (function (e) {
+    //                     e.preventDefault(), n && n.validate().then((function (e) {
+    //                         console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
+    //                             t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
+    //                                 text: "Formulir telah berhasil dikirim!",
+    //                                 icon: "success",
+    //                                 buttonsStyling: !1,
+    //                                 confirmButtonText: "Ok, mengerti!",
+    //                                 customClass: {
+    //                                     confirmButton: "btn btn-primary"
+    //                                 }
+    //                             }).then((function (t) {
+    //                                 a.submit()
+    //                                 t.isConfirmed && o.hide()
+    //                             }))
+    //                         }), 2e3)) : Swal.fire({
+    //                             text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
+    //                             icon: "error",
+    //                             buttonsStyling: !1,
+    //                             confirmButtonText: "Ok, mengerti!",
+    //                             customClass: {
+    //                                 confirmButton: "btn btn-primary"
+    //                             }
+    //                         })
+    //                     }))
+    //                 })),
+    //                 e.addEventListener("click", (function (t) {
+    //                     t.preventDefault(), Swal.fire({
+    //                         text: "Apakah Anda yakin ingin membatalkan?",
+    //                         icon: "warning",
+    //                         showCancelButton: !0,
+    //                         buttonsStyling: !1,
+    //                         confirmButtonText: "Ya, batalkan!",
+    //                         cancelButtonText: "Tidak, kembali",
+    //                         customClass: {
+    //                             confirmButton: "btn btn-primary",
+    //                             cancelButton: "btn btn-active-light"
+    //                         }
+    //                     }).then((function (t) {
 
-                            t.value ?
-                            (a.reset(), window.location.href = "{{route('checking.serviceorder')}}") : "cancel" === t.dismiss && Swal.fire({
-                                text: "Formulir Anda belum dibatalkan!.",
-                                icon: "error",
-                                buttonsStyling: !1,
-                                confirmButtonText: "Ok, mengerti!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            })
-                        }))
-                    }))
-                )
-            }
-        }
-    }();
-    KTUtil.onDOMContentLoaded((function () {
-        KTFormAccept.init()
-    }));
+    //                         t.value ?
+    //                         (a.reset(), window.location.href = "{{route('checking.serviceorder')}}") : "cancel" === t.dismiss && Swal.fire({
+    //                             text: "Formulir Anda belum dibatalkan!.",
+    //                             icon: "error",
+    //                             buttonsStyling: !1,
+    //                             confirmButtonText: "Ok, mengerti!",
+    //                             customClass: {
+    //                                 confirmButton: "btn btn-primary"
+    //                             }
+    //                         })
+    //                     }))
+    //                 }))
+    //             )
+    //         }
+    //     }
+    // }();
+    // KTUtil.onDOMContentLoaded((function () {
+    //     KTFormAccept.init()
+    // }));
 
     $(function () {
         $('#jml_penumpang').on('change', function () {
@@ -340,19 +342,19 @@
                 '<div class="form-group d-flex mb-8 row">'+
                     '<div class="col-lg-5">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input type="text" class="form-control form-control-solid" placeholder="Nama penumpang '+j+'" name="nama_penumpang[]" reuired/>'+
+                        '<input type="text" class="form-control form-control-solid" placeholder="Nama penumpang '+j+'" name="nama_penumpang[]" required/>'+
                     '</div>'+
                     '<div class="col-lg-1 text-end">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input class="form-check-input mt-2 ps-2" type="radio" value="y" name="status[]" id="status"/>'+
+                        '<input class="form-check-input mt-2 ps-2" type="radio" value="y" name="status[]" id="status" required/>'+
                     '</div>'+
                     '<div class="col-lg-3">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input type="text" class="form-control form-control-solid no-tlp-penumpang" placeholder="No. Tlpn penumpang '+j+', [6285...]" id="no_tlp_'+i+'" name="no_tlp[]" maxlength="13"/>'+
+                        '<input type="text" class="form-control form-control-solid no-tlp-penumpang" placeholder="No. Tlpn penumpang '+j+', [6285...]" id="no_tlp_'+i+'" name="no_tlp[]" maxlength="13" required/>'+
                     '</div>'+
                     '<div class="col-lg-3">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        ' <input type="text" class="form-control form-control-solid" name="jbtn_penumpang[]" placeholder="Jabatan Penumpang '+j+'" />'+
+                        ' <input type="text" class="form-control form-control-solid" name="jbtn_penumpang[]" placeholder="Jabatan Penumpang '+j+'" required/>'+
                     '</div>'+
                 '</div>'
                 );

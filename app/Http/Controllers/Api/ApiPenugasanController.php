@@ -7,6 +7,7 @@ use App\Models\Driver;
 use App\Models\PenugasanBatal;
 use App\Models\PenugasanDriver;
 use App\Models\ServiceOrderDetail;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -326,12 +327,22 @@ class ApiPenugasanController extends Controller
                 );
             }
         } else {
-            return response()->json(
-                [
-                    'status'    => 'ajukan',
-                    'pesan'     => 'silahkan ajukan pembatalan'
-                ]
-            );
+            $findPenugasan = PenugasanDriver::where('id_do', $id_do)->first();
+            if (Carbon::now()->format('Y-m-d') == $findPenugasan->tgl_penugasan || Carbon::now()->format('Y-m-d') > $findPenugasan->tgl_penugasan) {
+                return response()->json(
+                    [
+                        'status'    => 'proses',
+                        'pesan'     => 'pembatalan penugasan ditolak, penugasan harus diproses'
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status'    => 'ajukan',
+                        'pesan'     => 'silahkan ajukan pembatalan'
+                    ]
+                );
+            }
         }
     }
 
@@ -386,12 +397,22 @@ class ApiPenugasanController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    'status'    => 'sukses',
-                    'pesan'     => 'silahkan melakukan proses'
-                ]
-            );
+            $findNow = PenugasanDriver::where('id_do', $id_do)->first();
+            if ($findNow->tgl_penugasan == Carbon::now()->format('Y-m-d')) {
+                return response()->json(
+                    [
+                        'status'    => 'sukses',
+                        'pesan'     => 'silahkan melakukan proses'
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status'    => 'gagal',
+                        'pesan'     => 'proses hanya bisa dilakukan pada tanggal penugasan'
+                    ]
+                );
+            }
         }
     }
 

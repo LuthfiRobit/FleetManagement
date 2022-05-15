@@ -240,7 +240,8 @@ License: For each use you must have a valid license purchased only from above li
                                                             <tr
                                                                 class="border-bottom fs-7 fw-bolder text-gray-700 text-uppercase">
                                                                 <th class="min-w-150px w-150px">Pertanyaan</th>
-                                                                <th class="min-w-100px w-150px text-end">Nilai</th>
+                                                                <th class="min-w-100px w-150px text-end">Nilai <i
+                                                                        class="bi bi-star-fill fs-1x"></i></th>
                                                                 {{-- <th class="min-w-75px w-75px text-end">Action</th>
                                                                 --}}
                                                             </tr>
@@ -259,10 +260,10 @@ License: For each use you must have a valid license purchased only from above li
                                                                     <div class="rating">
                                                                         <!--begin::Star 1-->
                                                                         <label class="rating-label">
-                                                                            <i class="bi bi-star-fill fs-2x"></i>
+                                                                            <i class="bi fs-2x">1</i>
                                                                         </label>
                                                                         <input
-                                                                            class="rating-input{{$loop->iteration}} mr-2"
+                                                                            class="rating-input{{$loop->iteration}} ms-2"
                                                                             name="rating{{$loop->iteration}}" value="1"
                                                                             type="radio" data-val="1"
                                                                             data-do="{{$driver->id_do}}"
@@ -271,10 +272,10 @@ License: For each use you must have a valid license purchased only from above li
                                                                         <!--end::Star 1-->
                                                                         <!--begin::Star 1-->
                                                                         <label class="rating-label">
-                                                                            <i class="bi bi-star-fill fs-2x"></i>
+                                                                            <i class="bi fs-2x">2</i>
                                                                         </label>
                                                                         <input
-                                                                            class="rating-input{{$loop->iteration}} mr-2"
+                                                                            class="rating-input{{$loop->iteration}} ms-2"
                                                                             name="rating{{$loop->iteration}}" value="2"
                                                                             type="radio" data-val="2"
                                                                             data-do="{{$driver->id_do}}"
@@ -283,10 +284,10 @@ License: For each use you must have a valid license purchased only from above li
                                                                         <!--end::Star 1-->
                                                                         <!--begin::Star 1-->
                                                                         <label class="rating-label">
-                                                                            <i class="bi bi-star-fill fs-2x"></i>
+                                                                            <i class="bi fs-2x">3</i>
                                                                         </label>
                                                                         <input
-                                                                            class="rating-input{{$loop->iteration}} mr-2"
+                                                                            class="rating-input{{$loop->iteration}} ms-2"
                                                                             name="rating{{$loop->iteration}}" value="3"
                                                                             type="radio" data-val="3"
                                                                             data-do="{{$driver->id_do}}"
@@ -295,10 +296,10 @@ License: For each use you must have a valid license purchased only from above li
                                                                         <!--end::Star 1-->
                                                                         <!--begin::Star 1-->
                                                                         <label class="rating-label">
-                                                                            <i class="bi bi-star-fill fs-2x"></i>
+                                                                            <i class="bi fs-2x">4</i>
                                                                         </label>
                                                                         <input
-                                                                            class="rating-input{{$loop->iteration}} mr-2"
+                                                                            class="rating-input{{$loop->iteration}} ms-2"
                                                                             name="rating{{$loop->iteration}}" value="4"
                                                                             type="radio" data-val="4"
                                                                             data-do="{{$driver->id_do}}"
@@ -307,10 +308,10 @@ License: For each use you must have a valid license purchased only from above li
                                                                         <!--end::Star 1-->
                                                                         <!--begin::Star 1-->
                                                                         <label class="rating-label">
-                                                                            <i class="bi bi-star-fill fs-2x"></i>
+                                                                            <i class="bi fs-2x">5</i>
                                                                         </label>
                                                                         <input
-                                                                            class="rating-input{{$loop->iteration}} mr-2"
+                                                                            class="rating-input{{$loop->iteration}} ms-2"
                                                                             name="rating{{$loop->iteration}}" value="5"
                                                                             type="radio" data-val="5"
                                                                             data-do="{{$driver->id_do}}"
@@ -334,7 +335,7 @@ License: For each use you must have a valid license purchased only from above li
                                                     href="
                                                 {{route('rating.insert','id_do='.$driver->id_do.'&no_tlp='.$responden->no_tlp)}}">
                                                     <span class="indicator-label">Kirim</span>
-                                                    <span class="indicator-progress">Please wait...
+                                                    <span class="indicator-progress">Mohon Tunggu...
                                                         <span
                                                             class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                                 </a>

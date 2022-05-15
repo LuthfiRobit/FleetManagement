@@ -135,7 +135,8 @@ class ApiCheckingController extends Controller
                 'jam_pengecekan'    => Carbon::parse($request->jam_pengecekan)->format('H:i:s'),
                 'km_kendaraan'      => $request->km_kendaraan,
                 'status_kendaraan'  => $status_kendaraan,
-                'status_pengecekan' => $request->status_pengecekan
+                'status_pengecekan' => $request->status_pengecekan,
+                'keterangan_pengecekan' => $request->keterangan_pengecekan
             ];
             if ($status_kendaraan == 'r') {
                 $data['status_perbaikan'] = 'n';
@@ -322,12 +323,13 @@ class ApiCheckingController extends Controller
         }
     }
 
-    public function FilterBy(Request $request){
+    public function FilterBy(Request $request)
+    {
         $nomorpolisi = $request->query('noplat');
         $tgl_sekarang = Carbon::now()->format('Y-m-d');
         $jam_awal = $request->query('jam_awal');
         $jam_akhir = $request->query('jam_akhir');
-       
+
 
         $kendaraan = DB::select(
             "SELECT
@@ -337,7 +339,7 @@ class ApiCheckingController extends Controller
             tb_jenis_sim.nama_sim as sim
             -- tb_jenis_alokasi.nama_alokasi as alokasi
             FROM tb_kendaraan
-            
+
             LEFT JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
             -- JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
             -- JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
@@ -346,23 +348,23 @@ class ApiCheckingController extends Controller
             UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang')"
 
         );
-       
-       if($kendaraan == null){
-        return response()->json(
-            [
-                'status'            => 'gagal',
-                'tgl_sekarang'      => $tgl_sekarang,
-                'list_kendaraan'    => 'tidak ada'
-            ]
-        ); 
-       }else{
-        return response()->json(
-            [
-                'status'            => 'sukses',
-                'tgl_sekarang'      => $tgl_sekarang,
-                'list_kendaraan'    => $kendaraan
-            ]
-        ); 
-       }
+
+        if ($kendaraan == null) {
+            return response()->json(
+                [
+                    'status'            => 'gagal',
+                    'tgl_sekarang'      => $tgl_sekarang,
+                    'list_kendaraan'    => 'tidak ada'
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'            => 'sukses',
+                    'tgl_sekarang'      => $tgl_sekarang,
+                    'list_kendaraan'    => $kendaraan
+                ]
+            );
+        }
     }
 }

@@ -201,6 +201,17 @@
                                                     </span>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td class="text-gray-400">Keterangan Pengecekan:</td>
+                                                <td class="text-gray-800">
+
+                                                    @if ($pengecekan->keterangan_pengecekan != null)
+                                                    {{$pengecekan->keterangan_pengecekan}}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
                                             <!--end::Row-->
                                         </table>
                                         <!--end::Details-->
@@ -218,7 +229,7 @@
                                 <!--begin::Product table-->
                                 <div class="table-responsive">
                                     <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
+                                    {{-- <table class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
                                         <!--begin::Table head-->
                                         <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
                                             <!--begin::Table row-->
@@ -251,6 +262,52 @@
                                                     ----
                                                     @endif
                                                 </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table> --}}
+                                    <!--end::Table-->
+
+                                    <!--begin::Table-->
+                                    <table class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
+                                        <!--begin::Table body-->
+                                        <tbody class="fs-6 fw-bold text-gray-600">
+                                            @foreach ($detail_check as $de)
+                                            <tr>
+                                                <td colspan="3" align="center"><strong>{{$de['nama_kriteria']}}</strong>
+                                                </td>
+                                                <td>
+                                            <tr class="text-start text-muted text-uppercase gs-0">
+                                                <th>Tipe</th>
+                                                <th>Kondisi</th>
+                                                <th class="min-w-125px">Keterangan</th>
+                                            </tr>
+                                            @forelse ($de['list_jenis'] as $dp)
+                                            <tr>
+                                                {{-- <td>{{$dp->kriteria}}</td> --}}
+                                                <td>{{$dp['jenis']}}</td>
+                                                <td>
+                                                    @if($dp['kondisi'] == 'b')
+                                                    <span class="badge badge-light-success">Baik/Normal</span>
+                                                    @else
+                                                    <span class="badge badge-light-danger">Rusak/Tidak Normal</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($dp['keterangan'] != null)
+                                                    {{$dp['keterangan']}}
+                                                    @else
+                                                    ----
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="3" align="center">Belum ada pengecekan</td>
+                                            </tr>
+                                            @endforelse
+                                            </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
