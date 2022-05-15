@@ -85,6 +85,7 @@ class PengecekanKendaraanController extends Controller
                 'tb_pengecekan_kendaraan.status_kendaraan',
                 'tb_pengecekan_kendaraan.status_pengecekan',
                 'tb_pengecekan_kendaraan.status_perbaikan',
+                'tb_pengecekan_kendaraan.keterangan_pengecekan',
                 'tb_kendaraan.kode_asset',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
