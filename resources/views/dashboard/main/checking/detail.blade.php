@@ -201,6 +201,17 @@
                                                     </span>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td class="text-gray-400">Keterangan Pengecekan:</td>
+                                                <td class="text-gray-800">
+
+                                                    @if ($pengecekan->keterangan_pengecekan != null)
+                                                    {{$pengecekan->keterangan_pengecekan}}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
                                             <!--end::Row-->
                                         </table>
                                         <!--end::Details-->
@@ -218,7 +229,7 @@
                                 <!--begin::Product table-->
                                 <div class="table-responsive">
                                     <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
+                                    {{-- <table class="table align-middle table-row-dashed fs-6 gy-4 mb-0">
                                         <!--begin::Table head-->
                                         <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
                                             <!--begin::Table row-->
