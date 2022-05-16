@@ -539,24 +539,24 @@ class ApiPenugasanController extends Controller
                 ];
                 $proses->update($data);
                 // foreach ($findPenumpang as $penumpang) {
-                $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $findPenumpang->no_tlp);
-                $client = new Client();
-                $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
-                    'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
-                    'body' => json_encode([
-                        'client_id' => '0146',
-                        'project_id' => '2825',
-                        'type' => 'costumer_notif',
-                        'recipient_number' => $findPenumpang->no_tlp,
-                        'language_code' => 'id',
-                        'params' => [
-                            '1' => $findPenumpang->nama_penumpang,
-                            '2' => $driver->nama_driver,
-                            '3' => $driver->no_tlp,
-                            '4' => $url
-                        ]
-                    ])
-                ]);
+                // $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $findPenumpang->no_tlp);
+                // $client = new Client();
+                // $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
+                //     'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
+                //     'body' => json_encode([
+                //         'client_id' => '0146',
+                //         'project_id' => '2825',
+                //         'type' => 'costumer_notif',
+                //         'recipient_number' => $findPenumpang->no_tlp,
+                //         'language_code' => 'id',
+                //         'params' => [
+                //             '1' => $findPenumpang->nama_penumpang,
+                //             '2' => $driver->nama_driver,
+                //             '3' => $driver->no_tlp,
+                //             '4' => $url
+                //         ]
+                //     ])
+                // ]);
                 // if ($request->getStatusCode() == 200) { // 200 OK
                 //     $response_data = $request->getBody()->getContents();
                 // }
