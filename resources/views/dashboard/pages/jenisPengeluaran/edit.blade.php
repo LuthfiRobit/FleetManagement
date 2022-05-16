@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Master | Jenis SIM')
+@section('title','Master | Jenis Pengeluaran')
 
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -12,8 +12,8 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Edit Jenis SIM</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">{{ $jenis_sim->nama_sim}}</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Edit Jenis Pengeluaran</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">{{ $jenis_pengeluaran->nama_jenis}}</span>
                     </h3>
                 </div>
                 <!--end::Header-->
@@ -21,14 +21,14 @@
                 <div class="card-body py-3">
                     <!--begin::Form-->
                     <form id="kt_modal_new_target_form" class="form"
-                        action="{{ route('dashboard.sim.update',$jenis_sim->id_jenis_sim)}}" method="POST"
-                        enctype="multipart/form-data">
+                        action="{{ route('dashboard.jenis_pengeluaran.update',$jenis_pengeluaran->id_jenis_pengeluaran)}}"
+                        method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
                             <!--begin::Title-->
-                            <h1 class="mb-3">Edit Jenis SIM</h1>
+                            <h1 class="mb-3">Edit Jenis Pengeluaran</h1>
                             <!--end::Title-->
                         </div>
                         <!--end::Heading-->
@@ -36,14 +36,14 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                <span class="required">Nama Jenis SIM</span>
+                                <span class="required">Nama Jenis Pengeluaran</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Sesuaikan Dengan Data Dinas Perhubungan"></i>
+                                    title="Sesuaikan Dengan Data PT. Pomi"></i>
                             </label>
                             <!--end::Label-->
                             <input type="text" class="form-control form-control-solid"
-                                placeholder="Masukkan Nama Jenis SIM Bakar" name="nama_sim"
-                                value="{{ $jenis_sim->nama_sim}}" />
+                                placeholder="Masukkan Nama Jenis Pengeluaran" name="nama_jenis"
+                                value="{{ $jenis_pengeluaran->nama_jenis}}" />
                         </div>
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
@@ -52,9 +52,9 @@
                                 <select class="form-select form-select-solid" data-control="select2"
                                     data-hide-search="true" data-placeholder="Pilih Status" name="status">
                                     <option value="">Pilih Status</option>
-                                    <option value="y" {{$jenis_sim->status == 'y' ? 'selected' : ''}}>
+                                    <option value="y" {{$jenis_pengeluaran->status == 'y' ? 'selected' : ''}}>
                                         Aktif</option>
-                                    <option value="t" {{$jenis_sim->status == 't' ? 'selected' : ''}}>
+                                    <option value="t" {{$jenis_pengeluaran->status == 't' ? 'selected' : ''}}>
                                         Non Aktif</option>
                                 </select>
                                 {{--
@@ -99,20 +99,14 @@ var KTModalNewTarget = function () {
                 a = document.querySelector("#kt_modal_new_target_form"),
                 t = document.getElementById("kt_modal_new_target_submit"),
                 e = document.getElementById("kt_modal_new_target_cancel"),
-                $(a.querySelector('[name="nama_sim"]')).on("change", (function () {
-                    n.revalidateField("nama_sim")
+                $(a.querySelector('[name="nama_jenis"]')).on("change", (function () {
+                    n.revalidateField("nama_jenis")
                 })), n = FormValidation.formValidation(a, {
                     fields: {
-                        nama_sim: {
+                        nama_jenis: {
                             validators: {
                                 notEmpty: {
-                                    message: "Nama Jenis SIM Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 45,
-                                    message: "Nama Jenis SIM Maksimal 45 Karakter"
-                                    // }
+                                    message: "Nama Jenis Pengeluaran Harus Diisi"
                                 }
                             }
                         },
@@ -174,7 +168,7 @@ var KTModalNewTarget = function () {
                     }).then((function (t) {
 
                         t.value ?
-                        (a.reset(), window.location.href = "{{ route('dashboard.sim.index')}}") : "cancel" === t.dismiss && Swal.fire({
+                        (a.reset(), window.location.href = "{{ route('dashboard.jenis_pengeluaran.index')}}") : "cancel" === t.dismiss && Swal.fire({
                             text: "Formulir Anda belum dibatalkan!.",
                             icon: "error",
                             buttonsStyling: !1,

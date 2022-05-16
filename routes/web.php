@@ -10,10 +10,12 @@ use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JenisAlokasiController;
 use App\Http\Controllers\JenisKendaraanController;
 use App\Http\Controllers\JenisPengecekanController;
+use App\Http\Controllers\JenisPengeluaranController;
 use App\Http\Controllers\JenisSimController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\KriteriaRatingController;
+use App\Http\Controllers\Main\BiayaPenugasanController;
 use App\Http\Controllers\Main\CheckingController;
 use App\Http\Controllers\Main\DashboardController;
 use App\Http\Controllers\Main\DriverStatusController;
@@ -27,6 +29,7 @@ use App\Http\Controllers\PetugasController;
 use App\Models\AlokasiKendaraan;
 use App\Models\Driver;
 use App\Models\JenisAlokasi;
+use App\Models\JenisPengeluaran;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -114,6 +117,11 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('detail/{id}', [DriverStatusController::class, 'detail'])->name('.detail');
         });
 
+    // Route::name('biaya')->prefix('biaya')
+    //     ->group(function () {
+    //         Route::get('/', [BiayaPenugasanController::class, 'index'])->name('.main');
+    //     });
+
     Route::name('dashboard.')->prefix('dashboard')
         ->group(function () {
             //route group
@@ -159,6 +167,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('kriteria_rating', KriteriaRatingController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
             Route::resource('dealer', DealerController::class)->shallow()
+                ->only(['index', 'store', 'edit', 'update']);
+            Route::resource('jenis_pengeluaran', JenisPengeluaranController::class)->shallow()
                 ->only(['index', 'store', 'edit', 'update']);
 
             Route::resource('driver', DriverController::class)->shallow()

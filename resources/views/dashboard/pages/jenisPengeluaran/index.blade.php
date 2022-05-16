@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Master | Jenis SIM')
+@section('title','Master | Jenis Pengeluaran')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,12 +16,12 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Data Jenis SIM</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$jenis_sim->count()}}
-                            Jenis SIM</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Data Jenis Pengeluaran</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$jenis_pengeluaran->count()}}
+                            Jenis Pengeluaran</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                        title="" data-bs-original-title="Tekan untuk menambah jenis SIM">
+                        title="" data-bs-original-title="Tekan untuk menambah jenis pengeluaran">
                         <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal"
                             data-bs-target="#kt_modal_new_feul">
                             <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
@@ -33,7 +33,7 @@
                                     <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black"></rect>
                                 </svg>
                             </span>
-                            <!--end::Svg Icon-->Tambah Jenis SIM
+                            <!--end::Svg Icon-->Tambah Jenis Pengeluaran
                         </a>
                     </div>
                 </div>
@@ -46,18 +46,18 @@
                         <thead>
                             <tr class="fw-bolder fs-6 text-gray-800 px-7">
                                 <th>No</th>
-                                <th>Jenis SIM</th>
+                                <th>Jenis Pengeluaran</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($jenis_sim as $js)
+                            @foreach ($jenis_pengeluaran as $jp)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$js->nama_sim}}</td>
+                                <td>{{$jp->nama_jenis}}</td>
                                 <td>
-                                    @if ($js->status == 'y')
+                                    @if ($jp->status == 'y')
                                     <span class="badge badge-light-primary">Aktif</span>
                                     @else
                                     <span class="badge badge-light-danger">Non Aktif</span>
@@ -65,7 +65,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-end flex-shrink-0">
-                                        <a href="{{ route('dashboard.sim.edit',$js->id_jenis_sim)}}"
+                                        <a href="{{ route('dashboard.jenis_pengeluaran.edit',$jp->id_jenis_pengeluaran)}}"
                                             class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
                                             <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                                             <span class="svg-icon svg-icon-2">
@@ -116,13 +116,14 @@
                 <!--begin::Modal body-->
                 <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
                     <!--begin:Form-->
-                    <form id="kt_modal_new_feul_form" class="form" action="{{route('dashboard.sim.store')}}"
-                        method="POST" enctype="multipart/form-data">
+                    <form id="kt_modal_new_feul_form" class="form"
+                        action="{{route('dashboard.jenis_pengeluaran.store')}}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
                             <!--begin::Title-->
-                            <h1 class="mb-3">Input Jenis SIM</h1>
+                            <h1 class="mb-3">Input Jenis Pengeluaran</h1>
                             <!--end::Title-->
                         </div>
                         <!--end::Heading-->
@@ -130,13 +131,13 @@
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
                             <label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                                <span class="required">Nama Jenis SIM</span>
+                                <span class="required">Nama Jenis Pengeluaran</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
-                                    title="Sesusikan Dengan Data Dinas Perhubungan"></i>
+                                    title="Sesusikan Dengan Data PT. Pomi"></i>
                             </label>
                             <!--end::Label-->
                             <input type="text" class="form-control form-control-solid"
-                                placeholder="Masukkan Nama Jenis SIM Bakar" name="nama_sim" />
+                                placeholder="Masukkan Nama Jenis Pengeluaran" name="nama_jenis" />
                         </div>
                         <div class="d-flex flex-column mb-8 fv-row">
                             <!--begin::Label-->
@@ -219,16 +220,10 @@
                         n.revalidateField("nama_sim")
                     })), n = FormValidation.formValidation(a, {
                         fields: {
-                            nama_sim: {
+                            nama_jenis: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Nama Jenis SIM Harus Diisi"
-                                    },
-                                    stringLength: {
-                                        // options: {
-                                        max: 45,
-                                        message: "Nama Jenis SIM Maksimal 45 Karakter"
-                                        // }
+                                        message: "Nama Jenis Pengeluaran Harus Diisi"
                                     }
                                 }
                             },
