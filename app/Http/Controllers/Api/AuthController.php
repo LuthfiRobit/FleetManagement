@@ -100,6 +100,8 @@ class AuthController extends Controller
 
 
         if (auth()->guard('api2')->attempt($credentials)) {
+            $petugas = Petugas::select('tb_petugas.*')->find(auth()->guard('api2')->user()->id_petugas);
+            $success =  $petugas;
             try {
                 if (!$token = auth()->guard('api2')->attempt($credentials)) {
 
@@ -115,6 +117,10 @@ class AuthController extends Controller
                     'message' => 'Could not create token.',
                 ], 500);
             }
+            // $data = [
+            //     'player_id' => $request->player_id
+            // ];
+            // $petugas->update($data);
             return response()->json([
                 'success' => 'sukses',
                 'token' => $token,
@@ -139,10 +145,10 @@ class AuthController extends Controller
                     'message' => 'Could not create token.',
                 ], 500);
             }
-            $data = [
-                'player_id' => $request->player_id
-            ];
-            $driver->update($data);
+            // $data = [
+            //     'player_id' => $request->player_id
+            // ];
+            // $driver->update($data);
             return response()->json([
                 'success' => 'sukses',
                 'token' => $token,

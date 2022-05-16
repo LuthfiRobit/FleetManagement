@@ -208,3 +208,5 @@ Route::post('api/notif/add/device', [ApiPenugasanController::class, 'addDevice']
 
 //LIST MANAJEMEN
 Route::get('list/manajemen', [ApiProfilPetugasController::class, 'listManajemen']);
+
+Route::post('update/token', [ApiPenugasanController::class, 'updateTokenFirebase'])->middleware('api');
