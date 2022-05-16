@@ -250,43 +250,33 @@ class CheckingController extends Controller
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($data);
             $findDriver = Driver::select('id_driver', 'player_id')->where('id_driver', $request->id_driver)->first();
-            $content = array(
-                "en" => 'Anda Mempunyai Penugasan Baru!'
-            );
+            $msg =  [
+                'title' => 'Penugasan Baru',
+                'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!'
+            ];
+            $data = [
+                'to' => $findDriver->player_id, // for single device id
+                'notification' => $msg
+            ];
+            $dataString = json_encode($data);
 
-            $fields = array(
-                'app_id' => "768c8998-943b-4ffa-8829-07c1107a9216",
-                'include_player_ids' => array("$findDriver->player_id"),
-                'data' => array("foo" => "bar"),
-                'contents' => $content
-            );
-
-            $fields = json_encode($fields);
-            print("\nJSON sent:\n");
-            print($fields);
+            $headers = [
+                'Authorization: key=' . env('SERVER_API_KEY'),
+                'Content-Type: application/json',
+            ];
 
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json;'));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HEADER, FALSE);
-            curl_setopt($ch, CURLOPT_POST, TRUE);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
             $response = curl_exec($ch);
+
             curl_close($ch);
-
-            // return $response;
-            // }
-
-            // $response = sendMessage();
-            // $return["allresponses"] = $response;
-            // $return = json_encode($return);
-
-            // print("\n\nJSON received:\n");
-            // print($return);
-            // print("\n");
             if ($penugasancreate) {
                 return redirect()->route('checking.serviceorder')->with('success', 'Penugasan Driver Berhasil Dibuat');
             } else {
