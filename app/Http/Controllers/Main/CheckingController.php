@@ -358,8 +358,7 @@ class CheckingController extends Controller
             $penugasancreate = PenugasanDriver::create($do);
             if ($penugasancreate) {
                 $findDriver = Driver::select('id_driver', 'player_id')->where('id_driver', $request->id_driver)->first();
-                $SERVER_API_KEY = 'AAAAAlaLrjI:APA91bEjqhOJwd73S9TGfXd3k_3kUNjBhMk32tY7kkUoOZaVtSktv_VxnUwl1U_ppum2qcbEiaZi_8eIinNMDUYi_CwmdKg1MDA-02orT82u_KyDyA79K6OZjGbxOFDB_tiJg9vcDZoG';
-
+                $SERVER_API_KEY = env('SERVER_API_KEY');
                 $msg =  [
                     'title' => 'Penugasan Baru',
                     'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!'
