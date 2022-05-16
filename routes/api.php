@@ -161,6 +161,8 @@ Route::group(
         Route::get('list/selesai', [ApiPenugasanController::class, 'listSelesai']); //list penugasan selesai
         Route::get('list/batal', [ApiPenugasanController::class, 'listBatal']); //list penugasan batal
         Route::get('detail/batal', [ApiPenugasanController::class, 'detailBatal']); //detail penugasan batal
+        //revisi pomi
+        Route::get('rating', [ApiPenugasanController::class, 'listPenugasanRating']); //list rating
     }
 );
 

@@ -539,24 +539,24 @@ class ApiPenugasanController extends Controller
                 ];
                 $proses->update($data);
                 // foreach ($findPenumpang as $penumpang) {
-                $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $findPenumpang->no_tlp);
-                $client = new Client();
-                $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
-                    'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
-                    'body' => json_encode([
-                        'client_id' => '0146',
-                        'project_id' => '2825',
-                        'type' => 'costumer_notif',
-                        'recipient_number' => $findPenumpang->no_tlp,
-                        'language_code' => 'id',
-                        'params' => [
-                            '1' => $findPenumpang->nama_penumpang,
-                            '2' => $driver->nama_driver,
-                            '3' => $driver->no_tlp,
-                            '4' => $url
-                        ]
-                    ])
-                ]);
+                // $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $findPenumpang->no_tlp);
+                // $client = new Client();
+                // $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
+                //     'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
+                //     'body' => json_encode([
+                //         'client_id' => '0146',
+                //         'project_id' => '2825',
+                //         'type' => 'costumer_notif',
+                //         'recipient_number' => $findPenumpang->no_tlp,
+                //         'language_code' => 'id',
+                //         'params' => [
+                //             '1' => $findPenumpang->nama_penumpang,
+                //             '2' => $driver->nama_driver,
+                //             '3' => $driver->no_tlp,
+                //             '4' => $url
+                //         ]
+                //     ])
+                // ]);
                 // if ($request->getStatusCode() == 200) { // 200 OK
                 //     $response_data = $request->getBody()->getContents();
                 // }
@@ -591,6 +591,67 @@ class ApiPenugasanController extends Controller
         //         ]
         //     );
         // }
+    }
+
+    public function listPenugasanRating()
+    {
+        $listRating = DB::table('tb_penugasan_driver')
+            ->select(
+                'tb_penugasan_driver.id_do',
+                'tb_order_kendaraan.id_service_order',
+                'tb_order_kendaraan.no_so',
+                'tb_driver.nama_driver',
+                'tb_driver.no_tlp as tlp_driver',
+                'tb_penugasan_driver.tgl_selesai',
+                'tb_penugasan_driver.status_penugasan',
+                'tb_detail_so.nama_penumpang',
+                'tb_detail_so.no_tlp',
+                'tb_detail_so.status',
+            )
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_detail_so', 'tb_detail_so.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+            ->leftJoin('tb_rating_driver', 'tb_rating_driver.id_do', '=', 'tb_penugasan_driver.id_do')
+            ->where([['tb_penugasan_driver.status_penugasan', 's'], ['tb_detail_so.status', 'y']])
+            ->groupByRaw('
+                tb_penugasan_driver.id_do,
+                tb_order_kendaraan.id_service_order,
+                tb_order_kendaraan.no_so,
+                tb_driver.nama_driver,
+                tb_driver.no_tlp,
+                tb_penugasan_driver.tgl_selesai,
+                tb_penugasan_driver.status_penugasan,
+                tb_detail_so.nama_penumpang,
+                tb_detail_so.no_tlp,
+                tb_detail_so.status
+            ')
+            ->having(DB::raw('count(tb_rating_driver.id_do)'), '=', 0)
+            ->get()
+            ->map(
+                function ($rating) {
+                    return [
+                        'id_do' => $rating->id_do,
+                        'no_so' => $rating->no_so,
+                        'tgl_selesai' => Carbon::parse($rating->tgl_selesai)->format('d-m-Y'),
+                        'nama_penumpang' => $rating->nama_penumpang,
+                        'no_penumpang' => '+' . $rating->no_tlp,
+                        'url_wa' => 'https://api.whatsapp.com/send?phone=6282336181538&text=Halo%20*'
+                            . $rating->nama_penumpang . '*%0ASilahkan%20berikan%20rating%20untuk%20driver%20dalam%20perjalanan%20anda%0ADriver%20:%20*'
+                            . $rating->nama_driver . '*%0AKontak%20:%20*'
+                            . $rating->tlp_driver . '*%0Aklik%20link%20dibawah%20ini%0A([' . route(
+                                'rating.insert',
+                                $rating->id_do . '?no_tlp=' . $rating->no_tlp
+                            ) . '])%0ATerimakasih%0A*PT.Pomi*',
+                        // 'url'   => route('rating.insert', $rating->id_do . '?no_tlp=' . $rating->no_tlp)
+                    ];
+                }
+            );
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_rating' => $listRating
+            ]
+        );
     }
 
     public function sendNotif(Request $request)
