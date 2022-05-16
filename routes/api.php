@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiBiayaPenugasanController;
 use App\Http\Controllers\Api\ApiCheckingController;
 use App\Http\Controllers\Api\ApiKecelakaanController;
 use App\Http\Controllers\Api\ApiPenugasanController;
@@ -180,6 +181,19 @@ Route::group(
         Route::post('foto/delete', [ApiKecelakaanController::class, 'deletFotoKecelakaan']); //delete foto kecelakaan
         Route::post('foto/cancel', [ApiKecelakaanController::class, 'cancelFotoKecelakaan']); //cancel foto kecelakaan
         Route::post('foto/ket/save', [ApiKecelakaanController::class, 'saveKeteranganFotoKecelakaan']); //simpan/update keterangan
+    }
+);
+
+Route::group(
+    ['middleware' => 'api', 'prefix' => 'biaya'],
+    function () {
+        Route::get('form', [ApiBiayaPenugasanController::class, 'formBiaya']); //form biaya
+        Route::post('simpan', [ApiBiayaPenugasanController::class, 'simpanBiaya']); //simpan biaya
+        Route::get('bukti', [ApiBiayaPenugasanController::class, 'listBukti']); //list bukti biaya
+        Route::post('bukti/insert', [ApiBiayaPenugasanController::class, 'insertBuktiBiaya']); //simpan butki biaya
+        Route::post('bukti/update', [ApiBiayaPenugasanController::class, 'updateBuktiBiaya']); //simpan butki biaya
+        Route::post('bukti/delete', [ApiBiayaPenugasanController::class, 'deleteBuktiBiaya']); //simpan butki biaya
+        Route::post('cancel', [ApiBiayaPenugasanController::class, 'cancelBiaya']); //cancel input biaya
     }
 );
 
