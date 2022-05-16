@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Driver;
 use App\Models\PenugasanBatal;
 use App\Models\PenugasanDriver;
+use App\Models\Petugas;
 use App\Models\ServiceOrderDetail;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -19,6 +20,62 @@ use Illuminate\Support\Facades\Http;
 
 class ApiPenugasanController extends Controller
 {
+
+    public function updateTokenFirebase(Request $request)
+    {
+        $id = $request->id;
+        $level = $request->level;
+        $token = $request->token;
+
+        if ($level == 'driver') {
+            $findDriver = Driver::where('id_driver', $id)->first();
+            if ($findDriver) {
+
+                $findDriver->update(['player_id' => $token]);
+                return response()->json(
+                    [
+                        'pesan'  => 'sukses',
+                        'token'  => $token
+                    ],
+                    200
+                );
+            } else {
+                return response()->json(
+                    [
+                        'pesan' => 'gagal'
+                    ],
+                    400
+                );
+            }
+        } else if ($level == 'petugas') {
+            $findPetugas = Petugas::where('id_petugas', $id)->first();
+            if ($findPetugas) {
+
+                $findPetugas->update(['player_id' => $token]);
+                return response()->json(
+                    [
+                        'pesan'  => 'sukses',
+                        'token'  => $token
+                    ],
+                    200
+                );
+            } else {
+                return response()->json(
+                    [
+                        'pesan' => 'gagal'
+                    ],
+                    400
+                );
+            }
+        } else {
+            return response()->json(
+                [
+                    'pesan' => 'gagal'
+                ],
+                400
+            );
+        }
+    }
 
     public function penugasanTerbaru(Request $request)
     {
