@@ -625,7 +625,7 @@ class ApiPenugasanController extends Controller
                 tb_detail_so.no_tlp,
                 tb_detail_so.status
             ')
-            ->having(DB::raw('count(tb_rating_driver.id_do)'), '=', 3)
+            ->having(DB::raw('count(tb_rating_driver.id_do)'), '=', 0)
             ->get()
             ->map(
                 function ($rating) {
