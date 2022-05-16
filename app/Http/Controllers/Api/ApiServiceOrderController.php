@@ -94,6 +94,8 @@ class ApiServiceOrderController extends Controller
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($do);
             $findDriver = Driver::select('id_driver', 'player_id')->where('id_driver', $request->id_driver)->first();
+            $SERVER_API_KEY = 'AAAAAlaLrjI:APA91bEjqhOJwd73S9TGfXd3k_3kUNjBhMk32tY7kkUoOZaVtSktv_VxnUwl1U_ppum2qcbEiaZi_8eIinNMDUYi_CwmdKg1MDA-02orT82u_KyDyA79K6OZjGbxOFDB_tiJg9vcDZoG';
+
             $msg =  [
                 'title' => 'Penugasan Baru',
                 'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!'
@@ -105,7 +107,7 @@ class ApiServiceOrderController extends Controller
             $dataString = json_encode($data);
 
             $headers = [
-                'Authorization: key=' . env('SERVER_API_KEY'),
+                'Authorization: key=' . $SERVER_API_KEY,
                 'Content-Type: application/json',
             ];
 
@@ -121,6 +123,7 @@ class ApiServiceOrderController extends Controller
             $response = curl_exec($ch);
 
             curl_close($ch);
+            // return $response;
             $namaPenumpang = $request->nama_penumpang;
             foreach ($namaPenumpang as $key => $value) {
                 $serviceDetail = [
