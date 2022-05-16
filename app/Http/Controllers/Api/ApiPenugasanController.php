@@ -713,25 +713,40 @@ class ApiPenugasanController extends Controller
 
     public function sendNotif(Request $request)
     {
-        $key = 'MDg2NjY1ZGYtZTgyYy00NTkyLWIyY2MtMDRhNDYyODBiOTU1';
-        $client = new Client();
-        $request = $client->post('https://onesignal.com/api/v1/notifications', [
-            'headers' => [
-                'Authorization' => 'Basic ' . $key,
-                'Content-Type' => 'application/json'
-            ],
-            'body' => json_encode([
-                'included_segments' => ['Subscribed Users'],
-                'app_id' => '768c8998-943b-4ffa-8829-07c1107a9216',
-                'contents' => ['en' => 'Anda Memiliki Penugasan Baru.'],
-                'headings' => ['en' => 'Silahkan Cek Penugasan Sopir.']
-            ])
-        ]);
-        if ($request->getStatusCode() == 200) { // 200 OK
-            $response_data = $request->getBody()->getContents();
-        }
+        $device_token = 'fXQMlOYkSdKylV9wAh_uUw:APA91bEGmNovRNoopEoyBheaF1cMhO1C7gj9ILvyP-Wvz_75jZyMsK8iJZhh32cDSqq2fSUkeWxEfuhEuWP-UJcpNf9wSuMQHBnG2ZzM8OuNU9AzWvkQ2m7-mf2z1_MER-RmsnAPC1Uq';
+        $SERVER_API_KEY = env('SERVER_API_KEY');
+        // $SERVER_API_KEY = 'AAAAAlaLrjI:APA91bEjqhOJwd73S9TGfXd3k_3kUNjBhMk32tY7kkUoOZaVtSktv_VxnUwl1U_ppum2qcbEiaZi_8eIinNMDUYi_CwmdKg1MDA-02orT82u_KyDyA79K6OZjGbxOFDB_tiJg9vcDZoG';
 
-        return $response_data;
+        $msg =  [
+            'title' => 'Notif',
+            'body' => 'alhamdulillah bisah'
+        ];
+        $data = [
+            'to' => $device_token, // for single device id
+            'notification' => $msg
+        ];
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $response;
+        // return $SERVER_API_KEY;
     }
 
     public function addDevice(Request $request)

@@ -94,7 +94,7 @@ class ApiServiceOrderController extends Controller
             ];
             $penugasancreate = DB::table('tb_penugasan_driver')->insert($do);
             $findDriver = Driver::select('id_driver', 'player_id')->where('id_driver', $request->id_driver)->first();
-            $SERVER_API_KEY = 'AAAAAlaLrjI:APA91bEjqhOJwd73S9TGfXd3k_3kUNjBhMk32tY7kkUoOZaVtSktv_VxnUwl1U_ppum2qcbEiaZi_8eIinNMDUYi_CwmdKg1MDA-02orT82u_KyDyA79K6OZjGbxOFDB_tiJg9vcDZoG';
+            $SERVER_API_KEY = env('SERVER_API_KEY');
 
             $msg =  [
                 'title' => 'Penugasan Baru',
