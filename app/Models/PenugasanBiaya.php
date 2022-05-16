@@ -10,16 +10,18 @@ class PenugasanBiaya extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = 'tb_biaya_penugasan';
-    protected $primaryKey = 'id_biaya';
+    protected $primaryKey = 'id_biaya_penugasan';
 
     protected $fillable = [
-        'id_biaya',
+        'id_biaya_penugasan',
         'id_do',
-        'rincian',
-        'total',
-        'butkti_nota',
-        'ket_penolakan',
-        'status',
-        'tgl_acc'
+        'tgl_pengajuan',
+        'total_biaya'
+        // 'rincian',
+        // 'total',
+        // 'butkti_nota',
+        // 'ket_penolakan',
+        // 'status',
+        // 'tgl_acc'
     ];
 }
