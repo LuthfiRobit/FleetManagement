@@ -66,9 +66,9 @@ class RatingDriverController extends Controller
         return view('dashboard.main.rating.detail', $data);
     }
 
-    public function viewInsert(Request $request)
+    public function viewInsert(Request $request, $id)
     {
-        $id = $request->query('id_do');
+        // $id = $request->query('id_do');
         $no_tlp = $request->query('no_tlp');
 
         $data['driver'] = DB::table('tb_penugasan_driver')
