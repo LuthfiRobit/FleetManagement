@@ -73,13 +73,15 @@ class ApiBiayaPenugasanController extends Controller
         $id_biaya_penugasan = $request->query('id_biaya_penugasan');
         $list_bukti = DB::table('tb_detail_biaya')
             ->select(
-                'id_detail_biaya',
-                'id_jenis_pengeluaran',
-                'bukti',
-                'nominal',
-                'keterangan'
+                'tb_detail_biaya.id_detail_biaya',
+                'tb_detail_biaya.id_jenis_pengeluaran',
+                'tb_jenis_pengeluaran.nama_jenis',
+                'tb_detail_biaya.bukti',
+                'tb_detail_biaya.nominal',
+                'tb_detail_biaya.keterangan'
             )
-            ->where('id_biaya_penugasan', $id_biaya_penugasan)
+            ->leftJoin('tb_jenis_pengeluaran', 'tb_jenis_pengeluaran.id_jenis_pengeluaran', '=', 'tb_detail_biaya.id_jenis_pengeluaran')
+            ->where('tb_detail_biaya.id_biaya_penugasan', $id_biaya_penugasan)
             ->get();
 
         return response()->json(
