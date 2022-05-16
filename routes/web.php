@@ -15,6 +15,7 @@ use App\Http\Controllers\JenisSimController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KriteriaPengecekanController;
 use App\Http\Controllers\KriteriaRatingController;
+use App\Http\Controllers\Main\BiayaPenugasanController;
 use App\Http\Controllers\Main\CheckingController;
 use App\Http\Controllers\Main\DashboardController;
 use App\Http\Controllers\Main\DriverStatusController;
@@ -115,6 +116,11 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', [DriverStatusController::class, 'index'])->name('.main');
             Route::get('detail/{id}', [DriverStatusController::class, 'detail'])->name('.detail');
         });
+
+    // Route::name('biaya')->prefix('biaya')
+    //     ->group(function () {
+    //         Route::get('/', [BiayaPenugasanController::class, 'index'])->name('.main');
+    //     });
 
     Route::name('dashboard.')->prefix('dashboard')
         ->group(function () {
