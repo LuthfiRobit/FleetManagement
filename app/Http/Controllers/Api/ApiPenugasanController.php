@@ -408,6 +408,8 @@ class ApiPenugasanController extends Controller
         $id_dr = $request->id_driver;
         $id_do = $request->id_do;
         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_dr]])->first();
+        $driver = Driver::select('nama_driver', 'no_tlp')->where('id_driver', $id_dr)->first();
+        $findPetugas = Petugas::select('id_petugas', 'player_id')->where('id_petugas', $proses->id_petugas)->first();
         if ($proses == true) {
             // $proses->update(['status_penugasan' => 'c']);
             $bukti = $request->file('bukti');
@@ -423,6 +425,36 @@ class ApiPenugasanController extends Controller
             if ($simpanBatal) {
                 $folder_batal = 'assets/img_batal';
                 $bukti->move($folder_batal, $name);
+                $SERVER_API_KEY = env('SERVER_API_KEY');
+
+                $msg =  [
+                    'title' => 'Pengajuan Pembatalan Tugas',
+                    'body' => 'Driver ' . $driver->nama_driver . ' mengajukan pembatalan tugas, silahkan cek!'
+                ];
+                $data = [
+                    'to' => $findPetugas->player_id, // for single device id
+                    'notification' => $msg
+                ];
+                $dataString = json_encode($data);
+
+                $headers = [
+                    'Authorization: key=' . $SERVER_API_KEY,
+                    'Content-Type: application/json',
+                ];
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                $response = curl_exec($ch);
+
+                curl_close($ch);
+                // return $response;
                 return response()->json(
                     [
                         'status'        => 'sukses',
@@ -582,6 +614,7 @@ class ApiPenugasanController extends Controller
         $id_do = $request->id_do;
         $id_driver = $request->id_driver;
         $proses = PenugasanDriver::where([['id_do', $id_do], ['id_driver', $id_driver]])->first();
+        $findPetugas = Petugas::select('id_petugas', 'player_id')->where('id_petugas', $proses->id_petugas)->first();
         $driver = Driver::select('nama_driver', 'no_tlp')->where('id_driver', $id_driver)->first();
         if ($proses == true) {
             $findPenumpang = ServiceOrderDetail::where([['id_service_order', $proses->id_service_order], ['status', 'y']])->first();
@@ -595,6 +628,36 @@ class ApiPenugasanController extends Controller
                     'status_penugasan' => 's'
                 ];
                 $proses->update($data);
+                $SERVER_API_KEY = env('SERVER_API_KEY');
+
+                $msg =  [
+                    'title' => 'Penugasan Selesai',
+                    'body' => 'Satu penugasan dari ' . $driver->nama_driver . ' telah diselesaikan!'
+                ];
+                $data = [
+                    'to' => $findPetugas->player_id, // for single device id
+                    'notification' => $msg
+                ];
+                $dataString = json_encode($data);
+
+                $headers = [
+                    'Authorization: key=' . $SERVER_API_KEY,
+                    'Content-Type: application/json',
+                ];
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                $response = curl_exec($ch);
+
+                curl_close($ch);
+                // return $response;
                 // foreach ($findPenumpang as $penumpang) {
                 // $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $findPenumpang->no_tlp);
                 // $client = new Client();
@@ -713,7 +776,7 @@ class ApiPenugasanController extends Controller
 
     public function sendNotif(Request $request)
     {
-        $device_token = 'fXQMlOYkSdKylV9wAh_uUw:APA91bEGmNovRNoopEoyBheaF1cMhO1C7gj9ILvyP-Wvz_75jZyMsK8iJZhh32cDSqq2fSUkeWxEfuhEuWP-UJcpNf9wSuMQHBnG2ZzM8OuNU9AzWvkQ2m7-mf2z1_MER-RmsnAPC1Uq';
+        $device_token = $request->token;
         $SERVER_API_KEY = env('SERVER_API_KEY');
         // $SERVER_API_KEY = 'AAAAAlaLrjI:APA91bEjqhOJwd73S9TGfXd3k_3kUNjBhMk32tY7kkUoOZaVtSktv_VxnUwl1U_ppum2qcbEiaZi_8eIinNMDUYi_CwmdKg1MDA-02orT82u_KyDyA79K6OZjGbxOFDB_tiJg9vcDZoG';
 
