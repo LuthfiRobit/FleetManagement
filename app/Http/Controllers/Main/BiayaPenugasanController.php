@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\VarDumper\Cloner\Data;
 
@@ -33,18 +34,28 @@ class BiayaPenugasanController extends Controller
                 tb_biaya_penugasan.tgl_pengajuan,
                 tb_biaya_penugasan.total_biaya
             ')
+            ->when(Auth::user()->id_petugas == 5, function ($sc) {
+                // $sc->having(DB::raw('COUNT(tb_detail_acc_biaya.id_detail_acc)'), '=', 0);
+                $sc->where('tb_detail_acc_biaya.id_petugas', '=', null);
+            })
+            ->when(Auth::user()->id_petugas == 4, function ($mc) {
+                $mc->where('tb_detail_acc_biaya.id_petugas', '!=', null);
+            })
+            ->orderByDesc(DB::raw('GROUP_CONCAT(DISTINCT tb_detail_acc_biaya.id_petugas,"")'))
             ->get()
             ->map(function ($data) {
                 return [
                     'id_biaya' => $data->id_biaya_penugasan,
                     'nama_driver' => $data->nama_driver,
                     'no_so' => $data->no_so,
-                    'pengajuan' => $data->tgl_pengajuan,
+                    'tgl_pengajuan' => $data->tgl_pengajuan,
+                    'total' => $data->total_biaya,
                     'jml_acc' => $data->x,
                     'acc_oleh' => $data->acc_oleh
                 ];
             });
         // return $data;
+        // dd($data);
         return view('dashboard.main.biayapenugasan.index', $data);
     }
 }
