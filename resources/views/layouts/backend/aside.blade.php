@@ -192,7 +192,7 @@
                         <span class="menu-title">Laporan Kecelakaan</span>
                     </a>
                 </div>
-                {{-- <div class="menu-item">
+                <div class="menu-item">
                     <a class="menu-link {{ Route::currentRouteName() == 'biaya.main' ? 'active' : '' }}"
                         href="{{ route('biaya.main') }}">
                         <span class="menu-icon">
@@ -204,7 +204,7 @@
                         </span>
                         <span class="menu-title">Tagihan Biaya Penugasan</span>
                     </a>
-                </div> --}}
+                </div>
 
                 <div class="menu-item">
                     <div class="menu-content pt-8 pb-2">
