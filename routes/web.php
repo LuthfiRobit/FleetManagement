@@ -117,10 +117,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('detail/{id}', [DriverStatusController::class, 'detail'])->name('.detail');
         });
 
-    // Route::name('biaya')->prefix('biaya')
-    //     ->group(function () {
-    //         Route::get('/', [BiayaPenugasanController::class, 'index'])->name('.main');
-    //     });
+    Route::name('biaya')->prefix('biaya')
+        ->group(function () {
+            Route::get('/', [BiayaPenugasanController::class, 'index'])->name('.main');
+        });
 
     Route::name('dashboard.')->prefix('dashboard')
         ->group(function () {
