@@ -515,8 +515,8 @@ class ApiPenugasanController extends Controller
                 'km_awal' => $request->km_awal,
                 'status_bbm_awal' => $request->bbm_awal,
                 'waktu_start' => $request->waktu_start,
-                'lat_sekarang' => $request->latitude,
-                'long_sekarang' => $request->longitude,
+                // 'lat_sekarang' => $request->latitude,
+                // 'long_sekarang' => $request->longitude,
                 'status_penugasan' => 'p'
             ];
             $proses->update($data);
