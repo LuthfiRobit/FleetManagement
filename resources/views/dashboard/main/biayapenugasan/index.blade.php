@@ -29,22 +29,6 @@
                         <span class="card-label fw-bolder fs-3 mb-1">Tagihan Biaya Penugasan</span>
                         <span class="text-muted mt-1 fw-bold fs-7"></span>
                     </h3>
-                    <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                        title="" data-bs-original-title="Tekan untuk membuat penugasan">
-                        <a href="{{ route('checking.serviceorder.form') }}"
-                            class="btn btn-sm btn-light btn-active-primary">
-                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                            <span class="svg-icon svg-icon-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
-                                        transform="rotate(-90 11.364 20.364)" fill="black"></rect>
-                                    <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black"></rect>
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->Buat Penugasan
-                        </a>
-                    </div>
                 </div>
 
                 <!--end::Header-->
@@ -120,7 +104,8 @@
 
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
+                                    <a href="{{route('biaya.detail', $bp['id_biaya'])}}"
+                                        class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                 </td>
                             </tr>
                             @endforeach
