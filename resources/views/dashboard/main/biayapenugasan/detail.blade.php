@@ -87,10 +87,10 @@
                                     <th>Jenis Pengeluaran</th>
                                     <th>Nominal</th>
                                     <th>Bukti</th>
-                                    <th>Acc Sc</th>
-                                    <th>Tgl. Acc Sc</th>
-                                    <th>Acc Mc</th>
-                                    <th>Tgl. Acc Mc</th>
+                                    <th>Acc Service Controller</th>
+                                    <th>Tgl. Acc</th>
+                                    <th>Acc BKM</th>
+                                    <th>Tgl. Acc</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -119,7 +119,7 @@
                                                 id="acc_sc{{$db->id_detail_biaya}}" value="t" {{$db->acc_sc == 't' ?
                                             'checked' : '' }} required>
                                             <label class="form-check-label"
-                                                for="acc_sc{{$db->id_detail_biaya}}">T</label>
+                                                for="acc_sc{{$db->id_detail_biaya}}">Terima</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input acc-sc" type="radio"
@@ -127,20 +127,20 @@
                                                 id="acc_sc{{$db->id_detail_biaya}}" value="tl" {{$db->acc_sc == 'tl' ?
                                             'checked' : '' }} >
                                             <label class="form-check-label"
-                                                for="acc_sc{{$db->id_detail_biaya}}">TL</label>
+                                                for="acc_sc{{$db->id_detail_biaya}}">Tolak</label>
                                         </div>
                                         @else
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
                                             'checked' : '' }} disabled>
                                             <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
-                                                disabled>T</label>
+                                                disabled>Terima</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" {{$db->acc_sc == 'tl' ?
                                             'checked' : '' }} disabled>
                                             <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
-                                                disabled>TL</label>
+                                                disabled>Tolak</label>
                                         </div>
                                         @endif
                                     </td>
@@ -159,7 +159,7 @@
                                                 id="acc_mc{{$db->id_detail_biaya}}" value="t" {{$db->acc_mc == 't' ?
                                             'checked' : '' }} required>
                                             <label class="form-check-label"
-                                                for="acc_mc{{$db->id_detail_biaya}}">T</label>
+                                                for="acc_mc{{$db->id_detail_biaya}}">Terima</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input acc-mc" type="radio"
@@ -167,20 +167,20 @@
                                                 id="acc_mc{{$db->id_detail_biaya}}" value="tl" {{$db->acc_mc == 'tl' ?
                                             'checked' : '' }}>
                                             <label class="form-check-label"
-                                                for="acc_mc{{$db->id_detail_biaya}}">TL</label>
+                                                for="acc_mc{{$db->id_detail_biaya}}">Tolak</label>
                                         </div>
                                         @else
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" {{$db->acc_mc == 't' ?
                                             'checked' : '' }} disabled>
                                             <label class="form-check-label" for="acc_mc{{$db->id_detail_biaya}}"
-                                                disabled>T</label>
+                                                disabled>Terima</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" {{$db->acc_mc == 'tl' ?
                                             'checked' : '' }} disabled>
                                             <label class="form-check-label" for="acc_mc{{$db->id_detail_biaya}}"
-                                                disabled>TL</label>
+                                                disabled>Tolak</label>
                                         </div>
                                         @endif
                                     </td>
@@ -194,15 +194,6 @@
                                 </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>SC : SEVICE CONTROLLER
-                                        <br>
-                                        MC : BKM
-                                    </td>
-                                    <td>jangan singkat T TL SC MC</td>
-                                </tr>
-                            </tfoot>
                         </table>
                         <!--end::Table container-->
                     </div>
@@ -228,7 +219,7 @@
                                 <th>TOTAL ACC SC</th>
                                 <th>Rp. {{$total_sc}}
                                 </th>
-                                <th>TOTAL ACC MC</th>
+                                <th>TOTAL ACC BKM</th>
                                 <th>Rp. {{$total_mc}}</th>
                             </tr>
                         </thead>
