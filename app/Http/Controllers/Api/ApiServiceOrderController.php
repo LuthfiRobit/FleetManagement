@@ -350,27 +350,119 @@ class ApiServiceOrderController extends Controller
                 'tb_order_kendaraan.status_so',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi',
-                // 'tb_petugas.nama_lengkap',
-                // 'tb_petugas.foto_petugas'
-                'tb_driver.nama_driver'
+                'tb_driver.nama_driver',
+                'tb_driver.no_tlp as tlp_driver',
+                'tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.tgl_selesai',
+                'tb_penugasan_driver.status_penugasan',
+                'tb_detail_so.nama_penumpang',
+                'tb_detail_so.no_tlp',
+                'tb_detail_so.status',
+                DB::raw('COUNT(tb_rating_driver.id_do) as rating')
             )
             // ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', 'tb_order_kendaraan.id_petugas')
-            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
-            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', 'tb_penugasan_driver.id_kendaraan')
-            ->join('tb_driver', 'tb_driver.id_driver', 'tb_penugasan_driver.id_driver')
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', 'tb_penugasan_driver.id_kendaraan')
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', 'tb_penugasan_driver.id_driver')
+            ->leftJoin('tb_detail_so', 'tb_detail_so.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
+
+            ->leftJoin('tb_rating_driver', 'tb_rating_driver.id_do', '=', 'tb_penugasan_driver.id_do')
+            ->groupByRaw(
+                'tb_order_kendaraan.id_service_order,
+                tb_order_kendaraan.no_so,
+                tb_order_kendaraan.tgl_penjemputan,
+                tb_order_kendaraan.jam_penjemputan,
+                tb_order_kendaraan.tempat_penjemputan,
+                tb_order_kendaraan.tujuan,
+                tb_penugasan_driver.kembali,
+                tb_order_kendaraan.status_so,
+                tb_kendaraan.nama_kendaraan,
+                tb_kendaraan.no_polisi,
+                tb_driver.nama_driver,
+                tb_driver.no_tlp,
+                tb_penugasan_driver.id_do,
+                tb_penugasan_driver.tgl_selesai,
+                tb_penugasan_driver.status_penugasan,
+                tb_detail_so.nama_penumpang,
+                tb_detail_so.no_tlp,
+                tb_detail_so.status'
+            )
+            ->orderBy(DB::raw('COUNT(tb_rating_driver.id_do)'))
             ->when($status == 'selesai', function ($find) use ($id_petugas, $tgl) {
                 $find->when($tgl != '', function ($filter) use ($tgl) {
                     $filter->where('tb_order_kendaraan.tgl_penjemputan', $tgl);
                 })
-                    ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 't'], ['tb_penugasan_driver.status_penugasan', 's']]);
+                    ->where([
+                        ['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 't'],
+                        ['tb_penugasan_driver.status_penugasan', 's'], ['tb_detail_so.status', 'y']
+                    ]);
             })
             ->when($status == 'batal', function ($find) use ($id_petugas, $tgl) {
                 $find->when($tgl != '', function ($filter) use ($tgl) {
                     $filter->where('tb_order_kendaraan.tgl_penjemputan', $tgl);
                 })
-                    ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 'c'], ['tb_penugasan_driver.status_penugasan', 'c']]);
+                    ->where([
+                        ['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 'c'],
+                        ['tb_penugasan_driver.status_penugasan', 'c'], ['tb_detail_so.status', 'y']
+                    ]);
             })
-            ->get();
+            ->get()
+            ->map(function ($list) {
+                return [
+                    'id_service_order' => $list->id_service_order,
+                    'no_so' => $list->no_so,
+                    'tgl_penjemputan' => $list->tgl_penjemputan,
+                    'jam_penjemputan' => $list->jam_penjemputan,
+                    'tempat_penjemputan' => $list->tempat_penjemputan,
+                    'tujuan' => $list->tujuan,
+                    'kembali' => $list->kembali,
+                    'status_so' => $list->status_so,
+                    'nama_kendaraan' => $list->nama_kendaraan,
+                    'no_polisi' => $list->no_polisi,
+                    'nama_driver' => $list->nama_driver,
+                    'url' => 'https://api.whatsapp.com/send?phone=6282336181538&text=Halo%20*'
+                        . $list->nama_penumpang . '*%0ASilahkan%20berikan%20rating%20untuk%20driver%20dalam%20perjalanan%20anda%0ADriver%20:%20*'
+                        . $list->nama_driver . '*%0AKontak%20:%20*'
+                        . $list->tlp_driver . '*%0Aklik%20link%20dibawah%20ini%0A([' . route(
+                            'rating.insert',
+                            $list->id_do . '?no_tlp=' . $list->no_tlp
+                        ) . '])%0ATerimakasih%0A*PT.Pomi*',
+                    'rating' => $list->rating
+                ];
+            });
+        // $history = DB::table('tb_order_kendaraan')
+        //     ->select(
+        //         'tb_order_kendaraan.id_service_order',
+        //         'tb_order_kendaraan.no_so',
+        //         'tb_order_kendaraan.tgl_penjemputan',
+        //         'tb_order_kendaraan.jam_penjemputan',
+        //         'tb_order_kendaraan.tempat_penjemputan',
+        //         'tb_order_kendaraan.tujuan',
+        //         'tb_penugasan_driver.kembali',
+        //         'tb_order_kendaraan.status_so',
+        //         'tb_kendaraan.nama_kendaraan',
+        //         'tb_kendaraan.no_polisi',
+        //         // 'tb_petugas.nama_lengkap',
+        //         // 'tb_petugas.foto_petugas'
+        //         'tb_driver.nama_driver'
+        //     )
+        //     // ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', 'tb_order_kendaraan.id_petugas')
+        //     ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
+        //     ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', 'tb_penugasan_driver.id_kendaraan')
+        //     ->join('tb_driver', 'tb_driver.id_driver', 'tb_penugasan_driver.id_driver')
+        //     ->when($status == 'selesai', function ($find) use ($id_petugas, $tgl) {
+        //         $find->when($tgl != '', function ($filter) use ($tgl) {
+        //             $filter->where('tb_order_kendaraan.tgl_penjemputan', $tgl);
+        //         })
+        //             ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 't'], ['tb_penugasan_driver.status_penugasan', 's']]);
+        //     })
+        //     ->when($status == 'batal', function ($find) use ($id_petugas, $tgl) {
+        //         $find->when($tgl != '', function ($filter) use ($tgl) {
+        //             $filter->where('tb_order_kendaraan.tgl_penjemputan', $tgl);
+        //         })
+        //             ->where([['tb_order_kendaraan.id_petugas', $id_petugas], ['tb_order_kendaraan.status_so', 'c'], ['tb_penugasan_driver.status_penugasan', 'c']]);
+        //     })
+        //     ->get();
         return response()->json(
             [
                 'status' => 'sukses',
