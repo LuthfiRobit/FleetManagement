@@ -617,77 +617,77 @@ class ApiPenugasanController extends Controller
         $findPetugas = Petugas::select('id_petugas', 'player_id')->where('id_petugas', $proses->id_petugas)->first();
         $driver = Driver::select('nama_driver', 'no_tlp')->where('id_driver', $id_driver)->first();
         if ($proses == true) {
-            $findPenumpang = ServiceOrderDetail::where([['id_service_order', $proses->id_service_order], ['status', 'y']])->first();
-            if ($findPenumpang) {
-                $data = [
-                    'tgl_selesai' => $request->tgl_selesai,
-                    'km_akhir' => $request->km_akhir,
-                    'status_bbm_akhir' => $request->bbm_akhir,
-                    'waktu_finish' => $request->waktu_finish,
-                    'keterangan_bbm' => $request->keterangan_bbm,
-                    'status_penugasan' => 's'
-                ];
-                $proses->update($data);
-                $SERVER_API_KEY = env('SERVER_API_KEY');
+            // $findPenumpang = ServiceOrderDetail::where([['id_service_order', $proses->id_service_order], ['status', 'y']])->first();
+            // if ($findPenumpang) {
+            $data = [
+                'tgl_selesai' => $request->tgl_selesai,
+                'km_akhir' => $request->km_akhir,
+                'status_bbm_akhir' => $request->bbm_akhir,
+                'waktu_finish' => $request->waktu_finish,
+                'keterangan_bbm' => $request->keterangan_bbm,
+                'status_penugasan' => 's'
+            ];
+            $proses->update($data);
+            $SERVER_API_KEY = env('SERVER_API_KEY');
 
-                $msg =  [
-                    'title' => 'Penugasan Selesai',
-                    'body' => 'Satu penugasan dari ' . $driver->nama_driver . ' telah diselesaikan!'
-                ];
-                $data = [
-                    'to' => $findPetugas->player_id, // for single device id
-                    'notification' => $msg
-                ];
-                $dataString = json_encode($data);
+            $msg =  [
+                'title' => 'Penugasan Selesai',
+                'body' => 'Satu penugasan dari ' . $driver->nama_driver . ' telah diselesaikan!'
+            ];
+            $data = [
+                'to' => $findPetugas->player_id, // for single device id
+                'notification' => $msg
+            ];
+            $dataString = json_encode($data);
 
-                $headers = [
-                    'Authorization: key=' . $SERVER_API_KEY,
-                    'Content-Type: application/json',
-                ];
+            $headers = [
+                'Authorization: key=' . $SERVER_API_KEY,
+                'Content-Type: application/json',
+            ];
 
-                $ch = curl_init();
+            $ch = curl_init();
 
-                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
-                $response = curl_exec($ch);
+            $response = curl_exec($ch);
 
-                curl_close($ch);
-                // return $response;
-                // foreach ($findPenumpang as $penumpang) {
-                // $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $findPenumpang->no_tlp);
-                // $client = new Client();
-                // $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
-                //     'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
-                //     'body' => json_encode([
-                //         'client_id' => '0146',
-                //         'project_id' => '2825',
-                //         'type' => 'costumer_notif',
-                //         'recipient_number' => $findPenumpang->no_tlp,
-                //         'language_code' => 'id',
-                //         'params' => [
-                //             '1' => $findPenumpang->nama_penumpang,
-                //             '2' => $driver->nama_driver,
-                //             '3' => $driver->no_tlp,
-                //             '4' => $url
-                //         ]
-                //     ])
-                // ]);
-                // if ($request->getStatusCode() == 200) { // 200 OK
-                //     $response_data = $request->getBody()->getContents();
-                // }
-                // }
-                return response()->json(
-                    [
-                        'status'        => 'sukses',
-                        'status_penugasan' => $proses->status_penugasan
-                    ]
-                );
-            }
+            curl_close($ch);
+            // return $response;
+            // foreach ($findPenumpang as $penumpang) {
+            // $url = route('rating.insert', 'id_do=' . $proses->id_do . '&no_tlp=' . $findPenumpang->no_tlp);
+            // $client = new Client();
+            // $request = $client->post('https://api.wappin.id/v1/message/do-send-hsm', [
+            //     'headers' => ['Authorization' => 'Bearer ' . env('TOKEN_WAPPIN')],
+            //     'body' => json_encode([
+            //         'client_id' => '0146',
+            //         'project_id' => '2825',
+            //         'type' => 'costumer_notif',
+            //         'recipient_number' => $findPenumpang->no_tlp,
+            //         'language_code' => 'id',
+            //         'params' => [
+            //             '1' => $findPenumpang->nama_penumpang,
+            //             '2' => $driver->nama_driver,
+            //             '3' => $driver->no_tlp,
+            //             '4' => $url
+            //         ]
+            //     ])
+            // ]);
+            // if ($request->getStatusCode() == 200) { // 200 OK
+            //     $response_data = $request->getBody()->getContents();
+            // }
+            // }
+            return response()->json(
+                [
+                    'status'        => 'sukses',
+                    'status_penugasan' => $proses->status_penugasan
+                ]
+            );
+            // }
         } else {
             return response()->json(
                 [
