@@ -120,6 +120,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::name('biaya')->prefix('biaya')
         ->group(function () {
             Route::get('/', [BiayaPenugasanController::class, 'index'])->name('.main');
+            Route::get('/detail/{id}', [BiayaPenugasanController::class, 'detail'])->name('.detail');
+            Route::post('/insert', [BiayaPenugasanController::class, 'insert'])->name('.insert');
         });
 
     Route::name('dashboard.')->prefix('dashboard')
