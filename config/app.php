@@ -179,6 +179,8 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         //maatExcel
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        //domPdf
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -240,6 +242,8 @@ return [
 
         //maatExcel
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        //domPdf
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];
