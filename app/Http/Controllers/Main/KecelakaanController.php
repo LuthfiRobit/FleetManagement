@@ -25,9 +25,9 @@ class KecelakaanController extends Controller
                 'tb_kecelakaan.jam_kecelakaan as jam',
                 'tb_kecelakaan.lokasi_kejadian as lokasi',
             )
-            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_kecelakaan.id_do')
-            ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
-            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_kecelakaan.id_do')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->orderByDesc('id_kecelakaan')
             ->get();
 
@@ -59,33 +59,19 @@ class KecelakaanController extends Controller
                 'tb_petugas.nama_lengkap as atasan',
                 'tb_detail_so.nama_penumpang as saksi'
             )
-            ->join('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_kecelakaan.id_do')
-            ->join('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
-            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_kecelakaan.id_do')
+            ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_bahan_bakar', 'tb_bahan_bakar.id_bahan_bakar', '=', 'tb_kendaraan.id_bahan_bakar')
             ->leftJoin('tb_merk_kendaraan', 'tb_merk_kendaraan.id_merk', '=', 'tb_kendaraan.id_merk')
             ->leftJoin('tb_jenis_kendaraan', 'tb_jenis_kendaraan.id_jenis_kendaraan', '=', 'tb_kendaraan.id_jenis_kendaraan')
-            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
-            ->join('tb_saksi_kecelakaan', 'tb_saksi_kecelakaan.id_kecelakaan', '=', 'tb_kecelakaan.id_kecelakaan')
-            ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_saksi_kecelakaan.id_atasan')
-            ->join('tb_detail_so', 'tb_detail_so.id_detail_so', '=', 'tb_saksi_kecelakaan.id_saksi')
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+            ->leftJoin('tb_saksi_kecelakaan', 'tb_saksi_kecelakaan.id_kecelakaan', '=', 'tb_kecelakaan.id_kecelakaan')
+            ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_saksi_kecelakaan.id_atasan')
+            ->leftJoin('tb_detail_so', 'tb_detail_so.id_detail_so', '=', 'tb_saksi_kecelakaan.id_saksi')
             ->where('tb_kecelakaan.id_kecelakaan', $id)
             ->first();
 
-        // $data['assignment'] = DB::table('tb_penugasan_driver')
-        //     ->select(
-        //         'tb_penugasan_driver.kembali',
-        //         'tb_petugas.nama_lengkap as nama_petugas',
-        //         'tb_kendaraan.nama_kendaraan',
-        //         'tb_kendaraan.no_polisi',
-        //         'tb_order_kendaraan.tempat_penjemputan',
-        //         'tb_order_kendaraan.tujuan'
-        //     )
-        //     ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
-        //     ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
-        //     ->rightJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
-        //     ->where('id_do', $data['kecelakaan']->id_do)
-        //     ->first();
         $data['kerusakan'] = DB::table('tb_detail_foto_kecelakaan as tb_foto')
             ->select(
                 'tb_foto.foto_pendukung',
