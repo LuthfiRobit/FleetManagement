@@ -112,7 +112,7 @@ class PengecekanKendaraanController extends Controller
             $hasil_awal = array();
             $hasil_awal['id_kriteria'] = $krt->id_kriteria;
             $hasil_awal['nama_kriteria'] = $krt->nama_kriteria;
-            $kedua = DB::table('tb_detail_pengecekan')->where('id_kriteria', $krt->id_kriteria)
+            $kedua = DB::table('tb_detail_pengecekan')->where([['id_kriteria', $krt->id_kriteria], ['id_pengecekan', $id]])
                 ->leftJoin('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
                 ->get();
             $hasil_awal['list_jenis'] = array();
@@ -240,7 +240,7 @@ class PengecekanKendaraanController extends Controller
             $hasil_awal = array();
             $hasil_awal['id_kriteria'] = $krt->id_kriteria;
             $hasil_awal['nama_kriteria'] = $krt->nama_kriteria;
-            $kedua = DB::table('tb_detail_pengecekan')->where('id_kriteria', $krt->id_kriteria)
+            $kedua = DB::table('tb_detail_pengecekan')->where([['id_kriteria', $krt->id_kriteria], ['id_pengecekan', $id]])
                 ->leftJoin('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
                 ->get();
             $hasil_awal['list_jenis'] = array();
@@ -266,8 +266,6 @@ class PengecekanKendaraanController extends Controller
             ->where('id_pengecekan', $id)
             ->get();
         // return view('dashboard.export.exPdfPengecekan', $data);
-        // dd($data);
-        // return $data;
         // $pdf = PDF::loadView('dashboard.export.exPdfPengecekan', $data)->setPaper('f4');
         $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekan', $data)->setPaper('f4', 'portrait');
         set_time_limit(60);
