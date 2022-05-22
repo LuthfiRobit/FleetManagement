@@ -35,10 +35,10 @@ class BiayaPenugasanController extends Controller
                 tb_biaya_penugasan.tgl_pengajuan,
                 tb_biaya_penugasan.total_biaya
             ')
-            ->when(Auth::user()->id_petugas == 5, function ($sc) {
-                // $sc->having(DB::raw('COUNT(tb_detail_acc_biaya.id_detail_acc)'), '=', 0);
-                $sc->where('tb_detail_acc_biaya.id_petugas', '=', null);
-            })
+            // ->when(Auth::user()->id_petugas == 5, function ($sc) {
+            //     // $sc->having(DB::raw('COUNT(tb_detail_acc_biaya.id_detail_acc)'), '=', 0);
+            //     $sc->where('tb_detail_acc_biaya.id_petugas', '=', null);
+            // })
             ->when(Auth::user()->id_petugas == 4, function ($mc) {
                 $mc->where('tb_detail_acc_biaya.id_petugas', '!=', null)
                     ->orderBy(DB::raw('GROUP_CONCAT(DISTINCT tb_detail_acc_biaya.id_petugas,"")'));
@@ -118,6 +118,14 @@ class BiayaPenugasanController extends Controller
 
         $data['total_sc'] = $data['detail_biaya']->where('acc_sc', 't')->sum('nominal');
         $data['total_mc'] = $data['detail_biaya']->where('acc_mc', 't')->sum('nominal');
+        $searchForValue = ',';
+        $stringValue = $data['biaya']->acc_oleh;
+
+        if (strpos($stringValue, $searchForValue) !== false) {
+            $data['status'] = 'scmc';
+        } else {
+            $data['status'] = 'sc';
+        }
         // return $data;
         return view('dashboard.main.biayapenugasan.detail', $data);
     }
