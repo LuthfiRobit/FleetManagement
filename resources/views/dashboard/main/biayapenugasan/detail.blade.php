@@ -33,7 +33,7 @@
                                 SO_{{$biaya->no_so}}</span>
                             <span class="text-muted mt-1 fw-bold fs-7">Oleh Driver : {{$biaya->nama_driver}}</span>
                         </h3>
-                        <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
+                        {{-- <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
                             data-bs-trigger="hover" title="" data-bs-original-title="Tekan untuk mecetak tagihan biaya">
                             <button type="button" class="btn btn-sm btn-light btn-active-primary">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
@@ -41,7 +41,7 @@
                                 </span>
                                 <!--end::Svg Icon-->Cetak Tagihan
                             </button>
-                        </div>
+                        </div> --}}
 
                     </div>
 
@@ -113,6 +113,20 @@
                                     </td>
                                     <td>
                                         @if (Auth::user()->id_petugas == 5)
+                                        @if($status == 'scmc')
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
+                                            'checked' : '' }} disabled>
+                                            <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                disabled>Terima</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 'tl' ?
+                                            'checked' : '' }} disabled>
+                                            <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                disabled>Tolak</label>
+                                        </div>
+                                        @else
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input acc-sc" type="radio"
                                                 name="acc_sc[{{$db->id_detail_biaya}}]"
@@ -129,6 +143,7 @@
                                             <label class="form-check-label"
                                                 for="acc_sc{{$db->id_detail_biaya}}">Tolak</label>
                                         </div>
+                                        @endif
                                         @else
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
