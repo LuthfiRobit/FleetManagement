@@ -333,7 +333,7 @@ License: For each use you must have a valid license purchased only from above li
                                             <div class="text-center">
                                                 <a type="button" id="kt_rating_submit" class="btn btn-primary"
                                                     href="
-                                                {{route('rating.insert','id_do='.$driver->id_do.'&no_tlp='.$responden->no_tlp)}}">
+                                                {{route('rating.insert',$driver->id_do.'?no_tlp='.$responden->no_tlp)}}">
                                                     <span class="indicator-label">Kirim</span>
                                                     <span class="indicator-progress">Mohon Tunggu...
                                                         <span

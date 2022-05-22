@@ -81,6 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('batal/detail/{id}', [PenugasanDriverController::class, 'detailbatal'])->name('.detail.batal');
             Route::get('batal/tolak/{id}', [PenugasanDriverController::class, 'tolakbatal'])->name('.batal.tolak');
             Route::post('batal/terima', [PenugasanDriverController::class, 'terimabatal'])->name('.batal.terima');
+            Route::get('export/pdf/{id}', [PenugasanDriverController::class, 'exportPdfPenugasan'])->name('.export.pdf');
+            Route::get('export/filter/filter', [PenugasanDriverController::class, 'exportPdfFilter'])->name('.export.filter.pdf');
         });
     Route::name('check')->prefix('check')
         ->group(function () {
@@ -89,6 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/detail/{id}', [PengecekanKendaraanController::class, 'detail'])->name('.detail');
             Route::get('/export/car/{id}', [PengecekanKendaraanController::class, 'exportCar'])->name('.exprt.car');
             Route::get('/export/filter/', [PengecekanKendaraanController::class, 'exportCarFilter'])->name('.export.filter');
+            Route::get('/export/pdf/car/{id}', [PengecekanKendaraanController::class, 'exportPdf'])->name('.exprt.pdf.car');
         });
     Route::name('repair')->prefix('repair')
         ->group(function () {

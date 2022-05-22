@@ -7,10 +7,12 @@ use App\Exports\PengecekanDateExport;
 use App\Http\Controllers\Controller;
 use App\Models\PengecekanKendaraan;
 use App\Models\PenugasanDriver;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class PengecekanKendaraanController extends Controller
 {
@@ -110,7 +112,7 @@ class PengecekanKendaraanController extends Controller
             $hasil_awal = array();
             $hasil_awal['id_kriteria'] = $krt->id_kriteria;
             $hasil_awal['nama_kriteria'] = $krt->nama_kriteria;
-            $kedua = DB::table('tb_detail_pengecekan')->where('id_kriteria', $krt->id_kriteria)
+            $kedua = DB::table('tb_detail_pengecekan')->where([['id_kriteria', $krt->id_kriteria], ['id_pengecekan', $id]])
                 ->leftJoin('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
                 ->get();
             $hasil_awal['list_jenis'] = array();
@@ -199,5 +201,75 @@ class PengecekanKendaraanController extends Controller
         } else {
             return redirect()->back()->with('success', 'Maaf, Tanggal pengecekan tidak ditemukan');
         }
+    }
+
+    public function exportPdf($id)
+    {
+        $data['pengecekan'] = DB::table('tb_pengecekan_kendaraan')
+            ->select(
+                'tb_pengecekan_kendaraan.id_pengecekan',
+                'tb_pengecekan_kendaraan.tgl_pengecekan',
+                'tb_pengecekan_kendaraan.jam_pengecekan',
+                'tb_pengecekan_kendaraan.km_kendaraan',
+                'tb_pengecekan_kendaraan.status_kendaraan',
+                'tb_pengecekan_kendaraan.status_pengecekan',
+                'tb_pengecekan_kendaraan.status_perbaikan',
+                'tb_pengecekan_kendaraan.keterangan_pengecekan',
+                'tb_kendaraan.kode_asset',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_kendaraan.warna',
+                'tb_kendaraan.jenis_penggerak',
+                'tb_kendaraan.tahun_kendaraan',
+                'tb_merk_kendaraan.nama_merk as merk',
+                'tb_jenis_kendaraan.nama_jenis as jenis',
+                'tb_bahan_bakar.nama_bahan_bakar as bahan_bakar',
+                'tb_driver.nama_driver'
+            )
+            ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_pengecekan_kendaraan.id_driver')
+            ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->leftJoin('tb_bahan_bakar', 'tb_bahan_bakar.id_bahan_bakar', '=', 'tb_kendaraan.id_bahan_bakar')
+            ->leftJoin('tb_merk_kendaraan', 'tb_merk_kendaraan.id_merk', '=', 'tb_kendaraan.id_merk')
+            ->leftJoin('tb_jenis_kendaraan', 'tb_jenis_kendaraan.id_jenis_kendaraan', '=', 'tb_kendaraan.id_jenis_kendaraan')
+            ->where('id_pengecekan', $id)
+            ->first();
+        // return $data;
+        $kriteria = DB::table('tb_kriteria_pengecekan')->where('status', 'y')->get();
+        $hasil = array();
+        foreach ($kriteria as  $krt) {
+            $hasil_awal = array();
+            $hasil_awal['id_kriteria'] = $krt->id_kriteria;
+            $hasil_awal['nama_kriteria'] = $krt->nama_kriteria;
+            $kedua = DB::table('tb_detail_pengecekan')->where([['id_kriteria', $krt->id_kriteria], ['id_pengecekan', $id]])
+                ->leftJoin('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
+                ->get();
+            $hasil_awal['list_jenis'] = array();
+            foreach ($kedua as $axx) {
+                $hasil_dua = array();
+                $hasil_dua['id_detail_pengecekan'] = $axx->id_detail_pengecekan;
+                $hasil_dua['kondisi'] = $axx->kondisi;
+                $hasil_dua['keterangan'] = $axx->keterangan;
+                $hasil_dua['waktu'] = $axx->waktu_pengecekan;
+                $hasil_dua['jenis'] = $axx->jenis_pengecekan;
+                array_push($hasil_awal['list_jenis'], $hasil_dua);
+            }
+            array_push($hasil, $hasil_awal);
+        }
+        $data['detail_check'] = $hasil;
+        $data['detail'] = DB::table('tb_detail_pengecekan')
+            ->select(
+                'tb_detail_pengecekan.id_detail_pengecekan',
+                'tb_detail_pengecekan.waktu_pengecekan as waktu',
+            )
+            ->join('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
+            ->join('tb_kriteria_pengecekan', 'tb_kriteria_pengecekan.id_kriteria', '=', 'tb_jenis_pengecekan.id_kriteria')
+            ->where('id_pengecekan', $id)
+            ->get();
+        // return view('dashboard.export.exPdfPengecekan', $data);
+        // $pdf = PDF::loadView('dashboard.export.exPdfPengecekan', $data)->setPaper('f4');
+        $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekan', $data)->setPaper('f4', 'portrait');
+        set_time_limit(60);
+
+        return $pdf->download('laporan_pengecekan_' . $data['pengecekan']->nama_kendaraan . '.pdf');
     }
 }
