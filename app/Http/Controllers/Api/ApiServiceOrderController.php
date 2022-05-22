@@ -605,6 +605,51 @@ class ApiServiceOrderController extends Controller
         }
     }
 
+    public function listDriverActive(Request $request)
+    {
+        $tgl = $request->query('tgl_penugasan');
+        $drivers = DB::select(
+            "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
+            -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
+            WHERE tb_driver.status_driver = 'y'
+            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
+            AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
+            AND tb_penugasan_driver.tgl_penugasan = '$tgl' AND tb_penugasan_driver.status_penugasan = 'p'  )"
+        );
+        return response()->json(
+            [
+                'status' => 'sukses',
+                'list_driver' => $drivers
+            ]
+        );
+    }
+
+    public function changeDriver(Request $request)
+    {
+        $id_do = $request->id_do;
+        $id_driver = $request->id_driver;
+        $find = PenugasanDriver::where('id_do', $id_do)->first();
+        if ($find) {
+            $data = [
+                'id_driver' => $id_driver,
+                'status_penugasan' => null
+            ];
+            $find->update($data);
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'pesan' => 'driver berhasil diganti'
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 'gagal'
+                ]
+            );
+        }
+    }
+
     //kecelakaan
     public function listTransport(Request $request)
     {
