@@ -208,6 +208,7 @@ class ApiServiceOrderController extends Controller
         $serviceOrder = DB::table('tb_order_kendaraan')
             ->select(
                 'tb_order_kendaraan.id_service_order',
+                'tb_penugasan_driver.id_do',
                 'tb_order_kendaraan.no_so',
                 'tb_order_kendaraan.tgl_penjemputan',
                 'tb_order_kendaraan.jam_penjemputan',
