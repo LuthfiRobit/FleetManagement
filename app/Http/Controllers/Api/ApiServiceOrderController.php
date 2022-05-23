@@ -366,7 +366,6 @@ class ApiServiceOrderController extends Controller
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', 'tb_penugasan_driver.id_kendaraan')
             ->leftJoin('tb_driver', 'tb_driver.id_driver', 'tb_penugasan_driver.id_driver')
             ->leftJoin('tb_detail_so', 'tb_detail_so.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
-
             ->leftJoin('tb_rating_driver', 'tb_rating_driver.id_do', '=', 'tb_penugasan_driver.id_do')
             ->groupByRaw(
                 'tb_order_kendaraan.id_service_order,
@@ -421,7 +420,7 @@ class ApiServiceOrderController extends Controller
                     'nama_kendaraan' => $list->nama_kendaraan,
                     'no_polisi' => $list->no_polisi,
                     'nama_driver' => $list->nama_driver,
-                    'url' => 'https://api.whatsapp.com/send?phone=6282336181538&text=Halo%20*'
+                    'url' => 'https://api.whatsapp.com/send?phone=' . $list->no_tlp . '&text=Halo%20*'
                         . $list->nama_penumpang . '*%0ASilahkan%20berikan%20rating%20untuk%20driver%20dalam%20perjalanan%20anda%0ADriver%20:%20*'
                         . $list->nama_driver . '*%0AKontak%20:%20*'
                         . $list->tlp_driver . '*%0Aklik%20link%20dibawah%20ini%0A([' . route(
