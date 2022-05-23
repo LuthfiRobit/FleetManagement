@@ -93,13 +93,13 @@
                                     $num_tags = count($tags);
                                     @endphp
                                     @if ($num_tags == 1)
-                                    <span class="badge badge-light-primary">BUTUH ACC BKM</span>
+                                    <span class="badge badge-light-danger">BUTUH APPROVAL SF SPV</span>
                                     @endif
                                     @if($num_tags == 2)
-                                    <span class="badge badge-light-success">ACC SC & BKM</span>
+                                    <span class="badge badge-light-success">APPROVED SC & SF SPV</span>
                                     @endif
                                     @else
-                                    <span class="badge badge-light-warning">BUTUH ACC SC</span>
+                                    <span class="badge badge-light-warning">BUTUH APPROVAL SC</span>
                                     @endif
 
                                 </td>

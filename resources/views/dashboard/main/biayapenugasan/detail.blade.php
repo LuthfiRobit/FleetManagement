@@ -87,10 +87,10 @@
                                     <th>Jenis Pengeluaran</th>
                                     <th>Nominal</th>
                                     <th>Bukti</th>
-                                    <th>Acc Service Controller</th>
-                                    <th>Tgl. Acc</th>
-                                    <th>Acc BKM</th>
-                                    <th>Tgl. Acc</th>
+                                    <th>Approval Service Controller</th>
+                                    <th>Tgl. Approval</th>
+                                    <th>Approval SF SPV</th>
+                                    <th>Tgl. Approval</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -217,11 +217,15 @@
                 </div>
                 <div class="card-body py-2 text-end">
                     @if (Auth::user()->id_petugas == 5)
-                    <button type="submit" class=" btn btn-sm btn-primary w-150px" id="memek_acc_sc">SIMPAN APPROVAL
+                    @if($status == 'scmc')
+                    ---
+                    @else
+                    <button type="submit" class=" btn btn-sm btn-primary w-200px" id="memek_acc_sc">SIMPAN APPROVAL
                         SC</button>
+                    @endif
                     @elseif (Auth::user()->id_petugas == 4)
-                    <button type="submit" class=" btn btn-sm btn-primary w-150px" id="memek_acc_mc">SIMPAN APPROVAL
-                        BKM</button>
+                    <button type="submit" class=" btn btn-sm btn-primary w-200px" id="memek_acc_mc">SIMPAN APPROVAL
+                        SF SPV</button>
                     @else
                     ----
                     @endif
@@ -234,7 +238,7 @@
                                 <th>TOTAL ACC SC</th>
                                 <th>Rp. {{$total_sc}}
                                 </th>
-                                <th>TOTAL ACC BKM</th>
+                                <th>TOTAL SF SPV</th>
                                 <th>Rp. {{$total_mc}}</th>
                             </tr>
                         </thead>
