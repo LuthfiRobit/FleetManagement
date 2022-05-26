@@ -123,6 +123,94 @@
             </tbody>
         </table>
         <div id="notices" style="margin-bottom: 10px">
+            <div>KEBERANGKATAN:</div>
+            {{-- <div class="notice">Formulir ini dibuat berdasarkan data yang sudah didaftarkan.</div> --}}
+        </div>
+        <table border="none">
+            <tbody class="fs-6 fw-bold text-gray-600">
+                <tr>
+                    <td>JAM AWAL:</td>
+                    <td>
+                        @if ($detail->waktu_start != null)
+                        {{Carbon\Carbon::parse($detail->waktu_start)->format('H:i')}}
+                        @else
+                        ---
+                        @endif
+                    </td>
+                    <td>JAM AKHIR:</td>
+                    <td>
+                        @if ($detail->waktu_finish != null)
+                        {{Carbon\Carbon::parse($detail->waktu_finish)->format('H:i')}}
+                        @else
+                        ---
+                        @endif
+                    </td>
+                    <td>TGL. SELESAI:</td>
+                    <td> @if ($detail->tgl_selesai != null)
+                        {{Carbon\Carbon::parse($detail->tgl_selesai)->format('d F Y')}}
+                        @else
+                        ---
+                        @endif</td>
+                </tr>
+                <tr>
+                    <td>KM AWAL:</td>
+                    <td>
+                        @if ($detail->km_awal != null)
+                        {{$detail->km_awal}}
+                        @else
+                        ---
+                        @endif
+                    </td>
+                    <td>KM AKHIR:</td>
+                    <td>
+                        @if ($detail->km_akhir != null)
+                        {{$detail->km_akhir}}
+                        @else
+                        ---
+                        @endif
+                    </td>
+                    <td colspan="2">KETERANGAN BBM:</td>
+                </tr>
+                <tr>
+                    <td>BBM AWAL:</td>
+                    <td>
+                        @if ($detail->bbm_awal != null)
+                        @if ($detail->bbm_awal == 'l')
+                        Rendah
+                        @elseif($detail->bbm_awal == 'm')
+                        Medium
+                        @elseif($detail->bbm_awal == 'f')
+                        Penuh
+                        @endif
+                        @else
+                        ---
+                        @endif
+                    </td>
+                    <td>BBM AKHIR:</td>
+                    <td>
+                        @if ($detail->bbm_akhir != null)
+                        @if ($detail->bbm_akhir == 'l')
+                        Rendah
+                        @elseif($detail->bbm_akhir == 'm')
+                        Medium
+                        @elseif($detail->bbm_akhir == 'f')
+                        Penuh
+                        @endif
+                        @else
+                        ---
+                        @endif
+                    </td>
+                    <td colspan="2">
+                        @if ($detail->keterangan_bbm != null)
+                        {{$detail->keterangan_bbm}}
+                        @else
+                        ---
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="notices" style="margin-bottom: 10px">
             <div>PENUMPANG:</div>
             {{-- <div class="notice">Formulir ini dibuat berdasarkan data yang sudah didaftarkan.</div> --}}
         </div>

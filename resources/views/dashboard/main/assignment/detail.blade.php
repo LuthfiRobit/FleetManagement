@@ -15,6 +15,16 @@
                         <span class="card-label fw-bolder fs-3 mb-1">DETAIL PENUGASAN DRIVER</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Driver : {{$detail->nama_driver}}</span>
                     </h3>
+                    <div class="card-toolbar">
+                        <a href="{{route('assign.export.pdf', $detail->id_do)}}" type="button"
+                            class="btn btn-light-primary btn-sm">
+                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="bi bi-file-pdf"></i>
+                            </span>
+                            <!--end::Svg Icon-->Export
+                        </a>
+                    </div>
                 </div>
             </div>
             <!--begin::Layout-->
@@ -154,6 +164,141 @@
                                                     <div class="badge badge-lg badge-light-warning d-inline">
                                                         Menunggu Konfirmasi
                                                     </div>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tgl. Selesai:</td>
+                                                <td class="text-gray-800">
+                                                    @if ($detail->tgl_selesai != null)
+                                                    {{Carbon\Carbon::parse($detail->tgl_selesai)->format('d F Y')}}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
+                                    </div>
+                                    <!--end::Row-->
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Section-->
+                            <!--begin::Section-->
+                            <div class="mb-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-4">Keberangkatan:</h5>
+                                <!--end::Title-->
+                                <!--begin::Details-->
+                                <div class="d-flex flex-wrap py-5">
+                                    <!--begin::Row-->
+                                    <div class="flex-equal me-5">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Jam Awal:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    @if ($detail->waktu_start != null)
+                                                    {{Carbon\Carbon::parse($detail->waktu_start)->format('H:i')}}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Km Awal:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    @if ($detail->km_awal != null)
+                                                    {{$detail->km_awal}}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">BBM Awal:</td>
+                                                <td class="text-gray-800">
+                                                    @if ($detail->bbm_awal != null)
+                                                    @if ($detail->bbm_awal == 'l')
+                                                    Rendah
+                                                    @elseif($detail->bbm_awal == 'm')
+                                                    Medium
+                                                    @elseif($detail->bbm_awal == 'f')
+                                                    Penuh
+                                                    @endif
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                        </table>
+                                        <!--end::Details-->
+                                    </div>
+                                    <!--end::Row-->
+                                    <!--begin::Row-->
+                                    <div class="flex-equal">
+                                        <!--begin::Details-->
+                                        <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Jam Selesai:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    @if ($detail->waktu_finish != null)
+                                                    {{Carbon\Carbon::parse($detail->waktu_finish)->format('H:i')}}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400 min-w-175px w-175px">Km Selesai:</td>
+                                                <td class="text-gray-800 min-w-200px">
+                                                    @if ($detail->km_akhir != null)
+                                                    {{$detail->km_akhir}}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">BBM Selesai:</td>
+                                                <td class="text-gray-800">
+                                                    @if ($detail->bbm_akhir != null)
+                                                    @if ($detail->bbm_akhir == 'l')
+                                                    Rendah
+                                                    @elseif($detail->bbm_akhir == 'm')
+                                                    Medium
+                                                    @elseif($detail->bbm_akhir == 'f')
+                                                    Penuh
+                                                    @endif
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Ket. BBM:</td>
+                                                <td class="text-gray-800">
+                                                    @if ($detail->keterangan_bbm != null)
+                                                    {{$detail->keterangan_bbm}}
+                                                    @else
+                                                    ---
                                                     @endif
                                                 </td>
                                             </tr>

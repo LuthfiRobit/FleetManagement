@@ -417,6 +417,7 @@ class ApiProfilDriverController extends Controller
                 [
                     'status' => 'sukses',
                     'pesan' => 'ktp berhasil diganti',
+                    'foto'  => $name_profil
                 ]
             );
         } else {
