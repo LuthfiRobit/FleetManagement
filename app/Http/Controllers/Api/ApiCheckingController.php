@@ -33,7 +33,8 @@ class ApiCheckingController extends Controller
                 AND tb_pengecekan_kendaraan.tgl_pengecekan = '$tgl_sekarang'
                 UNION SELECT id_kendaraan FROM tb_penugasan_driver
                 WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
-                AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang')"
+                AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang'
+                AND tb_penugasan_driver.status_penugasan = 'p')"
             ))
             ->get();
         $kendaraanLimit = DB::table('tb_kendaraan')
@@ -47,12 +48,12 @@ class ApiCheckingController extends Controller
             ->where(DB::raw(
                 "NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan
                 WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
-                AND tb_pengecekan_kendaraan.status_kendaraan = 'r'
                 AND tb_pengecekan_kendaraan.jam_pengecekan BETWEEN '$jam_awal' AND '$jam_akhir'
                 AND tb_pengecekan_kendaraan.tgl_pengecekan = '$tgl_sekarang'
                 UNION SELECT id_kendaraan FROM tb_penugasan_driver
                 WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
-                AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang')"
+                AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang'
+                AND tb_penugasan_driver.status_penugasan = 'p')"
             ))
             ->limit($limit)
             ->get();
@@ -385,9 +386,15 @@ class ApiCheckingController extends Controller
             LEFT JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
             -- JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
             -- JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
-            WHERE  tb_kendaraan.no_polisi LIKE '%$nomorpolisi%' AND NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_pengecekan_kendaraan.status_kendaraan = 't'
-            AND  tb_pengecekan_kendaraan.jam_pengecekan BETWEEN '$jam_awal' AND '$jam_akhir' AND tb_pengecekan_kendaraan.tgl_pengecekan = '$tgl_sekarang'
-            UNION SELECT id_kendaraan FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang')"
+            WHERE  tb_kendaraan.no_polisi LIKE '%$nomorpolisi%'
+            AND NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan
+            WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+            AND  tb_pengecekan_kendaraan.jam_pengecekan BETWEEN '$jam_awal' AND '$jam_akhir'
+            AND tb_pengecekan_kendaraan.tgl_pengecekan = '$tgl_sekarang'
+            UNION SELECT id_kendaraan FROM tb_penugasan_driver
+            WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
+            AND tb_penugasan_driver.tgl_penugasan = '$tgl_sekarang'
+            AND tb_penugasan_driver.status_penugasan = 'p')"
 
         );
 
