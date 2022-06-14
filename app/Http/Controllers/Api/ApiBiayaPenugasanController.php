@@ -358,7 +358,51 @@ class ApiBiayaPenugasanController extends Controller
     }
 
     public function updateRevisi(Request $request){
-        
+        $id_detail = $request->id_detail;
+        $nominal = $request->nominal;
+        $keterangan = $request->keterangan;
+        $bukti = $request->file('bukti');
+        $find = PenugasanBiayaDetail::where('id_detail_biaya', $id_detail)->first();
+        if ($find) {
+            $findBiaya = PenugasanBiaya::where('id_biaya_penugasan', $find->id_biaya_penugasan)->first();
+            $kurang = $findBiaya->total_biaya - $find->nominal;
+            $tambah = $kurang + $nominal;
+            if (!is_null($find->bukti)) {
+                File::delete('assets/img_biaya/' . $find->foto_pengecekan);
+            }
+            $name = 'biaya_' . uniqid() . '.' . $bukti->getClientOriginalExtension();
+            $data = [
+                'nominal' => $nominal,
+                'bukti' => $name,
+                'keterangan' => $keterangan
+            ];
+            $update = $find->update($data);
+            if ($update) {
+                $findBiaya->update(['total_biaya' => $tambah]);
+                $folder_biaya = 'assets/img_biaya';
+                $bukti->move($folder_biaya, $name);
+                return response()->json(
+                    [
+                        'status'         => 'sukses',
+                        'pesan' => 'detail berhasil diupdate'
+                    ]
+                );
+            } else {
+                return response()->json(
+                    [
+                        'status'         => 'gagal',
+                        'pesan' => 'detail gagal diupadate'
+                    ]
+                );
+            }
+        } else {
+            return response()->json(
+                [
+                    'status'         => 'gagal',
+                    'pesan'          => 'Id detail tidak ditemukan'
+                ]
+            );
+        }
     }
     
     // public function formBiaya(){
