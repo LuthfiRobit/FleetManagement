@@ -156,12 +156,32 @@ class ApiPenugasanController extends Controller
                 'tb_order_kendaraan.tujuan',
                 'tb_penugasan_driver.kembali',
                 'tb_penugasan_driver.tgl_acc',
-                'tb_penugasan_driver.status_penugasan'
+                'tb_penugasan_driver.status_penugasan',
+                DB::raw('COUNT(tb_biaya_penugasan.id_do) as biaya')
             )
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_do','=','tb_penugasan_driver.id_do')
             ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+            ->groupBy('tb_penugasan_driver.id_do',
+                'tb_penugasan_driver.id_driver',
+                'tb_petugas.nama_lengkap',
+                'tb_petugas.foto_petugas',
+                'tb_petugas.no_tlp',
+                'tb_driver.nama_driver',
+                'tb_driver.foto_driver',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_penugasan_driver.tgl_penugasan',
+                'tb_penugasan_driver.tgl_selesai',
+                'tb_penugasan_driver.jam_berangkat',
+                'tb_order_kendaraan.tempat_penjemputan',
+                'tb_order_kendaraan.tujuan',
+                'tb_penugasan_driver.kembali',
+                'tb_penugasan_driver.tgl_acc',
+                'tb_penugasan_driver.status_penugasan'
+            )
             ->orderByDesc('id_do')
             ->where([['tb_penugasan_driver.id_driver', $id_driver], ['tb_penugasan_driver.status_penugasan', 's']])
             ->when($tgl != null, function ($filter) use ($tgl) {
