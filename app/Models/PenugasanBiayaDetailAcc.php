@@ -17,6 +17,7 @@ class PenugasanBiayaDetailAcc extends Model
         'id_detail_biaya',
         'tgl_pengecekan',
         'status_acc',
-        'id_petugas'
+        'id_petugas',
+        'keterangan'
     ];
 }
