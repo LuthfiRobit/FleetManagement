@@ -116,6 +116,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('detail/{id}', [KecelakaanController::class, 'detail'])->name('.detail');
             Route::get('/export/{id}', [KecelakaanController::class, 'exportOne'])->name('.exprt.acd.one');
             Route::get('/filter/export', [KecelakaanController::class, 'exportAcdFilter'])->name('.filter.export');
+            Route::get('/export/pdf/one/{id}', [KecelakaanController::class, 'exportPdfOne'])->name('.export.pdf.one');
+            Route::get('/export/pdf/filter', [KecelakaanController::class, 'exportPdfFilter'])->name('.export.pdf.filter');
         });
 
     Route::name('status')->prefix('status')
