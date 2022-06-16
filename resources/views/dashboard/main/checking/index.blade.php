@@ -60,7 +60,7 @@
                                     <!--begin::Modal header-->
                                     <div class="modal-header">
                                         <!--begin::Modal title-->
-                                        <h2 class="fw-bolder">Export Excel Pengecekan</h2>
+                                        <h2 class="fw-bolder">Export Pengecekan</h2>
                                         <!--end::Modal title-->
                                         <!--begin::Close-->
                                         <div class="btn btn-icon btn-sm btn-active-icon-primary"
@@ -84,17 +84,16 @@
                                     <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                         <!--begin::Form-->
                                         <form id="kt_modal_export_users_form" class="form"
-                                            action="{{route('check.export.filter')}}" method="GET"
+                                            action="{{route('check.exprt.pdf.filter')}}" method="GET"
                                             enctype="multipart/form-data">
                                             @csrf
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-10">
                                                 <!--begin::Label-->
-                                                <label class="required fs-5 fw-bold form-label mb-5">Tgl.
-                                                    Pengecekan:</label>
+                                                <label class="required fs-5 fw-bold form-label mb-5">Bulan:</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="date" class="form-control form-control-solid"
+                                                <input type="month" class="form-control form-control-solid"
                                                     placeholder="Pick a date" name="tgl_pengecekan" />
                                                 <!--end::Input-->
                                             </div>
@@ -106,7 +105,7 @@
                                                     Kendaraan:</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <select name="id_kendaraan" data-control="select2"
+                                                {{-- <select name="id_kendaraan" data-control="select2"
                                                     data-placeholder="Pilih Kendaraan" data-hide-search="true"
                                                     class="form-select form-select-solid fw-bolder">
                                                     <option></option>
@@ -114,6 +113,13 @@
                                                     <option value="{{$kd->id_kendaraan}}">{{$kd->nama_kendaraan}} |
                                                         {{$kd->no_polisi}}</option>
                                                     @endforeach
+                                                </select> --}}
+                                                <select name="status" data-control="select2"
+                                                    data-placeholder="Pilih Kondisi" data-hide-search="true"
+                                                    class="form-select form-select-solid fw-bolder">
+                                                    <option></option>
+                                                    <option value="r">Tersedia</option>
+                                                    <option value="t">Tidak Tersedia</option>
                                                 </select>
                                                 <!--end::Input-->
                                             </div>
@@ -148,22 +154,6 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body py-3">
-                    <!--begin:::Tabs-->
-                    {{-- <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#tab_avaliable">TERSEDIA</a>
-                        </li>
-                        <!--end:::Tab item-->
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#tab_unavaliable">TIDAK TERSEDIA</a>
-                        </li>
-                        <!--end:::Tab item-->
-                    </ul> --}}
-                    <!--end:::Tabs-->
                     @if(session()->has('success'))
                     <!--begin::Alert-->
                     <div
