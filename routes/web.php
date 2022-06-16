@@ -31,6 +31,7 @@ use App\Models\Driver;
 use App\Models\JenisAlokasi;
 use App\Models\JenisPengeluaran;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('reject/{id}', [PerbaikanController::class, 'reject'])->name('.reject');
             Route::get('export/status', [PerbaikanController::class, 'exportSelesaiAll'])->name('.export.status');
             Route::get('export/one/{id}', [PerbaikanController::class, 'exportOne'])->name('.export.one');
+            Route::get('export/pdf/one/{id}', [PerbaikanController::class, 'exportPdfOne'])->name('.export.pdf.one');
+            Route::get('export/pdf/filter', [PerbaikanController::class, 'exportPdfFilter'])->name('.export.pdf.filter');
         });
     Route::name('accident')->prefix('accident')
         ->group(function () {
