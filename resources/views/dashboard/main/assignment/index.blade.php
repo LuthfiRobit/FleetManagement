@@ -185,24 +185,12 @@
                                 <td>
                                     <a href="{{route('assign.detail', $as->id_do)}}"
                                         class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
-                                    <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
-                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Export
-                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-                                        <span class="svg-icon svg-icon-5 m-0">
-                                            <i class="bi bi-chevron-down"></i>
+                                    <a href="{{route('assign.export.pdf', $as->id_do)}}"
+                                        class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                        <span class="svg-icon svg-icon-2">
+                                            <i class="bi bi-file-pdf"></i>
                                         </span>
-                                        <!--end::Svg Icon-->
                                     </a>
-                                    <!--begin::Menu-->
-                                    <div class="menu menu-sub menu-sm menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                        data-kt-menu="true">
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="{{route('assign.export.pdf', $as->id_do)}}"
-                                                class="menu-link px-3">PDF</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                    </div>
                                 </td>
                             </tr>
                             @endforeach

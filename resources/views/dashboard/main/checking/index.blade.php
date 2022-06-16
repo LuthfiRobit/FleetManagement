@@ -244,32 +244,12 @@
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm mb-1">Detail</a>
-                                            <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
-                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Export
-                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-                                                <span class="svg-icon svg-icon-5 m-0">
-                                                    <i class="bi bi-chevron-down"></i>
+                                            <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
+                                                class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                <span class="svg-icon svg-icon-2">
+                                                    <i class="bi bi-file-pdf"></i>
                                                 </span>
-                                                <!--end::Svg Icon-->
                                             </a>
-                                            <!--begin::Menu-->
-                                            <div class="menu menu-sub menu-sm menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                                data-kt-menu="true">
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3">PDF</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3"
-                                                        data-kt-users-table-filter="delete_row">Excel</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                            </div>
-
                                         </td>
                                     </tr>
                                     @endforeach
@@ -326,31 +306,12 @@
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm mb-1">Detail</a>
-                                            <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
-                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Export
-                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-                                                <span class="svg-icon svg-icon-5 m-0">
-                                                    <i class="bi bi-chevron-down"></i>
+                                            <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
+                                                class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                <span class="svg-icon svg-icon-2">
+                                                    <i class="bi bi-file-pdf"></i>
                                                 </span>
-                                                <!--end::Svg Icon-->
                                             </a>
-                                            <!--begin::Menu-->
-                                            <div class="menu menu-sub menu-sm menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                                data-kt-menu="true">
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3">PDF</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3"
-                                                        data-kt-users-table-filter="delete_row">Excel</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -464,8 +425,7 @@
 @push('scripts')
 <!--begin::Page Vendors Javascript(used by this page)-->
 <script src="{{ url('assets/backend/assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
-<script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}">
-</script>
+<script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
     $("#kt_datatable_do_avaliable").DataTable({
