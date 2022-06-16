@@ -29,7 +29,7 @@
                                 data-bs-target="#kt_modal_export_users">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
                                 <span class="svg-icon svg-icon-2">
-                                    <i class="bi bi-file-earmark-excel"></i></a>
+                                   <i class="bi bi-file-pdf"></i></a>
                                 </span>
                                 <!--end::Svg Icon-->Export
                             </button>
@@ -291,8 +291,8 @@
                                         </td>
                                         <td>
                                             <a href="{{route('repair.export.one', $pr->id_perbaikan)}}"
-                                                class="btn btn-light bnt-active-light-success btn-sm mb-1"><i
-                                                    class="bi bi-file-earmark-excel"></i></a>
+                                                class="btn btn-light bnt-active-light-success btn-sm mb-1">
+                                                <i class="bi bi-file-pdf"></i></a>
                                             <a href="{{route('repair.detail', $pr->id_perbaikan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                         </td>

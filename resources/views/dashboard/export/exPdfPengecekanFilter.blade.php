@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Laporan Penugasan</title>
+    <title>Laporan Pengecekan</title>
     <link rel="stylesheet" href="{{ public_path('assets/css/styleInvoice.css')}}" media="all" />
 </head>
 
