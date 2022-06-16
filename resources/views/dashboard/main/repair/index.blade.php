@@ -45,7 +45,7 @@
                                     <!--begin::Modal header-->
                                     <div class="modal-header">
                                         <!--begin::Modal title-->
-                                        <h2 class="fw-bolder">Export Excel Perbaikan</h2>
+                                        <h2 class="fw-bolder">Export Perbaikan</h2>
                                         <!--end::Modal title-->
                                         <!--begin::Close-->
                                         <div class="btn btn-icon btn-sm btn-active-icon-primary"
@@ -69,9 +69,20 @@
                                     <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                         <!--begin::Form-->
                                         <form id="kt_modal_export_users_form" class="form"
-                                            action="{{route('repair.export.status')}}" method="GET"
+                                            action="{{route('repair.export.pdf.filter')}}" method="GET"
                                             enctype="multipart/form-data">
                                             @csrf
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-10">
+                                                <!--begin::Label-->
+                                                <label class="required fs-5 fw-bold form-label mb-5">Bulan</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="month" class="form-control form-control-solid"
+                                                    placeholder="Pilih Bulan" name="tgl_perbaikan" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-10">
                                                 <!--begin::Label-->
@@ -79,7 +90,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <select name="status" data-control="select2"
-                                                    data-placeholder="Pilih Kendaraan" data-hide-search="true"
+                                                    data-placeholder="Pilih Status" data-hide-search="true"
                                                     class="form-select form-select-solid fw-bolder">
                                                     <option></option>
                                                     <option value="p">Proses</option>
@@ -88,18 +99,6 @@
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-10">
-                                                <!--begin::Label-->
-                                                <label class="required fs-5 fw-bold form-label mb-5">Tanggal</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="date" class="form-control form-control-solid"
-                                                    placeholder="Pick a date" name="tanggal" />
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-
                                             <!--begin::Actions-->
                                             <div class="text-center">
                                                 <button type="reset" class="btn btn-light me-3"
@@ -367,17 +366,17 @@
                 ! function() {
                     var o = FormValidation.formValidation(e, {
                         fields: {
-                            status: {
+                            // status: {
+                            //     validators: {
+                            //         notEmpty: {
+                            //             message: "Statu Harus Diisi"
+                            //         }
+                            //     }
+                            // },
+                            tgl_perbaikan: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Statu Harus Diisi"
-                                    }
-                                }
-                            },
-                            tanggal: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Tanggal Harus Diisi"
+                                        message: "Bulan Harus Diisi"
                                     }
                                 }
                             }
