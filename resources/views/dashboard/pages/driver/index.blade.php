@@ -142,6 +142,33 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center flex-shrink-0">
+                                        @if ($dr->status == 'y')
+                                        <a href="{{route('dashboard.driver.status.nonaktif', $dr->id_driver)}}"
+                                            class=" btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                                            title=""
+                                            data-bs-original-title="Tekan untuk nonaktifkan driver"
+                                            >
+                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                            <span class="svg-icon svg-icon-2">
+                                              <i class="bi bi-person-x"></i>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </a>
+                                        @else
+                                        <a href="{{route('dashboard.driver.status.aktif', $dr->id_driver)}}"
+                                            class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                                            title=""
+                                            data-bs-original-title="Tekan untuk aktifkan driver"
+                                            >
+                                            <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                            <span class="svg-icon svg-icon-2">
+                                             <i class="bi bi-person-check"></i>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </a>
+                                        @endif
                                         <a href="{{route('dashboard.driver.edit', $dr->id_driver)}}"
                                             class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
                                             <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
