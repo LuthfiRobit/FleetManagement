@@ -92,6 +92,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/export/car/{id}', [PengecekanKendaraanController::class, 'exportCar'])->name('.exprt.car');
             Route::get('/export/filter/', [PengecekanKendaraanController::class, 'exportCarFilter'])->name('.export.filter');
             Route::get('/export/pdf/car/{id}', [PengecekanKendaraanController::class, 'exportPdf'])->name('.exprt.pdf.car');
+            Route::get('/export/pdf/filter', [PengecekanKendaraanController::class, 'exportPdfFilter'])->name('.exprt.pdf.filter');
         });
     Route::name('repair')->prefix('repair')
         ->group(function () {
