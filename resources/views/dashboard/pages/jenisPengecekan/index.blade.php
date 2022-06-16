@@ -34,7 +34,7 @@
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Data Jenis Pengecekan |
                             {{$kriteriaPengecekan->nama_kriteria}}</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 2 Jenis Pengecekan</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">{{$jenisPengecekan->count()}} Jenis Pengecekan</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                         title="" data-bs-original-title="Tekan untuk menambah jenis pengecekan">

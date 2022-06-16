@@ -17,7 +17,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Data Merk Kendaraan</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 2
+                        <span class="text-muted mt-1 fw-bold fs-7">{{$merkKendaraan->count()}}
                             Merk Kendaraan</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
@@ -45,12 +45,12 @@
                         class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 display responsive nowrap">
                         <thead>
                             <tr class="fw-bolder fs-6 text-gray-800 px-7">
-                                <th class="w-25px">
+                                {{-- <th class="w-25px">
                                     <div class="form-check form-check-sm form-check-custom form-check-solid">
                                         <input class="form-check-input" type="checkbox" value="1" data-kt-check="true"
                                             data-kt-check-target=".widget-9-check">
                                     </div>
-                                </th>
+                                </th> --}}
                                 <th>No</th>
                                 <th>Merk Kendaraan</th>
                                 <th>Status</th>
@@ -60,11 +60,11 @@
                         <tbody>
                             @foreach ($merkKendaraan as $index => $mKendaraan)
                             <tr>
-                                <td>
+                                {{-- <td>
                                     <div class="form-check form-check-sm form-check-custom form-check-solid">
                                         <input class="form-check-input widget-9-check" type="checkbox" value="1">
                                     </div>
-                                </td>
+                                </td> --}}
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $mKendaraan->nama_merk }}</td>
                                 <td>
