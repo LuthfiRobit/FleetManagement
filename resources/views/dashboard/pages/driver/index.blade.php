@@ -37,6 +37,18 @@
                                 <!--end::Svg Icon-->Tambah Driver
                             </a>
                         </div>
+                        <div class="btn-group me-2" role="group">
+                            <button type="button" class="btn btn-light-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-placement="top" data-bs-trigger="hover" title=""
+                                data-bs-original-title="Tekan untuk import data driver dengan Ms. Excel"
+                                data-bs-target="#kt_modal_import_driver">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="bi bi-file-pdf"></i></a>
+                                </span>
+                                <!--end::Svg Icon-->Import
+                            </button>
+                        </div>
                         <div class="btn-group" role="group">
                             <a href="{{ route('dashboard.driver.password.all.reset') }}" data-bs-toggle="tooltip"
                                 data-bs-placement="top" data-bs-trigger="hover" title=""
@@ -201,7 +213,74 @@
         </div>
         <!--end::Container-->
     </div>
-
+    <div class="modal fade" id="kt_modal_import_driver" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-450px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bolder">Import Data Driver</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary"
+                        data-kt-users-modal-action="close">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1"
+                                    transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1"
+                                    transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                    <!--begin::Form-->
+                    <form id="kt_modal_import_driver_form" class="form"
+                        action="{{route('dashboard.driver.import.excel')}}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-10">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-bold form-label mb-5">File Excel Data Driver:</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="file" class="form-control form-control-solid"
+                                placeholder="Masukkan Berkas Excel" name="excel_driver" />
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="text-center">
+                            <button type="reset" class="btn btn-light me-3"
+                                data-kt-users-modal-action="cancel">Batal</button>
+                            <button type="submit" class="btn btn-primary"
+                                data-kt-users-modal-action="submit">
+                                <span class="indicator-label">Kirim</span>
+                                <span class="indicator-progress">Mohon Tunggu...
+                                    <span
+                                        class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
     <!--end::Post-->
 </div>
 @endsection
@@ -235,5 +314,117 @@
             "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
             ">"
     });
+
+    var KTModalImportDriver= function() {
+        const t = document.getElementById("kt_modal_import_driver"),
+            e = t.querySelector("#kt_modal_import_driver_form"),
+            n = new bootstrap.Modal(t);
+        return {
+            init: function() {
+                ! function() {
+                    var o = FormValidation.formValidation(e, {
+                        fields: {
+                            excel_driver: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "File Wajib Diisi"
+                                    },
+                                    file: {
+                                        extension: 'xls,xlsx',
+                                        // type: 'application/xls/xlsx',
+                                        message: 'File tidak falid'
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger,
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: ".fv-row",
+                                eleInvalidClass: "",
+                                eleValidClass: ""
+                            })
+                        }
+                    });
+                    const i = t.querySelector('[data-kt-users-modal-action="submit"]');
+                    i.addEventListener("click", (function(t) {
+                        t.preventDefault(), o && o.validate().then((function(t) {
+                            console.log("validated!"), "Valid" == t ? (i.setAttribute("data-kt-indicator", "on"), i.disabled = !0, setTimeout((function() {
+                                i.removeAttribute("data-kt-indicator"), Swal.fire({
+                                    text: "Import Anda Sedang Diproses, Mohon Tunggu!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, mengerti!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then((function(t) {
+                                    e.submit()
+                                    t.isConfirmed && (n.hide(), i.disabled = !1)
+                                }))
+                            }), 2e3)) : Swal.fire({
+                                text: "Silahkan Isi Field",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    })), t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click", (function(t) {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah Anda Yakin Membatalkan Import?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "No, return",
+                            customClass: {
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
+                            }
+                        }).then((function(t) {
+                            t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                text: "Import Anda Dibatalkan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    })), t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (function(t) {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah Anda Yakin Membatalkan Import?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Tidak, kembali",
+                            customClass: {
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
+                            }
+                        }).then((function(t) {
+                            t.value ? (e.reset(), n.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                text: "Export Anda Belum Dibatalkan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    }))
+                }()
+            }
+        }
+    }();
+    KTUtil.onDOMContentLoaded((function() {
+        KTModalImportDriver.init()
+    }));
 </script>
 @endpush
