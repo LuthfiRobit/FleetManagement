@@ -214,7 +214,8 @@ class ApiBiayaPenugasanController extends Controller
         }
     }
 
-    public function listTunggu(Request $request){
+    public function listTunggu(Request $request)
+    {
         $id = $request->query('id');
         $listTunggu = DB::select("
         SELECT tb_order_kendaraan.no_so,tb_biaya_penugasan.id_biaya_penugasan,
@@ -232,34 +233,34 @@ class ApiBiayaPenugasanController extends Controller
         ORDER BY tb_biaya_penugasan.tgl_pengajuan DESC
         ");
         $hasil = array();
-        foreach($listTunggu as $lT){
+        foreach ($listTunggu as $lT) {
             $hasil_awal = array();
             $hasil_awal['id_biaya_penugasan'] = $lT->id_biaya_penugasan;
             $hasil_awal['no_so'] = $lT->no_so;
             $hasil_awal['tgl_pengajuan'] = $lT->tgl_pengajuan;
             $hasil_awal['total_biaya'] = $lT->total_biaya;
             $item = DB::table('tb_detail_biaya')
-            ->selectRaw('
+                ->selectRaw('
                 tb_detail_biaya.id_detail_biaya,
                 tb_jenis_pengeluaran.nama_jenis,
                 tb_detail_biaya.nominal,
                 tb_detail_acc_biaya.tgl_pengecekan,
                 tb_detail_acc_biaya.status_acc
             ')
-            ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_biaya_penugasan', 'tb_detail_biaya.id_biaya_penugasan')
-            ->leftJoin('tb_jenis_pengeluaran', 'tb_jenis_pengeluaran.id_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran')
-            ->leftJoin('tb_detail_acc_biaya','tb_detail_acc_biaya.id_detail_biaya','tb_detail_biaya.id_detail_biaya')
-            ->where([['tb_detail_biaya.id_biaya_penugasan',$lT->id_biaya_penugasan],['tb_detail_acc_biaya.id_petugas',5],['tb_detail_acc_biaya.status_acc','tr']])
-            ->get();
+                ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_biaya_penugasan', 'tb_detail_biaya.id_biaya_penugasan')
+                ->leftJoin('tb_jenis_pengeluaran', 'tb_jenis_pengeluaran.id_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran')
+                ->leftJoin('tb_detail_acc_biaya', 'tb_detail_acc_biaya.id_detail_biaya', 'tb_detail_biaya.id_detail_biaya')
+                ->where([['tb_detail_biaya.id_biaya_penugasan', $lT->id_biaya_penugasan], ['tb_detail_acc_biaya.id_petugas', 5], ['tb_detail_acc_biaya.status_acc', 'tr']])
+                ->get();
             $hasil_awal['item'] = array();
-            foreach($item as $it){
+            foreach ($item as $it) {
                 $hasil_item = array();
                 $hasil_item['id_detail_biaya'] = $it->id_detail_biaya;
                 $hasil_item['nama_item'] = $it->nama_jenis;
                 $hasil_item['nominal'] = $it->nominal;
                 $hasil_item['tgl_pengecekan'] = $it->tgl_pengecekan;
                 $hasil_item['status_acc'] = $it->status_acc;
-                array_push($hasil_awal['item'],$hasil_item);
+                array_push($hasil_awal['item'], $hasil_item);
             }
             array_push($hasil, $hasil_awal);
         }
@@ -271,17 +272,20 @@ class ApiBiayaPenugasanController extends Controller
         );
     }
 
-    public function listSelesai(Request $request){
+    public function listSelesai(Request $request)
+    {
         $id = $request->query('id');
         $listTunggu = DB::select("
         SELECT tb_order_kendaraan.no_so,tb_biaya_penugasan.id_biaya_penugasan,
-        tb_biaya_penugasan.tgl_pengajuan, tb_biaya_penugasan.total_biaya
+        tb_biaya_penugasan.tgl_pengajuan, tb_biaya_penugasan.total_biaya, SUM(tb_detail_biaya.nominal) as total_terima
         FROM tb_biaya_penugasan 
         LEFT JOIN tb_detail_biaya on tb_detail_biaya.id_biaya_penugasan = tb_biaya_penugasan.id_biaya_penugasan
         LEFT JOIN tb_detail_acc_biaya on tb_detail_acc_biaya.id_detail_biaya = tb_detail_biaya.id_detail_biaya
         LEFT JOIN tb_penugasan_driver on tb_penugasan_driver.id_do = tb_biaya_penugasan.id_do
         LEFT JOIN tb_order_kendaraan on tb_order_kendaraan.id_service_order = tb_penugasan_driver.id_service_order
         WHERE tb_penugasan_driver.id_driver = $id 
+        AND tb_detail_acc_biaya.status_acc = 't' 
+        AND tb_detail_acc_biaya.id_petugas = 4
         AND tb_detail_biaya.id_detail_biaya 
         IN (SELECT id_detail_biaya FROM tb_detail_acc_biaya GROUP BY id_detail_biaya HAVING COUNT(id_detail_biaya) > 1)
         GROUP BY tb_biaya_penugasan.id_biaya_penugasan, tb_order_kendaraan.no_so,
@@ -289,34 +293,35 @@ class ApiBiayaPenugasanController extends Controller
         ORDER BY tb_biaya_penugasan.tgl_pengajuan DESC
         ");
         $hasil = array();
-        foreach($listTunggu as $lT){
+        foreach ($listTunggu as $lT) {
             $hasil_awal = array();
             $hasil_awal['id_biaya_penugasan'] = $lT->id_biaya_penugasan;
             $hasil_awal['no_so'] = $lT->no_so;
             $hasil_awal['tgl_pengajuan'] = $lT->tgl_pengajuan;
             $hasil_awal['total_biaya'] = $lT->total_biaya;
+            $hasil_awal['total_terima'] = $lT->total_terima;
             $item = DB::table('tb_detail_biaya')
-            ->selectRaw('
+                ->selectRaw('
                 tb_detail_biaya.id_detail_biaya,
                 tb_jenis_pengeluaran.nama_jenis,
                 tb_detail_biaya.nominal,
                 tb_detail_acc_biaya.tgl_pengecekan,
                 tb_detail_acc_biaya.status_acc
             ')
-            ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_biaya_penugasan', 'tb_detail_biaya.id_biaya_penugasan')
-            ->leftJoin('tb_jenis_pengeluaran', 'tb_jenis_pengeluaran.id_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran')
-            ->leftJoin('tb_detail_acc_biaya','tb_detail_acc_biaya.id_detail_biaya','tb_detail_biaya.id_detail_biaya')
-            ->where([['tb_detail_biaya.id_biaya_penugasan',$lT->id_biaya_penugasan],['tb_detail_acc_biaya.id_petugas',4]])
-            ->get();
+                ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_biaya_penugasan', 'tb_detail_biaya.id_biaya_penugasan')
+                ->leftJoin('tb_jenis_pengeluaran', 'tb_jenis_pengeluaran.id_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran')
+                ->leftJoin('tb_detail_acc_biaya', 'tb_detail_acc_biaya.id_detail_biaya', 'tb_detail_biaya.id_detail_biaya')
+                ->where([['tb_detail_biaya.id_biaya_penugasan', $lT->id_biaya_penugasan], ['tb_detail_acc_biaya.id_petugas', 4]])
+                ->get();
             $hasil_awal['item'] = array();
-            foreach($item as $it){
+            foreach ($item as $it) {
                 $hasil_item = array();
                 $hasil_item['id_detail_biaya'] = $it->id_detail_biaya;
                 $hasil_item['nama_item'] = $it->nama_jenis;
                 $hasil_item['nominal'] = $it->nominal;
                 $hasil_item['tgl_pengecekan'] = $it->tgl_pengecekan;
                 $hasil_item['status_acc'] = $it->status_acc;
-                array_push($hasil_awal['item'],$hasil_item);
+                array_push($hasil_awal['item'], $hasil_item);
             }
             array_push($hasil, $hasil_awal);
         }
@@ -328,19 +333,23 @@ class ApiBiayaPenugasanController extends Controller
         );
     }
 
-    public function detailRevisi(Request $request){
+    public function detailRevisi(Request $request)
+    {
         $id_detail = $request->query('id_detail');
         $detailRevisi = DB::table('tb_detail_biaya')
-        ->select(
-            'tb_detail_biaya.id_detail_biaya', 'tb_jenis_pengeluaran.nama_jenis',
-            'tb_detail_biaya.nominal', 'tb_detail_biaya.bukti',
-            'tb_detail_acc_biaya.tgl_pengecekan', 'tb_detail_acc_biaya.status_acc', 
-            'tb_detail_acc_biaya.keterangan'
-        )
-        ->leftJoin('tb_jenis_pengeluaran','tb_detail_biaya.id_jenis_pengeluaran','=' ,'tb_jenis_pengeluaran.id_jenis_pengeluaran')
-        ->leftJoin('tb_detail_acc_biaya','tb_detail_biaya.id_detail_biaya' ,'=' ,'tb_detail_acc_biaya.id_detail_biaya')
-        ->where([['tb_detail_biaya.id_detail_biaya', $id_detail],['tb_detail_acc_biaya.id_petugas',5]])
-        ->first();
+            ->select(
+                'tb_detail_biaya.id_detail_biaya',
+                'tb_jenis_pengeluaran.nama_jenis',
+                'tb_detail_biaya.nominal',
+                'tb_detail_biaya.bukti',
+                'tb_detail_acc_biaya.tgl_pengecekan',
+                'tb_detail_acc_biaya.status_acc',
+                'tb_detail_acc_biaya.keterangan'
+            )
+            ->leftJoin('tb_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran', '=', 'tb_jenis_pengeluaran.id_jenis_pengeluaran')
+            ->leftJoin('tb_detail_acc_biaya', 'tb_detail_biaya.id_detail_biaya', '=', 'tb_detail_acc_biaya.id_detail_biaya')
+            ->where([['tb_detail_biaya.id_detail_biaya', $id_detail], ['tb_detail_acc_biaya.id_petugas', 5]])
+            ->first();
         if ($detailRevisi) {
             return response()->json(
                 [
@@ -348,7 +357,7 @@ class ApiBiayaPenugasanController extends Controller
                     'detail' => $detailRevisi
                 ]
             );
-        }else{
+        } else {
             return response()->json(
                 [
                     'status'         => 'gagal'
@@ -357,7 +366,8 @@ class ApiBiayaPenugasanController extends Controller
         }
     }
 
-    public function updateRevisi(Request $request){
+    public function updateRevisi(Request $request)
+    {
         $id_detail = $request->id_detail;
         $nominal = $request->nominal;
         $keterangan = $request->keterangan;
@@ -404,7 +414,7 @@ class ApiBiayaPenugasanController extends Controller
             );
         }
     }
-    
+
     // public function formBiaya(){
 
     // }

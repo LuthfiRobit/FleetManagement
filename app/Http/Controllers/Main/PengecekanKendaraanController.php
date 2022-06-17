@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PengecekanKendaraan;
 use App\Models\PenugasanDriver;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -271,5 +272,49 @@ class PengecekanKendaraanController extends Controller
         set_time_limit(60);
 
         return $pdf->download('laporan_pengecekan_' . $data['pengecekan']->nama_kendaraan . '.pdf');
+    }
+
+    public function exportPdfFilter(Request $request)
+    {
+        $tgl = $request->query('tgl_pengecekan');
+        $month = Carbon::parse($tgl)->format('m');
+        $year = Carbon::parse($tgl)->format('Y');
+        $status = $request->query('status');; //$request->status;
+        $data['filter'] = [
+            'bulan' => $tgl,
+            'status' => $status,
+        ];
+        $data['pengecekan'] = DB::table('tb_pengecekan_kendaraan')
+            ->select(
+                'tb_pengecekan_kendaraan.id_pengecekan',
+                'tb_pengecekan_kendaraan.id_kendaraan',
+                'tb_pengecekan_kendaraan.tgl_pengecekan',
+                'tb_pengecekan_kendaraan.jam_pengecekan',
+                'tb_pengecekan_kendaraan.km_kendaraan',
+                'tb_pengecekan_kendaraan.status_kendaraan',
+                'tb_pengecekan_kendaraan.status_pengecekan',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_driver.nama_driver'
+            )
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_pengecekan_kendaraan.id_driver')
+            ->when($status != '', function ($filter) use ($status) {
+                $filter->where('tb_pengecekan_kendaraan.status_kendaraan', $status);
+            })
+            ->whereMonth('tb_pengecekan_kendaraan.tgl_pengecekan', $month)
+            ->whereYear('tb_pengecekan_kendaraan.tgl_pengecekan', $year)
+            ->orderByRaw('CONVERT(tb_pengecekan_kendaraan.id_pengecekan, SIGNED) asc')
+            ->get();
+
+        if ($data['pengecekan']->count() > 0) {
+            // return $data;
+            $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekanFilter', $data)->setPaper('f4', 'portrait');
+            set_time_limit(60);
+
+            return $pdf->download('laporan_penggecekan_bulan_' . $tgl . '.pdf');
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+        }
     }
 }

@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class PerbaikanController extends Controller
 {
@@ -319,6 +320,97 @@ class PerbaikanController extends Controller
             return Excel::download(new PerbaikanOneIdExport($id), 'Laporan_perbaikan_' . $find->no_wo . '.xlsx');
         } else {
             return redirect()->back()->with('success', 'Maaf, Data yang anda cari tidak ditemukan');
+        }
+    }
+
+    public function exportPdfOne($id)
+    {
+        $data['perbaikan'] = DB::table('tb_perbaikan')
+            ->select(
+                'tb_perbaikan.id_perbaikan',
+                'tb_perbaikan.tgl_perbaikan',
+                'tb_perbaikan.tgl_selesai',
+                'tb_perbaikan.tgl_selesai_pengerjaan as tgl_penyelesaian',
+                'tb_perbaikan.status_perbaikan',
+                'tb_perbaikan.status_penyelesaian',
+                'tb_perbaikan.total_biaya_perbaikan as total',
+                'tb_dealer.nama_dealer',
+                'tb_dealer.status_dealer',
+                'tb_dealer.alamat',
+                'tb_persetujuan_perbaikan.no_wo',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi',
+                'tb_pengecekan_kendaraan.km_kendaraan'
+            )
+            ->leftJoin('tb_dealer', 'tb_dealer.id_dealer', '=', 'tb_perbaikan.id_dealer')
+            ->leftJoin('tb_persetujuan_perbaikan', 'tb_persetujuan_perbaikan.id_persetujuan', '=', 'tb_perbaikan.id_persetujuan')
+            ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_pengecekan', '=', 'tb_persetujuan_perbaikan.id_pengecekan')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->where('tb_perbaikan.id_perbaikan', $id)
+            ->first();
+
+        $data['detail_perbaikan'] = DB::table('tb_detail_pergantian as tb_ganti')
+            ->select(
+                'tb_ganti.id_detail_pergantian as id_ganti',
+                'tb_ganti.nama_komponen',
+                'tb_ganti.jml_komponen',
+                'tb_ganti.harga_satuan'
+            )
+            ->orderByDesc('id_ganti')
+            ->where('id_perbaikan', $id)
+            ->get();
+
+        if ($data['perbaikan']) {
+            // return $data;
+            $pdf = FacadePdf::loadView('dashboard.export.exPdfPerbaikanOne', $data)->setPaper('f4', 'portrait');
+            set_time_limit(60);
+            return $pdf->download('laporan_perbaikan_wo_' . $data['perbaikan']->no_wo . '.pdf');
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+        }
+    }
+
+    public function exportPdfFilter(Request $request)
+    {
+        $tgl = $request->query('tgl_perbaikan');
+        $month = Carbon::parse($tgl)->format('m');
+        $year = Carbon::parse($tgl)->format('Y');
+        $status = $request->query('status');; //$request->status;
+        $data['filter'] = [
+            'bulan' => $tgl,
+            'status' => $status,
+        ];
+        $data['perbaikan'] = DB::table('tb_perbaikan')
+            ->select(
+                'tb_perbaikan.id_perbaikan',
+                'tb_perbaikan.tgl_perbaikan',
+                'tb_perbaikan.tgl_selesai',
+                'tb_perbaikan.tgl_selesai_pengerjaan as tgl_penyelesaian',
+                'tb_perbaikan.status_perbaikan',
+                'tb_perbaikan.status_penyelesaian',
+                'tb_dealer.nama_dealer',
+                'tb_persetujuan_perbaikan.no_wo',
+                'tb_kendaraan.nama_kendaraan',
+                'tb_kendaraan.no_polisi'
+            )
+            ->leftJoin('tb_dealer', 'tb_dealer.id_dealer', '=', 'tb_perbaikan.id_dealer')
+            ->leftJoin('tb_persetujuan_perbaikan', 'tb_persetujuan_perbaikan.id_persetujuan', '=', 'tb_perbaikan.id_persetujuan')
+            ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_pengecekan', '=', 'tb_persetujuan_perbaikan.id_pengecekan')
+            ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_pengecekan_kendaraan.id_kendaraan')
+            ->when($status != '', function ($filter) use ($status) {
+                $filter->where('tb_perbaikan.status_perbaikan', $status);
+            })
+            ->whereMonth('tb_perbaikan.tgl_perbaikan', $month)
+            ->whereYear('tb_perbaikan.tgl_perbaikan', $year)
+            ->orderBy('tb_perbaikan.tgl_perbaikan')
+            ->get();
+        if ($data['perbaikan']->count() > 0) {
+            // return $data;
+            $pdf = FacadePdf::loadView('dashboard.export.exPdfPerbaikanFilter', $data)->setPaper('f4', 'portrait');
+            set_time_limit(60);
+            return $pdf->download('laporan_perbaikan_bulan_' . $tgl  . '.pdf');
+        } else {
+            return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
         }
     }
 }

@@ -17,7 +17,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Data Bahan Bakar</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari 2
+                        <span class="text-muted mt-1 fw-bold fs-7">{{$bahanBakar->count()}}
                             Bahan Bakar</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"

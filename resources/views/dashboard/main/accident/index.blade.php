@@ -29,7 +29,7 @@
                                 data-bs-target="#kt_modal_export_users">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
                                 <span class="svg-icon svg-icon-2">
-                                    <i class="bi bi-file-earmark-excel"></i></a>
+                                    <i class="bi bi-file-pdf"></i></a>
                                 </span>
                                 <!--end::Svg Icon-->Export
                             </button>
@@ -45,7 +45,7 @@
                                     <!--begin::Modal header-->
                                     <div class="modal-header">
                                         <!--begin::Modal title-->
-                                        <h2 class="fw-bolder">Export Excel Kecelakaan</h2>
+                                        <h2 class="fw-bolder">Export Kecelakaan</h2>
                                         <!--end::Modal title-->
                                         <!--begin::Close-->
                                         <div class="btn btn-icon btn-sm btn-active-icon-primary"
@@ -69,18 +69,17 @@
                                     <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                         <!--begin::Form-->
                                         <form id="kt_modal_export_users_form" class="form"
-                                            action="{{route('accident.filter.export')}}" method="GET"
+                                            action="{{route('accident.export.pdf.filter')}}" method="GET"
                                             enctype="multipart/form-data">
                                             @csrf
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-10">
                                                 <!--begin::Label-->
-                                                <label class="required fs-5 fw-bold form-label mb-5">Tgl.
-                                                    Kecelakaan:</label>
+                                                <label class="required fs-5 fw-bold form-label mb-5">Bulan:</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="date" class="form-control form-control-solid"
-                                                    placeholder="Pick a date" name="tgl_kecelakaan" />
+                                                <input type="month" class="form-control form-control-solid"
+                                                    placeholder="Input Bulan" name="tgl_kecelakaan" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -193,9 +192,10 @@
                                 <td>
                                     <a href="{{route('accident.detail', $kc->id_kecelakaan)}}"
                                         class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
-                                    <a href="{{route('accident.exprt.acd.one',$kc->id_kecelakaan)}}"
-                                        class="btn btn-light bnt-active-light-success btn-sm"><i
-                                            class="bi bi-file-earmark-excel"></i></a>
+                                    <a href="{{route('accident.export.pdf.one',$kc->id_kecelakaan)}}"
+                                        class="btn btn-light bnt-active-light-success btn-sm">
+                                        <i class="bi bi-file-pdf"></i>
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach
@@ -248,7 +248,7 @@
                             tgl_kecelakaan: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Tgl. Kecelakaan Wajib Diisi"
+                                        message: "Bulan Wajib Diisi"
                                     }
                                 }
                             }

@@ -44,7 +44,7 @@
                                 data-bs-target="#kt_modal_export_users">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
                                 <span class="svg-icon svg-icon-2">
-                                    <i class="bi bi-file-earmark-excel"></i></a>
+                                    <i class="bi bi-file-pdf"></i></a>
                                 </span>
                                 <!--end::Svg Icon-->Export
                             </button>
@@ -60,7 +60,7 @@
                                     <!--begin::Modal header-->
                                     <div class="modal-header">
                                         <!--begin::Modal title-->
-                                        <h2 class="fw-bolder">Export Excel Pengecekan</h2>
+                                        <h2 class="fw-bolder">Export Pengecekan</h2>
                                         <!--end::Modal title-->
                                         <!--begin::Close-->
                                         <div class="btn btn-icon btn-sm btn-active-icon-primary"
@@ -84,17 +84,16 @@
                                     <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                         <!--begin::Form-->
                                         <form id="kt_modal_export_users_form" class="form"
-                                            action="{{route('check.export.filter')}}" method="GET"
+                                            action="{{route('check.exprt.pdf.filter')}}" method="GET"
                                             enctype="multipart/form-data">
                                             @csrf
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-10">
                                                 <!--begin::Label-->
-                                                <label class="required fs-5 fw-bold form-label mb-5">Tgl.
-                                                    Pengecekan:</label>
+                                                <label class="required fs-5 fw-bold form-label mb-5">Bulan:</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="date" class="form-control form-control-solid"
+                                                <input type="month" class="form-control form-control-solid"
                                                     placeholder="Pick a date" name="tgl_pengecekan" />
                                                 <!--end::Input-->
                                             </div>
@@ -106,7 +105,7 @@
                                                     Kendaraan:</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <select name="id_kendaraan" data-control="select2"
+                                                {{-- <select name="id_kendaraan" data-control="select2"
                                                     data-placeholder="Pilih Kendaraan" data-hide-search="true"
                                                     class="form-select form-select-solid fw-bolder">
                                                     <option></option>
@@ -114,6 +113,13 @@
                                                     <option value="{{$kd->id_kendaraan}}">{{$kd->nama_kendaraan}} |
                                                         {{$kd->no_polisi}}</option>
                                                     @endforeach
+                                                </select> --}}
+                                                <select name="status" data-control="select2"
+                                                    data-placeholder="Pilih Kondisi" data-hide-search="true"
+                                                    class="form-select form-select-solid fw-bolder">
+                                                    <option></option>
+                                                    <option value="r">Tersedia</option>
+                                                    <option value="t">Tidak Tersedia</option>
                                                 </select>
                                                 <!--end::Input-->
                                             </div>
@@ -148,22 +154,6 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body py-3">
-                    <!--begin:::Tabs-->
-                    {{-- <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#tab_avaliable">TERSEDIA</a>
-                        </li>
-                        <!--end:::Tab item-->
-                        <!--begin:::Tab item-->
-                        <li class="nav-item">
-                            <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true"
-                                data-bs-toggle="tab" href="#tab_unavaliable">TIDAK TERSEDIA</a>
-                        </li>
-                        <!--end:::Tab item-->
-                    </ul> --}}
-                    <!--end:::Tabs-->
                     @if(session()->has('success'))
                     <!--begin::Alert-->
                     <div
@@ -244,32 +234,12 @@
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm mb-1">Detail</a>
-                                            <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
-                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Export
-                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-                                                <span class="svg-icon svg-icon-5 m-0">
-                                                    <i class="bi bi-chevron-down"></i>
+                                            <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
+                                                class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                <span class="svg-icon svg-icon-2">
+                                                    <i class="bi bi-file-pdf"></i>
                                                 </span>
-                                                <!--end::Svg Icon-->
                                             </a>
-                                            <!--begin::Menu-->
-                                            <div class="menu menu-sub menu-sm menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                                data-kt-menu="true">
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3">PDF</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3"
-                                                        data-kt-users-table-filter="delete_row">Excel</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                            </div>
-
                                         </td>
                                     </tr>
                                     @endforeach
@@ -326,31 +296,12 @@
                                         <td>
                                             <a href="{{route('check.detail', $pc->id_pengecekan)}}"
                                                 class="btn btn-light bnt-active-light-primary btn-sm mb-1">Detail</a>
-                                            <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
-                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Export
-                                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-                                                <span class="svg-icon svg-icon-5 m-0">
-                                                    <i class="bi bi-chevron-down"></i>
+                                            <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
+                                                class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                <span class="svg-icon svg-icon-2">
+                                                    <i class="bi bi-file-pdf"></i>
                                                 </span>
-                                                <!--end::Svg Icon-->
                                             </a>
-                                            <!--begin::Menu-->
-                                            <div class="menu menu-sub menu-sm menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                                data-kt-menu="true">
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.pdf.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3">PDF</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="{{route('check.exprt.car', $pc->id_pengecekan)}}"
-                                                        class="menu-link px-3"
-                                                        data-kt-users-table-filter="delete_row">Excel</a>
-                                                </div>
-                                                <!--end::Menu item-->
-                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -464,8 +415,7 @@
 @push('scripts')
 <!--begin::Page Vendors Javascript(used by this page)-->
 <script src="{{ url('assets/backend/assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
-<script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}">
-</script>
+<script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
     $("#kt_datatable_do_avaliable").DataTable({
