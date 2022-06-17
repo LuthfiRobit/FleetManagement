@@ -195,6 +195,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('driver/status/nonaktif/{id}', [DriverController::class, 'statusDriverNonAktif'])->name('driver.status.nonaktif');
             Route::get('driver/password/reset', [DriverController::class, 'resetAllPassword'])->name('driver.password.all.reset');
             Route::get('driver/password/{id}', [DriverController::class, 'resetPassword'])->name('driver.password.reset.satu');
+            Route::post('driver/import', [DriverController::class, 'importDriver'])->name('driver.import.excel');
         });
 
 
