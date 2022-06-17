@@ -101,6 +101,11 @@ class BiayaPenugasanController extends Controller
                 AND tb_biaya_penugasan.id_biaya_penugasan = tb_detail_biaya.id_biaya_penugasan
                 AND tb_detail_acc_biaya.id_petugas = 5) as acc_sc,
 
+                (SELECT tb_detail_acc_biaya.keterangan FROM tb_detail_acc_biaya
+                WHERE tb_detail_acc_biaya.id_detail_biaya = tb_detail_biaya.id_detail_biaya
+                AND tb_biaya_penugasan.id_biaya_penugasan = tb_detail_biaya.id_biaya_penugasan
+                AND tb_detail_acc_biaya.id_petugas = 5) as ket_sc,
+
                 (SELECT tb_detail_acc_biaya.tgl_pengecekan FROM tb_detail_acc_biaya
                 WHERE tb_detail_acc_biaya.id_detail_biaya = tb_detail_biaya.id_detail_biaya
                 AND tb_biaya_penugasan.id_biaya_penugasan = tb_detail_biaya.id_biaya_penugasan
@@ -139,6 +144,7 @@ class BiayaPenugasanController extends Controller
                 $x['status_acc'] = $value;
                 $x['tgl_pengecekan'] = date('Y-m-d');
                 $x['id_petugas'] = Auth::user()->id_petugas;
+                $x['keterangan'] = $request->keterangan[$key];
                 PenugasanBiayaDetailAcc::updateOrCreate([
                     'id_detail_biaya' => $key,
                     'id_petugas' => Auth::user()->id_petugas,

@@ -113,7 +113,65 @@
                                     </td>
                                     <td>
                                         @if (Auth::user()->id_petugas == 5)
-                                        @if($status == 'scmc')
+                                            @if($status == 'scmc')
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
+                                                'checked' : '' }} disabled>
+                                                <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                    disabled>Terima</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" {{$db->acc_sc == 'tr' ?
+                                                'checked' : '' }} disabled>
+                                                <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                    disabled>Revisi</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" {{$db->acc_sc == 'tl' ?
+                                                'checked' : '' }} disabled>
+                                                <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                    disabled>Tolak</label>
+                                            </div>
+                                            @else
+                                            <div class="form-group d-flex mb-8 row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input acc-sc" type="radio"
+                                                            name="acc_sc[{{$db->id_detail_biaya}}]"
+                                                            id="acc_sc{{$db->id_detail_biaya}}" value="t" {{$db->acc_sc == 't' ?
+                                                        'checked' : '' }} required>
+                                                        <label class="form-check-label"
+                                                            for="acc_sc{{$db->id_detail_biaya}}">Terima</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input acc-sc" type="radio"
+                                                            name="acc_sc[{{$db->id_detail_biaya}}]"
+                                                            id="acc_sc{{$db->id_detail_biaya}}" value="tr" {{$db->acc_sc == 'tr' ?
+                                                        'checked' : '' }} required>
+                                                        <label class="form-check-label"
+                                                            for="acc_sc{{$db->id_detail_biaya}}">Revisi</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input acc-sc" type="radio"
+                                                            name="acc_sc[{{$db->id_detail_biaya}}]"
+                                                            id="acc_sc{{$db->id_detail_biaya}}" value="tl" {{$db->acc_sc == 'tl' ?
+                                                        'checked' : '' }} >
+                                                        <label class="form-check-label"
+                                                            for="acc_sc{{$db->id_detail_biaya}}">Tolak</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group d-flex mb-8 row">
+                                                <div class="col-lg-12">
+                                                    <input type="text" class="form-control form-control-solid ket-revisi" 
+                                                    placeholder="keterangan" name="keterangan[{{$db->id_detail_biaya}}]"
+                                                    value="{{$db->ket_sc != null ? $db->ket_sc : ''}}"/>
+                                                    {{-- <textarea name="keterangan[{{$db->id_detail_biaya}}]" class="form-control form-control-solid"
+                                                        placeholder="Keterangan" ty required></textarea> --}}
+                                                </div>
+                                            </div>
+                                            @endif
+                                        @else
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
                                             'checked' : '' }} disabled>
@@ -121,35 +179,10 @@
                                                 disabled>Terima</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 'tl' ?
+                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 'tr' ?
                                             'checked' : '' }} disabled>
                                             <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
-                                                disabled>Tolak</label>
-                                        </div>
-                                        @else
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input acc-sc" type="radio"
-                                                name="acc_sc[{{$db->id_detail_biaya}}]"
-                                                id="acc_sc{{$db->id_detail_biaya}}" value="t" {{$db->acc_sc == 't' ?
-                                            'checked' : '' }} required>
-                                            <label class="form-check-label"
-                                                for="acc_sc{{$db->id_detail_biaya}}">Terima</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input acc-sc" type="radio"
-                                                name="acc_sc[{{$db->id_detail_biaya}}]"
-                                                id="acc_sc{{$db->id_detail_biaya}}" value="tl" {{$db->acc_sc == 'tl' ?
-                                            'checked' : '' }} >
-                                            <label class="form-check-label"
-                                                for="acc_sc{{$db->id_detail_biaya}}">Tolak</label>
-                                        </div>
-                                        @endif
-                                        @else
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
-                                            'checked' : '' }} disabled>
-                                            <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
-                                                disabled>Terima</label>
+                                                disabled>Revisi</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" {{$db->acc_sc == 'tl' ?
@@ -259,7 +292,15 @@
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
     $(function(){
-
+        $('.acc-sc').each(function () {
+            $(this).on("click", function(){
+                if ($(this).val() == 'tr') {
+                console.log($(this).val());
+                } else {
+                console.log('no');
+                }
+            });
+        });
     });
 </script>
 @endpush
