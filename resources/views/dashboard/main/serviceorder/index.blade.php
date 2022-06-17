@@ -134,43 +134,36 @@
 <script src="{{ url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
-    $("#kt_datatable_so").DataTable({
-        "language": {
-            "lengthMenu": "Show _MENU_",
-        },
-        "dom":
-            "<'row'" +
-            "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
-            "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
-            ">" +
+    $(document).ready( function () {
+       $("#kt_datatable_so").DataTable({
+            "language": {
+                "lengthMenu": "Show _MENU_",
+            },
+            "dom":
+                "<'row'" +
+                "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+                "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+                ">" +
 
-            "<'table-responsive'tr>" +
+                "<'table-responsive'tr>" +
 
-            "<'row'" +
-            "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
-            "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
-            ">"
-    });
-    function logout(id) {
-        Swal.fire({
-            text: "Salah satu harga belum diisi.",
-            icon: "error",
-            buttonsStyling: !1,
-            confirmButtonText: "Ok, saya mengerti!",
-            customClass: {
-                confirmButton: "btn btn-primary"
-            }
+                "<'row'" +
+                "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+                "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+                ">"
         });
-    }
-    $(function () {
-        $('.btn-cancel').each(function () {
-            var id = $(this).data('id');
-            var so = $(this).data('so');
-            var oleh = $(this).data('petugas');
+    } );
+    const allButtons = document.querySelectorAll(".btn-cancel");
+
+    allButtons.forEach(function (button) {
+        button.addEventListener("click", (e) => {
+            var id = button.getAttribute('data-id');
+            var so = button.getAttribute('data-so');
+            var oleh = button.getAttribute('data-petugas');
+            // alert(id);
             var url = '{{route("checking.serviceorder.cancel",":id")}}';
             url = url.replace(':id', id);
-            $(this).on("click", (t => {
-            t.preventDefault(), Swal.fire({
+            Swal.fire({
                 html:
                     'Apakah anda yakin membatalkan penugasan dengan <b>SO_'+so+'</b>, ' +
                     'oleh <b>'+oleh+'</b>?',
@@ -205,7 +198,6 @@
                     }
                 })
             }))
-            }));
         });
     });
 </script>
