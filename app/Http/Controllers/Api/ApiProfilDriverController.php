@@ -64,13 +64,18 @@ class ApiProfilDriverController extends Controller
             ->first();
         $do_selesai = PenugasanDriver::where([['id_driver', $id_driver], ['status_penugasan', 's']])->count();
         $do_batal = PenugasanBatal::where('id_driver', $id_driver)->count();
+        $pengajuan = DB::table('tb_biaya_penugasan')->select('tb_biaya_penugasan.id_biaya_penugasan')
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_do', '=', 'tb_biaya_penugasan.id_do')
+            ->where('tb_penugasan_driver.id_driver', $id_driver)
+            ->get();
 
         return response()->json(
             [
                 'status'        => 'sukses',
                 'profil_driver' => $profil_driver,
                 'do_selesai'    => $do_selesai,
-                'do_batal' => $do_batal
+                'do_batal' => $do_batal,
+                'pengajuan_biaya' => $pengajuan->count()
             ]
         );
     }
