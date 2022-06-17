@@ -17,7 +17,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Data Kriteria Rating</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$kriteria_rating->count()}}
+                        <span class="text-muted mt-1 fw-bold fs-7">{{$kriteria_rating->count()}}
                             Kriteria Rating</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"

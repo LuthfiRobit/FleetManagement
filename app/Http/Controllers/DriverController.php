@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Driver;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
+use App\Imports\DriverImport;
 use App\Models\Departemen;
 use App\Models\DetailSim;
 use App\Models\JenisSim;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -475,5 +477,20 @@ class DriverController extends Controller
     public function destroy(Driver $driver)
     {
         //
+    }
+
+    public function importDriver(Request $request)
+    {
+        $this->validate($request, [
+            'excel_driver' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        $file = $request->file('excel_driver');
+        $import = Excel::import(new DriverImport, $file);
+        if ($import) {
+            return redirect()->back()->with('success', 'Data Driver Berhasil Diimport');
+        } else {
+            return redirect()->back()->with('success', 'Data Driver Gagal Diimport');
+        }
     }
 }

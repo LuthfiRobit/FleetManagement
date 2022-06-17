@@ -31,6 +31,7 @@ use App\Models\Driver;
 use App\Models\JenisAlokasi;
 use App\Models\JenisPengeluaran;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/export/car/{id}', [PengecekanKendaraanController::class, 'exportCar'])->name('.exprt.car');
             Route::get('/export/filter/', [PengecekanKendaraanController::class, 'exportCarFilter'])->name('.export.filter');
             Route::get('/export/pdf/car/{id}', [PengecekanKendaraanController::class, 'exportPdf'])->name('.exprt.pdf.car');
+            Route::get('/export/pdf/filter', [PengecekanKendaraanController::class, 'exportPdfFilter'])->name('.exprt.pdf.filter');
         });
     Route::name('repair')->prefix('repair')
         ->group(function () {
@@ -105,6 +107,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('reject/{id}', [PerbaikanController::class, 'reject'])->name('.reject');
             Route::get('export/status', [PerbaikanController::class, 'exportSelesaiAll'])->name('.export.status');
             Route::get('export/one/{id}', [PerbaikanController::class, 'exportOne'])->name('.export.one');
+            Route::get('export/pdf/one/{id}', [PerbaikanController::class, 'exportPdfOne'])->name('.export.pdf.one');
+            Route::get('export/pdf/filter', [PerbaikanController::class, 'exportPdfFilter'])->name('.export.pdf.filter');
         });
     Route::name('accident')->prefix('accident')
         ->group(function () {
@@ -112,6 +116,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('detail/{id}', [KecelakaanController::class, 'detail'])->name('.detail');
             Route::get('/export/{id}', [KecelakaanController::class, 'exportOne'])->name('.exprt.acd.one');
             Route::get('/filter/export', [KecelakaanController::class, 'exportAcdFilter'])->name('.filter.export');
+            Route::get('/export/pdf/one/{id}', [KecelakaanController::class, 'exportPdfOne'])->name('.export.pdf.one');
+            Route::get('/export/pdf/filter', [KecelakaanController::class, 'exportPdfFilter'])->name('.export.pdf.filter');
         });
 
     Route::name('status')->prefix('status')
@@ -189,6 +195,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('driver/status/nonaktif/{id}', [DriverController::class, 'statusDriverNonAktif'])->name('driver.status.nonaktif');
             Route::get('driver/password/reset', [DriverController::class, 'resetAllPassword'])->name('driver.password.all.reset');
             Route::get('driver/password/{id}', [DriverController::class, 'resetPassword'])->name('driver.password.reset.satu');
+            Route::post('driver/import', [DriverController::class, 'importDriver'])->name('driver.import.excel');
         });
 
 

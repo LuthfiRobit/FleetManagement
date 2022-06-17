@@ -16,7 +16,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Data Jenis Kendaraan</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Lebih dari {{$jenisKendaraan->count()}}
+                        <span class="text-muted mt-1 fw-bold fs-7">{{$jenisKendaraan->count()}}
                             Jenis Kendaraan</span>
                     </h3>
                     <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
@@ -47,12 +47,12 @@
                             <!--begin::Table head-->
                             <thead>
                                 <tr class="fw-bolder text-muted">
-                                    <th class="w-25px">
+                                    {{-- <th class="w-25px">
                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
                                             <input class="form-check-input" type="checkbox" value="1"
                                                 data-kt-check="true" data-kt-check-target=".widget-9-check">
                                         </div>
-                                    </th>
+                                    </th> --}}
                                     <th class="min-w-10px">No</th>
                                     <th class="min-w-140px">Jenis Kendaraan</th>
                                     <th class="min-w-120px">Status</th>
@@ -64,11 +64,11 @@
                             <tbody>
                                 @foreach ($jenisKendaraan as $index => $jKendaraan)
                                 <tr>
-                                    <td>
+                                    {{-- <td>
                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
                                             <input class="form-check-input widget-9-check" type="checkbox" value="1">
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         {{-- {{ $index+ $jenisKendaraan->firstItem() }} --}}
                                         {{ $loop->iteration }}
