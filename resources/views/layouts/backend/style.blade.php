@@ -1,5 +1,5 @@
 <meta name="description"
-    content="Aplikasi Fleet Management tesedia dalam bentuk Website untuk Admin/Petugas dan Mobile(Android) untuk driver" />
+    content="Aplikasi Fleet Management tersedia dalam bentuk Website untuk Admin/Petugas dan Mobile (Android) untuk driver" />
 <meta name="keywords"
     content="Aplikasi Fleet Management khusus untuk PT. Pomi" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
