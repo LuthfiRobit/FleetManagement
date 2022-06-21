@@ -182,7 +182,10 @@
                                         </a>
                                         @endif
                                         <a href="{{route('dashboard.driver.edit', $dr->id_driver)}}"
-                                            class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                            class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                                            title=""
+                                            data-bs-original-title="Tekan untuk edit data driver">
                                             <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                                             <span class="svg-icon svg-icon-2">
                                                 <i class="bi bi-pencil-square fs-6"></i>
