@@ -140,7 +140,7 @@ class PengecekanKendaraanController extends Controller
             )
             ->join('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
             ->join('tb_kriteria_pengecekan', 'tb_kriteria_pengecekan.id_kriteria', '=', 'tb_jenis_pengecekan.id_kriteria')
-            ->where('id_pengecekan', $id)
+            ->where([['id_pengecekan', $id], ['kondisi', 'r']])
             ->get();
 
         $data['foto'] = DB::table('tb_detail_foto_pengecekan')
