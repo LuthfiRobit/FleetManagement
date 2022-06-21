@@ -202,7 +202,7 @@
 <!--begin::Page Custom Javascript(used by this page)-->
 <script src="{{ url('assets/backend/assets/js/custom/documentation/documentation.js') }}"></script>
 <script src="{{ url('assets/backend/assets/js/custom/documentation/search.js') }}"></script>
-<script src="{{ url('assets/backend/assets/js/custom/documentation/general/datatables/advanced.js') }}"></script>
+{{-- <script src="{{ url('assets/backend/assets/js/custom/documentation/general/datatables/advanced.js') }}"></script> --}}
 <!--end::Page Custom Javascript-->
 <script text="text/javascipt">
     $(document).ready(function () {
