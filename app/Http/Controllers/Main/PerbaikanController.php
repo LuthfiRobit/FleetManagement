@@ -207,7 +207,7 @@ class PerbaikanController extends Controller
                     'tb_jenis_pengecekan.jenis_pengecekan as komponen',
                 )
                 ->join('tb_jenis_pengecekan', 'tb_jenis_pengecekan.id_jenis_pengecekan', '=', 'tb_detail_pengecekan.id_jenis_pengecekan')
-                ->where('id_pengecekan', $id_pengecekan)
+                ->where([['id_pengecekan', $id_pengecekan], ['kondisi', 'r']])
                 ->get();
             foreach ($get_detail as $key => $de) {
                 $data_detail = [

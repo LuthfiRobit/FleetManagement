@@ -197,107 +197,126 @@
 <!--begin::Page Custom Javascript(used by this page)-->
 <script src="{{ url('assets/backend/assets/js/custom/documentation/documentation.js') }}"></script>
 <script src="{{ url('assets/backend/assets/js/custom/documentation/search.js') }}"></script>
-<script src="{{ url('assets/backend/assets/js/custom/documentation/general/datatables/advanced.js') }}"></script>
+{{-- <script src="{{ url('assets/backend/assets/js/custom/documentation/general/datatables/advanced.js') }}"></script> --}}
 <!--end::Page Custom Javascript-->
 <script text="text/javascipt">
+    $(document).ready(function () {
+        $("#kt_datatable_example_5").DataTable({
+            "language": {
+                "lengthMenu": "Show _MENU_",
+            },
+            "dom":
+                "<'row'" +
+                "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+                "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+                ">" +
+
+                "<'table-responsive'tr>" +
+
+                "<'row'" +
+                "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+                "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+                ">"
+        });
+    });
     "use strict";
-var KTModalNewTarget = function () {
-    var t, e, n, a, o, i;
-    return {
-        init: function () {
-            (i = document.querySelector("#kt_modal_new_merk")) && (o = new bootstrap.Modal(i),
-                a = document.querySelector("#kt_modal_new_target_form"),
-                t = document.getElementById("kt_modal_new_target_submit"),
-                e = document.getElementById("kt_modal_new_target_cancel"),
-                $(a.querySelector('[name="nama_alokasi"]')).on("change", (function () {
-                    n.revalidateField("nama_jenis_alokasi")
-                })), n = FormValidation.formValidation(a, {
-                    fields: {
-                        nama_alokasi: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Nama Jenis Alokasi Harus Diisi"
-                                },
-                                stringLength: {
-                                    // options: {
-                                    max: 50,
-                                    message: "Nama Jenis Alokasi 50 Karakter"
-                                    // }
+    var KTModalNewTarget = function () {
+        var t, e, n, a, o, i;
+        return {
+            init: function () {
+                (i = document.querySelector("#kt_modal_new_merk")) && (o = new bootstrap.Modal(i),
+                    a = document.querySelector("#kt_modal_new_target_form"),
+                    t = document.getElementById("kt_modal_new_target_submit"),
+                    e = document.getElementById("kt_modal_new_target_cancel"),
+                    $(a.querySelector('[name="nama_alokasi"]')).on("change", (function () {
+                        n.revalidateField("nama_jenis_alokasi")
+                    })), n = FormValidation.formValidation(a, {
+                        fields: {
+                            nama_alokasi: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Nama Jenis Alokasi Harus Diisi"
+                                    },
+                                    stringLength: {
+                                        // options: {
+                                        max: 50,
+                                        message: "Nama Jenis Alokasi 50 Karakter"
+                                        // }
+                                    }
+                                }
+                            },
+                            status: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Status Jenis Alokasi Harus Diisi"
+                                    }
                                 }
                             }
                         },
-                        status: {
-                            validators: {
-                                notEmpty: {
-                                    message: "Status Jenis Alokasi Harus Diisi"
-                                }
-                            }
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger,
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: ".fv-row",
+                                eleInvalidClass: "",
+                                eleValidClass: ""
+                            })
                         }
-                    },
-                    plugins: {
-                        trigger: new FormValidation.plugins.Trigger,
-                        bootstrap: new FormValidation.plugins.Bootstrap5({
-                            rowSelector: ".fv-row",
-                            eleInvalidClass: "",
-                            eleValidClass: ""
-                        })
-                    }
-                }),
-                t.addEventListener("click", (function (e) {
-                    e.preventDefault(), n && n.validate().then((function (e) {
-                        console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
-                            t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
-                                text: "Formulir telah berhasil dikirim!",
-                                icon: "success",
+                    }),
+                    t.addEventListener("click", (function (e) {
+                        e.preventDefault(), n && n.validate().then((function (e) {
+                            console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
+                                t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
+                                    text: "Formulir telah berhasil dikirim!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then((function (t) {
+                                    a.submit()
+                                    t.isConfirmed && o.hide()
+                                }))
+                            }), 2e3)) : Swal.fire({
+                                text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
+                                icon: "error",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
-                            }).then((function (t) {
-                                a.submit()
-                                t.isConfirmed && o.hide()
-                            }))
-                        }), 2e3)) : Swal.fire({
-                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
-                            icon: "error",
+                            })
+                        }))
+                    })),
+                    e.addEventListener("click", (function (t) {
+                        t.preventDefault(), Swal.fire({
+                            text: "Apakah Anda yakin ingin membatalkan?",
+                            icon: "warning",
+                            showCancelButton: !0,
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "Yes, cancel it!",
+                            cancelButtonText: "No, return",
                             customClass: {
-                                confirmButton: "btn btn-primary"
+                                confirmButton: "btn btn-primary",
+                                cancelButton: "btn btn-active-light"
                             }
-                        })
-                    }))
-                })),
-                e.addEventListener("click", (function (t) {
-                    t.preventDefault(), Swal.fire({
-                        text: "Apakah Anda yakin ingin membatalkan?",
-                        icon: "warning",
-                        showCancelButton: !0,
-                        buttonsStyling: !1,
-                        confirmButtonText: "Yes, cancel it!",
-                        cancelButtonText: "No, return",
-                        customClass: {
-                            confirmButton: "btn btn-primary",
-                            cancelButton: "btn btn-active-light"
-                        }
-                    }).then((function (t) {
-                        t.value ? (a.reset(), o.hide()) : "cancel" === t.dismiss && Swal.fire({
-                            text: "Formulir Anda belum dibatalkan!.",
-                            icon: "error",
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        })
-                    }))
-                })))
+                        }).then((function (t) {
+                            t.value ? (a.reset(), o.hide()) : "cancel" === t.dismiss && Swal.fire({
+                                text: "Formulir Anda belum dibatalkan!.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            })
+                        }))
+                    })))
+            }
         }
-    }
-}();
-KTUtil.onDOMContentLoaded((function () {
-    KTModalNewTarget.init()
-}));
+    }();
+    KTUtil.onDOMContentLoaded((function () {
+        KTModalNewTarget.init()
+    }));
 </script>
 @endpush

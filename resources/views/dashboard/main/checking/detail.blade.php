@@ -191,12 +191,16 @@
                                                 <td class="text-gray-400">Waktu Pengecekan:</td>
                                                 <td class="text-gray-800">
                                                     <span class="badge badge-light-primary">
+                                                        @if ($detail->count() > 0)
                                                         @if ($detail[0]->waktu == 'm')
                                                         Pagi
                                                         @elseif ($detail[0]->waktu == 'a')
                                                         Siang
                                                         @else
                                                         Malam
+                                                        @endif
+                                                        @else
+                                                        ---
                                                         @endif
                                                     </span>
                                                 </td>
