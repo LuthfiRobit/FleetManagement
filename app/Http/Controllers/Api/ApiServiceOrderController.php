@@ -426,7 +426,7 @@ class ApiServiceOrderController extends Controller
                         . $list->tlp_driver . '*%0Aklik%20link%20dibawah%20ini%0A([' . route(
                             'rating.insert',
                             $list->id_do . '?no_tlp=' . $list->no_tlp
-                        ) . '])%0ATerimakasih%0A*PT.Pomi*',
+                        ) . '%0ATerimakasih%0A*PT.Pomi*',
                     'rating' => $list->rating
                 ];
             });
