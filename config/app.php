@@ -184,6 +184,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //domPdf
         Barryvdh\DomPDF\ServiceProvider::class,
+        //logViewer
+        Arcanedev\LogViewer\LogViewerServiceProvider::class,
     ],
 
     /*
