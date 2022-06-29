@@ -403,7 +403,7 @@ class ApiCheckingController extends Controller
                 [
                     'status'            => 'gagal',
                     'tgl_sekarang'      => $tgl_sekarang,
-                    'list_kendaraan'    => 'tidak ada'
+                    'list_kendaraan'    => $kendaraan
                 ]
             );
         } else {

@@ -117,7 +117,7 @@ class ApiKecelakaanController extends Controller
             return response()->json(
                 [
                     'status'        => 'gagal',
-                    'list_kendaraan' => 'tidak ada'
+                    'list_kendaraan' => $kendaraan
                 ]
             );
         }
