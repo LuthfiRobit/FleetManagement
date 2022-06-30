@@ -131,6 +131,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', [BiayaPenugasanController::class, 'index'])->name('.main');
             Route::get('/detail/{id}', [BiayaPenugasanController::class, 'detail'])->name('.detail');
             Route::post('/insert', [BiayaPenugasanController::class, 'insert'])->name('.insert');
+            Route::get('/reset/{id}', [BiayaPenugasanController::class, 'reset'])->name('.reset');
         });
 
     Route::name('dashboard.')->prefix('dashboard')
