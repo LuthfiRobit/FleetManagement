@@ -104,6 +104,12 @@
 
                                 </td>
                                 <td>
+                                    @if ($bp['total'] == null)
+                                        <button type="button" class="btn btn-light btn-light-danger btn-sm btn-delete mb-2"
+                                        data-id="{{$bp['id_biaya']}}" data-so="{{$bp['no_so']}}" data-driver="{{$bp['nama_driver']}}"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                                        title="" data-bs-original-title="Tekan untuk mereset pengajuan yang tidak lengkap">Reset</button>
+                                    @endif
                                     <a href="{{route('biaya.detail', $bp['id_biaya'])}}"
                                         class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
                                 </td>
@@ -148,33 +154,25 @@
                 ">"
         });
     });
-    function logout(id) {
-        Swal.fire({
-            text: "Salah satu harga belum diisi.",
-            icon: "error",
-            buttonsStyling: !1,
-            confirmButtonText: "Ok, saya mengerti!",
-            customClass: {
-                confirmButton: "btn btn-primary"
-            }
-        });
-    }
-    $(function () {
-        $('.btn-cancel').each(function () {
-            var id = $(this).data('id');
-            var so = $(this).data('so');
-            var oleh = $(this).data('petugas');
-            var url = '{{route("checking.serviceorder.cancel",":id")}}';
+
+    const buttonDelete = document.querySelectorAll(".btn-delete");
+
+    buttonDelete.forEach(function (button) {
+        button.addEventListener("click", (e) => {
+            var id = button.getAttribute('data-id');
+            var so = button.getAttribute('data-so');
+            var oleh = button.getAttribute('data-driver');
+            // alert(id);
+            var url = '{{route("biaya.reset",":id")}}';
             url = url.replace(':id', id);
-            $(this).on("click", (t => {
-            t.preventDefault(), Swal.fire({
+            Swal.fire({
                 html:
-                    'Apakah anda yakin membatalkan penugasan dengan <b>SO_'+so+'</b>, ' +
+                    'Apakah anda yakin membatalkan pengajuan biaya <b>SO_'+so+'</b>, ' +
                     'oleh <b>'+oleh+'</b>?',
                 icon: "warning",
                 showCancelButton: !0,
                 buttonsStyling: !1,
-                confirmButtonText: "Ya, batalkan",
+                confirmButtonText: "Ya, reset",
                 cancelButtonText: "Tidak, kembali",
                 customClass: {
                     confirmButton: "btn btn-primary",
@@ -182,7 +180,7 @@
                 }
             }).then((function (t) {
                 t.value ? Swal.fire({
-                    text: "Anda telah membatalkan penugasan, penugasan tidak bisa diproses kembali!.",
+                    text: "Anda telah mereset pengajuan biaya, pengajuan bisa diproses kembali!.",
                     icon: "success",
                     buttonsStyling: !1,
                     confirmButtonText: "Ok, mengerti!",
@@ -193,7 +191,7 @@
                         window.location.href = url
                     }))
                     : "cancel" === t.dismiss && Swal.fire({
-                    text: "Penugasan masih aktif!.",
+                    text: "Pengajuan masih aktif!.",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "Ok, mengerti!",
@@ -202,8 +200,19 @@
                     }
                 })
             }))
-            }));
         });
     });
+
+    // function logout(id) {
+    //     Swal.fire({
+    //         text: "Salah satu harga belum diisi.",
+    //         icon: "error",
+    //         buttonsStyling: !1,
+    //         confirmButtonText: "Ok, saya mengerti!",
+    //         customClass: {
+    //             confirmButton: "btn btn-primary"
+    //         }
+    //     });
+    // }
 </script>
 @endpush
