@@ -458,6 +458,26 @@
                         <span class="menu-title">Jenis Pengeluaran</span>
                     </a>
                 </div>
+
+                <div class="menu-item">
+                    <div class="menu-content pt-8 pb-2">
+                        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Developer</span>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ Route::currentRouteName() == 'log-viewer::dashboard' ? 'active' : '' }}"
+                        href="{{ route('log-viewer::dashboard') }}">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <i class="fa fa-warehouse"></i>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">Log Viewer</span>
+                    </a>
+                </div>
             </div>
             <!--end::Menu-->
         </div>
