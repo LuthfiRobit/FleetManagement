@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
+use App\Models\PenugasanBiaya;
+use App\Models\PenugasanBiayaDetail;
 use App\Models\PenugasanBiayaDetailAcc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -166,6 +168,29 @@ class BiayaPenugasanController extends Controller
                 ], $x);
             }
             return redirect()->route('biaya.main');
+        }
+    }
+
+    public function reset($id)
+    {
+        $find = PenugasanBiaya::where('id_biaya_penugasan', $id)->first();
+        if ($find) {
+            $findDetail = PenugasanBiayaDetail::where('id_biaya_penugasan', $id)->get();
+            if ($findDetail->count() > 0) {
+                $findDetail->each(function ($detail, $key) {
+                    $detail->delete();
+                });
+            }
+            $find->delete();
+            return redirect()->back()->with('success', 'Sukses, Data behasil direset.');
+            // return response()->json(
+            //     [
+            //         'status'         => $find,
+            //         'pesan'          => $findDetail
+            //     ]
+            // );
+        } else {
+            return redirect()->back()->with('success', 'Gagal, Data tidak ditemukan.');
         }
     }
 }
