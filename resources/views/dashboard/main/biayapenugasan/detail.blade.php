@@ -172,24 +172,37 @@
                                             </div>
                                             @endif
                                         @else
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
-                                            'checked' : '' }} disabled>
-                                            <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
-                                                disabled>Terima</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 'tr' ?
-                                            'checked' : '' }} disabled>
-                                            <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
-                                                disabled>Revisi</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" {{$db->acc_sc == 'tl' ?
-                                            'checked' : '' }} disabled>
-                                            <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
-                                                disabled>Tolak</label>
-                                        </div>
+                                            <div class="form-group d-flex mb-8 row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" {{$db->acc_sc == 't' ?
+                                                        'checked' : '' }} disabled>
+                                                        <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                            disabled>Terima</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" {{$db->acc_sc == 'tr' ?
+                                                        'checked' : '' }} disabled>
+                                                        <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                            disabled>Revisi</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" {{$db->acc_sc == 'tl' ?
+                                                        'checked' : '' }} disabled>
+                                                        <label class="form-check-label" for="acc_sc{{$db->id_detail_biaya}}"
+                                                            disabled>Tolak</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group d-flex mb-8 row">
+                                                <div class="col-lg-12">
+                                                    <input type="text" class="form-control form-control-solid ket-revisi" 
+                                                    placeholder="keterangan" name="keterangan[{{$db->id_detail_biaya}}]"
+                                                    value="{{$db->ket_sc != null ? $db->ket_sc : ''}}" disabled/>
+                                                    {{-- <textarea name="keterangan[{{$db->id_detail_biaya}}]" class="form-control form-control-solid"
+                                                        placeholder="Keterangan" ty required></textarea> --}}
+                                                </div>
+                                            </div>
                                         @endif
                                     </td>
                                     <td>
