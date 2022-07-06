@@ -250,7 +250,10 @@ class ApiBiayaPenugasanController extends Controller
                 ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_biaya_penugasan', 'tb_detail_biaya.id_biaya_penugasan')
                 ->leftJoin('tb_jenis_pengeluaran', 'tb_jenis_pengeluaran.id_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran')
                 ->leftJoin('tb_detail_acc_biaya', 'tb_detail_acc_biaya.id_detail_biaya', 'tb_detail_biaya.id_detail_biaya')
-                ->where([['tb_detail_biaya.id_biaya_penugasan', $lT->id_biaya_penugasan], ['tb_detail_acc_biaya.id_petugas', 5], ['tb_detail_acc_biaya.status_acc', 'tr']])
+                ->where([
+                    ['tb_detail_biaya.id_biaya_penugasan', $lT->id_biaya_penugasan], ['tb_detail_acc_biaya.id_petugas', 5]
+                    // , ['tb_detail_acc_biaya.status_acc', 'tr']
+                ])
                 ->get();
             $hasil_awal['item'] = array();
             foreach ($item as $it) {
