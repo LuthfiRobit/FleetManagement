@@ -180,6 +180,7 @@
                                                 <th class="min-w-100px">Nama</th>
                                                 <th>Jabatan</th>
                                                 <th class="min-w-125px">No. Tlp</th>
+                                                <th>Status</th>
                                             </tr>
                                             <!--end::Table row-->
                                         </thead>
@@ -191,6 +192,14 @@
                                                 <td>{{$ds->nama_penumpang}}</td>
                                                 <td>{{$ds->nama_jabatan}}</td>
                                                 <td>{{$ds->no_tlp}}</td>
+                                                <td>
+                                                    {{$ds->status}}
+                                                    {{-- @if ($ds->status == 'y')
+                                                        Lead
+                                                    @else
+                                                        Penumpang
+                                                    @endif --}}
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
