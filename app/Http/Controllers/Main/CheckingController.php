@@ -67,9 +67,10 @@ class CheckingController extends Controller
                 'tb_detail_so.id_detail_so',
                 'tb_detail_so.nama_penumpang',
                 'tb_detail_so.jabatan as nama_jabatan',
-                'tb_detail_so.no_tlp'
+                'tb_detail_so.no_tlp',
+                'tb_detail_so.status'
             )
-            ->orderByDesc('id_detail_so')
+            ->orderBy('id_detail_so')
             ->where('id_service_order', $id)
             ->get();
 
@@ -387,23 +388,40 @@ class CheckingController extends Controller
 
                 curl_close($ch);
                 // return $response;
+                // if ($request->jml_penumpang == 1) {
+                //     // dd($request->all());
+                //     $number = 0;
+                //     foreach ($request->nama_penumpang as $key => $penumpang) {
+                //         $serviceDetail = [
+                //             'id_service_order'  => $request->id_service_order,
+                //             'jabatan'           => $request->jbtn_penumpang[$key],
+                //             'nama_penumpang'    => $request->nama_penumpang[$key],
+                //             'no_tlp'            => $request->no_tlp[$key],
+                //             'status'            => 'y'
+                //             // 'status'            => $request->status[$key]
+                //         ];
+                //         $number++;
+                //         $saveDetailSo = ServiceOrderDetail::create($serviceDetail);
+                //     }
+                // } else {
                 $number = 0;
                 foreach ($request->nama_penumpang as $key => $penumpang) {
-                    if (isset($request->status[$key])) {
-                        $status = 'n';
-                    } else {
-                        $status = 'y';
-                    }
+                    // if (isset($request->status[$key])) {
+                    //     $status = 'n';
+                    // } else {
+                    //     $status = 'y';
+                    // }
                     $serviceDetail = [
                         'id_service_order'  => $request->id_service_order,
                         'jabatan'           => $request->jbtn_penumpang[$key],
                         'nama_penumpang'    => $request->nama_penumpang[$key],
                         'no_tlp'            => $request->no_tlp[$key],
-                        'status'            => $status
+                        'status'            => $request->role[$key]
                     ];
                     $number++;
                     $saveDetailSo = ServiceOrderDetail::create($serviceDetail);
                 }
+                // }
             } else {
                 $findSo = ServiceOrder::where('id_service_order',  $request->id_service_order)->first();
                 if ($findSo) {

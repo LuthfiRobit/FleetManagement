@@ -138,7 +138,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="number" class="form-control form-control-solid"
-                                    placeholder="Isi jumlah penumpang" name="jml_penumpang" id="jml_penumpang"
+                                    placeholder="Isi jumlah penumpang" name="jml_penumpang" id="jml_penumpang" min="1"
                                     required />
                             </div>
                         </div>
@@ -339,22 +339,24 @@
                 console.log(i);
                 $('.isi').append(
                 // '<p><input name="name_ct[]" id="id_ct' + j + '" type="text" class="form-control" placeholder="Add Variant ' + j + ' Name " ></p>'+
-                '<div class="form-group d-flex mb-8 row">'+
-                    '<div class="col-lg-5">'+
+                '<div class="form-group d-flex mb-8 row pen">'+
+                    '<div class="col-lg-2 text-center">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input type="text" class="form-control form-control-solid" placeholder="Nama penumpang '+j+'" name="nama_penumpang[]" required/>'+
+                        // '<input class="form-check-input mt-2 ps-2" type="radio" name="status[]" id="status" required/>'+
+                            '<input class="form-check-input mt-5" type="checkbox" name="status['+i+']" id="status_'+i+'" required>'+
+                            '<input type="hidden" class="form-control form-control-solid my-2 role" name="role[]" id="role_'+i+'" required/>'+
                     '</div>'+
-                    '<div class="col-lg-1 text-end">'+
+                    '<div class="col-lg-4">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input class="form-check-input mt-2 ps-2" type="radio" value="y" name="status[]" id="status" required/>'+
-                    '</div>'+
-                    '<div class="col-lg-3">'+
-                        // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input type="text" class="form-control form-control-solid no-tlp-penumpang" placeholder="No. Tlpn penumpang '+j+', [6285...]" id="no_tlp_'+i+'" name="no_tlp[]" maxlength="13" required/>'+
+                        '<input type="text" class="form-control form-control-solid my-2" placeholder="Nama penumpang '+j+'" name="nama_penumpang[]" id="nama_'+i+'" required/>'+
                     '</div>'+
                     '<div class="col-lg-3">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        ' <input type="text" class="form-control form-control-solid" name="jbtn_penumpang[]" placeholder="Jabatan Penumpang '+j+'" required/>'+
+                        '<input type="text" class="form-control form-control-solid my-2 no-tlp-penumpang" placeholder="No. Tlpn penumpang '+j+', [6285...]" id="no_tlp_'+i+'" name="no_tlp[]" maxlength="13" required/>'+
+                    '</div>'+
+                    '<div class="col-lg-3">'+
+                        // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
+                        ' <input type="text" class="form-control form-control-solid my-2" name="jbtn_penumpang[]" placeholder="Jabatan Penumpang '+j+'" required/>'+
                     '</div>'+
                 '</div>'
                 );
@@ -366,13 +368,28 @@
                     } else {
                         replace =  $(this).val();
                     }
-                    console.log(replace)
+                    console.log(replace);
                     $(this).val(replace);
+                });
+
+                $('#status_'+i+'').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $('input[type=checkbox]').attr('disabled', true);
+                        $(this).attr('disabled', false);
+                        const ok = $(this).closest("div.pen").find('#role_'+i+'').val("y")
+                        const no = $('input.role').not(ok).val("n");
+                        console.log($(this).val());
+                        console.log($(this).closest("div.pen").find('#role_'+i+'').val());
+                        
+                    } else {
+                        $('input[type=checkbox]').attr('disabled', false);
+                    }
                 });
                 j++;
             }
         });
 
+       
         $('.no-tlp-penumpang').each(function () {
             var letter = $(this).value[0]
             $(this).on('change', function () {
