@@ -193,12 +193,12 @@
                                                 <td>{{$ds->nama_jabatan}}</td>
                                                 <td>{{$ds->no_tlp}}</td>
                                                 <td>
-                                                    {{$ds->status}}
-                                                    {{-- @if ($ds->status == 'y')
+                                                    {{-- {{$ds->status}} --}}
+                                                    @if ($ds->status == 'y')
                                                         Lead
                                                     @else
-                                                        Penumpang
-                                                    @endif --}}
+                                                        Pass
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
