@@ -138,7 +138,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <input type="number" class="form-control form-control-solid"
-                                    placeholder="Isi jumlah penumpang" name="jml_penumpang" id="jml_penumpang"
+                                    placeholder="Isi jumlah penumpang" name="jml_penumpang" id="jml_penumpang" min="1"
                                     required />
                             </div>
                         </div>
@@ -340,40 +340,23 @@
                 $('.isi').append(
                 // '<p><input name="name_ct[]" id="id_ct' + j + '" type="text" class="form-control" placeholder="Add Variant ' + j + ' Name " ></p>'+
                 '<div class="form-group d-flex mb-8 row pen">'+
-                    '<div class="col-lg-4">'+
-                        // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input type="text" class="form-control form-control-solid" placeholder="Nama penumpang '+j+'" name="nama_penumpang[]" id="nama_'+i+'" required/>'+
-                    '</div>'+
-                    '<div class="col-lg-2">'+
+                    '<div class="col-lg-2 text-center">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
                         // '<input class="form-check-input mt-2 ps-2" type="radio" name="status[]" id="status" required/>'+
-                        // '<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Pilih Status" name="status[]">'+
-                            // '<option value="">Pilih Status</option>'+
-                            // '<option value="n">Penumpang</option>'+
-                            // '<option value="y">Lead</option>'+
-                        // '</select>'+
-                        // '<label class="form-check form-switch form-switch-md form-check-custom form-check-solid flex-stack mb-5">'+
-                            // '<span class="form-check-label ms-0 fw-bolder fs-6 text-gray-700">Payment method</span>'
-                            '<input class="form-check-input" type="checkbox" name="status['+i+']" id="status_'+i+'" value="y" required>'+
-                        // '</label>'+
-                        // '<div class="radio-inline">'+
-                        //     '<label class="radio radio-square">'+
-                        //         '<input class="form-check-input mt-2 ps-2" type="radio" value="y" name="status_y[]">'+
-                        //         '<span>Lead</span>'+
-                        //     '</label>'+
-                        //     '<label class="radio radio-square">'+
-                        //         '<input class="form-check-input mt-2 ps-2" type="radio" checked="checked" value="n" name="status[]">'+
-                        //         '<span>Pess</span>'+
-                        //     '</label>'+
-                        // '</div>'+
+                            '<input class="form-check-input mt-5" type="checkbox" name="status['+i+']" id="status_'+i+'" required>'+
+                            '<input type="hidden" class="form-control form-control-solid my-2 role" name="role[]" id="role_'+i+'" required/>'+
+                    '</div>'+
+                    '<div class="col-lg-4">'+
+                        // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
+                        '<input type="text" class="form-control form-control-solid my-2" placeholder="Nama penumpang '+j+'" name="nama_penumpang[]" id="nama_'+i+'" required/>'+
                     '</div>'+
                     '<div class="col-lg-3">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        '<input type="text" class="form-control form-control-solid no-tlp-penumpang" placeholder="No. Tlpn penumpang '+j+', [6285...]" id="no_tlp_'+i+'" name="no_tlp[]" maxlength="13" required/>'+
+                        '<input type="text" class="form-control form-control-solid my-2 no-tlp-penumpang" placeholder="No. Tlpn penumpang '+j+', [6285...]" id="no_tlp_'+i+'" name="no_tlp[]" maxlength="13" required/>'+
                     '</div>'+
                     '<div class="col-lg-3">'+
                         // '<label class="d-flex align-items-center fs-6 fw-bold mb-2"><span class="required">Nama Penumpang</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Sesuaikan nama penumpang></i></label>'+
-                        ' <input type="text" class="form-control form-control-solid" name="jbtn_penumpang[]" placeholder="Jabatan Penumpang '+j+'" required/>'+
+                        ' <input type="text" class="form-control form-control-solid my-2" name="jbtn_penumpang[]" placeholder="Jabatan Penumpang '+j+'" required/>'+
                     '</div>'+
                 '</div>'
                 );
@@ -389,41 +372,19 @@
                     $(this).val(replace);
                 });
 
-                $('input[type="checkbox"]').on('change', function() {
+                $('#status_'+i+'').on('change', function() {
                     if ($(this).is(':checked')) {
                         $('input[type=checkbox]').attr('disabled', true);
                         $(this).attr('disabled', false);
-                        console.log($(this).val("y"));
-                        // $(this).closest("div.pen").find("input[name=nama_penumpang]").val("n");
-
-                        // $('#customdelimiter').val($(this).val());
+                        const ok = $(this).closest("div.pen").find('#role_'+i+'').val("y")
+                        const no = $('input.role').not(ok).val("n");
+                        console.log($(this).val());
+                        console.log($(this).closest("div.pen").find('#role_'+i+'').val());
+                        
                     } else {
                         $('input[type=checkbox]').attr('disabled', false);
-                        // $('#customdelimiter').val('');
                     }
-                    // console.log(replace)
-                    // if($(this).attr('checked')){
-                    //     $(this).val('y');
-                    // }else{
-                    //     $(this).val('t');
-                    // }
-                    // $(this).val(this.checked ? "y" : "t");
-                    // $('input[type="checkbox"]').not(this).prop('checked', false);
-                    // $('input[type="checkbox"]').not(this).prop('required', false);
-                    // $('input[type="checkbox"]').not(this).val('t');  
-                    // console.log( $(this).val());
-                    // var input = $('[name="nama_penumpang"]');
-                    // if ($(this).is(":checked")) {
-                    //     input.val("y");
-                    //     input.not(this).val("t");
-                    // } else {
-                    //     input.val("t");
-                    // }
                 });
-                // $('input[type="select"]').on('change', function() {
-                //     $('input[type="checkbox"]').not(this).val('t');
-                // });
-
                 j++;
             }
         });
