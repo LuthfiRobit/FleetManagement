@@ -99,7 +99,7 @@ class RatingDriverController extends Controller
                 )
                 ->where('status', 'y')
                 ->get();
-            return view('dashboard.main.rating.insert', $data);
+            return view('dashboard.main.rating.insert2', $data);
         } else {
             abort(403, 'Unauthorized action.');
         }
@@ -121,5 +121,37 @@ class RatingDriverController extends Controller
             $simpan = RatingDriver::create($data);
             return $data;
         }
+    }
+
+    public function storeRating2(Request $request)
+    {
+        // dd($request->all());
+        // DB::beginTransaction();
+        // try {
+        foreach ($request->nilai as $key => $value) {
+            $data = [
+                'id_do' => $request->id_do,
+                'id_kriteria_rating' => $request->id_rating[$key],
+                'id_detail_so' => $request->id_so,
+                'nilai' => $request->nilai[$key],
+            ];
+            // RatingDriver::updateOrCreated([
+            //     'id_kriteria_rating' => $key,
+            //     'id_do' => $request->id_do
+            // ], $data);
+            RatingDriver::create($data);
+        }
+        return redirect()->route('rating.insert', $request->id_do . '?no_tlp=' . $request->no_tlp);
+        // } catch (\Exception $exception) {
+        //     //throw $th;
+        //     DB::rollBack();
+        //     return response()->json(
+        //         [
+        //             'pesan' => 'gagal',
+        //             'errors' => $exception
+        //         ],
+        //         400
+        //     );
+        // }
     }
 }
