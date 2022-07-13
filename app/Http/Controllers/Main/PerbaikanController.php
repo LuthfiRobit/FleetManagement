@@ -55,6 +55,7 @@ class PerbaikanController extends Controller
                 'tb_perbaikan.status_perbaikan',
                 'tb_perbaikan.status_penyelesaian',
                 'tb_perbaikan.total_biaya_perbaikan as total',
+                'tb_perbaikan.bukti_nota',
                 'tb_dealer.nama_dealer',
                 'tb_dealer.status_dealer',
                 'tb_dealer.alamat',
@@ -141,6 +142,7 @@ class PerbaikanController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $data = [
             'tgl_selesai_pengerjaan' => $request->tgl_penyelesaian,
             'status_perbaikan' => 's',
@@ -149,12 +151,17 @@ class PerbaikanController extends Controller
         $findPerbaikan = Perbaikan::where('id_perbaikan', $id)->first();
 
         if ($findPerbaikan) {
+            $foto_bukti_nota = $request->file('foto_bukti_nota');
+            $name_nota = 'nota_' . uniqid() . '.' . $foto_bukti_nota->getClientOriginalExtension();
+            $data['bukti_nota'] = $name_nota;
             if (Carbon::parse($request->tgl_penyelesaian)->lessThanOrEqualTo(Carbon::parse($findPerbaikan->tgl_selesai))) {
                 $data['status_penyelesaian'] = 'o';
             } else {
                 $data['status_penyelesaian'] = 'p';
             }
             $updatePerbaikan = $findPerbaikan->update($data);
+            $folder_nota = 'assets/img_nota_perbaikan';
+            $foto_bukti_nota->move($folder_nota, $name_nota);
             // if ($updatePerbaikan) {
 
             //     $findDetail = PerbaikanDetail::where('id_perbaikan', $id)->get();
@@ -163,9 +170,9 @@ class PerbaikanController extends Controller
             //         return redirect()->route('reapair.main')->with('success', 'Gagal! Data tidak ditemukan.');
             //     }
             // }
-
+            return redirect()->route('repair.main')->with('success', 'Berhasil! Perbaikan Sudah Diselesaikan.');
         } else {
-            return redirect()->route('reapair.main')->with('success', 'Gagal! Data tidak ditemukan.');
+            return redirect()->route('repair.main')->with('success', 'Gagal! Data tidak ditemukan.');
         }
     }
 
