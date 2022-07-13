@@ -45,7 +45,7 @@
                                     <!--begin::Row-->
                                     <div class="row g-5 mb-11">
                                         <!--end::Col-->
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <!--end::Label-->
                                             <div class="fw-bold fs-7 text-gray-600 mb-1">Tgl. Penyelesaian:</div>
                                             <!--end::Label-->
@@ -57,7 +57,7 @@
                                         </div>
                                         <!--end::Col-->
                                         <!--end::Col-->
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <!--end::Label-->
                                             <div class="fw-bold fs-7 text-gray-600 mb-1">Tgl. Selesai:</div>
                                             <!--end::Label-->
@@ -74,6 +74,42 @@
                                                     )->diffInDays( $perbaikan->tgl_selesai) }}
                                                     Hari</span>
                                                 @endif
+                                            </div>
+                                            <!--end::Info-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <div class="col-sm-4">
+                                            <!--end::Label-->
+                                            <div class="fw-bold fs-7 text-gray-600 mb-1">Bukti Nota:</div>
+                                            <!--end::Label-->
+                                            <!--end::Info-->
+                                            <div
+                                                class="fw-bolder fs-6 text-gray-800 d-flex align-items-center flex-wrap">
+                                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+                                                    Lihat Bukti
+                                                </button>
+                                                <div class="modal fade" tabindex="-1" id="kt_modal_1">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Bukti Nota Invoice WO_{{$perbaikan->no_wo}}</h5>
+                                                                <!--begin::Close-->
+                                                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                                                    <span class="svg-icon svg-icon-2x"></span>
+                                                                </div>
+                                                                <!--end::Close-->
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <img src="{{url('/assets/img_nota_perbaikan/'.$perbaikan->bukti_nota)}}" class="img-fluid" alt="Bukti Nota ">
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <!--end::Info-->
                                         </div>
