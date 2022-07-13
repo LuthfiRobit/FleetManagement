@@ -12,7 +12,8 @@
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <!--begin::Container-->
         <div id="kt_content_container" class="container-xxl">
-
+            <form action="{{route("repair.update",$perbaikan->id_perbaikan)}}" id="kt_invoice_form" method="POST" method="POST" enctype="multipart/form-data">
+            @csrf
             <!--begin::Layout-->
             <div class="d-flex flex-column flex-lg-row">
                 <!--begin::Content-->
@@ -22,7 +23,7 @@
                         <!--begin::Card body-->
                         <div class="card-body p-12">
                             <!--begin::Form-->
-                            <form action="" id="kt_invoice_form">
+                            {{-- <form action="" id="kt_invoice_form"> --}}
                                 <!--begin::Wrapper-->
                                 <div class="d-flex flex-column align-items-start flex-xxl-row">
                                     <!--begin::Input group-->
@@ -54,7 +55,7 @@
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="d-flex align-items-center justify-content-end flex-equal order-3 fw-row"
-                                        data-bs-toggle="tooltip" data-bs-trigger="hover" title="Tgl. Selesai">
+                                        data-bs-toggle="tooltip" data-bs-trigger="hover" title="Tgl. Selesai, Silahkan Click Icon Kalender Untuk Mengganti Tanggal">
                                         <!--begin::Date-->
                                         <div class="fs-6 fw-bolder text-gray-700 text-nowrap">Selesai:</div>
                                         <!--end::Date-->
@@ -62,7 +63,7 @@
                                         <div class="position-relative d-flex align-items-center w-150px">
                                             <!--begin::Datepicker-->
                                             <input class="form-control form-control-white fw-bolder pe-1" type="date"
-                                                placeholder="pilih" name="invoice_due_date" id='tgl_penyelesaian'
+                                                placeholder="pilih" name="tgl_penyelesaian" id='tgl_penyelesaian'
                                                 value="{{date('Y-m-d')}}" />
                                             <!--end::Datepicker-->
                                             {{-- <span class="svg-icon svg-icon-2 position-absolute end-0 ms-4">
@@ -151,6 +152,7 @@
                                                     <th colspan="2" class="fs-4 ps-0">Total</th>
                                                     <th colspan="2" class="text-end fs-4 text-nowrap">Rp.
                                                         <dd data-kt-element="grand-total" id="total_biaya">0</dd>
+                                                        <input type="hidden" name="total_biaya" data-kt-element="grand-total-input">
                                                     </th>
                                                 </tr>
                                             </tfoot>
@@ -159,8 +161,14 @@
                                     </div>
                                     <!--end::Table-->
                                 </div>
+                                <div class="mb-0">
+                                    <label class="form-label fs-6 fw-bolder text-gray-700">Bukti Nota</label>
+                                    
+                                    <input type="file" name="foto_bukti_nota" class="form-control form-control-solid" placeholder="Thanks for your business" required>
+                                    {{-- <textarea name="notes" class="form-control form-control-solid" rows="3" placeholder="Thanks for your business"></textarea> --}}
+                                </div>
                                 <!--end::Wrapper-->
-                            </form>
+                            {{-- </form> --}}
                             <!--end::Form-->
                         </div>
                         <!--end::Card body-->
@@ -222,7 +230,23 @@
                             <!--end::Separator-->
                             <!--begin::Actions-->
                             <div class="mb-0">
-                                <button type="submit" href="#" class="btn btn-primary w-100" disabled
+                                {{-- <button type="submit" href="#" class="btn btn-primary w-100" disabled
+                                    id="kt_invoice_submit_button">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen016.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <path
+                                                d="M15.43 8.56949L10.744 15.1395C10.6422 15.282 10.5804 15.4492 10.5651 15.6236C10.5498 15.7981 10.5815 15.9734 10.657 16.1315L13.194 21.4425C13.2737 21.6097 13.3991 21.751 13.5557 21.8499C13.7123 21.9488 13.8938 22.0014 14.079 22.0015H14.117C14.3087 21.9941 14.4941 21.9307 14.6502 21.8191C14.8062 21.7075 14.9261 21.5526 14.995 21.3735L21.933 3.33649C22.0011 3.15918 22.0164 2.96594 21.977 2.78013C21.9376 2.59432 21.8452 2.4239 21.711 2.28949L15.43 8.56949Z"
+                                                fill="black" />
+                                            <path opacity="0.3"
+                                                d="M20.664 2.06648L2.62602 9.00148C2.44768 9.07085 2.29348 9.19082 2.1824 9.34663C2.07131 9.50244 2.00818 9.68731 2.00074 9.87853C1.99331 10.0697 2.04189 10.259 2.14054 10.4229C2.23919 10.5869 2.38359 10.7185 2.55601 10.8015L7.86601 13.3365C8.02383 13.4126 8.19925 13.4448 8.37382 13.4297C8.54839 13.4145 8.71565 13.3526 8.85801 13.2505L15.43 8.56548L21.711 2.28448C21.5762 2.15096 21.4055 2.05932 21.2198 2.02064C21.034 1.98196 20.8409 1.99788 20.664 2.06648Z"
+                                                fill="black" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->Tuntaskan
+                                </button> --}}
+                                 <button type="submit" href="#" class="btn btn-primary w-100" disabled
                                     id="kt_invoice_submit_button">
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen016.svg-->
                                     <span class="svg-icon svg-icon-3">
@@ -248,6 +272,7 @@
                 <!--end::Sidebar-->
             </div>
             <!--end::Layout-->
+            </form>
         </div>
         <!--end::Container-->
     </div>
@@ -278,7 +303,8 @@
                     r = !r || r < 0 ? 0 : r;
                     var i = parseInt(t.value);
                     i = !i || i < 0 ? 1 : i, l.value = n.to(r), t.value = i, e.querySelector('[data-kt-element="total"]').innerText = n.to(r * i), a += r * i
-                })), e.querySelector('[data-kt-element="sub-total"]').innerText = n.to(a), e.querySelector('[data-kt-element="grand-total"]').innerText = n.to(a)
+                })), e.querySelector('[data-kt-element="sub-total"]').innerText = n.to(a), e.querySelector('[data-kt-element="grand-total"]').innerText = n.to(a),
+                e.querySelector('[data-kt-element="grand-total-input"]').value = n.to(a)
             }
         ;
         return {
@@ -385,42 +411,42 @@
                 }
             });
 
-            $.ajax({
-                type: 'POST',
-                url: '{{route("repair.update",$perbaikan->id_perbaikan)}}',
-                data: {
-                    '_token': '{{csrf_token()}}',
-                    'total_biaya': document.getElementById("total_biaya").innerText,
-                    'tgl_penyelesaian': document.getElementById("tgl_penyelesaian").value,
-                },
-                datatype: 'JSON',
-                success: function (response) {
-                    Swal.fire({
-                        text: "Anda telah melakukan penyelesaian perbaikan!.",
-                        icon: "success",
-                        buttonsStyling: !1,
-                        confirmButtonText: "Ok, saya mengerti!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        },
-                    }).then((function (t) {
-                        window.location.href = "{{route('repair.main')}}"
-                        }))
-                    console.log(response)
-                },
-                error: function (response) {
-                    console.log(response)
-                    Swal.fire({
-                        text: "Gagal selesaikan perbaikan!.",
-                        icon: "error",
-                        buttonsStyling: !1,
-                        confirmButtonText: "Ok, saya mengerti!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    })
-                }
-            });
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '{{route("repair.update",$perbaikan->id_perbaikan)}}',
+            //     data: {
+            //         '_token': '{{csrf_token()}}',
+            //         'total_biaya': document.getElementById("total_biaya").innerText,
+            //         'tgl_penyelesaian': document.getElementById("tgl_penyelesaian").value,
+            //     },
+            //     datatype: 'JSON',
+            //     success: function (response) {
+            //         Swal.fire({
+            //             text: "Anda telah melakukan penyelesaian perbaikan!.",
+            //             icon: "success",
+            //             buttonsStyling: !1,
+            //             confirmButtonText: "Ok, saya mengerti!",
+            //             customClass: {
+            //                 confirmButton: "btn btn-primary"
+            //             },
+            //         }).then((function (t) {
+            //             window.location.href = "{{route('repair.main')}}"
+            //             }))
+            //         console.log(response)
+            //     },
+            //     error: function (response) {
+            //         console.log(response)
+            //         Swal.fire({
+            //             text: "Gagal selesaikan perbaikan!.",
+            //             icon: "error",
+            //             buttonsStyling: !1,
+            //             confirmButtonText: "Ok, saya mengerti!",
+            //             customClass: {
+            //                 confirmButton: "btn btn-primary"
+            //             }
+            //         })
+            //     }
+            // });
             //tempat ajax
             return valid
         });
