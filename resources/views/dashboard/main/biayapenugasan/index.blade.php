@@ -27,11 +27,81 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">Tagihan Biaya Penugasan</span>
-                        <span class="text-black mt-1 fw-bold fs-5">Butuh Approval Service Controller : {{$butuh_acc_sc}} |
-                        Butuh Approval SF Supervisor : {{$butuh_acc_sf}} |
-                        Approved : {{$acc_sc_sf}}
+                        <span class="text-black mt-1 fw-bold fs-5">Jumlah Tagihan : {{$all_biaya}} 
                         </span>
                     </h3>
+                    <div class="d-flex flex-wrap flex-stack">
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column flex-grow-1 pe-8">
+                            <!--begin::Stats-->
+                            <div class="d-flex flex-wrap">
+                                <!--begin::Stat-->
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                    <!--begin::Number-->
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+                                        <span class="svg-icon svg-icon-3 svg-icon-success me-2">
+                                            <i class="bi bi-plus-circle"></i>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        <div class="fs-2 fw-bolder counted">
+                                           @if (Auth::user()->id_petugas == 4)
+                                               {{$butuh_acc_sc_all}}
+                                           @else
+                                               {{$butuh_acc_sc}}
+                                           @endif   
+                                           <span class="text-gray-400">Tagihan</span>
+                                        </div>
+                                    </div>
+                                    <!--end::Number-->
+                                    <!--begin::Label-->
+                                    <div class="fw-bold fs-6 text-gray-400">Butuh Approval Service Controller</div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Stat-->
+                                <!--begin::Stat-->
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                    <!--begin::Number-->
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr065.svg-->
+                                        <span class="svg-icon svg-icon-3 svg-icon-danger me-2">
+                                            <i class="bi bi-plus-circle"></i>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        <div class="fs-2 fw-bolder counted">
+                                            {{$butuh_acc_sf}}  <span class="text-gray-400">Tagihan</span>
+                                        </div>
+                                    </div>
+                                    <!--end::Number-->
+                                    <!--begin::Label-->
+                                    <div class="fw-bold fs-6 text-gray-400">Butuh Approval SF Supervisor</div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Stat-->
+                                <!--begin::Stat-->
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                    <!--begin::Number-->
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+                                        <span class="svg-icon svg-icon-3 svg-icon-success me-2">
+                                           <i class="bi bi-check-circle"></i> 
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        <div class="fs-2 fw-bolder counted">
+                                            {{$acc_sc_sf}} <span class="text-gray-400">Tagihan</span>
+                                        </div>
+                                    </div>
+                                    <!--end::Number-->
+                                    <!--begin::Label-->
+                                    <div class="fw-bold fs-6 text-gray-400">Approved</div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Stat-->
+                            </div>
+                            <!--end::Stats-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
                 </div>
 
                 <!--end::Header-->
