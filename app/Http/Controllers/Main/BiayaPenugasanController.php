@@ -58,7 +58,13 @@ class BiayaPenugasanController extends Controller
                     'acc_oleh' => $data->acc_oleh
                 ];
             });
+        $data['all_biaya'] = DB::table('tb_biaya_penugasan')->get()->count();
+        $data['butuh_acc_sc'] = $data['biaya_penugasan']->where('acc_oleh', null)->count();
+        $data['butuh_acc_sf'] = $data['biaya_penugasan']->where('acc_oleh', "5")->count();
+        $data['acc_sc_sf'] = $data['biaya_penugasan']->count() - ($data['butuh_acc_sc'] + $data['butuh_acc_sf']);
+        $data['butuh_acc_sc_all'] = $data['all_biaya'] - ($data['butuh_acc_sf'] + $data['acc_sc_sf']);
         // return $data;
+        // return $data['biaya_penugasan']->where('acc_oleh', 4)->count();
         // dd($data);
         return view('dashboard.main.biayapenugasan.index', $data);
     }
