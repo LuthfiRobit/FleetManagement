@@ -227,10 +227,10 @@ class ApiBiayaPenugasanController extends Controller
         LEFT JOIN tb_order_kendaraan on tb_order_kendaraan.id_service_order = tb_penugasan_driver.id_service_order
         WHERE tb_penugasan_driver.id_driver = $id 
         AND tb_detail_biaya.id_detail_biaya 
-        IN (SELECT id_detail_biaya FROM tb_detail_acc_biaya GROUP BY id_detail_biaya HAVING COUNT(id_detail_biaya) = 1)
+        NOT IN (SELECT id_detail_biaya FROM tb_detail_acc_biaya GROUP BY id_detail_biaya HAVING COUNT(id_detail_biaya) > 1)
         GROUP BY tb_biaya_penugasan.id_biaya_penugasan, tb_order_kendaraan.no_so,
         tb_biaya_penugasan.id_biaya_penugasan, tb_biaya_penugasan.tgl_pengajuan, tb_biaya_penugasan.total_biaya
-        ORDER BY tb_biaya_penugasan.tgl_pengajuan DESC
+        ORDER BY tb_biaya_penugasan.tgl_pengajuan ASC
         ");
         $hasil = array();
         foreach ($listTunggu as $lT) {
@@ -251,18 +251,26 @@ class ApiBiayaPenugasanController extends Controller
                 ->leftJoin('tb_jenis_pengeluaran', 'tb_jenis_pengeluaran.id_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran')
                 ->leftJoin('tb_detail_acc_biaya', 'tb_detail_acc_biaya.id_detail_biaya', 'tb_detail_biaya.id_detail_biaya')
                 ->where([
-                    ['tb_detail_biaya.id_biaya_penugasan', $lT->id_biaya_penugasan], ['tb_detail_acc_biaya.id_petugas', 5]
+                    ['tb_detail_biaya.id_biaya_penugasan', $lT->id_biaya_penugasan],
+                    // ['tb_detail_acc_biaya.id_petugas', 5]
                     // , ['tb_detail_acc_biaya.status_acc', 'tr']
                 ])
                 ->get();
             $hasil_awal['item'] = array();
             foreach ($item as $it) {
+                if ($it->status_acc != null) {
+                    $status_acc = $it->status_acc;
+                    $tgl = $it->tgl_pengecekan;
+                } else {
+                    $status_acc = 'm';
+                    $tgl = '2022-01-01';
+                }
                 $hasil_item = array();
                 $hasil_item['id_detail_biaya'] = $it->id_detail_biaya;
                 $hasil_item['nama_item'] = $it->nama_jenis;
                 $hasil_item['nominal'] = $it->nominal;
-                $hasil_item['tgl_pengecekan'] = $it->tgl_pengecekan;
-                $hasil_item['status_acc'] = $it->status_acc;
+                $hasil_item['tgl_pengecekan'] = $tgl;
+                $hasil_item['status_acc'] = $status_acc;
                 array_push($hasil_awal['item'], $hasil_item);
             }
             array_push($hasil, $hasil_awal);
