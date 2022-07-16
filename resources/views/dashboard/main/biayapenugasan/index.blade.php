@@ -36,7 +36,7 @@
                             <!--begin::Stats-->
                             <div class="d-flex flex-wrap">
                                 <!--begin::Stat-->
-                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="border border-warning border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                     <!--begin::Number-->
                                     <div class="d-flex align-items-center">
                                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
@@ -50,17 +50,17 @@
                                            @else
                                                {{$butuh_acc_sc}}
                                            @endif   
-                                           <span class="text-gray-400">Tagihan</span>
+                                           <span class="text-warning">Tagihan</span>
                                         </div>
                                     </div>
                                     <!--end::Number-->
                                     <!--begin::Label-->
-                                    <div class="fw-bold fs-6 text-gray-400">Butuh Approval Service Controller</div>
+                                    <div class="fw-bold fs-6 text-warning">Butuh Approval Service Controller</div>
                                     <!--end::Label-->
                                 </div>
                                 <!--end::Stat-->
                                 <!--begin::Stat-->
-                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="border border-danger border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                     <!--begin::Number-->
                                     <div class="d-flex align-items-center">
                                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr065.svg-->
@@ -69,17 +69,17 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                         <div class="fs-2 fw-bolder counted">
-                                            {{$butuh_acc_sf}}  <span class="text-gray-400">Tagihan</span>
+                                            {{$butuh_acc_sf}}  <span class="text-danger">Tagihan</span>
                                         </div>
                                     </div>
                                     <!--end::Number-->
                                     <!--begin::Label-->
-                                    <div class="fw-bold fs-6 text-gray-400">Butuh Approval SF Supervisor</div>
+                                    <div class="fw-bold fs-6 text-danger">Butuh Approval SF Supervisor</div>
                                     <!--end::Label-->
                                 </div>
                                 <!--end::Stat-->
                                 <!--begin::Stat-->
-                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <div class="border border-success border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                     <!--begin::Number-->
                                     <div class="d-flex align-items-center">
                                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
@@ -88,12 +88,12 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                         <div class="fs-2 fw-bolder counted">
-                                            {{$acc_sc_sf}} <span class="text-gray-400">Tagihan</span>
+                                            {{$acc_sc_sf}} <span class="text-success">Tagihan</span>
                                         </div>
                                     </div>
                                     <!--end::Number-->
                                     <!--begin::Label-->
-                                    <div class="fw-bold fs-6 text-gray-400">Approved</div>
+                                    <div class="fw-bold fs-6 text-success">Approved</div>
                                     <!--end::Label-->
                                 </div>
                                 <!--end::Stat-->
