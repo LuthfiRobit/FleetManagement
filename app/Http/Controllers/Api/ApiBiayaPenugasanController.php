@@ -369,9 +369,35 @@ class ApiBiayaPenugasanController extends Controller
                 ]
             );
         } else {
+            $detailRevisi = DB::table('tb_detail_biaya')
+                ->select(
+                    'tb_detail_biaya.id_detail_biaya',
+                    'tb_jenis_pengeluaran.nama_jenis',
+                    'tb_detail_biaya.nominal',
+                    'tb_detail_biaya.bukti',
+                    'tb_detail_acc_biaya.tgl_pengecekan',
+                    'tb_detail_acc_biaya.status_acc',
+                    'tb_detail_acc_biaya.keterangan'
+                )
+                ->leftJoin('tb_jenis_pengeluaran', 'tb_detail_biaya.id_jenis_pengeluaran', '=', 'tb_jenis_pengeluaran.id_jenis_pengeluaran')
+                ->leftJoin('tb_detail_acc_biaya', 'tb_detail_biaya.id_detail_biaya', '=', 'tb_detail_acc_biaya.id_detail_biaya')
+                ->where([
+                    ['tb_detail_biaya.id_detail_biaya', $id_detail]
+                    // , ['tb_detail_acc_biaya.id_petugas', 5]
+                ])
+                ->first();
             return response()->json(
                 [
-                    'status'         => 'gagal'
+                    'status'         => 'sukses',
+                    'detail' => [
+                        'id_detail_biaya' => $detailRevisi->id_detail_biaya,
+                        'nama_jenis' => $detailRevisi->nama_jenis,
+                        'nominal' => $detailRevisi->nominal,
+                        'bukti' => $detailRevisi->bukti,
+                        'tgl_pengecekan' => '2022-01-01',
+                        'status_acc' => 'm',
+                        'keterangan' => 'belum diapprove'
+                    ]
                 ]
             );
         }
