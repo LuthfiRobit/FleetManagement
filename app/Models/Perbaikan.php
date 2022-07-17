@@ -21,6 +21,7 @@ class Perbaikan extends Model
         'tgl_selesai_pengerjaan',
         'status_perbaikan',
         'status_penyelesaian',
-        'total_biaya_perbaikan'
+        'total_biaya_perbaikan',
+        'bukti_nota'
     ];
 }
