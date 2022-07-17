@@ -18,7 +18,7 @@
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">LAPORAN PENGECEKAN</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Ada
-                            {{$pengecekan->where('status_perbaikan',null)->count()}} Butuh Persetujuan Perbaikan</span>
+                            {{$pengecekan->where('status_perbaikan',null)->count()}} Record</span>
                     </h3>
                     <ul
                         class="align-items-end  nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
@@ -40,6 +40,10 @@
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                             <!--begin::Export-->
+                            <button type="button" class="btn btn-light-primary btn-sm mb-5 me-3" 
+                            onclick="location.href='{{route('check.history.driver')}}';"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                            title="" data-bs-original-title="Tekan untuk melihat history pengecekan driver">History Driver</button>
                             <button type="button" class="btn btn-light-primary btn-sm mb-5" data-bs-toggle="modal"
                                 data-bs-target="#kt_modal_export_users">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
