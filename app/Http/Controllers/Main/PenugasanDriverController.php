@@ -335,4 +335,361 @@ class PenugasanDriverController extends Controller
             return redirect()->back()->with('success', 'Maaf, Bulan penugasan tidak ditemukan');
         }
     }
+
+    //history
+
+    public function indexHistory(Request $request)
+    {
+        $status = $request->status;
+
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+
+        $bulan = $request->query('bulan');
+        $month = Carbon::parse($bulan)->format('m');
+        $year = Carbon::parse($bulan)->format('Y');
+
+        if ($status == '') {
+
+            $data['history'] = DB::table('tb_driver')
+                ->select(
+                    'tb_driver.id_driver',
+                    'tb_driver.nama_driver',
+                    'tb_driver.no_tlp',
+                    DB::raw('COUNT(tb_penugasan_driver.id_driver) as jumlah_all'),
+                    DB::raw('(SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan is null AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_menunggu,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "t" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_terima,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "p" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_perjalanan,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "s" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_selesai,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "c" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_batal')
+                )
+                ->leftJoin('tb_penugasan_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+                ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                // ->where('tb_penugasan_driver.status_penugasan', '!=', 'c')
+                ->orderByDesc(DB::raw('jumlah_all'))
+                ->get()
+                ->map(
+                    function ($foto) {
+                        return [
+                            'id_driver' => $foto->id_driver,
+                            'nama_driver' => $foto->nama_driver,
+                            'no_tlp' => $foto->no_tlp,
+                            'history' => [
+                                'jumlah_all' => $foto->jumlah_all,
+                                'jumlah_menunggu' => $foto->jumlah_menunggu,
+                                'jumlah_terima' => $foto->jumlah_terima,
+                                'jumlah_perjalan' => $foto->jumlah_perjalanan,
+                                'jumlah_selesai' => $foto->jumlah_selesai,
+                                'jumlah_batal' => $foto->jumlah_batal
+                            ]
+                        ];
+                    }
+                );
+            // $data['max'] = $data['history']->count();
+
+            // return $data['max'];
+
+            return view(
+                'dashboard.main.assignment.history',
+                $data
+            );
+
+            // return response()->json(
+            //     [
+            //         'count'        => $data['history']->count(),
+            //         'list' => $data
+            //     ]
+            // );
+        } else {
+            if ($status == 'h') {
+                $data['history'] = DB::table('tb_driver')
+                    ->select(
+                        'tb_driver.id_driver',
+                        'tb_driver.nama_driver',
+                        'tb_driver.no_tlp',
+                        DB::raw('COUNT(tb_penugasan_driver.id_driver) as jumlah_all'),
+                        DB::raw("
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan is null AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_menunggu,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 't' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_terima,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 'p' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_perjalanan,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 's' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_selesai,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 'c' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_batal
+                        ")
+                    )
+                    ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_driver', '=', 'tb_driver.id_driver')
+                    ->whereBetween('tb_penugasan_driver.tgl_penugasan', [$tgl_awal, $tgl_akhir])
+                    ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                    ->orderByDesc(DB::raw('jumlah_all'))
+                    ->get()
+                    ->map(
+                        function ($foto) {
+                            return [
+                                'id_driver' => $foto->id_driver,
+                                'nama_driver' => $foto->nama_driver,
+                                'no_tlp' => $foto->no_tlp,
+                                'history' => [
+                                    'jumlah_all' => $foto->jumlah_all,
+                                    'jumlah_menunggu' => $foto->jumlah_menunggu,
+                                    'jumlah_terima' => $foto->jumlah_terima,
+                                    'jumlah_perjalan' => $foto->jumlah_perjalanan,
+                                    'jumlah_selesai' => $foto->jumlah_selesai,
+                                    'jumlah_batal' => $foto->jumlah_batal
+                                ]
+                            ];
+                        }
+                    );
+                return view(
+                    'dashboard.main.assignment.history',
+                    $data
+                );
+                // return response()->json(
+                //     [
+                //         'count'        => $data['history']->count(),
+                //         'list' => $data
+                //     ]
+                // );
+            } else if ($status == 'b') {
+                $data['history'] = DB::table('tb_driver')
+                    ->select(
+                        'tb_driver.id_driver',
+                        'tb_driver.nama_driver',
+                        'tb_driver.no_tlp',
+                        DB::raw('COUNT(tb_penugasan_driver.id_driver) as jumlah_all'),
+                        DB::raw("
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan is null AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_menunggu,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 't' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_terima,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 'p' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_perjalanan,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 's' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_selesai,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 'c' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_batal
+                        ")
+                    )
+                    ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_driver', '=', 'tb_driver.id_driver')
+                    ->whereMonth('tb_penugasan_driver.tgl_penugasan', $month)
+                    ->whereYear('tb_penugasan_driver.tgl_penugasan', $year)
+                    ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                    ->orderByDesc(DB::raw('jumlah_all'))
+                    ->get()
+                    ->map(
+                        function ($foto) {
+                            return [
+                                'id_driver' => $foto->id_driver,
+                                'nama_driver' => $foto->nama_driver,
+                                'no_tlp' => $foto->no_tlp,
+                                'history' => [
+                                    'jumlah_all' => $foto->jumlah_all,
+                                    'jumlah_menunggu' => $foto->jumlah_menunggu,
+                                    'jumlah_terima' => $foto->jumlah_terima,
+                                    'jumlah_perjalan' => $foto->jumlah_perjalanan,
+                                    'jumlah_selesai' => $foto->jumlah_selesai,
+                                    'jumlah_batal' => $foto->jumlah_batal
+                                ]
+                            ];
+                        }
+                    );
+
+                return view(
+                    'dashboard.main.assignment.history',
+                    $data
+                );
+                // return response()->json(
+                //     [
+                //         'count'        => $data['history']->count(),
+                //         'list' => $data
+                //     ]
+                // );
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        }
+    }
+
+    public function exportPdfHistory(Request $request)
+    {
+        $status = $request->status;
+
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+
+        $bulan = $request->query('bulan');
+        $month = Carbon::parse($bulan)->format('m');
+        $year = Carbon::parse($bulan)->format('Y');
+        // if ($status == '') {
+        //     $status = 'abis';
+        // } else {
+        //     $status;
+        // }
+        // return $status;
+        // dd($request->all());
+        if ($status == '') {
+            $data['filter'] = [
+                'status' => $status,
+                'bulan' => $bulan,
+                'tgl_awal' => $tgl_awal,
+                'tgl_akhir' => $tgl_akhir
+            ];
+            // return $data;
+            $data['history'] = DB::table('tb_driver')
+                ->select(
+                    'tb_driver.id_driver',
+                    'tb_driver.nama_driver',
+                    'tb_driver.no_tlp',
+                    DB::raw('COUNT(tb_penugasan_driver.id_driver) as jumlah_all'),
+                    DB::raw('(SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan is null AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_menunggu,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "t" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_terima,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "p" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_perjalanan,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "s" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_selesai,
+                    (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE tb_penugasan_driver.status_penugasan = "c" AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_batal')
+                )
+                ->leftJoin('tb_penugasan_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
+                ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                // ->where('tb_penugasan_driver.status_penugasan', '!=', 'c')
+                ->orderByDesc(DB::raw('jumlah_all'))
+                ->get()
+                ->map(
+                    function ($foto) {
+                        return [
+                            'id_driver' => $foto->id_driver,
+                            'nama_driver' => $foto->nama_driver,
+                            'no_tlp' => $foto->no_tlp,
+                            'history' => [
+                                'jumlah_all' => $foto->jumlah_all,
+                                'jumlah_menunggu' => $foto->jumlah_menunggu,
+                                'jumlah_terima' => $foto->jumlah_terima,
+                                'jumlah_perjalan' => $foto->jumlah_perjalanan,
+                                'jumlah_selesai' => $foto->jumlah_selesai,
+                                'jumlah_batal' => $foto->jumlah_batal
+                            ]
+                        ];
+                    }
+                );
+            if ($data['history']->count() > 0) {
+                // return $data;
+                $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanHistory', $data)->setPaper('f4', 'portrait');
+                set_time_limit(60);
+
+                return $pdf->download('laporan_penggecekan_all.pdf');
+            } else {
+                return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+            }
+        } else {
+            if ($status == 'h') {
+                $data['filter'] = [
+                    'status' => $status,
+                    'bulan' => $bulan,
+                    'tgl_awal' => $tgl_awal,
+                    'tgl_akhir' => $tgl_akhir
+                ];
+                $data['history'] = DB::table('tb_driver')
+                    ->select(
+                        'tb_driver.id_driver',
+                        'tb_driver.nama_driver',
+                        'tb_driver.no_tlp',
+                        DB::raw('COUNT(tb_penugasan_driver.id_driver) as jumlah_all'),
+                        DB::raw("
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan is null AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_menunggu,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 't' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_terima,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 'p' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_perjalanan,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 's' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_selesai,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver WHERE (tb_penugasan_driver.tgl_penugasan BETWEEN '$tgl_awal' AND '$tgl_akhir') AND tb_penugasan_driver.status_penugasan = 'c' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_batal
+                        ")
+                    )
+                    ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_driver', '=', 'tb_driver.id_driver')
+                    ->whereBetween('tb_penugasan_driver.tgl_penugasan', [$tgl_awal, $tgl_akhir])
+                    ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                    ->orderByDesc(DB::raw('jumlah_all'))
+                    ->get()
+                    ->map(
+                        function ($foto) {
+                            return [
+                                'id_driver' => $foto->id_driver,
+                                'nama_driver' => $foto->nama_driver,
+                                'no_tlp' => $foto->no_tlp,
+                                'history' => [
+                                    'jumlah_all' => $foto->jumlah_all,
+                                    'jumlah_menunggu' => $foto->jumlah_menunggu,
+                                    'jumlah_terima' => $foto->jumlah_terima,
+                                    'jumlah_perjalan' => $foto->jumlah_perjalanan,
+                                    'jumlah_selesai' => $foto->jumlah_selesai,
+                                    'jumlah_batal' => $foto->jumlah_batal
+                                ]
+                            ];
+                        }
+                    );
+                if ($data['history']->count() > 0) {
+                    // return $data;
+                    $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanHistory', $data)->setPaper('f4', 'portrait');
+                    set_time_limit(60);
+
+                    return $pdf->download('laporan_penggecekan_all.pdf');
+                } else {
+                    return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+                }
+            } else if ($status == 'b') {
+                $data['filter'] = [
+                    'status' => $status,
+                    'bulan' => $bulan,
+                    'tgl_awal' => $tgl_awal,
+                    'tgl_akhir' => $tgl_akhir
+                ];
+                $data['history'] = DB::table('tb_driver')
+                    ->select(
+                        'tb_driver.id_driver',
+                        'tb_driver.nama_driver',
+                        'tb_driver.no_tlp',
+                        DB::raw('COUNT(tb_penugasan_driver.id_driver) as jumlah_all'),
+                        DB::raw("
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan is null AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_menunggu,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 't' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_terima,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 'p' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_perjalanan,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 's' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_selesai,
+                        (SELECT COUNT(tb_penugasan_driver.id_driver) FROM tb_penugasan_driver 
+                        WHERE YEAR(tb_penugasan_driver.tgl_penugasan) = $year AND MONTH(tb_penugasan_driver.tgl_penugasan) = $month AND tb_penugasan_driver.status_penugasan = 'c' AND tb_penugasan_driver.id_driver = tb_driver.id_driver) as jumlah_batal
+                        ")
+                    )
+                    ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_driver', '=', 'tb_driver.id_driver')
+                    ->whereMonth('tb_penugasan_driver.tgl_penugasan', $month)
+                    ->whereYear('tb_penugasan_driver.tgl_penugasan', $year)
+                    ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                    ->orderByDesc(DB::raw('jumlah_all'))
+                    ->get()
+                    ->map(
+                        function ($foto) {
+                            return [
+                                'id_driver' => $foto->id_driver,
+                                'nama_driver' => $foto->nama_driver,
+                                'no_tlp' => $foto->no_tlp,
+                                'history' => [
+                                    'jumlah_all' => $foto->jumlah_all,
+                                    'jumlah_menunggu' => $foto->jumlah_menunggu,
+                                    'jumlah_terima' => $foto->jumlah_terima,
+                                    'jumlah_perjalan' => $foto->jumlah_perjalanan,
+                                    'jumlah_selesai' => $foto->jumlah_selesai,
+                                    'jumlah_batal' => $foto->jumlah_batal
+                                ]
+                            ];
+                        }
+                    );
+                if ($data['history']->count() > 0) {
+                    // return $data;
+                    $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanHistory', $data)->setPaper('f4', 'portrait');
+                    set_time_limit(60);
+
+                    return $pdf->download('laporan_penggecekan_all.pdf');
+                } else {
+                    return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+                }
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        }
+    }
 }
