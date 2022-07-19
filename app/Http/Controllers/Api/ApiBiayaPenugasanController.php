@@ -501,7 +501,7 @@ class ApiBiayaPenugasanController extends Controller
                     'id_biaya_penugasan' => $saveBiaya->id_biaya_penugasan,
                     'id_jenis_pengeluaran' => $request->id_jenis_pengeluaran[$key],
                     'nominal' => $request->nominal[$key],
-                    'keterangan' => $request->keterangan[$key],
+                    // 'keterangan' => $request->keterangan[$key],
                     'bukti' => $name
                 ];
                 $saveDetailBiaya = DB::table('tb_detail_biaya')->insert($detailBiaya);
