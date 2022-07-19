@@ -344,17 +344,7 @@ class PengecekanKendaraanController extends Controller
                 ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
                 // ->orderBy(DB::raw('jumlah'))
                 ->get();
-
-            // return $data['history'];
-
             return view('dashboard.main.checking.history', $data);
-
-            // return response()->json(
-            //     [
-            //         'count'        => $data['history']->count(),
-            //         'list' => $data
-            //     ]
-            // );
         } else {
             if ($status == 'h') {
                 $data['history'] = DB::table('tb_driver')
@@ -370,12 +360,6 @@ class PengecekanKendaraanController extends Controller
                     // ->orderByDesc(DB::raw('jumlah'))
                     ->get();
                 return view('dashboard.main.checking.history', $data);
-                // return response()->json(
-                //     [
-                //         'count'        => $data['history']->count(),
-                //         'list' => $data
-                //     ]
-                // );
             } else if ($status == 'b') {
                 $data['history'] = DB::table('tb_driver')
                     ->select(
@@ -391,12 +375,6 @@ class PengecekanKendaraanController extends Controller
                     // ->orderByDesc(DB::raw('jumlah'))
                     ->get();
                 return view('dashboard.main.checking.history', $data);
-                // return response()->json(
-                //     [
-                //         'count'        => $data['history']->count(),
-                //         'list' => $data
-                //     ]
-                // );
             } else {
                 abort(403, 'Unauthorized action.');
             }
@@ -413,13 +391,6 @@ class PengecekanKendaraanController extends Controller
         $bulan = $request->query('bulan');
         $month = Carbon::parse($bulan)->format('m');
         $year = Carbon::parse($bulan)->format('Y');
-        // if ($status == '') {
-        //     $status = 'abis';
-        // } else {
-        //     $status;
-        // }
-        // return $status;
-        // dd($request->all());
         if ($status == '') {
             $data['filter'] = [
                 'status' => $status,
@@ -427,7 +398,6 @@ class PengecekanKendaraanController extends Controller
                 'tgl_awal' => $tgl_awal,
                 'tgl_akhir' => $tgl_akhir
             ];
-            // return $data;
             $data['history'] = DB::table('tb_driver')
                 ->select(
                     'tb_driver.id_driver',
@@ -440,11 +410,10 @@ class PengecekanKendaraanController extends Controller
                 // ->orderBy(DB::raw('jumlah'))
                 ->get();
             if ($data['history']->count() > 0) {
-                // return $data;
                 $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekanHistory', $data)->setPaper('f4', 'portrait');
                 set_time_limit(60);
 
-                return $pdf->download('laporan_penggecekan_all.pdf');
+                return $pdf->download('history_laporan_penggecekan_all.pdf');
             } else {
                 return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
             }
@@ -469,11 +438,10 @@ class PengecekanKendaraanController extends Controller
                     // ->orderByDesc(DB::raw('jumlah'))
                     ->get();
                 if ($data['history']->count() > 0) {
-                    // return $data;
                     $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekanHistory', $data)->setPaper('f4', 'portrait');
                     set_time_limit(60);
 
-                    return $pdf->download('laporan_penggecekan_all.pdf');
+                    return $pdf->download('history_laporan_penggecekan_tgl' . $tgl_awal . '-' . $tgl_akhir . '.pdf');
                 } else {
                     return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
                 }
@@ -498,11 +466,10 @@ class PengecekanKendaraanController extends Controller
                     // ->orderByDesc(DB::raw('jumlah'))
                     ->get();
                 if ($data['history']->count() > 0) {
-                    // return $data;
                     $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekanHistory', $data)->setPaper('f4', 'portrait');
                     set_time_limit(60);
 
-                    return $pdf->download('laporan_penggecekan_all.pdf');
+                    return $pdf->download('history_laporan_penggecekan_bulan' . $bulan . '.pdf');
                 } else {
                     return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
                 }
