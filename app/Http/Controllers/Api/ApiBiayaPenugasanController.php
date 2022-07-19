@@ -452,7 +452,80 @@ class ApiBiayaPenugasanController extends Controller
         }
     }
 
-    // public function formBiaya(){
+    public function formBiayaNew(Request $request)
+    {
+        $id_do = $request->query('id_do');
+        // $data = ['id_do' => $id_do];
+        $find = PenugasanDriver::where('id_do', $id_do)->first();
+        if ($find) {
+            // $createIdBiaya = PenugasanBiaya::create($data);
+            $jenisPengeluaran = DB::table('tb_jenis_pengeluaran')
+                ->select(
+                    'id_jenis_pengeluaran',
+                    'nama_jenis',
+                    'status'
+                )
+                ->where('status', 'y')
+                ->get();
+            return response()->json(
+                [
+                    'status' => 'sukses',
+                    'id_do'     => $id_do,
+                    // 'id_biaya_penugasan' => $createIdBiaya->id_biaya_penugasan,
+                    'list_pengeluaran' => $jenisPengeluaran
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'status'        => 'gagal'
+                ]
+            );
+        }
+    }
 
-    // }
+    public function insertBiaya(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = [
+                'id_do' => $request->id_do,
+                'tgl_pengajuan' => $request->tgl_pengajuan,
+                'total_biaya' => $request->total_biaya
+            ];
+            $saveBiaya = PenugasanBiaya::create($data);
+            $bukti = $request->file('bukti');
+            foreach ($bukti as $key => $value) {
+                $name = 'biaya_' . uniqid() . '.' . $bukti[$key]->getClientOriginalExtension();
+                $detailBiaya = [
+                    'id_biaya_penugasan' => $saveBiaya->id_biaya_penugasan,
+                    'id_jenis_pengeluaran' => $request->id_jenis_pengeluaran[$key],
+                    'nominal' => $request->nominal[$key],
+                    'keterangan' => $request->keterangan[$key],
+                    'bukti' => $name
+                ];
+                $saveDetailBiaya = DB::table('tb_detail_biaya')->insert($detailBiaya);
+                $folder_biaya = 'assets/img_biaya';
+                $bukti[$key]->move($folder_biaya, $name);
+                // $bukti->move(public_path('assets/img_biaya'), end($name));
+            }
+
+            DB::commit();
+            return response()->json(
+                [
+                    'status'         => 'sukses',
+                    'id_biaya_penugasan'  => $saveBiaya->id_biaya_penugasan
+                ]
+            );
+        } catch (\Exception $exception) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json(
+                [
+                    'status' => 'gagal',
+                    // 'errors' => $exception
+                ]
+            );
+        }
+    }
 }
