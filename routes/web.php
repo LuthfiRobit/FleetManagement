@@ -84,6 +84,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('batal/terima', [PenugasanDriverController::class, 'terimabatal'])->name('.batal.terima');
             Route::get('export/pdf/{id}', [PenugasanDriverController::class, 'exportPdfPenugasan'])->name('.export.pdf');
             Route::get('export/filter/filter', [PenugasanDriverController::class, 'exportPdfFilter'])->name('.export.filter.pdf');
+
+            //history
+            Route::get('/history/driver', [PenugasanDriverController::class, 'indexHistory'])->name('.history.driver');
+            Route::get('/export/history/pdf', [PenugasanDriverController::class, 'exportPdfHistory'])->name('.exprt.history.pdf');
         });
     Route::name('check')->prefix('check')
         ->group(function () {
