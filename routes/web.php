@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth'], function () {
 
             //history
             Route::get('/history/driver', [PengecekanKendaraanController::class, 'indexDriver'])->name('.history.driver');
+            Route::get('/export/history/pdf', [PengecekanKendaraanController::class, 'exportHistory'])->name('.exprt.history.pdf');
         });
     Route::name('repair')->prefix('repair')
         ->group(function () {
