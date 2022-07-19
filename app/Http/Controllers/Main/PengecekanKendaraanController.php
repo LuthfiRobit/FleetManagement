@@ -279,7 +279,7 @@ class PengecekanKendaraanController extends Controller
         $tgl = $request->query('tgl_pengecekan');
         $month = Carbon::parse($tgl)->format('m');
         $year = Carbon::parse($tgl)->format('Y');
-        $status = $request->query('status');; //$request->status;
+        $status = $request->query('status'); //$request->status;
         $data['filter'] = [
             'bulan' => $tgl,
             'status' => $status,
@@ -345,6 +345,8 @@ class PengecekanKendaraanController extends Controller
                 // ->orderBy(DB::raw('jumlah'))
                 ->get();
 
+            // return $data['history'];
+
             return view('dashboard.main.checking.history', $data);
 
             // return response()->json(
@@ -395,6 +397,115 @@ class PengecekanKendaraanController extends Controller
                 //         'list' => $data
                 //     ]
                 // );
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        }
+    }
+
+    public function exportHistory(Request $request)
+    {
+        $status = $request->status;
+
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+
+        $bulan = $request->query('bulan');
+        $month = Carbon::parse($bulan)->format('m');
+        $year = Carbon::parse($bulan)->format('Y');
+        // if ($status == '') {
+        //     $status = 'abis';
+        // } else {
+        //     $status;
+        // }
+        // return $status;
+        // dd($request->all());
+        if ($status == '') {
+            $data['filter'] = [
+                'status' => $status,
+                'bulan' => $bulan,
+                'tgl_awal' => $tgl_awal,
+                'tgl_akhir' => $tgl_akhir
+            ];
+            // return $data;
+            $data['history'] = DB::table('tb_driver')
+                ->select(
+                    'tb_driver.id_driver',
+                    'tb_driver.nama_driver',
+                    'tb_driver.no_tlp',
+                    DB::raw('COUNT(tb_pengecekan_kendaraan.id_driver) as jumlah')
+                )
+                ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_driver', '=', 'tb_driver.id_driver')
+                ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                // ->orderBy(DB::raw('jumlah'))
+                ->get();
+            if ($data['history']->count() > 0) {
+                // return $data;
+                $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekanHistory', $data)->setPaper('f4', 'portrait');
+                set_time_limit(60);
+
+                return $pdf->download('laporan_penggecekan_all.pdf');
+            } else {
+                return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+            }
+        } else {
+            if ($status == 'h') {
+                $data['filter'] = [
+                    'status' => $status,
+                    'bulan' => $bulan,
+                    'tgl_awal' => $tgl_awal,
+                    'tgl_akhir' => $tgl_akhir
+                ];
+                $data['history'] = DB::table('tb_driver')
+                    ->select(
+                        'tb_driver.id_driver',
+                        'tb_driver.nama_driver',
+                        'tb_driver.no_tlp',
+                        DB::raw('COUNT(tb_pengecekan_kendaraan.id_driver) as jumlah')
+                    )
+                    ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_driver', '=', 'tb_driver.id_driver')
+                    ->whereBetween('tb_pengecekan_kendaraan.tgl_pengecekan', [$tgl_awal, $tgl_akhir])
+                    ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                    // ->orderByDesc(DB::raw('jumlah'))
+                    ->get();
+                if ($data['history']->count() > 0) {
+                    // return $data;
+                    $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekanHistory', $data)->setPaper('f4', 'portrait');
+                    set_time_limit(60);
+
+                    return $pdf->download('laporan_penggecekan_all.pdf');
+                } else {
+                    return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+                }
+            } else if ($status == 'b') {
+                $data['filter'] = [
+                    'status' => $status,
+                    'bulan' => $bulan,
+                    'tgl_awal' => $tgl_awal,
+                    'tgl_akhir' => $tgl_akhir
+                ];
+                $data['history'] = DB::table('tb_driver')
+                    ->select(
+                        'tb_driver.id_driver',
+                        'tb_driver.nama_driver',
+                        'tb_driver.no_tlp',
+                        DB::raw('COUNT(tb_pengecekan_kendaraan.id_driver) as jumlah')
+                    )
+                    ->leftJoin('tb_pengecekan_kendaraan', 'tb_pengecekan_kendaraan.id_driver', '=', 'tb_driver.id_driver')
+                    ->whereMonth('tb_pengecekan_kendaraan.tgl_pengecekan', $month)
+                    ->whereYear('tb_pengecekan_kendaraan.tgl_pengecekan', $year)
+                    ->groupBy('tb_driver.id_driver', 'tb_driver.nama_driver', 'tb_driver.no_tlp')
+                    // ->orderByDesc(DB::raw('jumlah'))
+                    ->get();
+                if ($data['history']->count() > 0) {
+                    // return $data;
+                    $pdf = FacadePdf::loadView('dashboard.export.exPdfPengecekanHistory', $data)->setPaper('f4', 'portrait');
+                    set_time_limit(60);
+
+                    return $pdf->download('laporan_penggecekan_all.pdf');
+                } else {
+                    return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+                }
             } else {
                 abort(403, 'Unauthorized action.');
             }
