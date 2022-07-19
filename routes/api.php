@@ -199,10 +199,13 @@ Route::group(
         Route::post('bukti/update', [ApiBiayaPenugasanController::class, 'updateBuktiBiaya']); //simpan butki biaya
         Route::post('bukti/delete', [ApiBiayaPenugasanController::class, 'deleteBuktiBiaya']); //simpan butki biaya
         Route::post('cancel', [ApiBiayaPenugasanController::class, 'cancelBiaya']); //cancel input biaya
-        Route::get('list/menunggu',[ApiBiayaPenugasanController::class, 'listTunggu']); //list menunggu
-        Route::get('list/selesai',[ApiBiayaPenugasanController::class, 'listSelesai']); //list selesai
+        Route::get('list/menunggu', [ApiBiayaPenugasanController::class, 'listTunggu']); //list menunggu
+        Route::get('list/selesai', [ApiBiayaPenugasanController::class, 'listSelesai']); //list selesai
         Route::get('detail/revisi', [ApiBiayaPenugasanController::class, 'detailRevisi']); //detail revisi
         Route::post('update/revisi', [ApiBiayaPenugasanController::class, 'updateRevisi']); //update revisi
+
+        Route::get('form/new', [ApiBiayaPenugasanController::class, 'formBiayaNew']); //form biaya new
+        Route::post('simpan/new', [ApiBiayaPenugasanController::class, 'insertBiaya']); //simpan biaya new
     }
 );
 
