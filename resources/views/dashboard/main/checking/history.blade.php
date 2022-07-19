@@ -36,36 +36,41 @@
                         <!--begin::Card title-->
                         <div class="card-toolbar">
                             <form action="">
-                                 <div class="form-group d-flex mb-8 row">
-                                    <div class="col-lg-4">
-                                        <label class=" fs-6 fw-bold mt-2">Harian</label>
-                                        <input class="form-check-input mt-2 ps-2" type="radio" name="status" id="status" value="h" {{ request()->get('status') == 'h' ? "checked" : "" }} />
+                                <div class="form-group d-flex mb-8 row">
+                                    <div class="col-lg-2">
+                                        <label class=" fs-6 fw-bold mt-4">Harian</label>
+                                        <input class="form-check-input mt-4 ps-2" type="radio" name="status" id="status" value="h" {{ request()->get('status') == 'h' ? "checked" : "" }} />
                                     </div>
-                                    <div class="col-lg-4">
-                                       <input type="date" class="form-control form-control-solid"
+                                    <div class="col-lg-3">
+                                       <input type="date" class="form-control form-control-solid mt-2"
                                                     placeholder="Pick a date" name="tgl_awal" id="tgl_awal" value="{{request()->get('tgl_awal')}}" />
                                     </div>
-                                    <div class="col-lg-4">
-                                        <input type="date" class="form-control form-control-solid"
+                                    <div class="col-lg-3">
+                                        <input type="date" class="form-control form-control-solid mt-2"
                                                     placeholder="Pick a date" name="tgl_akhir"  id="tgl_akhir" value="{{request()->get('tgl_akhir')}}"/>
                                     </div>
-                                </div>
-                                <div class="form-group d-flex mb-8 row">
-                                    <div class="col-lg-3">
-                                        <label class="fs-6 fw-bold mt-2">Bulanan</label>
-                                        <input class="form-check-input mt-2 ps-2" type="radio" name="status" id="status" value="b" {{ request()->get('status') == 'b' ? "checked" : "" }} />
+                                {{-- </div> --}}
+                                {{-- <div class="form-group d-flex mb-8 row"> --}}
+                                    <div class="col-lg-2">
+                                        <label class="fs-6 fw-bold mt-4">Bulanan</label>
+                                        <input class="form-check-input mt-4 ps-2" type="radio" name="status" id="status" value="b" {{ request()->get('status') == 'b' ? "checked" : "" }} />
                                     </div>
-                                    <div class="col-lg-4">
-                                        <input type="month" class="form-control form-control-solid"
+                                    <div class="col-lg-2">
+                                        <input type="month" class="form-control form-control-solid mt-2"
                                                     placeholder="Pick a date" name="bulan"  id="bulan" value="{{request()->get('bulan')}}"/>
                                     </div>
+                                </div>
+                                <div class="form-group d-flex mb-8 row flex-row-reverse">
                                     <div class="col-lg-2">
-                                        <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
-                                            <span class="indicator-label">Proses</span>
-                                        </button>
+                                        <button type="button" id="kt_modal_new_target_cancel" class="btn btn-light" onclick="location.href='{{route('check.history.driver')}}';">Reset</button>
                                     </div>
                                     <div class="col-lg-2">
-                                        <button type="button" id="kt_modal_new_target_cancel" class="btn btn-light ms-2 me-3" onclick="location.href='{{route('check.history.driver')}}';">Reset</button>
+                                        <button type="submit" id="kt_modal_new_target_cancel" class="obutn btn btn-light" >Export</button>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button type="submit" id="kt_modal_new_target_submit" class="obutnn btn btn-primary">
+                                            <span class="indicator-label">Proses</span>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -190,6 +195,16 @@
                 }
             }
         );
+
+        $(".obutn").click(function() {
+            // alert('ok');
+            $(this).closest("form").attr("action", "{{route('check.exprt.history.pdf')}}");     
+        });
+
+         $(".obutnn").click(function() {
+            // alert('ok');
+            $(this).closest("form").attr("action", "");     
+        });
 
         var element = document.getElementById('kt_apexcharts_3');
 
