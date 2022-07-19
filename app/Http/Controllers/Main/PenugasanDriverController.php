@@ -385,21 +385,11 @@ class PenugasanDriverController extends Controller
                         ];
                     }
                 );
-            // $data['max'] = $data['history']->count();
-
-            // return $data['max'];
 
             return view(
                 'dashboard.main.assignment.history',
                 $data
             );
-
-            // return response()->json(
-            //     [
-            //         'count'        => $data['history']->count(),
-            //         'list' => $data
-            //     ]
-            // );
         } else {
             if ($status == 'h') {
                 $data['history'] = DB::table('tb_driver')
@@ -442,12 +432,6 @@ class PenugasanDriverController extends Controller
                     'dashboard.main.assignment.history',
                     $data
                 );
-                // return response()->json(
-                //     [
-                //         'count'        => $data['history']->count(),
-                //         'list' => $data
-                //     ]
-                // );
             } else if ($status == 'b') {
                 $data['history'] = DB::table('tb_driver')
                     ->select(
@@ -496,12 +480,6 @@ class PenugasanDriverController extends Controller
                     'dashboard.main.assignment.history',
                     $data
                 );
-                // return response()->json(
-                //     [
-                //         'count'        => $data['history']->count(),
-                //         'list' => $data
-                //     ]
-                // );
             } else {
                 abort(403, 'Unauthorized action.');
             }
@@ -518,13 +496,6 @@ class PenugasanDriverController extends Controller
         $bulan = $request->query('bulan');
         $month = Carbon::parse($bulan)->format('m');
         $year = Carbon::parse($bulan)->format('Y');
-        // if ($status == '') {
-        //     $status = 'abis';
-        // } else {
-        //     $status;
-        // }
-        // return $status;
-        // dd($request->all());
         if ($status == '') {
             $data['filter'] = [
                 'status' => $status,
@@ -572,7 +543,7 @@ class PenugasanDriverController extends Controller
                 $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanHistory', $data)->setPaper('f4', 'portrait');
                 set_time_limit(60);
 
-                return $pdf->download('laporan_penggecekan_all.pdf');
+                return $pdf->download('laporan_history_penugasan_all.pdf');
             } else {
                 return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
             }
@@ -625,7 +596,7 @@ class PenugasanDriverController extends Controller
                     $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanHistory', $data)->setPaper('f4', 'portrait');
                     set_time_limit(60);
 
-                    return $pdf->download('laporan_penggecekan_all.pdf');
+                    return $pdf->download('laporan_history_penugasan_tgl' . $tgl_awal . '-' . $tgl_akhir . '.pdf');
                 } else {
                     return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
                 }
@@ -683,7 +654,7 @@ class PenugasanDriverController extends Controller
                     $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanHistory', $data)->setPaper('f4', 'portrait');
                     set_time_limit(60);
 
-                    return $pdf->download('laporan_penggecekan_all.pdf');
+                    return $pdf->download('laporan_history_penugasan_bulan' . $bulan . '.pdf');
                 } else {
                     return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
                 }
