@@ -100,17 +100,23 @@
                                             </tr>
                                             <!--end::Row-->
                                             <!--begin::Row-->
-                                            <tr>
-                                                <td class="text-gray-400">Tempat Tujuan:</td>
-                                                <td class="text-gray-800">{{$detail->tujuan}}</td>
-                                            </tr>
-                                            <!--end::Row-->
                                             <!--begin::Row-->
                                             <tr>
                                                 <td class="text-gray-400">Tempat Penjemputan:</td>
                                                 <td class="text-gray-800">{{$detail->tempat_penjemputan}}</td>
                                             </tr>
                                             <!--end::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tempat Tujuan:</td>
+                                                <td class="text-gray-800">{{$detail->tujuan}}</td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Tujuan Perjalanan:</td>
+                                                <td class="text-gray-800">
+                                                    {{$detail->keterangan}}
+                                                </td>
+                                            </tr>
                                         </table>
                                         <!--end::Details-->
                                     </div>
@@ -328,6 +334,7 @@
                                                 <th class="min-w-150px">Nama Penumpang</th>
                                                 <th>Jabatan</th>
                                                 <th class="min-w-125px">No. Telepon</th>
+                                                <th>Status</th>
                                             </tr>
                                             <!--end::Table row-->
                                         </thead>
@@ -340,8 +347,14 @@
                                                     <label class="w-150px">{{$pn->nama_penumpang}}</label>
                                                 </td>
                                                 <td>{{$pn->nama_jabatan}}</td>
+                                                <td>{{$pn->no_tlp}}</td>
                                                 <td>
-                                                    <span class="badge badge-light-danger">{{$pn->no_tlp}}</span>
+                                                    {{-- {{$ds->status}} --}}
+                                                    @if ($pn->status == 'y')
+                                                        Lead
+                                                    @else
+                                                        Pass
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
