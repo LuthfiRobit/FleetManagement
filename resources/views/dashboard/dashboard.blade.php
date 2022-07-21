@@ -39,28 +39,11 @@
                         <!--begin::Body-->
                         <div class="card-body p-0">
                             <!--begin::Chart-->
-                            <div class=" card-rounded-bottom bg-danger" data-kt-color="danger" style="height: 200px">
-                            </div>
-                            <!--end::Chart-->
-                            <!--begin::Stats-->
-                            <div class="card-p mt-n20 position-relative">
+                            <div class="card-rounded-bottom bg-danger card-p" data-kt-color="danger" style="height: 200px">
                                 <!--begin::Row-->
-                                <div class="row g-0">
+                                <div class="row g-0 bm-7">
                                     <!--begin::Col-->
-                                    <div class="col bg-light-warning px-6 py-8 rounded-2 me-7 mb-7"
-                                        onclick="location.href='{{ route('dashboard.kendaraan.main.index') }}'"
-                                        style="cursor:pointer">
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
-                                        <span class="svg-icon svg-icon-3x svg-icon-warning d-block my-2">
-                                            <i class="fa fa-car fs-3x text-warning"></i>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                        <a href="{{ route('dashboard.kendaraan.main.index') }}"
-                                            class="text-warning fw-bold fs-6">{{$kendaraan}} Mobil</a>
-                                    </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col bg-light-primary px-6 py-8 rounded-2 mb-7"
+                                    <div class="col bg-light-primary px-6 py-8 rounded-2 me-7 mb-7 border-primary border"
                                         onclick="location.href='{{ route('dashboard.driver.index') }}'"
                                         style="cursor:pointer">
                                         <!--begin::Svg Icon | path: icons/duotune/finance/fin006.svg-->
@@ -72,12 +55,43 @@
                                             class="text-primary fw-bold fs-6">{{$driver}} Driver</a>
                                     </div>
                                     <!--end::Col-->
+                                     <!--begin::Col-->
+                                    <div class="col bg-light-warning px-6 py-8 rounded-2 mb-7 border-warning border"
+                                        onclick="location.href='{{ route('dashboard.kendaraan.main.index') }}'"
+                                        style="cursor:pointer">
+                                        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
+                                        <span class="svg-icon svg-icon-3x svg-icon-warning d-block my-2">
+                                            <i class="fa fa-car fs-3x text-warning"></i>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        <a href="{{ route('dashboard.kendaraan.main.index') }}"
+                                            class="text-warning fw-bold fs-6">{{$kendaraan}} Mobil</a>
+                                    </div>
+                                    <!--end::Col-->
+                                    
                                 </div>
                                 <!--end::Row-->
+                            </div>
+                            <!--end::Chart-->
+                            <!--begin::Stats-->
+                            <div class="card-p mt-n20 position-relative">
                                 <!--begin::Row-->
                                 <div class="row g-0">
-                                    <!--begin::Col-->
-                                    <div class="col bg-light-danger px-6 py-8 rounded-2 me-7"
+                                  <!--begin::Col-->
+                                    <div class="col bg-light-primary px-6 py-8 rounded-2 me-7 mb-7 border-primary border"
+                                        onclick="location.href='{{ route('dashboard.driver.index') }}'"
+                                        style="cursor:pointer">
+                                        <!--begin::Svg Icon | path: icons/duotune/finance/fin006.svg-->
+                                        <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
+                                            <i class="bi bi-person-check fs-3x text-primary"></i>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        <a href="{{ route('dashboard.driver.index') }}"
+                                            class="text-primary fw-bold fs-6">{{$driverY}} Driver Aktif</a>
+                                    </div>
+                                    <!--end::Col-->
+                                   <!--begin::Col-->
+                                    <div class="col bg-light-danger px-6 py-8 rounded-2 mb-7 border-danger border"
                                         onclick="location.href='{{ route('assign.main') }}'" style="cursor:pointer">
                                         <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                                         <span class="svg-icon svg-icon-3x svg-icon-danger d-block my-2">
@@ -89,8 +103,25 @@
                                             Perjalanan</a>
                                     </div>
                                     <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                                <!--begin::Row-->
+                                <div class="row g-0">
                                     <!--begin::Col-->
-                                    <div class="col bg-light-success px-6 py-8 rounded-2"
+                                    <div class="col bg-light-danger px-6 py-8 rounded-2 mb-7 me-7 border-danger border"
+                                        onclick="location.href='{{ route('dashboard.driver.index') }}'"
+                                        style="cursor:pointer">
+                                        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
+                                        <span class="svg-icon svg-icon-3x svg-icon-danger d-block my-2">
+                                            <i class="fa bi-person-dash fs-3x text-danger"></i>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        <a href="{{ route('dashboard.driver.index') }}"
+                                            class="text-danger fw-bold fs-6">{{$driverN}} Driver Nonaktif</a>
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--begin::Col-->
+                                    <div class="col bg-light-success px-6 py-8 rounded-2 mb-7 border-success border"
                                         onclick="location.href='{{ route('repair.main') }}'" style="cursor:pointer">
                                         <!--begin::Svg Icon | path: icons/duotune/communication/com010.svg-->
                                         <span class="svg-icon svg-icon-3x svg-icon-success d-block my-2">
