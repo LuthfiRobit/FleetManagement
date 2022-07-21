@@ -76,6 +76,10 @@
                     <td>TEMPAT KEMBALI :</td>
                     <td>{{$detail->kembali}}</td>
                 </tr>
+                <tr>
+                    <td>TUJUAN PERJALANAN :</td>
+                    <td colspan="5">{{$detail->keterangan}}</td>
+                </tr>
             </tbody>
         </table>
         <div id="notices" style="margin-bottom: 10px">

@@ -12,7 +12,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $countDriver = Driver::where('status_driver', 'y')->count();
+        $countDriver = Driver::count();
+        $countDriverY = Driver::where('status_driver', 'y')->count();
+        $countDriverN = Driver::where('status_driver', 't')->count();
         $countKendaraan = Kendaraan::where('status', 'y')->count();
         $penugasan = DB::table('tb_penugasan_driver')
             ->select(
@@ -89,6 +91,8 @@ class DashboardController extends Controller
         );
         $data = [
             'driver' => $countDriver,
+            'driverY' => $countDriverY,
+            'driverN' => $countDriverN,
             'kendaraan' => $countKendaraan,
             'penugasan' => $penugasan,
             'status' => $status,

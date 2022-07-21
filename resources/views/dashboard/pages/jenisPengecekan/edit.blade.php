@@ -30,11 +30,6 @@
                             <!--begin::Title-->
                             <h1 class="mb-3">Edit Jenis Pengecekan</h1>
                             <!--end::Title-->
-                            <!--begin::Description-->
-                            <div class="text-muted fw-bold fs-5">Jika memerlukan info lebih lanjut, silahkan klik
-                                <a href="#" class="fw-bolder link-primary">Manual Book</a>.
-                            </div>
-                            <!--end::Description-->
                         </div>
                         <!--end::Heading-->
                         <!--begin::Input group-->
