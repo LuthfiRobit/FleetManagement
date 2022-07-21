@@ -28,6 +28,8 @@ class DriverController extends Controller
      */
     public function index()
     {
+        $data['driverY'] = Driver::where('status_driver', 'y')->count();
+        $data['driverN'] = Driver::where('status_driver', 't')->count();
         $data['driver'] = DB::table('tb_driver')
             ->select(
                 'tb_driver.id_driver',
