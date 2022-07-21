@@ -59,6 +59,7 @@ class PenugasanDriverController extends Controller
                 'tb_penugasan_driver.waktu_finish',
                 'tb_order_kendaraan.tempat_penjemputan',
                 'tb_order_kendaraan.tujuan',
+                'tb_order_kendaraan.keterangan',
                 'tb_order_kendaraan.no_so',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_driver.nama_driver',
@@ -98,7 +99,8 @@ class PenugasanDriverController extends Controller
                 'tb_detail_so.id_detail_so',
                 'tb_detail_so.nama_penumpang',
                 'tb_detail_so.no_tlp',
-                'tb_detail_so.jabatan as nama_jabatan'
+                'tb_detail_so.jabatan as nama_jabatan',
+                'tb_detail_so.status'
             )
             ->orderByDesc('id_detail_so')
             ->where('id_service_order', $data['detail']->id_service_order)->get();
@@ -244,6 +246,7 @@ class PenugasanDriverController extends Controller
                 'tb_order_kendaraan.tempat_penjemputan',
                 'tb_order_kendaraan.tujuan',
                 'tb_order_kendaraan.no_so',
+                'tb_order_kendaraan.keterangan',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_driver.nama_driver',
                 'tb_petugas.no_tlp as p_tlp',
