@@ -396,7 +396,7 @@ class ApiBiayaPenugasanController extends Controller
                         'bukti' => $detailRevisi->bukti,
                         'tgl_pengecekan' => '2022-01-01',
                         'status_acc' => 'm',
-                        'keterangan' => 'belum diapprove'
+                        'keterangan' => 'belum diperiksa'
                     ]
                 ]
             );
