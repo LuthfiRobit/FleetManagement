@@ -491,12 +491,13 @@ class ApiBiayaPenugasanController extends Controller
             $data = [
                 'id_do' => $request->id_do,
                 'tgl_pengajuan' => $request->tgl_pengajuan,
-                'total_biaya' => $request->total_biaya
+                // 'total_biaya' => $request->total_biaya
             ];
             $saveBiaya = PenugasanBiaya::create($data);
             $bukti = $request->file('bukti');
             foreach ($bukti as $key => $value) {
                 $name = 'biaya_' . uniqid() . '.' . $bukti[$key]->getClientOriginalExtension();
+                $totalcost = collect($request->nominal)->sum();
                 $detailBiaya = [
                     'id_biaya_penugasan' => $saveBiaya->id_biaya_penugasan,
                     'id_jenis_pengeluaran' => $request->id_jenis_pengeluaran[$key],
@@ -509,12 +510,14 @@ class ApiBiayaPenugasanController extends Controller
                 $bukti[$key]->move($folder_biaya, $name);
                 // $bukti->move(public_path('assets/img_biaya'), end($name));
             }
+            $updateTotal = PenugasanBiaya::where('id_biaya_penugasan', $saveBiaya->id_biaya_penugasan)->update(['total_biaya' => $totalcost]);
 
             DB::commit();
             return response()->json(
                 [
                     'status'         => 'sukses',
-                    'id_biaya_penugasan'  => $saveBiaya->id_biaya_penugasan
+                    'id_biaya_penugasan'  => $saveBiaya->id_biaya_penugasan,
+                    // 'total' => $totalcost
                 ]
             );
         } catch (\Exception $exception) {
