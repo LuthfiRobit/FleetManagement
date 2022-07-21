@@ -179,7 +179,7 @@
                                             <tr class="text-start text-muted text-uppercase gs-0">
                                                 <th class="min-w-100px">Nama</th>
                                                 <th>Jabatan</th>
-                                                <th class="min-w-125px">No. Tlp</th>
+                                                <th class="min-w-125px">No. Telepon</th>
                                                 <th>Status</th>
                                             </tr>
                                             <!--end::Table row-->
