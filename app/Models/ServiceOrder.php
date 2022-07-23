@@ -15,6 +15,7 @@ class ServiceOrder extends Model
     protected $fillable = [
         'id_service_order',
         'id_petugas',
+        'id_pemesan',
         'no_so',
         'tgl_penjemputan',
         'jam_penjemputan',
@@ -23,6 +24,7 @@ class ServiceOrder extends Model
         'tujuan',
         'keterangan',
         'status_so',
-        'keterangan_penolakan'
+        'keterangan_penolakan',
+        'status_tujuan'
     ];
 }
