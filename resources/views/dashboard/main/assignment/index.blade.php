@@ -147,6 +147,7 @@
                                 <th>No.</th>
                                 <th>No. DO</th>
                                 <th>Driver</th>
+                                <th>Petugas</th>
                                 <th>Pemesan</th>
                                 <th>Kendaraan</th>
                                 <th>Tanggal | Jam</th>
@@ -161,6 +162,9 @@
                                 <td>DO_{{$as->no_so}}</td>
                                 <td>{{$as->nama_driver}}</td>
                                 <td>{{$as->nama_petugas}}</td>
+                                <td>{{$as->nama_pemesan}}
+                                    <br><span class="badge badge-light-primary">{{$as->departemen_pemesan}}</span>
+                                </td>
                                 <td>{{$as->nama_kendaraan}}
                                     <br>
                                     <span class="badge badge-light-primary">{{$as->no_polisi}}</span>
@@ -184,7 +188,7 @@
                                 </td>
                                 <td>
                                     <a href="{{route('assign.detail', $as->id_do)}}"
-                                        class="btn btn-light bnt-active-light-primary btn-sm">Detail</a>
+                                        class="btn btn-light bnt-active-light-primary btn-sm mb-2">Detail</a>
                                     <a href="{{route('assign.export.pdf', $as->id_do)}}"
                                         class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
                                         <span class="svg-icon svg-icon-2">
