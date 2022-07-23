@@ -78,6 +78,7 @@
                                 <th>No</th>
                                 <th>No. SO</th>
                                 <th>Petugas</th>
+                                <th>Pemesan</th>
                                 <th>Tanggal | Jam</th>
                                 <th>Tujuan</th>
                                 <th>Status</th>
@@ -89,10 +90,24 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>SO_{{$so->no_so}}</td>
-                                <td>{{$so->nama_lengkap}}</td>
+                                <td class="text-center">{{$so->nama_lengkap}}</td>
+                                <td class="text-center">{{$so->nama_pemesan}}
+                                    <br>
+                                    <span class="badge badge-light-primary">{{$so->departemen_pemesan}}</span>
+                                </td>
                                 <td>{{Carbon\Carbon::parse($so->tgl_penjemputan)->format('d F Y') }} |
                                     {{Carbon\Carbon::parse($so->jam_penjemputan)->format('H:i') }}</td>
-                                <td>{{$so->tujuan}}</td>
+                                <td>
+                                    {{\Illuminate\Support\Str::words($so->tujuan,5, '...')}}
+                                    <br>
+                                    @if ($so->status_tujuan == 'l')
+                                    <span class="badge badge-light-primary">Lokal</span>
+                                    @elseif($so->status_tujuan == 'o')
+                                    <span class="badge badge-light-danger">Out Of Town</span>
+                                    @else
+                                    ---
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($so->status_so == 't')
                                     <span class="badge badge-light-primary">Penugasan</span>
@@ -106,7 +121,7 @@
                                 </td>
                                 <td>
                                     @if ($so->status_penugasan == null || $so->status_penugasan == 't')
-                                    <button type="button" class="btn btn-light btn-light-danger btn-sm btn-cancel"
+                                    <button type="button" class="btn btn-light btn-light-danger btn-sm btn-cancel mb-1"
                                         data-id="{{$so->id_service_order}}" data-so="{{$so->no_so}}"
                                         data-petugas="{{$so->nama_lengkap}}">Batalkan</button>
                                     @endif
