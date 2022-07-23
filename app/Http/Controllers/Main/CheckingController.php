@@ -367,7 +367,8 @@ class CheckingController extends Controller
             'tempat_penjemputan' => $request->tmp_penjemputan,
             'tujuan'            => $request->tmp_tujuan,
             'keterangan'        => $request->agenda,
-            'status_so'         => 't'
+            'status_so'         => 't',
+            'status_tujuan'     => $request->status_tujuan
         ];
 
         $saveSo = ServiceOrder::create($so);
