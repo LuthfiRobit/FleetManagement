@@ -804,12 +804,12 @@ class ApiPenugasanController extends Controller
         $msg =  [
             'title' => 'Notif',
             'body' => 'alhamdulillah bisah',
-            'sound' => 'notificationpomi.mp3'
+            'sound' => 'notificationpomi.mp3',
+            'android_channel_id' => 'ch1'
         ];
         $data = [
             'to' => $device_token, // for single device id
-            'notification' => $msg,
-            'android_channel_id' => 'ch1'
+            'notification' => $msg
         ];
         $dataString = json_encode($data);
 
