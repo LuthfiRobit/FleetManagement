@@ -399,11 +399,13 @@ class CheckingController extends Controller
                 $SERVER_API_KEY = env('SERVER_API_KEY');
                 $msg =  [
                     'title' => 'Penugasan Baru',
-                    'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!'
+                    'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!',
+                    'sound' => 'notificationpomi.mp3'
                 ];
                 $data = [
                     'to' => $findDriver->player_id, // for single device id
-                    'notification' => $msg
+                    'notification' => $msg,
+                    'android_channel_id' => 'ch1'
                 ];
                 $dataString = json_encode($data);
 
