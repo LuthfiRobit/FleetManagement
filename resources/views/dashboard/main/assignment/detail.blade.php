@@ -13,7 +13,7 @@
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">DETAIL PENUGASAN DRIVER</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Driver : {{$detail->nama_driver}}</span>
+                        <span class="text-muted mt-1 fw-bold fs-6">Petugas : {{$detail->nama_petugas}}</span>
                     </h3>
                     <div class="card-toolbar">
                         <a href="{{route('assign.export.pdf', $detail->id_do)}}" type="button"
@@ -89,7 +89,10 @@
                                             <!--begin::Row-->
                                             <tr>
                                                 <td class="text-gray-400 min-w-175px w-175px">Pemesan:</td>
-                                                <td class="text-gray-800 min-w-200px">{{$detail->nama_petugas}}
+                                                <td class="text-gray-800 min-w-200px">
+                                                    {{$detail->nama_pemesan}}
+                                                    <br>
+                                                    <span class="badge badge-light-primary">{{$detail->departemen_pemesan}}</span>
                                                 </td>
                                             </tr>
                                             <!--end::Row-->
@@ -112,9 +115,15 @@
                                             </tr>
                                             <!--end::Row-->
                                             <tr>
-                                                <td class="text-gray-400">Tujuan Perjalanan:</td>
+                                                <td class="text-gray-400">Status Tujuan:</td>
                                                 <td class="text-gray-800">
-                                                    {{$detail->keterangan}}
+                                                   @if ($detail->status_tujuan == 'l')
+                                                    <span class="badge badge-light-primary">Lokal</span>
+                                                    @elseif($detail->status_tujuan == 'o')
+                                                    <span class="badge badge-light-danger">Out Of Town</span>
+                                                    @else
+                                                    ---
+                                                    @endif
                                                 </td>
                                             </tr>
                                         </table>
@@ -183,6 +192,12 @@
                                                     @else
                                                     ---
                                                     @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-gray-400">Tujuan Perjalanan:</td>
+                                                <td class="text-gray-800">
+                                                    {{$detail->keterangan}}
                                                 </td>
                                             </tr>
                                             <!--end::Row-->

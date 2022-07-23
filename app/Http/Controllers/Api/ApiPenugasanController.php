@@ -160,11 +160,12 @@ class ApiPenugasanController extends Controller
                 DB::raw('COUNT(tb_biaya_penugasan.id_do) as biaya')
             )
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
-            ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_do','=','tb_penugasan_driver.id_do')
+            ->leftJoin('tb_biaya_penugasan', 'tb_biaya_penugasan.id_do', '=', 'tb_penugasan_driver.id_do')
             ->join('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->join('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->join('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
-            ->groupBy('tb_penugasan_driver.id_do',
+            ->groupBy(
+                'tb_penugasan_driver.id_do',
                 'tb_penugasan_driver.id_driver',
                 'tb_petugas.nama_lengkap',
                 'tb_petugas.foto_petugas',
@@ -802,11 +803,13 @@ class ApiPenugasanController extends Controller
 
         $msg =  [
             'title' => 'Notif',
-            'body' => 'alhamdulillah bisah'
+            'body' => 'alhamdulillah bisah',
+            'sound' => 'notificationpomi.mp3'
         ];
         $data = [
             'to' => $device_token, // for single device id
-            'notification' => $msg
+            'notification' => $msg,
+            'android_channel_id' => 'ch1'
         ];
         $dataString = json_encode($data);
 

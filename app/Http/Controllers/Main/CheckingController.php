@@ -28,12 +28,18 @@ class CheckingController extends Controller
                 'tb_order_kendaraan.keterangan',
                 'tb_order_kendaraan.status_so',
                 'tb_order_kendaraan.keterangan_penolakan',
+                'tb_order_kendaraan.status_tujuan',
                 'tb_petugas.id_petugas',
                 'tb_petugas.nama_lengkap',
+                'tb_pemesan.id_petugas as id_pemesan',
+                'tb_pemesan.nama_lengkap as nama_pemesan',
+                'tb_departemen_pemesan.nama_departemen as departemen_pemesan',
                 'tb_penugasan_driver.status_penugasan'
             )
             ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
+            ->leftJoin('tb_departemen as tb_departemen_pemesan', 'tb_departemen_pemesan.id_departemen', '=', 'tb_pemesan.id_departemen')
             ->orderByDesc('id_service_order')
             ->get();
         // return $data;
@@ -54,10 +60,14 @@ class CheckingController extends Controller
                 'tb_order_kendaraan.keterangan',
                 'tb_order_kendaraan.status_so',
                 'tb_order_kendaraan.keterangan_penolakan',
+                'tb_order_kendaraan.status_tujuan',
                 'tb_petugas.id_petugas',
-                'tb_petugas.nama_lengkap'
+                'tb_petugas.nama_lengkap',
+                'tb_pemesan.id_petugas as id_pemesan',
+                'tb_pemesan.nama_lengkap as nama_pemesan'
             )
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
             ->orderByDesc('id_service_order')
             ->where('id_service_order', $id)
             ->first();
@@ -84,7 +94,7 @@ class CheckingController extends Controller
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
             ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
-            ->where('id_petugas', $service->id_petugas)
+            ->where('id_petugas', $service->id_pemesan)
             ->first();
 
         $driver = DB::select(
@@ -318,6 +328,10 @@ class CheckingController extends Controller
         $data['last_so'] = DB::table('tb_order_kendaraan')
             ->select('id_service_order', 'no_so')
             ->orderByDesc('id_service_order')->first();
+        $data['departemen'] = DB::table('tb_departemen')
+            ->select('id_departemen', 'nama_departemen')
+            ->where('status', 'y')
+            ->get();
         if ($data['last_so'] == false) {
             $data['last_so'] = (object) array(
                 'id_service_order' => 0,
@@ -328,12 +342,34 @@ class CheckingController extends Controller
         return view('dashboard.main.serviceorder.create2', $data);
     }
 
+    public function selectPenumpang(Request $request)
+    {
+        $id_departemen = $request->get('id_departemen');
+        $pemesan = DB::table('tb_petugas')
+            ->select('id_petugas as id_pemesan', 'id_departemen', 'nama_lengkap')
+            ->where([['id_departemen', $id_departemen], ['status', 'y']])
+            ->get();
+        if ($pemesan == null) {
+            return $data = [
+                'Success' => false,
+                'Message' => 'Tidak ada pemesan'
+            ];
+        } else {
+            return $data = [
+                'Success' => true,
+                'Message' => '',
+                'Pemesan' => $pemesan
+            ];
+        }
+    }
+
     public function createSo(Request $request)
     {
         // dd($request->all());
         $so = [
             'id_service_order'  => $request->id_service_order,
             'id_petugas'        => Auth::user()->id_petugas,
+            'id_pemesan'        => $request->id_pemesan,
             'no_so'             => $request->no_so,
             'tgl_penjemputan'   => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
             'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i'),
@@ -341,7 +377,8 @@ class CheckingController extends Controller
             'tempat_penjemputan' => $request->tmp_penjemputan,
             'tujuan'            => $request->tmp_tujuan,
             'keterangan'        => $request->agenda,
-            'status_so'         => 't'
+            'status_so'         => 't',
+            'status_tujuan'     => $request->status_tujuan
         ];
 
         $saveSo = ServiceOrder::create($so);
@@ -362,11 +399,13 @@ class CheckingController extends Controller
                 $SERVER_API_KEY = env('SERVER_API_KEY');
                 $msg =  [
                     'title' => 'Penugasan Baru',
-                    'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!'
+                    'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!',
+                    'sound' => 'notificationpomi.mp3'
                 ];
                 $data = [
                     'to' => $findDriver->player_id, // for single device id
-                    'notification' => $msg
+                    'notification' => $msg,
+                    'android_channel_id' => 'ch1'
                 ];
                 $dataString = json_encode($data);
 

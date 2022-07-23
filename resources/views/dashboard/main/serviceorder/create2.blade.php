@@ -57,11 +57,54 @@
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Departemen</span>
+                                </label>
+                                <!--end::Label-->
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Departemen" id="departemen" name="departemen">
+                                    <option value="">Pilih Departemen</option>
+                                    @foreach ($departemen as $dp)
+                                    <option value="{{$dp->id_departemen}}">{{$dp->nama_departemen}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                    <span class="required">Pemesan</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
+                                        title="Pilih Departemen Untuk Menampilkan Pemesan"></i>
+                                </label>
+                                <!--end::Label-->
+                                <select class="form-select form-select-solid" data-control="select2"
+                                    data-hide-search="false" data-placeholder="Pilih Pemesan" id="id_pemesan"
+                                    name="id_pemesan" required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex mb-8 row">
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-2">
                                     <span class="required">Tujuan</span>
                                 </label>
                                 <!--end::Label-->
                                 <input type="text" class="form-control form-control-solid"
                                     placeholder="Isi tempat tujuan" name="tmp_tujuan" required />
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="d-flex align-items-center fs-6 fw-bold mb-5">
+                                    <span class="required">Status Tujuan</span>
+                                </label>
+                                <!--end::Label-->
+                                <div class="radio-inline d-flex justify-content-between">
+                                    <label class="radio">
+                                    <input type="radio" name="status_tujuan" class="form-check-input" value="l" required checked>
+                                    <span>Lokal</span>
+                                    </label>
+                                    <label class="radio">
+                                    <input type="radio" name="status_tujuan" class="form-check-input" value="o">
+                                    <span>Out Of Town</span>
+                                    </label>
+                                </div>
                             </div>
                             <div class="col-lg-4">
                                 <label class="d-flex align-items-center fs-6 fw-bold mb-2">
@@ -103,7 +146,7 @@
                         </div>
                         <div class="form-group mb-8 row">
                             <div class="col-lg-4">
-                                <label class="required fs-6 fw-bold mb-2">
+                                <label class="fs-6 fw-bold mb-2">
                                     <span class="required">Kendaraan</span>
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
                                         title="Isi tgl. penjemputan untuk menampilkan kendaraan yang tersedia"></i>
@@ -114,7 +157,7 @@
                                 </select>
                             </div>
                             <div class="col-lg-3">
-                                <label class="required fs-6 fw-bold mb-2">
+                                <label class="fs-6 fw-bold mb-2">
                                     <span class="required">Driver</span>
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip"
                                         title="Isi tgl. penjemputan untuk menampilkan driver yang tersedia"></i>
@@ -173,163 +216,6 @@
 
 <!--end::Page Vendors Javascript-->
 <script text="text/javascipt">
-    // var KTFormAccept = function () {
-    //     var t, e, n, a, i;
-    //     return {
-    //         init: function () {
-    //             (
-    //                 a = document.querySelector("#kt_form_accept"),
-    //                 t = document.getElementById("kt_button_submit"),
-    //                 e = document.getElementById("kt_button_cancel")
-    //                 , n = FormValidation.formValidation(a, {
-    //                     fields: {
-    //                         no_so: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "No. So Harus Diisi"
-    //                                 }
-    //                             }
-    //                         },
-    //                         tmp_tujuan: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Tempat Tujuann Harus Diisi"
-    //                                 }
-    //                             }
-    //                         },
-    //                         tmp_penjemputan: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Tempat Penjemputan Harus Diisi"
-    //                                 }
-    //                             }
-    //                         },
-    //                         agenda: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Agenda Penugasan Harus Diisi"
-    //                                 }
-    //                             }
-    //                         },
-    //                         jam_penjemputan: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Jam Penjemputan Harus Diisi"
-    //                                 }
-    //                             }
-    //                         },
-    //                         tgl_penjemputan: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Tgl. Pejemputan Harus Diisi"
-    //                                 }
-    //                             }
-    //                         },
-    //                         id_kendaraan: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Kendaraan Harus Dipilih"
-    //                                 }
-    //                             }
-    //                         },
-    //                         id_driver: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Driver Harus Dipilih"
-    //                                 }
-    //                             }
-    //                         },
-    //                         tmp_kembali: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Kembali Harus Diisi"
-    //                                 }
-    //                             }
-    //                         },
-    //                         jml_penumpang: {
-    //                             validators: {
-    //                                 notEmpty: {
-    //                                     message: "Jumlah Penumpang Harus Diisi"
-    //                                 }
-    //                             }
-    //                         }
-    //                         // nama_pe: {
-    //                         //     validators: {
-    //                         //         notEmpty: {
-    //                         //             message: "Kembali Harus Diisi"
-    //                         //         }
-    //                         //     }
-    //                         // }
-    //                     },
-    //                     plugins: {
-    //                         trigger: new FormValidation.plugins.Trigger,
-    //                         bootstrap: new FormValidation.plugins.Bootstrap5({
-    //                             rowSelector: ".row",
-    //                             // eleInvalidClass: "",
-    //                             // eleValidClass: ""
-    //                         })
-    //                     }
-    //                 }),
-    //                 t.addEventListener("click", (function (e) {
-    //                     e.preventDefault(), n && n.validate().then((function (e) {
-    //                         console.log("validated!"), "Valid" == e ? (t.setAttribute("data-kt-indicator", "on"), t.disabled = !0, setTimeout((function () {
-    //                             t.removeAttribute("data-kt-indicator"), t.disabled = !1, Swal.fire({
-    //                                 text: "Formulir telah berhasil dikirim!",
-    //                                 icon: "success",
-    //                                 buttonsStyling: !1,
-    //                                 confirmButtonText: "Ok, mengerti!",
-    //                                 customClass: {
-    //                                     confirmButton: "btn btn-primary"
-    //                                 }
-    //                             }).then((function (t) {
-    //                                 a.submit()
-    //                                 t.isConfirmed && o.hide()
-    //                             }))
-    //                         }), 2e3)) : Swal.fire({
-    //                             text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
-    //                             icon: "error",
-    //                             buttonsStyling: !1,
-    //                             confirmButtonText: "Ok, mengerti!",
-    //                             customClass: {
-    //                                 confirmButton: "btn btn-primary"
-    //                             }
-    //                         })
-    //                     }))
-    //                 })),
-    //                 e.addEventListener("click", (function (t) {
-    //                     t.preventDefault(), Swal.fire({
-    //                         text: "Apakah Anda yakin ingin membatalkan?",
-    //                         icon: "warning",
-    //                         showCancelButton: !0,
-    //                         buttonsStyling: !1,
-    //                         confirmButtonText: "Ya, batalkan!",
-    //                         cancelButtonText: "Tidak, kembali",
-    //                         customClass: {
-    //                             confirmButton: "btn btn-primary",
-    //                             cancelButton: "btn btn-active-light"
-    //                         }
-    //                     }).then((function (t) {
-
-    //                         t.value ?
-    //                         (a.reset(), window.location.href = "{{route('checking.serviceorder')}}") : "cancel" === t.dismiss && Swal.fire({
-    //                             text: "Formulir Anda belum dibatalkan!.",
-    //                             icon: "error",
-    //                             buttonsStyling: !1,
-    //                             confirmButtonText: "Ok, mengerti!",
-    //                             customClass: {
-    //                                 confirmButton: "btn btn-primary"
-    //                             }
-    //                         })
-    //                     }))
-    //                 }))
-    //             )
-    //         }
-    //     }
-    // }();
-    // KTUtil.onDOMContentLoaded((function () {
-    //     KTFormAccept.init()
-    // }));
-
     $(function () {
         $('#jml_penumpang').on('change', function () {
             var a = $(this).val();
@@ -397,9 +283,41 @@
             });
         })
 
+        $('#departemen').on('change', function(){
+            var id_departemen = $(this).val();
+            // console.log(id_departemen);
+            $.ajax({
+                url : '{{route("penumpang.select")}}',
+                method : 'GET',
+                data : {
+                    'id_departemen' : $(this).val()
+                },
+                dataType : 'json',
+                success : function (result) {
+                    // console.log(result);
+                    // console.log(result.Success);
+                    if (result.Success == true) {
+                        $('#id_pemesan').empty();
+                        var pemesan = result.Pemesan;
+                        $.each(pemesan, function (key, item) {
+                            $('#id_pemesan').append($('<option></option>').attr('value', item.id_pemesan).text(item.nama_lengkap));
+                                // $('option', this).each(function () {
+                                //     if ($(this).html() == item.nama_driver) {
+                                //         $(this).attr('selected', 'selected')
+                                //     };
+                                // });
+                        })
+                    } else {
+                        alert(result.Message);
+                        $('#id_pemesan').empty();
+                    }
+                }
+            });
+        });
+
         $('#tgl_penjemputan').on('change', function () {
             var tgl_penjemputan = $(this).val();
-            console.log(tgl_penjemputan);
+            // console.log(tgl_penjemputan);
             $.ajax({
                 url : '{{route("driver.select")}}',
                 method : 'GET',
@@ -408,10 +326,10 @@
                 },
                 dataType : 'json',
                 success : function (result) {
-                    console.log(result);
-                    console.log(result.Success);
-                    console.log(result.Kendaraan);
-                    console.log(result.Driver);
+                    // console.log(result);
+                    // console.log(result.Success);
+                    // console.log(result.Kendaraan);
+                    // console.log(result.Driver);
                     if (result.Success == true) {
                         $('#id_driver').empty();
                         $('#id_kendaraan').empty();

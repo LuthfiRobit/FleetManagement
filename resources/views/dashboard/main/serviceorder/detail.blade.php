@@ -13,7 +13,7 @@
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bolder fs-3 mb-1">DETAIL PENUGASAN DRIVER</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Dipesan Oleh : {{$serviceorder->nama_lengkap}}</span>
+                        <span class="text-muted mt-1 fw-bold fs-5">Petugas : {{$serviceorder->nama_lengkap}}</span>
                     </h3>
                 </div>
             </div>
@@ -129,6 +129,20 @@
                                                 <td class="text-gray-400 min-w-175px w-175px">Tempat Tujuan:</td>
                                                 <td class="text-gray-800 min-w-200px">
                                                     {{$serviceorder->tujuan}}
+                                                </td>
+                                            </tr>
+                                            <!--end::Row-->
+                                            <!--begin::Row-->
+                                            <tr>
+                                                <td class="text-gray-400">Status Tujuan:</td>
+                                                <td class="text-gray-800">
+                                                     @if ($serviceorder->status_tujuan == 'l')
+                                                    <span class="badge badge-light-primary">Lokal</span>
+                                                    @elseif($serviceorder->status_tujuan == 'o')
+                                                    <span class="badge badge-light-danger">Out Of Town</span>
+                                                    @else
+                                                    ---
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <!--end::Row-->

@@ -24,12 +24,16 @@ class PenugasanDriverController extends Controller
                 'tb_penugasan_driver.jam_berangkat',
                 'tb_driver.nama_driver',
                 'tb_petugas.nama_lengkap as nama_petugas',
+                'tb_pemesan.nama_lengkap as nama_pemesan',
+                'tb_departemen_pemesan.nama_departemen as departemen_pemesan',
                 'tb_kendaraan.nama_kendaraan',
                 'tb_kendaraan.no_polisi'
             )
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
+            ->leftJoin('tb_departemen as tb_departemen_pemesan', 'tb_departemen_pemesan.id_departemen', '=', 'tb_pemesan.id_departemen')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->orderByDesc('id_do')
             ->get();
@@ -61,6 +65,7 @@ class PenugasanDriverController extends Controller
                 'tb_order_kendaraan.tujuan',
                 'tb_order_kendaraan.keterangan',
                 'tb_order_kendaraan.no_so',
+                'tb_order_kendaraan.status_tujuan',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_driver.nama_driver',
                 'tb_petugas.no_tlp as p_tlp',
@@ -70,12 +75,16 @@ class PenugasanDriverController extends Controller
                 'tb_kendaraan.jenis_penggerak',
                 'tb_merk_kendaraan.nama_merk as merk',
                 'tb_jenis_kendaraan.nama_jenis as jenis',
-                'tb_bahan_bakar.nama_bahan_bakar as bahan_bakar'
+                'tb_bahan_bakar.nama_bahan_bakar as bahan_bakar',
+                'tb_pemesan.nama_lengkap as nama_pemesan',
+                'tb_departemen_pemesan.nama_departemen as departemen_pemesan'
             )
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->rightJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
+            ->leftJoin('tb_departemen as tb_departemen_pemesan', 'tb_departemen_pemesan.id_departemen', '=', 'tb_pemesan.id_departemen')
             ->leftJoin('tb_bahan_bakar', 'tb_bahan_bakar.id_bahan_bakar', '=', 'tb_kendaraan.id_bahan_bakar')
             ->leftJoin('tb_merk_kendaraan', 'tb_merk_kendaraan.id_merk', '=', 'tb_kendaraan.id_merk')
             ->leftJoin('tb_jenis_kendaraan', 'tb_jenis_kendaraan.id_jenis_kendaraan', '=', 'tb_kendaraan.id_jenis_kendaraan')
@@ -223,6 +232,8 @@ class PenugasanDriverController extends Controller
         }
     }
 
+    //export penugasan
+
     public function exportPdfPenugasan($id)
     {
         $data['detail'] = DB::table('tb_penugasan_driver')
@@ -247,6 +258,7 @@ class PenugasanDriverController extends Controller
                 'tb_order_kendaraan.tujuan',
                 'tb_order_kendaraan.no_so',
                 'tb_order_kendaraan.keterangan',
+                'tb_order_kendaraan.status_tujuan',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_driver.nama_driver',
                 'tb_petugas.no_tlp as p_tlp',
@@ -257,12 +269,16 @@ class PenugasanDriverController extends Controller
                 'tb_kendaraan.jenis_penggerak',
                 'tb_merk_kendaraan.nama_merk as merk',
                 'tb_jenis_kendaraan.nama_jenis as jenis',
-                'tb_bahan_bakar.nama_bahan_bakar as bahan_bakar'
+                'tb_bahan_bakar.nama_bahan_bakar as bahan_bakar',
+                'tb_pemesan.nama_lengkap as nama_pemesan',
+                'tb_departemen_pemesan.nama_departemen as departemen_pemesan'
             )
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->rightJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
+            ->leftJoin('tb_departemen as tb_departemen_pemesan', 'tb_departemen_pemesan.id_departemen', '=', 'tb_pemesan.id_departemen')
             ->leftJoin('tb_bahan_bakar', 'tb_bahan_bakar.id_bahan_bakar', '=', 'tb_kendaraan.id_bahan_bakar')
             ->leftJoin('tb_merk_kendaraan', 'tb_merk_kendaraan.id_merk', '=', 'tb_kendaraan.id_merk')
             ->leftJoin('tb_jenis_kendaraan', 'tb_jenis_kendaraan.id_jenis_kendaraan', '=', 'tb_kendaraan.id_jenis_kendaraan')
@@ -316,11 +332,15 @@ class PenugasanDriverController extends Controller
                 'tb_driver.nama_driver',
                 'tb_petugas.nama_lengkap as nama_petugas',
                 'tb_kendaraan.nama_kendaraan',
-                'tb_kendaraan.no_polisi'
+                'tb_kendaraan.no_polisi',
+                'tb_pemesan.nama_lengkap as nama_pemesan',
+                'tb_departemen_pemesan.nama_departemen as departemen_pemesan'
             )
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->leftJoin('tb_driver', 'tb_driver.id_driver', '=', 'tb_penugasan_driver.id_driver')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_penugasan_driver.id_petugas')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
+            ->leftJoin('tb_departemen as tb_departemen_pemesan', 'tb_departemen_pemesan.id_departemen', '=', 'tb_pemesan.id_departemen')
             ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
             ->orderByDesc('id_do')
             ->whereMonth('tb_penugasan_driver.tgl_penugasan', $month)

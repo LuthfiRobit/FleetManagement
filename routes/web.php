@@ -210,6 +210,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //as api
     Route::get('driver/select', [CheckingController::class, 'selectDriver'])->name('driver.select');
+    Route::get('penumpang/select', [CheckingController::class, 'selectPenumpang'])->name('penumpang.select');
 });
 
 Route::name('rating')->prefix('rating')
