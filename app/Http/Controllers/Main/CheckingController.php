@@ -60,10 +60,14 @@ class CheckingController extends Controller
                 'tb_order_kendaraan.keterangan',
                 'tb_order_kendaraan.status_so',
                 'tb_order_kendaraan.keterangan_penolakan',
+                'tb_order_kendaraan.status_tujuan',
                 'tb_petugas.id_petugas',
-                'tb_petugas.nama_lengkap'
+                'tb_petugas.nama_lengkap',
+                'tb_pemesan.id_petugas as id_pemesan',
+                'tb_pemesan.nama_lengkap as nama_pemesan'
             )
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
             ->orderByDesc('id_service_order')
             ->where('id_service_order', $id)
             ->first();
