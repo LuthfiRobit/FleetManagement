@@ -28,12 +28,18 @@ class CheckingController extends Controller
                 'tb_order_kendaraan.keterangan',
                 'tb_order_kendaraan.status_so',
                 'tb_order_kendaraan.keterangan_penolakan',
+                'tb_order_kendaraan.status_tujuan',
                 'tb_petugas.id_petugas',
                 'tb_petugas.nama_lengkap',
+                'tb_pemesan.id_petugas as id_pemesan',
+                'tb_pemesan.nama_lengkap as nama_pemesan',
+                'tb_departemen_pemesan.nama_departemen as departemen_pemesan',
                 'tb_penugasan_driver.status_penugasan'
             )
             ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', 'tb_order_kendaraan.id_service_order')
             ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+            ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
+            ->leftJoin('tb_departemen as tb_departemen_pemesan', 'tb_departemen_pemesan.id_departemen', '=', 'tb_pemesan.id_departemen')
             ->orderByDesc('id_service_order')
             ->get();
         // return $data;
