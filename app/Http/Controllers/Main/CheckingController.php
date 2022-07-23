@@ -318,6 +318,10 @@ class CheckingController extends Controller
         $data['last_so'] = DB::table('tb_order_kendaraan')
             ->select('id_service_order', 'no_so')
             ->orderByDesc('id_service_order')->first();
+        $data['departemen'] = DB::table('tb_departemen')
+            ->select('id_departemen', 'nama_departemen')
+            ->where('status', 'y')
+            ->get();
         if ($data['last_so'] == false) {
             $data['last_so'] = (object) array(
                 'id_service_order' => 0,
