@@ -17,7 +17,7 @@
 <body>
     <header class="clearfix">
         <div id="logo">
-            <img style="width: 300px; height: 100px; margin-right: 20px"
+            <img style="width: 200px; height: 75px; margin-right: 20px"
                 src="{{ public_path('assets/img_logo/logo_pomi1.png')}}">
         </div>
         <h1>Laporan Penugasan Driver {{$bulan}}</h1>
@@ -29,6 +29,7 @@
                     <td>NO.</td>
                     <td>NO. DO</td>
                     <td>DRIVER</td>
+                    {{-- <td>PETUGAS</td> --}}
                     <td>PEMESAN</td>
                     <td>KENDARAAN</td>
                     <td>TANGGAL | JAM</td>
@@ -39,7 +40,8 @@
                     <td>{{$loop->iteration}}</td>
                     <td>DO_{{$as->no_so}}</td>
                     <td>{{$as->nama_driver}}</td>
-                    <td>{{$as->nama_petugas}}</td>
+                    {{-- <td>{{$as->nama_petugas}}</td> --}}
+                    <td>{{$as->nama_pemesan}} | {{$as->departemen_pemesan}}</td>
                     <td>{{$as->nama_kendaraan}} | <span class="badge badge-light-primary">{{$as->no_polisi}}</span>
                     </td>
                     <td>

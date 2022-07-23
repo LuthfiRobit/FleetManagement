@@ -17,7 +17,7 @@
 <body>
     <header class="clearfix">
         <div id="logo">
-            <img style="width: 300px; height: 100px; margin-right: 20px"
+            <img style="width: 200px; height: 75px; margin-right: 20px"
                 src="{{ public_path('assets/img_logo/logo_pomi1.png')}}">
         </div>
         <h1>Laporan Penugasan Driver</h1>
@@ -33,10 +33,9 @@
                     <td>NO. DO :</td>
                     <td>DO_{{$detail->no_so}}</td>
                     <td>PEMESAN :</td>
-                    <td>{{$detail->nama_petugas}}</td>
+                    <td>{{$detail->nama_pemesan}}</td>
                     <td>NO. TLP :</td>
                     <td>{{$detail->p_tlp}}</td>
-
                 </tr>
                 <tr>
                     <td>TGL. PENJEMPUTAN :</td>
@@ -238,6 +237,10 @@
                 @endforeach
             </tbody>
         </table>
+        <div id="notices" style="margin-bottom: 10px">
+            <div>PETUGAS : {{$detail->nama_petugas}}</div>
+            {{-- <div class="notice">Formulir ini dibuat berdasarkan data yang sudah didaftarkan.</div> --}}
+        </div>
     </main>
 </body>
 

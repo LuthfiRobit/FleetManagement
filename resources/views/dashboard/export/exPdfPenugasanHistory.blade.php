@@ -10,7 +10,7 @@
 <body>
     <header class="clearfix">
         <div id="logo">
-            <img style="widtd: 300px; height: 100px; margin-right: 20px"
+            <img style="width: 200px; height: 75px; margin-right: 20px"
                 src="{{ public_path('assets/img_logo/logo_pomi1.png')}}">
         </div>
         <h1>History Penugasan Driver | 
