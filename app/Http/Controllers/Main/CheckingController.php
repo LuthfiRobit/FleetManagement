@@ -332,12 +332,34 @@ class CheckingController extends Controller
         return view('dashboard.main.serviceorder.create2', $data);
     }
 
+    public function selectPenumpang(Request $request)
+    {
+        $id_departemen = $request->get('id_departemen');
+        $pemesan = DB::table('tb_petugas')
+            ->select('id_petugas as id_pemesan', 'id_departemen', 'nama_lengkap')
+            ->where([['id_departemen', $id_departemen], ['status', 'y']])
+            ->get();
+        if ($pemesan == null) {
+            return $data = [
+                'Success' => false,
+                'Message' => 'Tidak ada pemesan'
+            ];
+        } else {
+            return $data = [
+                'Success' => true,
+                'Message' => '',
+                'Pemesan' => $pemesan
+            ];
+        }
+    }
+
     public function createSo(Request $request)
     {
         // dd($request->all());
         $so = [
             'id_service_order'  => $request->id_service_order,
             'id_petugas'        => Auth::user()->id_petugas,
+            'id_pemesan'        => $request->id_pemesan,
             'no_so'             => $request->no_so,
             'tgl_penjemputan'   => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
             'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i'),
