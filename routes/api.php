@@ -49,6 +49,8 @@ Route::group(
     ['middleware' => 'api', 'prefix' => 'service'],
     function () {
         Route::get('list/kendaraan', [ApiServiceOrderController::class, 'formSo']); //form order kendaraan
+        Route::get('list/departemen', [ApiServiceOrderController::class, 'listDepartemen']); //list departemen
+        Route::get('list/pemesan', [ApiServiceOrderController::class, 'listPemesan']); //list pemesan
         Route::post('create', [ApiServiceOrderController::class, 'createSo']); //simpan order kendaraan
         Route::get('latest', [ApiServiceOrderController::class, 'getLastIdDo']); //ambil id terakhir
         Route::get('list/jabatan', [ApiServiceOrderController::class, 'getJabatan']); //list jabatan

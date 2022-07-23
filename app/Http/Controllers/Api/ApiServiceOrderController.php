@@ -41,6 +41,7 @@ class ApiServiceOrderController extends Controller
             AND tb_penugasan_driver.tgl_penugasan = '$tgl_jemput' AND tb_penugasan_driver.status_penugasan = 'p')
             ORDER BY tb_kendaraan.id_kendaraan DESC"
         );
+
         $driver = DB::select(
             "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
             -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
@@ -64,6 +65,35 @@ class ApiServiceOrderController extends Controller
         );
     }
 
+    public function listDepartemen(Request $request)
+    {
+        $departemen = DB::table('tb_departemen')
+            ->select('id_departemen', 'nama_departemen')
+            ->where('status', 'y')
+            ->get();
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_departemen' => $departemen
+            ]
+        );
+    }
+
+    public function listPemesan(Request $request)
+    {
+        $id_departemen = $request->query('id_departemen');
+        $pemesan = DB::table('tb_petugas')
+            ->select('id_petugas as id_pemesan', 'id_departemen', 'nama_lengkap')
+            ->where([['id_departemen', $id_departemen], ['status', 'y']])
+            ->get();
+        return response()->json(
+            [
+                'status'        => 'sukses',
+                'list_pemesan' => $pemesan
+            ]
+        );
+    }
+
     public function createSo(Request $request)
     {
         DB::beginTransaction();
@@ -71,6 +101,7 @@ class ApiServiceOrderController extends Controller
             $so = [
                 'id_service_order'  => $request->id_service_order,
                 'id_petugas'        => $request->id_petugas,
+                'id_pemesan'        => $request->id_pemesan,
                 'no_so'             => $request->no_so,
                 'tgl_penjemputan'   => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
                 'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i:s'),
@@ -78,7 +109,8 @@ class ApiServiceOrderController extends Controller
                 'tempat_penjemputan' => $request->tempat_penjemputan,
                 'tujuan'            => $request->tujuan,
                 'keterangan'        => $request->keterangan,
-                'status_so'         => 't'
+                'status_so'         => 't',
+                'status_tujuan'     => $request->status_tujuan
             ];
             // $saveSo = DB::table('tb_order_kendaraan')->insert($so);
             $saveSo = ServiceOrder::create($so);
