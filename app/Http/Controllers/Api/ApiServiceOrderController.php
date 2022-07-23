@@ -131,12 +131,13 @@ class ApiServiceOrderController extends Controller
             $msg =  [
                 'title' => 'Penugasan Baru',
                 'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!',
-                'sound' => 'notificationpomi.mp3'
+                'sound' => 'notificationpomi.mp3',
+                'android_channel_id' => 'ch1'
             ];
             $data = [
                 'to' => $findDriver->player_id, // for single device id
                 'notification' => $msg,
-                'android_channel_id' => 'ch1'
+                // 'android_channel_id' => 'ch1'
             ];
             $dataString = json_encode($data);
 
