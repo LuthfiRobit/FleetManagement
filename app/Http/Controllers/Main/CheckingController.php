@@ -94,7 +94,7 @@ class CheckingController extends Controller
             )
             ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
             ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
-            ->where('id_petugas', $service->id_petugas)
+            ->where('id_petugas', $service->id_pemesan)
             ->first();
 
         $driver = DB::select(
