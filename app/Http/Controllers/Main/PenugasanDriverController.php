@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Exports\PenugasanDepartemenExportAll;
+use App\Exports\PenugasanDepartemenExportMonth;
 use App\Http\Controllers\Controller;
 use App\Models\PenugasanBatal;
 use App\Models\PenugasanDriver;
@@ -9,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PenugasanDriverController extends Controller
 {
@@ -684,6 +687,207 @@ class PenugasanDriverController extends Controller
             } else {
                 abort(403, 'Unauthorized action.');
             }
+        }
+    }
+
+    //history departemen 
+
+    public function indexHistoryDepartemen(Request $request)
+    {
+        // $status = $request->status;
+        $bulan = $request->query('bulan');
+        $month = Carbon::parse($bulan)->format('m');
+        $year = Carbon::parse($bulan)->format('Y');
+
+        if ($bulan != '') {
+            $data['history'] = DB::table('tb_departemen as tb_departemen_u')
+                ->select(
+                    'tb_departemen_u.id_departemen',
+                    'tb_departemen_u.nama_departemen',
+                    DB::raw('COUNT(tb_order_kendaraan.id_pemesan) as jumlah_total'),
+                    DB::raw("
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'l'
+                    AND tb_order_kendaraan.status_so != 'c'
+                    AND YEAR(tb_order_kendaraan.tgl_penjemputan) = $year 
+                    AND MONTH(tb_order_kendaraan.tgl_penjemputan) = $month) as jumlah_lokal,
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'o' 
+                    AND tb_order_kendaraan.status_so != 'c'
+                    AND YEAR(tb_order_kendaraan.tgl_penjemputan) = $year 
+                    AND MONTH(tb_order_kendaraan.tgl_penjemputan) = $month) as jumlah_out
+                ")
+                )
+                ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_departemen', '=', 'tb_departemen_u.id_departemen')
+                ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_pemesan', '=', 'tb_pemesan.id_petugas')
+                ->groupBy('tb_departemen_u.id_departemen', 'tb_departemen_u.nama_departemen')
+                ->where('tb_order_kendaraan.status_so', '!=', 'c')
+                // ->orWhereNull('tb_order_kendaraan.status_so')
+                ->whereMonth('tb_order_kendaraan.tgl_penjemputan', $month)
+                ->whereYear('tb_order_kendaraan.tgl_penjemputan', $year)
+                ->orderByDesc(DB::raw('jumlah_total'))
+                ->get();
+            $data['total'] = $data['history']->max('jumlah_total') + 10;
+            // return $data;
+            return view(
+                'dashboard.main.assignment.historyDepartemen',
+                $data
+            );
+        } else {
+            $data['history'] = DB::table('tb_departemen as tb_departemen_u')
+                ->select(
+                    'tb_departemen_u.id_departemen',
+                    'tb_departemen_u.nama_departemen',
+                    DB::raw('COUNT(tb_order_kendaraan.id_pemesan) as jumlah_total'),
+                    DB::raw("
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'l' 
+                    AND tb_order_kendaraan.status_so != 'c') as jumlah_lokal,
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'o' 
+                    AND tb_order_kendaraan.status_so != 'c') as jumlah_out
+                ")
+                )
+                ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_departemen', '=', 'tb_departemen_u.id_departemen')
+                ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_pemesan', '=', 'tb_pemesan.id_petugas')
+                ->groupBy('tb_departemen_u.id_departemen', 'tb_departemen_u.nama_departemen')
+                ->where('tb_order_kendaraan.status_so', '!=', 'c')
+                // ->orWhereNull('tb_order_kendaraan.status_so')
+                ->orderByDesc(DB::raw('jumlah_total'))
+                ->get();
+            $data['total'] = $data['history']->max('jumlah_total') + 10;
+            // return $data;
+            return view(
+                'dashboard.main.assignment.historyDepartemen',
+                $data
+            );
+        }
+    }
+
+    public function exportHistoryDepartemenPdf(Request $request)
+    {
+        $bulan = $request->query('bulan');
+        $month = Carbon::parse($bulan)->format('m');
+        $year = Carbon::parse($bulan)->format('Y');
+
+        if ($bulan != '') {
+            $data['filter'] = [
+                'bulan' => $bulan
+            ];
+            $data['history'] = DB::table('tb_departemen as tb_departemen_u')
+                ->select(
+                    'tb_departemen_u.id_departemen',
+                    'tb_departemen_u.nama_departemen',
+                    DB::raw('COUNT(tb_order_kendaraan.id_pemesan) as jumlah_total'),
+                    DB::raw("
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'l' AND tb_order_kendaraan.status_so != 'c'
+                    AND YEAR(tb_order_kendaraan.tgl_penjemputan) = $year 
+                    AND MONTH(tb_order_kendaraan.tgl_penjemputan) = $month) as jumlah_lokal,
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'o' AND tb_order_kendaraan.status_so != 'c'
+                    AND YEAR(tb_order_kendaraan.tgl_penjemputan) = $year 
+                    AND MONTH(tb_order_kendaraan.tgl_penjemputan) = $month) as jumlah_out
+                ")
+                )
+                ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_departemen', '=', 'tb_departemen_u.id_departemen')
+                ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_pemesan', '=', 'tb_pemesan.id_petugas')
+                ->groupBy('tb_departemen_u.id_departemen', 'tb_departemen_u.nama_departemen')
+                ->where('tb_order_kendaraan.status_so', '!=', 'c')
+                // ->orWhereNull('tb_order_kendaraan.status_so')
+                ->whereMonth('tb_order_kendaraan.tgl_penjemputan', $month)
+                ->whereYear('tb_order_kendaraan.tgl_penjemputan', $year)
+                ->orderByDesc(DB::raw('jumlah_total'))
+                ->get();
+            // return $data;
+            if ($data['history']->count() > 0) {
+                // return $data;
+                $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanDepartemenHistory', $data)->setPaper('f4', 'portrait');
+                set_time_limit(60);
+
+                return $pdf->download('laporan_history_penugasan_departemen_bulan' . $bulan . '.pdf');
+            } else {
+                return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+            }
+        } else {
+            $data['filter'] = [
+                'bulan' => $bulan
+            ];
+            $data['history'] = DB::table('tb_departemen as tb_departemen_u')
+                ->select(
+                    'tb_departemen_u.id_departemen',
+                    'tb_departemen_u.nama_departemen',
+                    DB::raw('COUNT(tb_order_kendaraan.id_pemesan) as jumlah_total'),
+                    DB::raw("
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'l' 
+                    AND tb_order_kendaraan.status_so != 'c') as jumlah_lokal,
+                    (SELECT COUNT(tb_order_kendaraan.id_pemesan) 
+                    FROM tb_order_kendaraan
+                    LEFT JOIN tb_petugas as tb_pemesan_s on tb_pemesan_s.id_petugas = tb_order_kendaraan.id_pemesan
+                    LEFT JOIN tb_departemen on tb_departemen.id_departemen = tb_pemesan_s.id_departemen
+                    WHERE tb_departemen.id_departemen = tb_departemen_u.id_departemen
+                    AND tb_order_kendaraan.status_tujuan = 'o' 
+                    AND tb_order_kendaraan.status_so != 'c') as jumlah_out
+                ")
+                )
+                ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_departemen', '=', 'tb_departemen_u.id_departemen')
+                ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_pemesan', '=', 'tb_pemesan.id_petugas')
+                ->groupBy('tb_departemen_u.id_departemen', 'tb_departemen_u.nama_departemen')
+                ->where('tb_order_kendaraan.status_so', '!=', 'c')
+                // ->orWhereNull('tb_order_kendaraan.status_so')
+                ->orderByDesc(DB::raw('jumlah_total'))
+                ->get();
+            if ($data['history']->count() > 0) {
+                // return $data;
+                $pdf = FacadePdf::loadView('dashboard.export.exPdfPenugasanDepartemenHistory', $data)->setPaper('f4', 'portrait');
+                set_time_limit(60);
+
+                return $pdf->download('laporan_history_penugasan_departemen.pdf');
+            } else {
+                return redirect()->back()->with('success', 'Maaf, Data tidak ditemukan');
+            }
+        }
+    }
+
+    public function exportHistoryDepartemenExsl(Request $request)
+    {
+        $bulan = $request->query('bulan');
+        $month = Carbon::parse($bulan)->format('m');
+        $year = Carbon::parse($bulan)->format('Y');
+        if ($bulan != '') {
+            return Excel::download(new PenugasanDepartemenExportMonth($bulan), 'laporan_history_penugasan_departemen_bulan' . $bulan . '.xlsx');
+            // return Excel::download(new PengecekanDateExport($id_kendaraan, $tgl_pengecekan), 'Laporan_pengecekan_tanggal_' . $tanggal . '.xlsx');
+        } else {
+            return Excel::download(new PenugasanDepartemenExportAll, 'laporan_history_penugasan_departemen.xlsx');
         }
     }
 }
