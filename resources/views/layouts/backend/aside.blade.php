@@ -89,7 +89,8 @@
                     </div>
                 </div>
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::currentRouteName() == 'checking.serviceorder' ||
-                    Route::currentRouteName() == 'assign.main' || Route::currentRouteName() == 'assign.main.batal' || Route::currentRouteName() == 'assign.history.driver' ? 'show' : '' }}">
+                    Route::currentRouteName() == 'assign.main' || Route::currentRouteName() == 'assign.main.batal' || 
+                    Route::currentRouteName() == 'assign.history.driver' || Route::currentRouteName() == 'assign.history.departemen'  ? 'show' : '' }}">
                     <span class="menu-link">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen009.svg-->
@@ -149,7 +150,7 @@
                                 <span class="menu-title">Pengajuan Pembatalan Tugas</span>
                             </a>
                         </div>
-                         <div class="menu-item">
+                        <div class="menu-item">
                             <a class="menu-link {{ Route::currentRouteName() == 'assign.history.driver' ? 'active' : '' }}"
                                 href="{{ route('assign.history.driver') }}">
                                 <span class="menu-icon">
@@ -160,6 +161,19 @@
                                     <!--end::Svg Icon-->
                                 </span>
                                 <span class="menu-title">History Penugasan Driver</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a class="menu-link {{ Route::currentRouteName() == 'assign.history.departemen' ? 'active' : '' }}"
+                                href="{{ route('assign.history.departemen') }}">
+                                <span class="menu-icon">
+                                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                                    <span class="svg-icon svg-icon-2">
+                                        <i class="fa fa-concierge-bell"></i>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                <span class="menu-title">History Penugasan Departemen</span>
                             </a>
                         </div>
                     </div>
