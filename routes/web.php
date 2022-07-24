@@ -88,6 +88,11 @@ Route::group(['middleware' => 'auth'], function () {
             //history
             Route::get('/history/driver', [PenugasanDriverController::class, 'indexHistory'])->name('.history.driver');
             Route::get('/export/history/pdf', [PenugasanDriverController::class, 'exportPdfHistory'])->name('.exprt.history.pdf');
+
+            //history departemen
+            Route::get('/history/departemen', [PenugasanDriverController::class, 'indexHistoryDepartemen'])->name('.history.departemen');
+            Route::get('/export/history/departemen/pdf', [PenugasanDriverController::class, 'exportHistoryDepartemenPdf'])->name('.export.history.departemen.pdf');
+            Route::get('/export/history/departemen/excel', [PenugasanDriverController::class, 'exportHistoryDepartemenExsl'])->name('.export.history.departemen.exl');
         });
     Route::name('check')->prefix('check')
         ->group(function () {
