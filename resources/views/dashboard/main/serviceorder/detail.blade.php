@@ -261,25 +261,49 @@
                                     <!--begin::Row-->
                                     <tr class="">
                                         <td class="text-gray-400">Nama Pemesan:</td>
-                                        <td class="text-gray-800">{{$order->nama_lengkap}}</td>
+                                        <td class="text-gray-800">
+                                            @if ($order != null)
+                                            {{$order->nama_lengkap}}
+                                            @else
+                                            ---
+                                            @endif
+                                        </td>
                                     </tr>
                                     <!--end::Row-->
                                     <!--begin::Row-->
                                     <tr class="">
                                         <td class="text-gray-400">Jabatan:</td>
-                                        <td class="text-gray-800">{{$order->nama_jabatan}}</td>
+                                        <td class="text-gray-800">
+                                            @if ($order != null)
+                                            {{$order->nama_jabatan}}
+                                            @else
+                                            ---
+                                            @endif
+                                        </td>
                                     </tr>
                                     <!--end::Row-->
                                     <!--begin::Row-->
                                     <tr class="">
                                         <td class="text-gray-400">Departemen:</td>
-                                        <td class="text-gray-800">{{$order->nama_departemen}}</td>
+                                        <td class="text-gray-800">
+                                            @if ($order != null)
+                                            {{$order->nama_departemen}}
+                                            @else
+                                            ---
+                                            @endif
+                                        </td>
                                     </tr>
                                     <!--end::Row-->
                                     <!--begin::Row-->
                                     <tr class="">
                                         <td class="text-gray-400">No. Tlp:</td>
-                                        <td class="text-gray-800">{{$order->no_tlp}}</td>
+                                        <td class="text-gray-800">
+                                            @if ($order != null)
+                                            {{$order->no_tlp}}
+                                            @else
+                                            ---
+                                            @endif
+                                        </td>
                                     </tr>
                                     <!--end::Row-->
                                 </table>
