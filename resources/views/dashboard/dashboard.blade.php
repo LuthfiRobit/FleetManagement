@@ -99,7 +99,7 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                         <a href="{{ route('assign.main') }}"
-                                            class="text-danger fw-bold fs-6 mt-2">{{$penugasan->count()}}
+                                            class="text-danger fw-bold fs-6 mt-2">{{$countPenugasan}}
                                             Perjalanan</a>
                                     </div>
                                     <!--end::Col-->
@@ -117,7 +117,7 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                         <a href="{{ route('dashboard.driver.index') }}"
-                                            class="text-danger fw-bold fs-6">{{$driverN}} Driver Nonaktif</a>
+                                            class="text-danger fw-bold fs-6">{{$driverN}} Driver Berhenti</a>
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
@@ -151,7 +151,7 @@
                         <div class="card-header align-items-center border-0 mt-4">
                             <h3 class="card-title align-items-start flex-column">
                                 <span class="fw-bolder mb-2 text-dark">Driver dalam penugasan</span>
-                                <span class="text-muted fw-bold fs-7">{{$penugasan->count()}} driver</span>
+                                <span class="text-muted fw-bold fs-7">{{$countPenugasan}} driver</span>
                             </h3>
                             <div class="card-toolbar">
                                 <!--begin::Menu-->
@@ -222,8 +222,8 @@
                                 <div class="d-flex flex-stack flex-wrap">
                                     <div class="me-2">
                                         <a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Status
-                                            Driver</a>
-                                        <div class="text-muted fs-7 fw-bold">{{$status->count()}} driver nonaktif</div>
+                                            Driver Cuti</a>
+                                        <div class="text-muted fs-7 fw-bold">{{$status->count()}} driver cuti</div>
                                     </div>
                                     <div class="card-toolbar">
                                         <!--begin::Menu-->

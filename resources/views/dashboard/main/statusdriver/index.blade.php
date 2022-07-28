@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Status Driver | Utama')
+@section('title','Status Driver Cuti | Utama')
 @section('style-on-this-page-only')
 <link href="{{url('assets/backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet"
     type="text/css" />
@@ -16,16 +16,16 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">STATUS DRIVER</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">STATUS DRIVER CUTI</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Ada
-                            {{$status->where('status','n')->count()}} sedang non aktif</span>
+                            {{$status->where('status','n')->count()}} sedang cuti</span>
                     </h3>
                     <ul
                         class="align-items-end  nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
                         <!--begin:::Tab item-->
                         <li class="nav-item">
                             <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                                href="#tab_avaliable">NON AKTIF</a>
+                                href="#tab_avaliable">CUTI</a>
                         </li>
                         <!--end:::Tab item-->
                         <!--begin:::Tab item-->
@@ -83,7 +83,7 @@
                                         <th>No.</th>
                                         <th>No. Status</th>
                                         <th>Driver</th>
-                                        <th>Tgl. Non Aktif</th>
+                                        <th>Tgl. Cuti</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -97,7 +97,7 @@
                                         <td>{{$sd->tgl_nonaktif}}</td>
                                         <td>
                                             @if ($sd->status == 'n')
-                                            <span class="badge badge-light-danger">Non Aktif</span>
+                                            <span class="badge badge-light-danger">Cuti</span>
                                             @else
                                             <span class="badge badge-light-primary">Aktif</span>
                                             @endif
@@ -122,7 +122,7 @@
                                         <th>No.</th>
                                         <th>No. Status</th>
                                         <th>Driver</th>
-                                        <th>Tgl. Non Aktif</th>
+                                        <th>Tgl. Cuti</th>
                                         <th>Tgl. Aktif</th>
                                         <th>Jml. Hari</th>
                                         <th>Status</th>
@@ -140,7 +140,7 @@
                                         <td>{{$sd->jml_nonaktif}}</td>
                                         <td>
                                             @if ($sd->status == 'n')
-                                            <span class="badge badge-light-danger">Non Aktif</span>
+                                            <span class="badge badge-light-danger">Cuti</span>
                                             @else
                                             <span class="badge badge-light-primary">Aktif</span>
                                             @endif

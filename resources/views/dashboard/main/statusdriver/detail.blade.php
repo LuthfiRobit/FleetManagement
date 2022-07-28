@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','Status Driver | Detail')
+@section('title','Status Driver Cuti | Detail')
 
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -12,7 +12,7 @@
                 <!--begin::Header-->
                 <div class="card-header border-0">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">DETAIL STATUS DRIVER</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">DETAIL STATUS DRIVER CUTI</span>
                         <span class="text-muted mt-1 fw-bold fs-7">Driver : {{$status->nama_driver}}</span>
                     </h3>
                 </div>
@@ -37,7 +37,7 @@
                                 </div>
                                 @elseif ($status->status == 'n')
                                 <div class=" bg-light-warning rounded border-warning border border-dashed p-2">
-                                    NON AKTIF
+                                    Cuti
                                 </div>
                                 @endif
                             </div>
@@ -58,7 +58,7 @@
                                         <table class="table fs-6 fw-bold gs-0 gy-2 gx-2 m-0">
                                             <!--begin::Row-->
                                             <tr>
-                                                <td class="text-gray-400 min-w-175px w-175px">Tanggal Non Aktif:</td>
+                                                <td class="text-gray-400 min-w-175px w-175px">Tanggal Cuti:</td>
                                                 <td class="text-gray-800 min-w-200px">
                                                     {{Carbon\Carbon::parse($status->tgl_nonaktif)->format('d F Y')}}
                                                 </td>
@@ -79,7 +79,7 @@
                                             <!--end::Row-->
                                             <!--begin::Row-->
                                             <tr>
-                                                <td class="text-gray-400">Lama Non Aktif:</td>
+                                                <td class="text-gray-400">Lama Cuti:</td>
                                                 <td class="text-gray-800">
                                                     @if ($status->jml_nonaktif != null)
                                                     {{$status->jml_nonaktif}}
@@ -108,7 +108,7 @@
                                                     </div>
                                                     @elseif ($status->status == 'n')
                                                     <div class=" badge badge-lg badge-light-warning d-inline">
-                                                        NON AKTIF
+                                                        Cuti
                                                     </div>
                                                     @endif
                                                 </td>
@@ -219,7 +219,7 @@
                             <table class="table fs-6 fw-bold gs-0 gy-2 gx-2">
                                 <!--begin::Row-->
                                 <tr class="">
-                                    <td class="text-gray-400">History Non Aktif:</td>
+                                    <td class="text-gray-400">History Cuti:</td>
                                     <td class="text-gray-800">{{$history}} hari</td>
                                 </tr>
                             </table>

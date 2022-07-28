@@ -189,7 +189,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Status Driver</span>
+                        <span class="menu-title">Status Driver Cuti</span>
                     </a>
                 </div>
                 <div class="menu-item">
