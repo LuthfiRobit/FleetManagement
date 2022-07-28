@@ -129,7 +129,7 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                         <a href="{{ route('repair.main') }}"
-                                            class="text-success fw-bold fs-6 mt-2">{{$perbaikan->count()}}
+                                            class="text-success fw-bold fs-6 mt-2">{{$countPerbaikan}}
                                             Perbaikan</a>
                                     </div>
                                     <!--end::Col-->
@@ -277,7 +277,7 @@
                             <div class="d-flex flex-stack flex-wrap flex-grow-1 px-9 pt-9 pb-3">
                                 <div class="me-2">
                                     <span class="fw-bolder text-gray-800 d-block fs-3">Kendaraan Diperbaiki</span>
-                                    <span class="text-gray-400 fw-bold">{{$perbaikan->count()}} dalam perbaikan</span>
+                                    <span class="text-gray-400 fw-bold">{{$countPerbaikan}} dalam perbaikan</span>
                                 </div>
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
