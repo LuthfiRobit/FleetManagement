@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isNull;
+
 class CheckingController extends Controller
 {
     public function serviceorder(Request $request)
@@ -472,6 +474,164 @@ class CheckingController extends Controller
             return redirect()->route('checking.serviceorder')->with('success', 'Penugasan dengan berhasil dibuat');
         } else {
             return redirect()->route('checking.serviceorder')->with('success', 'Penugasan dengan gagal dibuat');
+        }
+    }
+
+    public function editSo($id_so)
+    {
+        $find = DB::table('tb_order_kendaraan')
+            ->select(
+                'tb_order_kendaraan.id_service_order',
+                'tb_penugasan_driver.id_service_order',
+                'tb_penugasan_driver.status_penugasan'
+            )
+            ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
+            ->where('tb_order_kendaraan.id_service_order', $id_so)
+            ->first();
+        // dd($find);
+        if ($find->status_penugasan == 't' || $find->status_penugasan == null) {
+            $service = DB::table('tb_order_kendaraan')
+                ->select(
+                    'tb_order_kendaraan.id_service_order',
+                    'tb_order_kendaraan.no_so',
+                    'tb_order_kendaraan.tgl_penjemputan',
+                    'tb_order_kendaraan.jam_penjemputan',
+                    'tb_order_kendaraan.jml_penumpang',
+                    'tb_order_kendaraan.tempat_penjemputan',
+                    'tb_order_kendaraan.tujuan',
+                    'tb_order_kendaraan.keterangan',
+                    'tb_order_kendaraan.status_so',
+                    'tb_order_kendaraan.keterangan_penolakan',
+                    'tb_order_kendaraan.status_tujuan',
+                    'tb_penugasan_driver.id_kendaraan',
+                    'tb_kendaraan.nama_kendaraan',
+                    'tb_kendaraan.no_polisi',
+                    'tb_penugasan_driver.id_driver',
+                    'tb_penugasan_driver.kembali',
+                    'tb_petugas.id_petugas',
+                    'tb_petugas.nama_lengkap',
+                    'tb_pemesan.id_petugas as id_pemesan',
+                    'tb_pemesan.nama_lengkap as nama_pemesan'
+                )
+                ->leftJoin('tb_petugas', 'tb_petugas.id_petugas', '=', 'tb_order_kendaraan.id_petugas')
+                ->leftJoin('tb_petugas as tb_pemesan', 'tb_pemesan.id_petugas', '=', 'tb_order_kendaraan.id_pemesan')
+                ->leftJoin('tb_penugasan_driver', 'tb_penugasan_driver.id_service_order', '=', 'tb_order_kendaraan.id_service_order')
+                ->leftJoin('tb_kendaraan', 'tb_kendaraan.id_kendaraan', '=', 'tb_penugasan_driver.id_kendaraan')
+                ->where('tb_order_kendaraan.id_service_order', $id_so)
+                ->first();
+            $order = DB::table('tb_petugas')
+                ->select(
+                    'tb_petugas.id_petugas',
+                    'tb_petugas.nama_lengkap as nama_pemesan',
+                    'tb_petugas.no_tlp',
+                    'tb_departemen.nama_departemen',
+                    'tb_jabatan.nama_jabatan'
+                )
+                ->leftJoin('tb_departemen', 'tb_departemen.id_departemen', '=', 'tb_petugas.id_departemen')
+                ->leftJoin('tb_jabatan', 'tb_jabatan.id_jabatan', '=', 'tb_petugas.id_jabatan')
+                ->where('id_petugas', $service->id_pemesan)
+                ->first();
+            $driver = DB::select(
+                "SELECT tb_driver.id_driver, tb_driver.no_badge, tb_driver.nama_driver FROM tb_driver
+            -- LEFT JOIN tb_detail_sim on tb_detail_sim.id_driver = tb_driver.id_driver
+            WHERE tb_driver.status_driver = 'y'
+            AND NOT EXISTS (SELECT id_driver FROM tb_status_driver WHERE tb_status_driver.id_driver = tb_driver.id_driver
+            AND tb_status_driver.status = 'n' UNION SELECT id_driver FROM tb_penugasan_driver WHERE tb_penugasan_driver.id_driver = tb_driver.id_driver
+            AND tb_penugasan_driver.tgl_penugasan = '$service->tgl_penjemputan' AND tb_penugasan_driver.status_penugasan = 'p'  )"
+            );
+            $kendaraan = DB::select(
+                "SELECT tb_kendaraan.nama_kendaraan,
+            tb_kendaraan.kode_asset,
+            tb_kendaraan.no_polisi,
+            tb_kendaraan.id_kendaraan,
+            tb_kendaraan.id_jenis_sim,
+            -- tb_jenis_sim.nama_sim as sim,
+            tb_jenis_alokasi.nama_alokasi as alokasi
+            FROM tb_kendaraan
+            -- JOIN tb_jenis_sim on tb_jenis_sim.id_jenis_sim = tb_kendaraan.id_jenis_sim
+            LEFT JOIN tb_alokasi_kendaraan on tb_alokasi_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+            LEFT JOIN tb_jenis_alokasi on tb_jenis_alokasi.id_jenis_alokasi = tb_alokasi_kendaraan.id_jenis_alokasi
+            WHERE tb_kendaraan.status = 'y' AND NOT EXISTS (SELECT id_kendaraan FROM tb_pengecekan_kendaraan WHERE tb_pengecekan_kendaraan.id_kendaraan = tb_kendaraan.id_kendaraan
+            AND tb_pengecekan_kendaraan.status_kendaraan = 't' AND tb_pengecekan_kendaraan.tgl_pengecekan = '$service->tgl_penjemputan' UNION SELECT id_kendaraan FROM tb_penugasan_driver
+            WHERE tb_penugasan_driver.id_kendaraan = tb_kendaraan.id_kendaraan
+            AND tb_penugasan_driver.tgl_penugasan = '$service->tgl_penjemputan' AND tb_penugasan_driver.status_penugasan = 'p')
+            ORDER BY tb_kendaraan.id_kendaraan DESC"
+            );
+            $data = [
+                'serviceorder' => $service,
+                'pemesan'   => $order,
+                'driver'    => $driver,
+                'kendaraan' => $kendaraan
+            ];
+            // dd($data);
+            return view('dashboard.main.serviceorder.edit', $data);
+        } else {
+            return redirect()->route('checking.serviceorder')->with('success', 'Maaf, Akses Tidak Diperbolehkan');
+        }
+    }
+
+    public function updateSo(Request $request)
+    {
+        $findSo = ServiceOrder::where('id_service_order', $request->id_service_order)->first();
+        if ($findSo) {
+            $findDo = PenugasanDriver::where('id_service_order', $request->id_service_order)->first();
+            $so = [
+                'tgl_penjemputan'   => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
+                'jam_penjemputan'   => Carbon::parse($request->jam_penjemputan)->format('H:i'),
+                'tempat_penjemputan' => $request->tmp_penjemputan,
+                'tujuan'            => $request->tmp_tujuan,
+                'keterangan'        => $request->agenda,
+                'status_so'         => 't',
+                'status_tujuan'     => $request->status_tujuan
+            ];
+            $updateSo = $findSo->update($so);
+            $do = [
+                'id_driver'         => $request->id_driver,
+                'id_kendaraan'      => $request->id_kendaraan,
+                'tgl_penugasan'     => Carbon::parse($request->tgl_penjemputan)->format('Y-m-d'),
+                'jam_berangkat'     => Carbon::parse($request->jam_penjemputan)->format('H:i'),
+                'kembali'           => $request->tmp_kembali,
+                'status_penugasan'  => null,
+                'tgl_acc'           => date('Y-m-d')
+            ];
+            $updateDo = $findDo->update($do);
+            if ($updateDo) {
+                $findDriver = Driver::select('id_driver', 'player_id')->where('id_driver', $request->id_driver)->first();
+                $SERVER_API_KEY = env('SERVER_API_KEY');
+                $msg =  [
+                    'title' => 'Penugasan Baru',
+                    'body' => 'Anda memiliki penugasan baru, segera cek aplikasi mobil penugasan!',
+                    'sound' => 'notificationpomi.mp3',
+                    'android_channel_id' => 'ch1'
+                ];
+                $data = [
+                    'to' => $findDriver->player_id, // for single device id
+                    'notification' => $msg,
+                    // 'android_channel_id' => 'ch1'
+                ];
+                $dataString = json_encode($data);
+
+                $headers = [
+                    'Authorization: key=' . $SERVER_API_KEY,
+                    'Content-Type: application/json',
+                ];
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                $response = curl_exec($ch);
+
+                curl_close($ch);
+            }
+            return redirect()->route('checking.serviceorder')->with('success', 'Penugasan berhasil diedit');
+        } else {
+            return redirect()->route('checking.serviceorder')->with('success', 'Penugasan gagal diedit');
         }
     }
 

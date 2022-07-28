@@ -68,6 +68,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/serviceorder', [CheckingController::class, 'serviceorder'])->name('.serviceorder');
             Route::get('/serviceorder/form', [CheckingController::class, 'formSo'])->name('.serviceorder.form');
             Route::post('/serviceorder/create', [CheckingController::class, 'createSo'])->name('.serviceorder.create');
+            Route::get('/serviceorder/edit/{id}', [CheckingController::class, 'editSo'])->name('.serviceorder.edit');
+            Route::post('/serviceorder/update', [CheckingController::class, 'updateSo'])->name('.serviceorder.update');
             Route::get('/serviceorder/detail/{id}', [CheckingController::class, 'detailSo'])->name('.serviceorder.detail');
             Route::get('/serviceorder/accept/form/{id}', [CheckingController::class, 'serviceAccept'])->name('.serviceorder.accept.form');
             Route::post('/serviceorder/accept/{id}', [CheckingController::class, 'acceptSo'])->name('.serviceorder.accept');

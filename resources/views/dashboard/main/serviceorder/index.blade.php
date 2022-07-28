@@ -124,6 +124,8 @@
                                     <button type="button" class="btn btn-light btn-light-danger btn-sm btn-cancel mb-1"
                                         data-id="{{$so->id_service_order}}" data-so="{{$so->no_so}}"
                                         data-petugas="{{$so->nama_lengkap}}">Batalkan</button>
+                                    <a href="{{route('checking.serviceorder.edit',$so->id_service_order)}}"
+                                    class="btn btn-light bnt-active-light-primary btn-sm mb-1">Edit</a>
                                     @endif
                                     <a href="{{route('checking.serviceorder.detail',$so->id_service_order)}}"
                                         class="btn btn-light bnt-active-light-primary btn-sm">Lihat</a>
