@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
 use App\Models\Kendaraan;
+use App\Models\PenugasanDriver;
 use App\Models\Perbaikan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ class DashboardController extends Controller
         $countDriverN = Driver::where('status_driver', 't')->count();
         $countKendaraan = Kendaraan::where('status', 'y')->count();
         $countPerbaikan = Perbaikan::where('status_perbaikan', 'p')->count();
+        $counPenugasan = PenugasanDriver::where('status_penugasan', 'p')->count();
         $penugasan = DB::table('tb_penugasan_driver')
             ->select(
                 'tb_order_kendaraan.tujuan as tujuan',
@@ -27,7 +29,7 @@ class DashboardController extends Controller
             ->leftJoin('tb_order_kendaraan', 'tb_order_kendaraan.id_service_order', '=', 'tb_penugasan_driver.id_service_order')
             ->where('tb_penugasan_driver.status_penugasan', 'p')
             ->orderByDesc('tb_penugasan_driver.id_do')
-            ->limit(5)
+            ->limit(7)
             ->get();
         $status = DB::table('tb_status_driver')
             ->select(
@@ -97,6 +99,7 @@ class DashboardController extends Controller
             'driverN' => $countDriverN,
             'kendaraan' => $countKendaraan,
             'penugasan' => $penugasan,
+            'countPenugasan' => $counPenugasan,
             'status' => $status,
             'perbaikan' => $perbaikan,
             'countPerbaikan' => $countPerbaikan,
