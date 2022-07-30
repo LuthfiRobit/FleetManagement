@@ -333,11 +333,11 @@
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
-                                <span class="card-label fw-bolder fs-3 mb-1">History driver rating tertinggi</span>
+                                <span class="card-label fw-bolder fs-3 mb-1">Penugasan Driver</span>
                                 {{-- <span class="text-muted mt-1 fw-bold fs-7">5 driver aktif</span> --}}
                             </h3>
                             <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top">
-                                <a href="{{ route('rating.main') }}" type="button"
+                                <a href="{{ route('checking.serviceorder') }}" type="button"
                                     class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary active"
                                     data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
@@ -358,62 +358,38 @@
                                     <!--begin::Table head-->
                                     <thead>
                                         <tr class="fw-bolder text-muted">
-                                            <th class="min-w-50px">No. Badge</th>
-                                            <th class="min-w-140px">Nama</th>
-                                            <th class="min-w-100px">Penugasan</th>
-                                            <th class="min-w-100px">Penugasan dibatalkan</th>
-                                            <th class="min-w-100px">Jumlah Nonaktif</th>
-                                            <th class="min-w-100px">Kecelakaan</th>
-                                            <th class="min-w-120px">Rating</th>
+                                            <th class="min-w-50px">Driver</th>
+                                            <th class="min-w-100px">No. Telepon</th>
+                                            <th class="min-w-140px">Kendaraan</th>
+                                            <th class="min-w-100px">Tujuan</th>
+                                            <th class="min-w-100px">Pemesan</th>
+                                            <th class="min-w-100px">Departemen</th>
                                         </tr>
                                     </thead>
                                     <!--end::Table head-->
                                     <!--begin::Table body-->
                                     <tbody>
-                                        @forelse ($history as $hs)
+                                        @forelse ($penugasan as $p)
                                         <tr>
                                             <td>
-                                                {{$hs->no_badge}}
+                                                {{$p->nama_driver}}
                                             </td>
                                             <td>
-                                                {{$hs->nama_driver}}
+                                                {{$p->no_tlp}}
                                             </td>
                                             <td>
-                                                @if ($hs->penugasan == 0)
-                                                0
-                                                @else
-                                                {{$hs->penugasan}}
-                                                @endif
-                                                penugasan
+                                                {{$p->nama_kendaraan}}
+                                                <br>
+                                                {{$p->no_polisi}}
                                             </td>
                                             <td>
-                                                @if ($hs->pembatalan == 0)
-                                                0
-                                                @else
-                                                {{$hs->pembatalan}}
-                                                @endif
-                                                pembatalan
+                                                {{$p->tujuan}}
                                             </td>
                                             <td>
-                                                @if ($hs->nonaktif == null)
-                                                0
-                                                @else
-                                                {{$hs->nonaktif}}
-                                                @endif
-                                                hari
+                                                {{$p->nama_pemesan}}
                                             </td>
                                             <td>
-                                                @if ($hs->kecelakaan == 0)
-                                                0
-                                                @else
-                                                {{$hs->kecelakaan}}
-                                                @endif
-                                                x
-                                            </td>
-                                            <td>
-                                                @for ($i = 0; $i < $hs->rating; $i++)
-                                                    <i class="bi bi-star-fill fs-2x" style="color:#ffad0f"></i>
-                                                    @endfor
+                                                {{$p->dep_pemesan}}
                                             </td>
                                         </tr>
                                         @empty
