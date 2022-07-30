@@ -31,7 +31,7 @@
                     <div class="card-header border-0 mt-3">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <h2 class="fw-bolder">Filter By</h2>
+                            <h2 class="fw-bolder">Filter By Bulan</h2>
                         </div>
                         <!--begin::Card title-->
                         <div class="card-toolbar">
